@@ -12,7 +12,6 @@ class MessagesViewController: MSMessagesAppViewController, TimeViewControllerDel
     
     @IBOutlet var post: UIButton?
     @IBAction func postMessage(sender: UIButton) {
-        print("POST CLICKED")
         
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
         
