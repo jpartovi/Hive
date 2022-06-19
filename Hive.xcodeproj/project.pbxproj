@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15B44F44285CEC1C0055B51C /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeViewController.swift */; };
+		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
 		15BA66C1284E8C6E00C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66C0284E8C6E00C185CA /* Assets.xcassets */; };
 		15BA66C7284E8C6F00C185CA /* Hive MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		15BA66CC284E8C6F00C185CA /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15BA66CB284E8C6F00C185CA /* Messages.framework */; };
@@ -40,6 +42,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		15B44F43285CEC1B0055B51C /* TimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
+		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		15BA66BD284E8C6800C185CA /* Hive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66C0284E8C6E00C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Hive MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +105,8 @@
 			isa = PBXGroup;
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
+				15B44F43285CEC1B0055B51C /* TimeViewController.swift */,
+				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,
 				15BA66D3284E8C7100C185CA /* Assets.xcassets */,
 				15BA66D5284E8C7100C185CA /* Info.plist */,
@@ -207,7 +213,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
+				15B44F44285CEC1C0055B51C /* TimeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
