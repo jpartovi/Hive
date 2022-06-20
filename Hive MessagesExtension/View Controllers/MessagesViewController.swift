@@ -8,56 +8,9 @@
 import UIKit
 import Messages
 
-class MessagesViewController: MSMessagesAppViewController, TimeViewControllerDelegate, InviteViewControllerDelegate {
+class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, CreateEventViewControllerDelegate, UINavigationControllerDelegate {
     
-    @IBOutlet var post: UIButton?
-    @IBAction func postMessage(sender: UIButton) {
-        
-        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
-        
-        let session = conversation.selectedMessage?.session ?? MSSession()
-        
-        let alternateMessageLayout = MSMessageTemplateLayout()
-        alternateMessageLayout.caption = "Caption"
-        alternateMessageLayout.imageTitle = "Image Title"
-        alternateMessageLayout.imageSubtitle = "Image subtitle"
-        alternateMessageLayout.trailingCaption = "Trailing caption"
-        alternateMessageLayout.subcaption = "Subcaption"
-        alternateMessageLayout.trailingSubcaption = "Trailing subcaption"
-        
-        let message = MSMessage(session: session)
-        let messageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
-        
-        message.layout = alternateMessageLayout
-        message.summaryText = "Summary Text"
-        
-        /*
-        let myBaseURL = "url"
-        guard var components = URLComponents(string: myBaseURL) else {
-            fatalError("Invalid base url")
-        }
-         
-        let size = URLQueryItem(name: "Size", value: "Large")
-        let count = URLQueryItem(name: "Topping_Count", value: "2")
-        let cheese = URLQueryItem(name: "Topping_0", value: "Cheese")
-        let pepperoni = URLQueryItem(name: "Topping_1", value: "Pepperoni")
-        components.queryItems = [size, count, cheese, pepperoni]
-         
-        guard let url = components.url  else {
-            fatalError("Invalid URL components.")
-        }
-         
-        message.url = url
-        */
-        var components = URLComponents()
-        components.queryItems = [URLQueryItem(name: "type", value: "time")]
-        message.url = components.url!
-        
-        conversation.insert(message) {error in
-            // empty for now
-        }
-        
-    }
+    static var conversation: MSConversation? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,7 +24,7 @@ class MessagesViewController: MSMessagesAppViewController, TimeViewControllerDel
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
         
-        print("Will become active")
+        MessagesViewController.conversation = conversation
         
         presentViewController(for: conversation, with: presentationStyle)
         
@@ -135,31 +88,32 @@ class MessagesViewController: MSMessagesAppViewController, TimeViewControllerDel
     
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
-        // Instantiate a `IceCreamsViewController` and present it.
         let controller: UIViewController
         
-        
-        guard let messageURL = conversation.selectedMessage?.url else {return}
-        guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
-        /*
-        for queryItem in queryItems {
-            guard let value = queryItem.value else { continue }
-                    
-            print(value)
-        }
-         */
-        let value = queryItems[0].value!
-        print("Value: " + value)
-        
-        if value == "time" {
-            controller = instantiateTimeViewController()
-        } else if value == "invite" {
-            controller = instantiateInviteViewController()
+        if conversation.selectedMessage == nil {
+            controller = instantiateCreateEventViewController()
         } else {
-            controller = instantiateTimeViewController()
-            print("FAAAAAIIIIIILLLLLL")
+            guard let messageURL = conversation.selectedMessage?.url else {return}
+            guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
+            
+            /*
+            for queryItem in queryItems {
+                guard let value = queryItem.value else { continue }
+                        
+                print(value)
+            }
+            */
+            
+            let value = queryItems[0].value!
+            print("Type: " + value)
+            
+            if value == "invite" {
+                controller = instantiateInviteViewController()
+            } else {
+                controller = instantiateCreateEventViewController()
+                print("Invalid view type")
+            }
         }
-      
         
         // Remove any existing child controllers.
         for child in children {
@@ -183,16 +137,16 @@ class MessagesViewController: MSMessagesAppViewController, TimeViewControllerDel
         controller.didMove(toParent: self)
     }
     
-    func instantiateTimeViewController() -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: TimeViewController.storyboardID) as? TimeViewController else { fatalError("Unable to instantiate an TimeViewController from the storyboard") }
+    func instantiateCreateEventViewController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "NavigationController") as? UINavigationController else { fatalError("Unable to instantiate a NavigationController from the storyboard") }
             
         controller.delegate = self
         
         return controller
     }
     
-    func didFinishTask(sender: TimeViewController) {
-        
+    func didFinishTask(sender: CreateEventViewController) {
+    
     }
     
     func instantiateInviteViewController() -> UIViewController {
