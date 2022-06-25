@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		15B44F44285CEC1C0055B51C /* TimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeViewController.swift */; };
+		150F9B062864FC1400844AB8 /* TimeFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150F9B052864FC1400844AB8 /* TimeFrame.swift */; };
+		15B213CB28651A5C0071DABD /* ConfirmTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */; };
+		15B213CD286693910071DABD /* DateTimePairsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CC286693910071DABD /* DateTimePairsCollectionViewCell.swift */; };
+		15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */; };
 		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
 		15B44F4A2860CB570055B51C /* CreateEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F492860CB570055B51C /* CreateEventViewController.swift */; };
-		15B44F4C2860E00D0055B51C /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4B2860E00D0055B51C /* DateViewController.swift */; };
 		15B44F4E2860E3B20055B51C /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4D2860E3B10055B51C /* Style.swift */; };
 		15BA66C1284E8C6E00C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66C0284E8C6E00C185CA /* Assets.xcassets */; };
 		15BA66C7284E8C6F00C185CA /* Hive MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -18,6 +20,10 @@
 		15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */; };
 		15BA66D2284E8C6F00C185CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */; };
 		15BA66D4284E8C7100C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D3284E8C7100C185CA /* Assets.xcassets */; };
+		15D7AF1528622F4600DDC307 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1428622F4600DDC307 /* Day.swift */; };
+		15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */; };
+		15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */; };
+		15D7AF1B28624DE000DDC307 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1A28624DE000DDC307 /* DateCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,10 +51,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		15B44F43285CEC1B0055B51C /* TimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeViewController.swift; sourceTree = "<group>"; };
+		150F9B052864FC1400844AB8 /* TimeFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeFrame.swift; sourceTree = "<group>"; };
+		15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTimesViewController.swift; sourceTree = "<group>"; };
+		15B213CC286693910071DABD /* DateTimePairsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePairsCollectionViewCell.swift; sourceTree = "<group>"; };
+		15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		15B44F492860CB570055B51C /* CreateEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEventViewController.swift; sourceTree = "<group>"; };
-		15B44F4B2860E00D0055B51C /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
 		15B44F4D2860E3B10055B51C /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		15BA66BD284E8C6800C185CA /* Hive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66C0284E8C6E00C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -58,6 +66,10 @@
 		15BA66D1284E8C6F00C185CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		15BA66D3284E8C7100C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66D5284E8C7100C185CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15D7AF1428622F4600DDC307 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
+		15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectorViewController.swift; sourceTree = "<group>"; };
+		15D7AF1A28624DE000DDC307 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,13 +84,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		150F9B042864F91600844AB8 /* CalendarStructs */ = {
+			isa = PBXGroup;
+			children = (
+				150F9B052864FC1400844AB8 /* TimeFrame.swift */,
+				15D7AF1428622F4600DDC307 /* Day.swift */,
+				15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */,
+			);
+			path = CalendarStructs;
+			sourceTree = "<group>";
+		};
 		15B44F4F2860E3DA0055B51C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				15B44F492860CB570055B51C /* CreateEventViewController.swift */,
-				15B44F43285CEC1B0055B51C /* TimeViewController.swift */,
-				15B44F4B2860E00D0055B51C /* DateViewController.swift */,
+				15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */,
+				15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */,
+				15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 			);
 			path = "View Controllers";
@@ -130,8 +153,11 @@
 		15BA66CD284E8C6F00C185CA /* Hive MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
-				15B44F4F2860E3DA0055B51C /* View Controllers */,
 				15B44F502860E4010055B51C /* Helpers */,
+				15B44F4F2860E3DA0055B51C /* View Controllers */,
+				150F9B042864F91600844AB8 /* CalendarStructs */,
+				15D7AF1A28624DE000DDC307 /* DateCollectionViewCell.swift */,
+				15B213CC286693910071DABD /* DateTimePairsCollectionViewCell.swift */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,
 				15BA66D3284E8C7100C185CA /* Assets.xcassets */,
 				15BA66D5284E8C7100C185CA /* Info.plist */,
@@ -238,11 +264,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15B44F4C2860E00D0055B51C /* DateViewController.swift in Sources */,
+				15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */,
+				15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */,
+				150F9B062864FC1400844AB8 /* TimeFrame.swift in Sources */,
 				15B44F4E2860E3B20055B51C /* Style.swift in Sources */,
+				15D7AF1B28624DE000DDC307 /* DateCollectionViewCell.swift in Sources */,
+				15D7AF1528622F4600DDC307 /* Day.swift in Sources */,
+				15B213CB28651A5C0071DABD /* ConfirmTimesViewController.swift in Sources */,
+				15B213CD286693910071DABD /* DateTimePairsCollectionViewCell.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
-				15B44F44285CEC1C0055B51C /* TimeViewController.swift in Sources */,
+				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,
 				15B44F4A2860CB570055B51C /* CreateEventViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

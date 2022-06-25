@@ -10,13 +10,26 @@ import Foundation
 import UIKit
 import Messages
 
-class CreateEventViewController: UIViewController {
+class CreateEventViewController: MSMessagesAppViewController {
+    
+    var dateTimePairs: [DateTimePair] = []
     
     var delegate: CreateEventViewControllerDelegate?
     static let storyboardID = "CreateEventViewController"
     
-    @IBOutlet var timeAndDate: UIButton!
-    @IBOutlet var post: UIButton!
+    // Connect storyboard elements
+    @IBOutlet var eventTitleLabel: UILabel!
+    @IBOutlet var eventTitleTextField: UITextField!
+    @IBOutlet var descriptionLabel: UILabel!
+    @IBOutlet var descriptionTextField: UITextField!
+    @IBOutlet var addressLabel: UILabel!
+    @IBOutlet var addressTextField: UITextField!
+    @IBOutlet var timeAndDateButton: PrimaryButton!
+    @IBOutlet var paymentButton: PrimaryButton!
+    @IBOutlet var postButton: PrimaryButton!
+    @IBOutlet var errorLabel: UILabel!
+    
+    // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
@@ -37,24 +50,6 @@ class CreateEventViewController: UIViewController {
         message.layout = alternateMessageLayout
         message.summaryText = "Summary Text"
         
-        /*
-        let myBaseURL = "url"
-        guard var components = URLComponents(string: myBaseURL) else {
-            fatalError("Invalid base url")
-        }
-         
-        let size = URLQueryItem(name: "Size", value: "Large")
-        let count = URLQueryItem(name: "Topping_Count", value: "2")
-        let cheese = URLQueryItem(name: "Topping_0", value: "Cheese")
-        let pepperoni = URLQueryItem(name: "Topping_1", value: "Pepperoni")
-        components.queryItems = [size, count, cheese, pepperoni]
-         
-        guard let url = components.url  else {
-            fatalError("Invalid URL components.")
-        }
-         
-        message.url = url
-        */
         var components = URLComponents()
         components.queryItems = [URLQueryItem(name: "type", value: "invite")]
         message.url = components.url!
@@ -62,6 +57,8 @@ class CreateEventViewController: UIViewController {
         conversation.insert(message) {error in
             // empty for now
         }
+        
+        self.requestPresentationStyle(.compact)
         
     }
     
@@ -71,8 +68,17 @@ class CreateEventViewController: UIViewController {
         setUpElements()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        for var pair in dateTimePairs {
+            print(pair.formatDate() + " " + pair.timeFrame.format())
+        }
+    }
+    
     func setUpElements() {
-        Style.styleButton(timeAndDate, color: Style.primaryColor, filled: true)
+        // BUG: something is wrong with the way these text fields are formatting
+        //Style.styleTextFieldAndLabel(eventTitleTextField, eventTitleLabel)
+        //Style.styleTieldAndLabel(descriptionTextField, descriptionLabel)
+        //Style.styleTextFieldAndLabel(addressTextField, addressLabel)
     }
 }
 

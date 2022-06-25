@@ -113,6 +113,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 controller = instantiateCreateEventViewController()
                 print("Invalid view type")
             }
+            
+            // BUG: Shows Create Event VC when app is already open and message is clicked
         }
         
         // Remove any existing child controllers.
