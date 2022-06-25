@@ -38,13 +38,8 @@ class ConfirmTimesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        for pair in dateTimePairs {
-            print(monthFormatter.string(from: pair.date) + "/" + dateFormatter.string(from: pair.date) + " " + pair.timeFrame.format())
-        }
         
         loadCollectionView()
-        
     }
     
     func loadCollectionView() {

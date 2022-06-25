@@ -68,10 +68,6 @@ class TimeSelectorViewController: UIViewController {
             }
         }
         
-        for time in selectedTimes {
-            print(time.format())
-            
-        }
         if let destination = segue.destination as? DateSelectorViewController {
             destination.selectedTimes = selectedTimes
         }

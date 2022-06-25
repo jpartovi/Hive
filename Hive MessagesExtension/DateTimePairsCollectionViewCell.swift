@@ -110,15 +110,11 @@ private extension DateTimePairsCollectionViewCell {
     }
 
     func showSelected() {
-
-        //numberLabel.textColor = Style.lightColor
         self.backgroundColor = Style.primaryColor
-        print("Selected")
     }
     
     func showUnselected() {
         self.backgroundColor = Style.errorColor
-        print("Unselected")
     }
     
     func style(inFuture: Bool, inNextMonth: Bool) {
