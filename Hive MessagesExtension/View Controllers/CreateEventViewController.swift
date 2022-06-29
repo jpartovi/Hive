@@ -30,6 +30,9 @@ class CreateEventViewController: MSMessagesAppViewController {
     @IBOutlet var postButton: PrimaryButton!
     @IBOutlet var errorLabel: UILabel!
     
+    var pollFlag = false
+    var pollMessage: MSMessage!
+    
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
@@ -51,12 +54,18 @@ class CreateEventViewController: MSMessagesAppViewController {
         message.layout = alternateMessageLayout
         message.summaryText = "Summary Text"
         
-        var components = URLComponents()
-        components.queryItems = [URLQueryItem(name: "type", value: "invite")]
-        message.url = components.url!
-        
-        conversation.insert(message) {error in
-            // empty for now
+        if pollFlag {
+            conversation.insert(pollMessage) {error in
+                // empty for now
+            }
+        } else {
+            var components = URLComponents()
+            components.queryItems = [URLQueryItem(name: "type", value: "invite")]
+            message.url = components.url!
+            
+            conversation.insert(message) {error in
+                // empty for now
+            }
         }
         
         self.requestPresentationStyle(.compact)

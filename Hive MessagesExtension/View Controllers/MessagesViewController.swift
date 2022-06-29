@@ -99,7 +99,9 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             print("Type: " + value)
             
             if value == "invite" {
-                controller = instantiateInviteViewController()
+                controller = instantiateInviteViewController(conversation: conversation)
+            } else if value == "vote" {
+                controller = instantiateVoteViewController(conversation: conversation)
             } else {
                 controller = instantiateCreateEventViewController()
                 print("Invalid view type")
@@ -142,10 +144,12 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     
     }
     
-    func instantiateInviteViewController() -> UIViewController {
+    func instantiateInviteViewController(conversation: MSConversation) -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: InviteViewController.storyboardID) as? InviteViewController else { fatalError("Unable to instantiate an InviteViewController from the storyboard") }
             
         controller.delegate = self
+        controller.myID = conversation.localParticipantIdentifier.uuidString
+        controller.mURL = conversation.selectedMessage?.url
         
         return controller
     }
@@ -153,4 +157,19 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     func didFinishTask(sender: InviteViewController) {
     
     }
+    
+    func instantiateVoteViewController(conversation: MSConversation) -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteViewController.storyboardID) as? VoteViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
+            
+        controller.delegate = self
+        controller.myID = conversation.localParticipantIdentifier.uuidString
+        controller.mURL = conversation.selectedMessage?.url
+        
+        return controller
+    }
+    
+    func didFinishTask(sender: VoteViewController) {
+    
+    }
+    
 }

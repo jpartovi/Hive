@@ -100,6 +100,21 @@ class ConfirmTimesViewController: UIViewController {
         
         _ = navigationController?.popToRootViewController(animated: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        var confirmedDateTimePairs: [DayTimePair] = []
+        for pair in dayTimePairs {
+            if pair.isSelected {
+                confirmedDateTimePairs.append(pair)
+            }
+        }
+
+        if let destination = segue.destination as? PollViewController {
+            destination.pollitems = confirmedDateTimePairs
+        }
+    }
+
 }
 
 // MARK: - UICollectionViewDataSource
