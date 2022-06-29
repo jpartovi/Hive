@@ -28,23 +28,14 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         
         presentViewController(for: conversation, with: presentationStyle)
         
-        /*
-        if activeConversation?.selectedMessage != nil {
-        
-            guard let components = NSURLComponents(url: (activeConversation?.selectedMessage!.url)!, resolvingAgainstBaseURL: false) else {
-                    fatalError("The message contains an invalid URL")
-            }
-         
-            if let queryItems = components.queryItems {
-            // process the query items here...
-                print("HEEEEERREEEEE")
-            }
-            
-        }
-        */
         // Use this method to configure the extension and restore previously stored state.
     }
-    
+    /*
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        
+        presentViewController(for: MessagesViewController.conversation!, with: presentationStyle)
+    }
+    */
     override func didResignActive(with conversation: MSConversation) {
         // Called when the extension is about to move from the active to inactive state.
         // This will happen when the user dismisses the extension, changes to a different

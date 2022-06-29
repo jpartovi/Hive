@@ -5,14 +5,15 @@
 //  Created by Jude Partovi on 6/20/22.
 //
 
-import Foundation
+// TODO: Can't see selected dates and times
 
+import Foundation
 import UIKit
 import Messages
 
 class CreateEventViewController: MSMessagesAppViewController {
     
-    var dateTimePairs: [DateTimePair] = []
+    var dateTimePairs: [DayTimePair] = []
     
     var delegate: CreateEventViewControllerDelegate?
     static let storyboardID = "CreateEventViewController"
@@ -70,7 +71,7 @@ class CreateEventViewController: MSMessagesAppViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         for var pair in dateTimePairs {
-            print(pair.formatDate() + " " + pair.timeFrame.format())
+            print(pair.day.formatDate() + " " + pair.timeFrame.format(title: true, timeRange: true))
         }
     }
     

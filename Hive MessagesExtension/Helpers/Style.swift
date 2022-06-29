@@ -10,10 +10,36 @@ import UIKit
 
 class Style {
     
+    
+    // Color palletes: https://coolors.co/palettes/popular/yellow
+    
+    static func hexStringToUIColor(hex: String) -> UIColor {
+        
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cString.hasPrefix("#")) {
+            cString.remove(at: cString.startIndex)
+        }
+
+        if ((cString.count) != 6) {
+            return UIColor.gray
+        }
+
+        var rgbValue:UInt64 = 0
+        Scanner(string: cString).scanHexInt64(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+    
     // Colors
-    static let primaryColor = UIColor(displayP3Red: 223/255, green: 159/255, blue: 40/255, alpha: 1)
-    static let secondaryColor = UIColor(displayP3Red: 238/255, green: 210/255, blue: 161/255, alpha: 1)
-    static let darkColor = UIColor.black
+    static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
+    static let secondaryColor = Style.hexStringToUIColor(hex: "c36f09")
+    static let darkColor = Style.hexStringToUIColor(hex: "3a3b3c")
     static let lightColor = UIColor.white
     static let errorColor = UIColor.red
     

@@ -7,12 +7,12 @@
 
 import UIKit
 
-class DateCollectionViewCell: UICollectionViewCell {
+class CalendarCollectionViewCell: UICollectionViewCell {
     
     private lazy var selectionBackgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.clipsToBounds = false//true
+        view.clipsToBounds = true
         view.backgroundColor = Style.primaryColor
         return view
     }()
@@ -21,7 +21,9 @@ class DateCollectionViewCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false//true
-        view.alpha = 0.5
+        view.layer.borderWidth = 2
+
+        //view.alpha = 0.5
         return view
     }()
     
@@ -33,27 +35,17 @@ class DateCollectionViewCell: UICollectionViewCell {
         label.textColor = Style.darkColor
         return label
     }()
-    
-    /*
-    private lazy var accessibilityDateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        dateFormatter.setLocalizedDateFormatFromTemplate("EEEE, MMMM d")
-        return dateFormatter
-    }()
-    */
      
-    static let reuseIdentifier = String(describing: DateCollectionViewCell.self)
+    static let reuseIdentifier = String(describing: CalendarCollectionViewCell.self)
 
-    var day: Day? {
+    var day: CalendarDay? {
         didSet {
             guard let day = day else { return }
 
             numberLabel.text = day.number
             
-            // accessibilityLabel = accessibilityDateFormatter.string(from: day.date)
             updateSelectionStatus()
-            style(inFuture: day.inFuture, inNextMonth: day.inNextMonth)
+            style(inFuture: day.inFuture, inNextMonth: day.inNextMonth, isToday: day.isToday)
         }
     }
 
@@ -63,8 +55,8 @@ class DateCollectionViewCell: UICollectionViewCell {
         isAccessibilityElement = true
         accessibilityTraits = .button
         
-        contentView.addSubview(selectionBackgroundView)
         contentView.addSubview(monthBackgroundView)
+        contentView.addSubview(selectionBackgroundView)
         contentView.addSubview(numberLabel)
     }
 
@@ -102,21 +94,14 @@ class DateCollectionViewCell: UICollectionViewCell {
 
         selectionBackgroundView.layer.cornerRadius = selectorSize / 2
     }
-
-    /*
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        layoutSubviews()
-    }
-    */
 }
 
 // MARK: - Appearance
-private extension DateCollectionViewCell {
+private extension CalendarCollectionViewCell {
 
     func updateSelectionStatus() {
         guard let day = day else { return }
+        
 
         if day.isSelected {
             showSelected()
@@ -125,16 +110,6 @@ private extension DateCollectionViewCell {
         }
     }
 
-    /*
-    var isSmallScreenSize: Bool {
-        let isCompact = traitCollection.horizontalSizeClass == .compact
-        let smallWidth = UIScreen.main.bounds.width <= 350
-        let widthGreaterThanHeight = UIScreen.main.bounds.width > UIScreen.main.bounds.height
-
-        return isCompact && (smallWidth || widthGreaterThanHeight)
-    }
-     */
-
     func showSelected() {
         accessibilityTraits.insert(.selected)
         accessibilityHint = nil
@@ -142,25 +117,35 @@ private extension DateCollectionViewCell {
         //numberLabel.textColor = Style.lightColor
         selectionBackgroundView.isHidden = false
         //selectionBackgroundView.isHidden = isSmallScreenSize
+        
+        print(selectionBackgroundView.isHidden)
     }
     
     func showUnselected() {
+        
         selectionBackgroundView.isHidden = true
     }
     
-    func style(inFuture: Bool, inNextMonth: Bool) {
+    func style(inFuture: Bool, inNextMonth: Bool, isToday: Bool) {
         accessibilityTraits.remove(.selected)
         accessibilityHint = "Tap to select"
 
         if !inFuture {
             numberLabel.textColor = .secondaryLabel
             monthBackgroundView.backgroundColor = Style.lightColor
+            monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
         } else if inNextMonth {
-            numberLabel.textColor = Style.lightColor
+            numberLabel.textColor = Style.darkColor
+            monthBackgroundView.backgroundColor = Style.secondaryColor
+            monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
+        } else {
+            numberLabel.textColor = Style.darkColor
             monthBackgroundView.backgroundColor = Style.primaryColor
-        } else{
-            numberLabel.textColor = Style.lightColor
-            monthBackgroundView.backgroundColor = Style.darkColor
+            if isToday {
+                monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(1).cgColor
+            } else {
+                monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
+            }
         }
     }
 }

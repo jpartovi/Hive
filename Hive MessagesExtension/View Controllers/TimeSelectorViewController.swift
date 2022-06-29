@@ -5,6 +5,8 @@
 //  Created by Jude Partovi on 6/17/22.
 //
 
+// TODO: Custom Time
+
 import UIKit
 import Messages
 
@@ -48,7 +50,7 @@ class TimeSelectorViewController: UIViewController {
         
         for (button, timeFrame) in buttonTimes {
 
-            button.setTitle(timeFrame.format(), for: .normal)
+            button.setTitle(timeFrame.format(title: true, timeRange: true), for: .normal)
         }
     }
     

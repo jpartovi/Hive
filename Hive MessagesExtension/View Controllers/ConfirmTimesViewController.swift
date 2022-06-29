@@ -5,77 +5,97 @@
 //  Created by Jude Partovi on 6/23/22.
 //
 
+// TODO: Scrollable view to see all dateTimePairs
+
 import Foundation
 import UIKit
 
 class ConfirmTimesViewController: UIViewController {
     
-    let cellsPerRow = 7
-    let rows = 3
-    let inset: CGFloat = 0
-    let minimumLineSpacing: CGFloat = 0
-    let minimumInteritemSpacing: CGFloat = 0
+    // let cellsPerRow = 3
+    lazy var numberOfRows = selectedDays.count
+    lazy var numberOfColumns = selectedTimes.count
+    let cellHeight = 87
+    let cellWidth = 96
+    let rows = 4
+    let inset: CGFloat = 10
+    let minimumLineSpacing: CGFloat = 10
+    let minimumInteritemSpacing: CGFloat = 10
     
-    @IBOutlet var dateTimePairsCollectionView: UICollectionView!
+    @IBOutlet weak var daysCollectionView: UICollectionView!
+    @IBOutlet var timesCollectionView: UICollectionView!
     @IBOutlet weak var confirmButton: PrimaryButton!
     
     var selectedTimes: [TimeFrame] = []
-    var selectedDates: [Date] = []
+    var selectedDays: [Day] = []
     
-    lazy var dateTimePairs: [DateTimePair] = createDateTimePairs(times: selectedTimes, dates: selectedDates)
-    
-    private lazy var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d"
-        return dateFormatter
-    }()
-    
-    private lazy var monthFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M"
-        return dateFormatter
-    }()
+    lazy var dayTimePairs: [DayTimePair] = createDayTimePairs(times: selectedTimes, days: selectedDays)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadCollectionView()
+        loadCollectionViews()
+        sizeCollectionViews()
     }
     
-    func loadCollectionView() {
-        dateTimePairsCollectionView.contentInsetAdjustmentBehavior = .always
-        dateTimePairsCollectionView.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: DateCollectionViewCell.reuseIdentifier)
-        dateTimePairsCollectionView.dataSource = self
-        dateTimePairsCollectionView.delegate = self
-        dateTimePairsCollectionView.reloadData()
+    func loadCollectionViews() {
+        
+        daysCollectionView.contentInsetAdjustmentBehavior = .always
+        daysCollectionView.register(DaysCollectionViewCell.self, forCellWithReuseIdentifier: DaysCollectionViewCell.reuseIdentifier)
+        daysCollectionView.dataSource = self
+        daysCollectionView.delegate = self
+        daysCollectionView.reloadData()
+        
+        timesCollectionView.contentInsetAdjustmentBehavior = .always
+        timesCollectionView.register(TimesCollectionViewCell.self, forCellWithReuseIdentifier: TimesCollectionViewCell.reuseIdentifier)
+        timesCollectionView.dataSource = self
+        timesCollectionView.delegate = self
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        timesCollectionView.collectionViewLayout = layout
+        timesCollectionView.reloadData()
     }
     
-    func createDateTimePairs(times: [TimeFrame], dates: [Date]) -> [DateTimePair] {
+    func sizeCollectionViews() {
         
-        print("ah")
-        var dateTimePairs: [DateTimePair] = []
+        let daysCollectionViewWidth: CGFloat = CGFloat(cellWidth) + (2 * inset)
+        let daysCollectionViewHeight: CGFloat = CGFloat((cellHeight * numberOfRows) + (Int(minimumLineSpacing) * (numberOfRows - 1))) + (2 * inset)
         
-        for date in dates {
-            for time in times {
-                dateTimePairs.append(DateTimePair(timeFrame: time, date: date, isSelected: true))
+        let timesCollectionViewWidth: CGFloat = UIScreen.main.bounds.width - 32 - (CGFloat(cellWidth) + (2 * inset))
+        let timesCollectionViewHeight: CGFloat = CGFloat((cellHeight * numberOfRows) + (Int(minimumLineSpacing) * (numberOfRows - 1))) + (2 * inset)
+        
+        NSLayoutConstraint.activate([
+            daysCollectionView.heightAnchor.constraint(equalToConstant: daysCollectionViewHeight),
+            daysCollectionView.widthAnchor.constraint(equalToConstant: daysCollectionViewWidth),
+            timesCollectionView.heightAnchor.constraint(equalToConstant: timesCollectionViewHeight),
+            timesCollectionView.widthAnchor.constraint(equalToConstant: timesCollectionViewWidth)
+        ])
+    }
+    
+    func createDayTimePairs(times: [TimeFrame], days: [Day]) -> [DayTimePair] {
+        
+        var dayTimePairs: [DayTimePair] = []
+        
+        for time in times {
+            for day in days {
+                dayTimePairs.append(DayTimePair(timeFrame: time, day: day, isSelected: true))
             }
         }
         
-        return dateTimePairs
-        
+        return dayTimePairs
     }
     
     @IBAction func confirmButtonPressed(_ sender: Any) {
         
-        var confirmedDateTimePairs: [DateTimePair] = []
-        for pair in dateTimePairs {
+        var confirmedDayTimePairs: [DayTimePair] = []
+        for pair in dayTimePairs {
             if pair.isSelected {
-                confirmedDateTimePairs.append(pair)
+                confirmedDayTimePairs.append(pair)
             }
         }
         
         if let createEventVC = navigationController?.viewControllers.first as? CreateEventViewController {
-            createEventVC.dateTimePairs = confirmedDateTimePairs
+            createEventVC.dateTimePairs = confirmedDayTimePairs
         }
         
         _ = navigationController?.popToRootViewController(animated: true)
@@ -86,18 +106,39 @@ class ConfirmTimesViewController: UIViewController {
 extension ConfirmTimesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        dateTimePairs.count
+        var numberOfItems: Int = 0
+        
+        if collectionView == daysCollectionView {
+            numberOfItems = selectedDays.count
+        } else if collectionView == timesCollectionView {
+            numberOfItems = dayTimePairs.count
+        }
+        
+        return numberOfItems
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    
-        let dateTimePair = dateTimePairs[indexPath.row]
-
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DateTimePairsCollectionViewCell.reuseIdentifier, for: indexPath) as! DateTimePairsCollectionViewCell
-
-        cell.dateTimePair = dateTimePair
         
-        return cell
+        if collectionView == daysCollectionView {
+            let day = selectedDays[indexPath.row]
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DaysCollectionViewCell.reuseIdentifier, for: indexPath) as! DaysCollectionViewCell
+            
+            cell.day = day
+            
+            return cell
+            
+        } else { //if collectionView == timesCollectionView {
+            
+            let dayTimePair = dayTimePairs[indexPath.row]
+
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TimesCollectionViewCell.reuseIdentifier, for: indexPath) as! TimesCollectionViewCell
+
+            cell.dayTimePair = dayTimePair
+            
+            return cell
+        
+        }
     }
 }
 
@@ -105,9 +146,10 @@ extension ConfirmTimesViewController: UICollectionViewDataSource {
 extension ConfirmTimesViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        dateTimePairs[indexPath.row].isSelected = !dateTimePairs[indexPath.row].isSelected
-        dateTimePairsCollectionView!.reloadData()
+        if collectionView == timesCollectionView {
+            dayTimePairs[indexPath.row].isSelected = !dayTimePairs[indexPath.row].isSelected
+            timesCollectionView!.reloadData()
+        }
     }
     
     
@@ -122,13 +164,13 @@ extension ConfirmTimesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return minimumInteritemSpacing
     }
-/*
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
-        let width = Int(collectionView.frame.width - marginsAndInsets) / cellsPerRow
-        let height = width
+        // let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
+        let width = cellWidth
+        let height = cellHeight
         
-        return CGSize(width: width, height: width)
-    }*/
+        return CGSize(width: width, height: height)
+    }
 }

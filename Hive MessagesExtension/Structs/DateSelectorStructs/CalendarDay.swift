@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct Day {
+struct CalendarDay {
 
     let date: Date
     let number: String
     var isSelected: Bool
     let inFuture: Bool
     let inNextMonth: Bool
+    var isToday: Bool
 }

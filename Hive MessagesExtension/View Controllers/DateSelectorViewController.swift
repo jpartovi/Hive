@@ -12,7 +12,7 @@ class DateSelectorViewController: UIViewController {
     
     @IBOutlet weak var doneButton: PrimaryButton!
     
-    var selectedDates: [Date] = []
+    var selectedDays: [Day] = []
     var selectedTimes: [TimeFrame] = []
     
     let cellsPerRow = 7
@@ -31,21 +31,21 @@ class DateSelectorViewController: UIViewController {
         return dateFormatter
     }()
     
-    @IBOutlet var dateCollectionView: UICollectionView?
+    @IBOutlet var calendarCollectionView: UICollectionView?
     
-    private lazy var days: [Day] = generateDays(for: today)
+    private lazy var calendarDays: [CalendarDay] = generateDays(for: today)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         today = Date()
     
-        dateCollectionView!.contentInsetAdjustmentBehavior = .always
-        dateCollectionView!.register(DateCollectionViewCell.self, forCellWithReuseIdentifier: DateCollectionViewCell.reuseIdentifier)
-        dateCollectionView!.dataSource = self
-        dateCollectionView!.delegate = self
+        calendarCollectionView!.contentInsetAdjustmentBehavior = .always
+        calendarCollectionView!.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier)
+        calendarCollectionView!.dataSource = self
+        calendarCollectionView!.delegate = self
         
-        dateCollectionView!.reloadData()
+        calendarCollectionView!.reloadData()
     }
     
     func monthMetadata(for today: Date) throws -> MonthMetadata {
@@ -70,7 +70,7 @@ class DateSelectorViewController: UIViewController {
             firstDayWeekday: firstDayWeekday)
     }
     
-    func generateDays(for today: Date) -> [Day] {
+    func generateDays(for today: Date) -> [CalendarDay] {
         
         guard let metadata = try? monthMetadata(for: today) else {
           preconditionFailure("An error occurred when generating the metadata for \(today)")
@@ -80,13 +80,13 @@ class DateSelectorViewController: UIViewController {
         let offsetInInitialRow = metadata.firstDayWeekday
         let firstDayOfMonth = metadata.firstDay
 
-        var days: [Day] = []
+        var days: [CalendarDay] = []
         
         let firstDay = Int(dateFormatter.string(from: today))! - offsetInInitialRow + 1
         
         for day in (1...(cellsPerRow * rows)) {
             
-            let inFuture = day >= offsetInInitialRow // 4
+            let inFuture = day >= offsetInInitialRow
             
             let dayOffset = day - offsetInInitialRow
             
@@ -98,23 +98,27 @@ class DateSelectorViewController: UIViewController {
                 inFuture: inFuture,
                 inNextMonth: inNextMonth))
         }
+        
+        days[offsetInInitialRow - 1].isToday = true
 
         return days
     }
 
-    func generateDay(offsetBy dayOffset: Int, for today: Date, inFuture: Bool, inNextMonth: Bool) -> Day {
+    func generateDay(offsetBy dayOffset: Int, for today: Date, inFuture: Bool, inNextMonth: Bool) -> CalendarDay {
           
         let date = calendar.date(byAdding: .day, value: dayOffset, to: today) ?? today
         
-        let isSelected: Bool
+        var isSelected: Bool
         
-        if selectedDates.contains(date) {
-            isSelected = true
-        } else {
-            isSelected = false
+        isSelected = false
+        for day in selectedDays {
+            if day.date == date {
+                isSelected = true
+                break
+            }
         }
         
-        return Day(
+        return CalendarDay(
           date: date,
           number: dateFormatter.string(from: date),
           
@@ -123,24 +127,25 @@ class DateSelectorViewController: UIViewController {
           
           isSelected: isSelected,
           inFuture: inFuture,
-          inNextMonth: inNextMonth
+          inNextMonth: inNextMonth,
+          isToday: false
         )
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        selectedDates = []
+        selectedDays = []
         
-        for day in days {
-            if day.isSelected {
+        for calendarDay in calendarDays {
+            if calendarDay.isSelected {
                 
-                selectedDates.append(day.date)
+                selectedDays.append(Day(date: calendarDay.date))
             }
         }
 
         if let destination = segue.destination as? ConfirmTimesViewController {
             destination.selectedTimes = selectedTimes
-            destination.selectedDates = selectedDates
+            destination.selectedDays = selectedDays
         }
     }
 }
@@ -148,14 +153,14 @@ class DateSelectorViewController: UIViewController {
 // MARK: - UICollectionViewDataSource
 extension DateSelectorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        days.count
+        calendarDays.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-        let day = days[indexPath.row]
+        let day = calendarDays[indexPath.row]
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DateCollectionViewCell.reuseIdentifier, for: indexPath) as! DateCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarCollectionViewCell
 
         cell.day = day
         
@@ -172,12 +177,12 @@ extension DateSelectorViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        var day = days[indexPath.row]
+        var day = calendarDays[indexPath.row]
         
         if day.inFuture {
             day.isSelected = !day.isSelected
-            days[indexPath.row] = day
-            dateCollectionView!.reloadData()
+            calendarDays[indexPath.row] = day
+            calendarCollectionView!.reloadData()
         }
         
         //selectedDateChanged(day.date)
