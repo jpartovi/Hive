@@ -17,7 +17,7 @@ class PollViewController: UIViewController {
     //var conversation: MSConversation?
     static let storyboardID = "PollViewController"
     
-    var pollitems: [DateTimePair]?
+    var pollitems: [DayTimePair]?
     
     @IBOutlet weak var scrollview: UIView!
     
@@ -100,7 +100,7 @@ class PollViewController: UIViewController {
             
             
             let label = UITextField()
-            label.text = pollitem.formatDate() + " @ " + pollitem.timeFrame.format()
+            label.text = pollitem.day.formatDate() + " @ " + pollitem.timeFrame.format(title: false, timeRange: true)
             label.borderStyle = UITextField.BorderStyle.roundedRect
             
             label.translatesAutoresizingMaskIntoConstraints = false

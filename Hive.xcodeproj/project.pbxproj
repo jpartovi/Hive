@@ -27,6 +27,8 @@
 		15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */; };
 		15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */; };
 		15D7AF1B28624DE000DDC307 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1A28624DE000DDC307 /* CalendarCollectionViewCell.swift */; };
+		8793627D286CFEE400C05180 /* VoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627B286CFEE400C05180 /* VoteViewController.swift */; };
+		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,8 @@
 		15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
 		15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectorViewController.swift; sourceTree = "<group>"; };
 		15D7AF1A28624DE000DDC307 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		8793627B286CFEE400C05180 /* VoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteViewController.swift; sourceTree = "<group>"; };
+		8793627C286CFEE400C05180 /* PollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 		15B44F4F2860E3DA0055B51C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				8793627C286CFEE400C05180 /* PollViewController.swift */,
+				8793627B286CFEE400C05180 /* VoteViewController.swift */,
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				15B44F492860CB570055B51C /* CreateEventViewController.swift */,
 				15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */,
@@ -289,6 +295,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8793627E286CFEE400C05180 /* PollViewController.swift in Sources */,
+				8793627D286CFEE400C05180 /* VoteViewController.swift in Sources */,
 				15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */,
 				15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */,
 				15B213D6286ABD4C0071DABD /* Utilities.swift in Sources */,
