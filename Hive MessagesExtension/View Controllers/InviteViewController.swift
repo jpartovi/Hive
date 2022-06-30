@@ -8,7 +8,7 @@
 import UIKit
 import Messages
 
-class InviteViewController: UIViewController {
+class InviteViewController: MSMessagesAppViewController {
     
     var delegate: InviteViewControllerDelegate?
     static let storyboardID = "InviteViewController"
@@ -16,6 +16,10 @@ class InviteViewController: UIViewController {
     var myID: String!
     var mURL: URL!
     var RSVP: Bool!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
     
     
     @IBOutlet weak var yesButton: PrimaryButton!
@@ -41,6 +45,12 @@ class InviteViewController: UIViewController {
             
             if (queryItem.name == "type") && (queryItem.value == "invite"){
                 continue
+            } else if (queryItem.name == "title"){
+                titleLabel.text = queryItem.value
+            } else if (queryItem.name == "description"){
+                descriptionLabel.text = queryItem.value
+            } else if (queryItem.name == "address"){
+                addressLabel.text = queryItem.value
             } else {
                 
                 if Bool(queryItem.value!)! {
@@ -124,8 +134,10 @@ class InviteViewController: UIViewController {
     }
     
     func prepareMessage(_ url: URL) {
+        
+        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
 
-        let message = MSMessage()
+        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
 
         let layout = MSMessageTemplateLayout()
         layout.caption = "Invite Placeholder"
@@ -139,7 +151,7 @@ class InviteViewController: UIViewController {
         
         conversation.insert(message)
         
-        
+        self.requestPresentationStyle(.compact)
     }
     
     

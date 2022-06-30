@@ -8,7 +8,7 @@
 import UIKit
 import Messages
 
-class VoteViewController: UIViewController {
+class VoteViewController: MSMessagesAppViewController {
     
     var delegate: MessagesViewController?
     static let storyboardID = "VoteViewController"
@@ -47,8 +47,10 @@ class VoteViewController: UIViewController {
     
     
     func prepareMessage(_ url: URL) {
+        
+        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
 
-        let message = MSMessage()
+        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
 
         let layout = MSMessageTemplateLayout()
         layout.caption = "Vote Placeholder"
@@ -58,11 +60,11 @@ class VoteViewController: UIViewController {
         
         print("Send")
         
-        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
+        
         
         conversation.insert(message)
         
-        
+        self.requestPresentationStyle(.compact)
     }
     
     
@@ -132,24 +134,31 @@ class VoteViewController: UIViewController {
             
             
             optionlabel.leadingAnchor.constraint(equalTo: optionlabel.superview!.leadingAnchor, constant: 16).isActive = true
-            countlabel.centerXAnchor.constraint(equalTo: countlabel.superview!.centerXAnchor).isActive = true
+            
+            countlabel.trailingAnchor.constraint(equalTo: votebutton.leadingAnchor, constant: -16).isActive = true
+            
             votebutton.trailingAnchor.constraint(equalTo: votebutton.superview!.trailingAnchor, constant: -16).isActive = true
+            
+            
+            countlabel.centerYAnchor.constraint(equalTo: optionlabel.centerYAnchor).isActive = true
+            votebutton.centerYAnchor.constraint(equalTo: optionlabel.centerYAnchor).isActive = true
+            
             
             if (index == 0){
                 
                 optionlabel.topAnchor.constraint(equalTo: optionlabel.superview!.topAnchor, constant: 16).isActive = true
                 
-                countlabel.topAnchor.constraint(equalTo: countlabel.superview!.topAnchor, constant: 16).isActive = true
+                //countlabel.topAnchor.constraint(equalTo: countlabel.superview!.topAnchor, constant: 16).isActive = true
                 
-                votebutton.topAnchor.constraint(equalTo: votebutton.superview!.topAnchor, constant: 16).isActive = true
+                //votebutton.topAnchor.constraint(equalTo: votebutton.superview!.topAnchor, constant: 16).isActive = true
                 
             } else {
                 
                 optionlabel.topAnchor.constraint(equalTo: votelabels[index-1].bottomAnchor).isActive = true
                 
-                countlabel.topAnchor.constraint(equalTo: countlabels[index-1].bottomAnchor).isActive = true
+                //countlabel.topAnchor.constraint(equalTo: countlabels[index-1].bottomAnchor).isActive = true
                 
-                votebutton.topAnchor.constraint(equalTo: PickButtons[index-1].bottomAnchor).isActive = true
+                //votebutton.topAnchor.constraint(equalTo: PickButtons[index-1].bottomAnchor).isActive = true
                 
             }
             
@@ -157,9 +166,9 @@ class VoteViewController: UIViewController {
                 
                 optionlabel.bottomAnchor.constraint(equalTo: optionlabel.superview!.bottomAnchor, constant: -16).isActive = true
                 
-                countlabel.bottomAnchor.constraint(equalTo: countlabel.superview!.bottomAnchor, constant: -16).isActive = true
+                //countlabel.bottomAnchor.constraint(equalTo: countlabel.superview!.bottomAnchor, constant: -16).isActive = true
                 
-                votebutton.bottomAnchor.constraint(equalTo: votebutton.superview!.bottomAnchor, constant: -16).isActive = true
+                //votebutton.bottomAnchor.constraint(equalTo: votebutton.superview!.bottomAnchor, constant: -16).isActive = true
                 
             }
             

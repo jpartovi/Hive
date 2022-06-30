@@ -60,8 +60,11 @@ class CreateEventViewController: MSMessagesAppViewController {
             }
         } else {
             var components = URLComponents()
-            components.queryItems = [URLQueryItem(name: "type", value: "invite")]
+            components.queryItems = [URLQueryItem(name: "type", value: "invite"), URLQueryItem(name: "title", value: eventTitleTextField.text), URLQueryItem(name: "description", value: descriptionTextField.text), URLQueryItem(name: "address", value: addressTextField.text)]
             message.url = components.url!
+            
+            
+            
             
             conversation.insert(message) {error in
                 // empty for now

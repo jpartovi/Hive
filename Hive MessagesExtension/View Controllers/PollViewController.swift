@@ -68,8 +68,10 @@ class PollViewController: UIViewController {
     
     
     func prepareMessage(_ url: URL) {
+        
+        let session = MSSession()
 
-        message = MSMessage()
+        message = MSMessage(session: session)
 
         let layout = MSMessageTemplateLayout()
         layout.caption = "Poll Placeholder"

@@ -588,31 +588,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Event Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R67-5B-1q2">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R67-5B-1q2">
                                 <rect key="frame" x="16" y="44" width="288" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4J-ia-eit">
-                                <rect key="frame" x="189" y="311" width="87" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u4J-ia-eit">
+                                <rect key="frame" x="189" y="316" width="10.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FM2-L5-w9s">
-                                <rect key="frame" x="16" y="115" width="288" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FM2-L5-w9s">
+                                <rect key="frame" x="116.5" y="115" width="87.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pjx-v8-eYq">
-                                <rect key="frame" x="16" y="186" width="288" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pjx-v8-eYq">
+                                <rect key="frame" x="129" y="186" width="62.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTc-lS-E7J" customClass="PrimaryButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTc-lS-E7J" customClass="PrimaryButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="88" y="272" width="47" height="31"/>
                                 <inset key="contentEdgeInsets" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
@@ -621,8 +617,8 @@
                                     <action selector="yesClick:" destination="Vsx-hT-sud" eventType="touchUpInside" id="aqx-Gi-gZQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UuB-hP-iC7" customClass="PrimaryButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="90" y="306" width="43" height="31"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UuB-hP-iC7" customClass="PrimaryButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="90" y="311" width="43" height="31"/>
                                 <inset key="contentEdgeInsets" minX="50" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="No"/>
@@ -630,9 +626,8 @@
                                     <action selector="noClick:" destination="Vsx-hT-sud" eventType="touchUpInside" id="Lay-xu-Gbo"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rum-GF-qwi">
-                                <rect key="frame" x="189" y="277" width="87" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rum-GF-qwi">
+                                <rect key="frame" x="189" y="277" width="10.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -640,13 +635,31 @@
                         <viewLayoutGuide key="safeArea" id="5o3-KE-ybH"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="5o3-KE-ybH" firstAttribute="trailing" secondItem="rum-GF-qwi" secondAttribute="trailing" constant="120.5" id="1Oy-n3-O6k"/>
+                            <constraint firstItem="FM2-L5-w9s" firstAttribute="centerX" secondItem="5o3-KE-ybH" secondAttribute="centerX" id="3eI-xa-QLQ"/>
+                            <constraint firstItem="fTc-lS-E7J" firstAttribute="top" secondItem="Pjx-v8-eYq" secondAttribute="bottom" constant="65" id="86Z-v0-eC9"/>
+                            <constraint firstItem="R67-5B-1q2" firstAttribute="top" secondItem="5o3-KE-ybH" secondAttribute="top" id="8Vw-cy-4De"/>
+                            <constraint firstItem="Pjx-v8-eYq" firstAttribute="centerX" secondItem="5o3-KE-ybH" secondAttribute="centerX" id="CGm-0a-vHH"/>
+                            <constraint firstItem="u4J-ia-eit" firstAttribute="leading" secondItem="UuB-hP-iC7" secondAttribute="trailing" constant="56" id="GOc-NT-N6z"/>
+                            <constraint firstItem="UuB-hP-iC7" firstAttribute="leading" secondItem="5o3-KE-ybH" secondAttribute="leading" constant="90" id="IG5-So-xrC"/>
+                            <constraint firstItem="5o3-KE-ybH" firstAttribute="trailing" secondItem="u4J-ia-eit" secondAttribute="trailing" constant="120.5" id="IdP-hq-VOJ"/>
+                            <constraint firstItem="UuB-hP-iC7" firstAttribute="centerY" secondItem="u4J-ia-eit" secondAttribute="centerY" id="Lbl-fI-Dhg"/>
+                            <constraint firstItem="FM2-L5-w9s" firstAttribute="top" secondItem="R67-5B-1q2" secondAttribute="bottom" constant="50" id="O33-XE-Qw9"/>
+                            <constraint firstItem="R67-5B-1q2" firstAttribute="centerX" secondItem="5o3-KE-ybH" secondAttribute="centerX" id="QHn-tw-kKO"/>
+                            <constraint firstItem="rum-GF-qwi" firstAttribute="leading" secondItem="fTc-lS-E7J" secondAttribute="trailing" constant="54" id="Qky-Gh-c48"/>
+                            <constraint firstItem="fTc-lS-E7J" firstAttribute="leading" secondItem="5o3-KE-ybH" secondAttribute="leading" constant="88" id="Wrd-im-Nkx"/>
+                            <constraint firstItem="fTc-lS-E7J" firstAttribute="centerY" secondItem="rum-GF-qwi" secondAttribute="centerY" id="gM1-Jc-M63"/>
+                            <constraint firstItem="Pjx-v8-eYq" firstAttribute="top" secondItem="FM2-L5-w9s" secondAttribute="bottom" constant="50" id="j2n-j4-4P0"/>
                             <constraint firstItem="UuB-hP-iC7" firstAttribute="top" secondItem="fTc-lS-E7J" secondAttribute="bottom" constant="8" symbolic="YES" id="ofH-ul-MUo"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
+                        <outlet property="addressLabel" destination="Pjx-v8-eYq" id="cJs-E7-V9h"/>
+                        <outlet property="descriptionLabel" destination="FM2-L5-w9s" id="GUc-m8-rYO"/>
                         <outlet property="noButton" destination="UuB-hP-iC7" id="wa2-FD-mZW"/>
                         <outlet property="noCounts" destination="u4J-ia-eit" id="2KH-SC-cEB"/>
+                        <outlet property="titleLabel" destination="R67-5B-1q2" id="6kW-8j-ric"/>
                         <outlet property="yesButton" destination="fTc-lS-E7J" id="zUX-NK-KCr"/>
                         <outlet property="yesCounts" destination="rum-GF-qwi" id="GAw-Dj-mXu"/>
                     </connections>
