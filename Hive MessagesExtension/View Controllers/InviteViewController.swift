@@ -16,6 +16,7 @@ class InviteViewController: MSMessagesAppViewController {
     var myID: String!
     var mURL: URL!
     var RSVP: Bool!
+    var curRSVP: Bool!
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -61,6 +62,7 @@ class InviteViewController: MSMessagesAppViewController {
                 
                 if queryItem.name == myID {
                     RSVP = Bool(queryItem.value!)
+                    curRSVP = RSVP
                 }
             }
             
@@ -76,12 +78,8 @@ class InviteViewController: MSMessagesAppViewController {
         if !(RSVP != nil){
             
             components!.queryItems!.append(URLQueryItem(name: myID, value: "true"))
-            yesCounts.text = String(Int(yesCounts.text!)!+1)
             
         } else if (RSVP == false){
-            
-            yesCounts.text = String(Int(yesCounts.text!)!+1)
-            noCounts.text = String(Int(noCounts.text!)!-1)
             
             for (index, queryItem) in (components!.queryItems!.enumerated()){
                 
@@ -95,7 +93,15 @@ class InviteViewController: MSMessagesAppViewController {
             
         }
         
-        RSVP = true
+        if (curRSVP != true){
+            yesCounts.text = String(Int(yesCounts.text!)!+1)
+        }
+        
+        if (curRSVP == false){
+            noCounts.text = String(Int(noCounts.text!)!-1)
+        }
+        
+        curRSVP = true
         prepareMessage(components!.url!)
         
     }
@@ -109,12 +115,8 @@ class InviteViewController: MSMessagesAppViewController {
         if !(RSVP != nil){
             
             components!.queryItems!.append(URLQueryItem(name: myID, value: "false"))
-            noCounts.text = String(Int(noCounts.text!)!+1)
             
         } else if (RSVP == true){
-            
-            yesCounts.text = String(Int(yesCounts.text!)!-1)
-            noCounts.text = String(Int(noCounts.text!)!+1)
             
             for (index, queryItem) in (components!.queryItems!.enumerated()){
                 
@@ -128,7 +130,15 @@ class InviteViewController: MSMessagesAppViewController {
             
         }
         
-        RSVP = false
+        if (curRSVP != false){
+            noCounts.text = String(Int(noCounts.text!)!+1)
+        }
+        
+        if (curRSVP == true){
+            yesCounts.text = String(Int(yesCounts.text!)!-1)
+        }
+        
+        curRSVP = false
         prepareMessage(components!.url!)
         
     }

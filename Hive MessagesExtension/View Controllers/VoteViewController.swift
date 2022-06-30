@@ -18,6 +18,7 @@ class VoteViewController: MSMessagesAppViewController {
     var mURL: URL!
     
     var curPick = -1
+    var dispPick = -1
     
     @IBOutlet weak var scrollview: UIView!
     
@@ -58,7 +59,7 @@ class VoteViewController: MSMessagesAppViewController {
         message.layout = layout
         message.url = url
         
-        print("Send")
+        print(message.url)
         
         
         
@@ -85,7 +86,7 @@ class VoteViewController: MSMessagesAppViewController {
             for (index, queryItem) in (voteItems.enumerated()) {
                 if (queryItem.name == myID){
                       
-                    components!.queryItems![3+curPick].value = String(Int(components!.queryItems![3+curPick].value!)! - 1)
+                    components!.queryItems![2+curPick].value = String(Int(components!.queryItems![2+curPick].value!)! - 1)
                     
                     components!.queryItems![(3+entries.count+index)].value = String(indexPicked)
                     
@@ -96,6 +97,15 @@ class VoteViewController: MSMessagesAppViewController {
         }
         
         components!.queryItems![2+indexPicked].value = String(Int(components!.queryItems![2+indexPicked].value!)! + 1)
+        
+        
+        countlabels[indexPicked].text = String(Int(countlabels[indexPicked].text!)!+1)
+        
+        if (dispPick != -1){
+            countlabels[dispPick].text = String(Int(countlabels[dispPick].text!)!-1)
+        }
+        
+        dispPick = indexPicked
         
         return (components?.url!)!
     }
@@ -127,7 +137,8 @@ class VoteViewController: MSMessagesAppViewController {
             countlabel.translatesAutoresizingMaskIntoConstraints = false
             scrollview.addSubview(countlabel)
             
-            let votebutton = UIButton(type: UIButton.ButtonType.system)
+            //let votebutton = UIButton(type: UIButton.ButtonType.system)
+            let votebutton = PrimaryButton()
             votebutton.setTitle("Vote", for: UIControl.State.normal)
             votebutton.translatesAutoresizingMaskIntoConstraints = false
             scrollview.addSubview(votebutton)
@@ -154,7 +165,7 @@ class VoteViewController: MSMessagesAppViewController {
                 
             } else {
                 
-                optionlabel.topAnchor.constraint(equalTo: votelabels[index-1].bottomAnchor).isActive = true
+                optionlabel.topAnchor.constraint(equalTo: votelabels[index-1].bottomAnchor, constant: 16).isActive = true
                 
                 //countlabel.topAnchor.constraint(equalTo: countlabels[index-1].bottomAnchor).isActive = true
                 
@@ -220,6 +231,7 @@ class VoteViewController: MSMessagesAppViewController {
             if (queryItem.name == myID){
                 
                 curPick = Int(components!.queryItems![(lastIndex+1+index)].value!)!
+                dispPick = curPick
                 
                 break
             }
