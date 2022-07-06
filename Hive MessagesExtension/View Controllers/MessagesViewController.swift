@@ -9,7 +9,8 @@ import UIKit
 import Messages
 import GooglePlaces
 
-let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
+#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = ""
 
 class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, UINavigationControllerDelegate {
     
