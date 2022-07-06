@@ -38,8 +38,9 @@ class Style {
     
     // Colors
     static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
-    static let secondaryColor = Style.hexStringToUIColor(hex: "c36f09")
-    static let darkColor = Style.hexStringToUIColor(hex: "3a3b3c")
+    static let secondaryColor = Style.hexStringToUIColor(hex: "fdc43f")
+    static let tertiaryColor = Style.hexStringToUIColor(hex: "ffda3d")
+    static let darkColor = Style.hexStringToUIColor(hex: "8E8E8E")
     static let lightColor = UIColor.white
     static let errorColor = UIColor.red
     
@@ -94,29 +95,19 @@ class StyleButton: UIButton {
 
 class SelectionButton: StyleButton {
 
-    var color: UIColor = Style.primaryColor
+    var color: UIColor = Style.secondaryColor
     var active: Bool = false
     var roundedCornerPosition: Int = RoundedCornerPosition.none.number
     
     override func draw(_ rect: CGRect) {
         
         // Update selection status
-        updateSelectionStatus()
-        
-        // self.embolden()
-        
-        // Respond to touch events by user
-        self.addTarget(self, action: #selector(onPress), for: .touchUpInside)
+        setSelectionAppearance()
     }
     
     override func style(color: UIColor, filled: Bool, roundedCornerPosition: Int) {
         super.style(color: color, filled: filled, roundedCornerPosition: roundedCornerPosition)
         self.roundedCornerPosition = roundedCornerPosition
-    }
-    
-    @objc func onPress() {
-        active = !active
-        updateSelectionStatus()
     }
     
     // Set the selected properties
@@ -129,7 +120,12 @@ class SelectionButton: StyleButton {
         super.style(color: color, filled: false, roundedCornerPosition: roundedCornerPosition)
     }
     
-    func updateSelectionStatus() {
+    func changeSelectionStatus() {
+        active = !active
+        setSelectionAppearance()
+    }
+    
+    func setSelectionAppearance() {
         if active {
             setSelected()
         } else {

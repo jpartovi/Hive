@@ -6,7 +6,7 @@
 //
 
 // TODO: Scrollable view to see all dateTimePairs
-
+/*
 import Foundation
 import UIKit
 
@@ -78,7 +78,7 @@ class ConfirmTimesViewController: UIViewController {
         
         for time in times {
             for day in days {
-                dayTimePairs.append(DayTimePair(timeFrame: time, day: day, isSelected: true))
+                dayTimePairs.append(DayTimePair(timeFrame: time, day: day)
             }
         }
         
@@ -189,3 +189,4 @@ extension ConfirmTimesViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width, height: height)
     }
 }
+*/

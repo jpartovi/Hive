@@ -7,8 +7,11 @@
 
 import UIKit
 import Messages
+import GooglePlaces
 
-class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, CreateEventViewControllerDelegate, UINavigationControllerDelegate {
+let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
+
+class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, UINavigationControllerDelegate {
     
     static var conversation: MSConversation? = nil
     
@@ -16,6 +19,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
+        // This should be in an App Delegate, but there is no App Delegate in an iMessage Extension
+        GMSPlacesClient.provideAPIKey(googlePlacesAPIKey)
     }
     
     // MARK: - Conversation Handling
@@ -82,7 +87,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         let controller: UIViewController
         
         if conversation.selectedMessage == nil {
-            controller = instantiateCreateEventViewController()
+            controller = instantiateStartEventViewController()
         } else {
             guard let messageURL = conversation.selectedMessage?.url else {return}
             guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
@@ -103,7 +108,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             } else if value == "vote" {
                 controller = instantiateVoteViewController(conversation: conversation)
             } else {
-                controller = instantiateCreateEventViewController()
+                controller = instantiateStartEventViewController()
                 print("Invalid view type")
             }
             
@@ -131,7 +136,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 
         controller.didMove(toParent: self)
     }
-    
+    /*
     func instantiateCreateEventViewController() -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: "NavigationController") as? UINavigationController else { fatalError("Unable to instantiate a NavigationController from the storyboard") }
             
@@ -143,6 +148,20 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     func didFinishTask(sender: CreateEventViewController) {
     
     }
+     */
+    
+    func instantiateStartEventViewController() -> UIViewController {
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "NavigationController") as? UINavigationController else { fatalError("Unable to instantiate a NavigationController from the storyboard") }
+            
+        controller.delegate = self
+        
+        return controller
+    }
+    
+    func didFinishTask(sender: StartEventViewController) {
+    
+    }
+
     
     func instantiateInviteViewController(conversation: MSConversation) -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: InviteViewController.storyboardID) as? InviteViewController else { fatalError("Unable to instantiate an InviteViewController from the storyboard") }

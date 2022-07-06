@@ -9,6 +9,8 @@ import UIKit
 
 class CalendarCollectionViewCell: UICollectionViewCell {
     
+    static let reuseIdentifier = String(describing: CalendarCollectionViewCell.self)
+    
     private lazy var selectionBackgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,8 +37,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
         label.textColor = Style.darkColor
         return label
     }()
-     
-    static let reuseIdentifier = String(describing: CalendarCollectionViewCell.self)
 
     var day: CalendarDay? {
         didSet {
@@ -94,10 +94,6 @@ class CalendarCollectionViewCell: UICollectionViewCell {
 
         selectionBackgroundView.layer.cornerRadius = selectorSize / 2
     }
-}
-
-// MARK: - Appearance
-private extension CalendarCollectionViewCell {
 
     func updateSelectionStatus() {
         guard let day = day else { return }
@@ -111,14 +107,9 @@ private extension CalendarCollectionViewCell {
     }
 
     func showSelected() {
-        accessibilityTraits.insert(.selected)
-        accessibilityHint = nil
 
         //numberLabel.textColor = Style.lightColor
         selectionBackgroundView.isHidden = false
-        //selectionBackgroundView.isHidden = isSmallScreenSize
-        
-        print(selectionBackgroundView.isHidden)
     }
     
     func showUnselected() {
@@ -127,8 +118,6 @@ private extension CalendarCollectionViewCell {
     }
     
     func style(inFuture: Bool, inNextMonth: Bool, isToday: Bool) {
-        accessibilityTraits.remove(.selected)
-        accessibilityHint = "Tap to select"
 
         if !inFuture {
             numberLabel.textColor = .secondaryLabel
@@ -136,11 +125,11 @@ private extension CalendarCollectionViewCell {
             monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
         } else if inNextMonth {
             numberLabel.textColor = Style.darkColor
-            monthBackgroundView.backgroundColor = Style.secondaryColor
+            monthBackgroundView.backgroundColor = Style.tertiaryColor
             monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
         } else {
             numberLabel.textColor = Style.darkColor
-            monthBackgroundView.backgroundColor = Style.primaryColor
+            monthBackgroundView.backgroundColor = Style.secondaryColor
             if isToday {
                 monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(1).cgColor
             } else {

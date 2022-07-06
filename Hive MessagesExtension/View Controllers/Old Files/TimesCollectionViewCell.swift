@@ -4,7 +4,7 @@
 //
 //  Created by Jude Partovi on 6/24/22.
 //
-
+/*
 import UIKit
 
 class TimesCollectionViewCell: UICollectionViewCell {
@@ -118,3 +118,4 @@ private extension TimesCollectionViewCell {
         self.layer.cornerRadius = 20
     }
 }
+*/

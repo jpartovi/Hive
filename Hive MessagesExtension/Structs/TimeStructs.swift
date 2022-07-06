@@ -5,6 +5,7 @@
 //  Created by Jude Partovi on 6/23/22.
 //
 
+/*
 import Foundation
 
 struct TimeFrame {
@@ -51,3 +52,4 @@ struct TimeOfDay {
     var title: String // ie. Morning, Afternoon, etc.
     var icon: String
 }
+*/

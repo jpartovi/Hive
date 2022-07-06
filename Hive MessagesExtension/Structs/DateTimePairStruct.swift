@@ -4,7 +4,7 @@
 //
 //  Created by Jude Partovi on 6/25/22.
 //
-
+/*
 import Foundation
 
 struct DayTimePair {
@@ -48,3 +48,4 @@ struct Day {
         return formattedDayOfWeek
     }
 }
+*/

@@ -79,13 +79,17 @@ class PollViewController: UIViewController {
         message.layout = layout
         message.url = url
         
+        
+        // TODO: Integrate with new system
+        /*
         if let createEventVC = navigationController?.viewControllers.first as? CreateEventViewController {
             
             createEventVC.pollFlag = true
             createEventVC.pollMessage = message
             
         }
-        
+        */
+         
         _ = navigationController?.popToRootViewController(animated: true)
         
     }
@@ -102,7 +106,7 @@ class PollViewController: UIViewController {
             
             
             let label = UITextField()
-            label.text = pollitem.day.formatDate() + " @ " + pollitem.timeFrame.format(title: false, timeRange: true)
+            label.text = pollitem.format()
             label.borderStyle = UITextField.BorderStyle.roundedRect
             
             label.translatesAutoresizingMaskIntoConstraints = false
