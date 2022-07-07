@@ -13,7 +13,7 @@ class DaySelectorViewController: UIViewController {
     static let storyboardID = String(describing: DaySelectorViewController.self)
     
     var event: Event! = nil
-    lazy var selectedDays: [Day]? = event?.days
+    lazy var selectedDays = event.days
     
     func nextPage() {
         
@@ -53,7 +53,7 @@ class DaySelectorViewController: UIViewController {
         today = Date()
     
         calendarCollectionView!.contentInsetAdjustmentBehavior = .always
-        calendarCollectionView!.register(CalendarCollectionViewCell.self, forCellWithReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier)
+        calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
         calendarCollectionView!.dataSource = self
         calendarCollectionView!.delegate = self
         
@@ -123,26 +123,26 @@ class DaySelectorViewController: UIViewController {
         let date = calendar.date(byAdding: .day, value: dayOffset, to: today) ?? today
         
         var isSelected = false
-        if selectedDays != nil{
-            for day in selectedDays! {
+        //if selectedDays != nil {
+            for day in selectedDays {
                 if day.date == date {
                     isSelected = true
                     break
                 }
             }
-        }
+        //}
         
         return CalendarDay(
-          date: date,
-          number: dateFormatter.string(from: date),
+            day: Day(date: date),
+            number: dateFormatter.string(from: date),
           
           // TODO: Make the already selected days be already selected
           //isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
           
-          isSelected: isSelected,
-          inFuture: inFuture,
-          inNextMonth: inNextMonth,
-          isToday: false
+            isSelected: isSelected,
+            inFuture: inFuture,
+            inNextMonth: inNextMonth,
+            isToday: false
         )
     }
     
@@ -155,31 +155,13 @@ class DaySelectorViewController: UIViewController {
             for calendarDay in calendarDays {
                 if calendarDay.isSelected {
                     
-                    selectedDays?.append(Day(date: calendarDay.date))
+                    selectedDays.append(calendarDay.day)
                 }
             }
             
             nextPage()
         }
     }
-    /*
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        selectedDays = []
-        
-        for calendarDay in calendarDays {
-            if calendarDay.isSelected {
-                
-                selectedDays.append(Day(date: calendarDay.date))
-            }
-        }
-
-        if let destination = segue.destination as? ConfirmTimesViewController {
-            destination.selectedTimes = selectedTimes
-            destination.selectedDays = selectedDays
-        }
-    }
-     */
     
     func updateNextButtonStatus() {
         
@@ -210,7 +192,7 @@ extension DaySelectorViewController: UICollectionViewDataSource {
     
         let day = calendarDays[indexPath.row]
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarCollectionViewCell.reuseIdentifier, for: indexPath) as! CalendarCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDayCell.reuseIdentifier, for: indexPath) as! CalendarDayCell
 
         cell.day = day
         

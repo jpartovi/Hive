@@ -1,5 +1,5 @@
 //
-//  DateCollectionViewCell.swift
+//  CalendarDayCell.swift
 //  Hive MessagesExtension
 //
 //  Created by Jude Partovi on 6/21/22.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-class CalendarCollectionViewCell: UICollectionViewCell {
+class CalendarDayCell: UICollectionViewCell {
     
-    static let reuseIdentifier = String(describing: CalendarCollectionViewCell.self)
+    static let reuseIdentifier = String(describing: CalendarDayCell.self)
     
     private lazy var selectionBackgroundView: UIView = {
         let view = UIView()

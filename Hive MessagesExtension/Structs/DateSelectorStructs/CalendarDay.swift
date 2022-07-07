@@ -9,7 +9,7 @@ import Foundation
 
 struct CalendarDay {
 
-    let date: Date
+    let day: Day
     let number: String
     var isSelected: Bool
     let inFuture: Bool

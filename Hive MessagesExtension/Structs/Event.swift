@@ -11,29 +11,47 @@ import GooglePlaces
 
 struct Event {
     var title: String
-    let type: Type
-    var locations: [Location]? = nil
-    var days: [Day]? = nil
-    var times: [TimeFrame]? = nil
-    var dayTimePairs: [DayTimePair]? = nil
+    let type: EventType
+    var locations = [Location]()
+    var days = [Day]()
+    var times = [TimeFrame]()
+    var dayTimePairs = [DayTimePair]()
 }
 
-enum Type {
+enum EventType {
     case lunch
     
-    func getStartTimes() -> [Time] {
+    func getDurations() -> [Duration] {
+        var min = 60
+        var max = 240
         switch self {
         case .lunch:
-            // TODO: Make a way to load start times with a for loop
-            return [
-                Time(hour: 11, minute: 0, period: .am),
-                Time(hour: 11, minute: 30, period: .am),
-                Time(hour: 12, minute: 0, period: .pm),
-                Time(hour: 12, minute: 30, period: .pm),
-                Time(hour: 1, minute: 0, period: .pm),
-                Time(hour: 1, minute: 30, period: .pm)
-            ]
+            break // default durations
         }
+        
+        return Duration.createDurations(min: min, max: max)
+    }
+    
+    func getStartTimes() -> [Time] {
+        let firstTime: Time
+        let lastTime: Time
+        switch self {
+        case .lunch:
+            firstTime = Time(hour: 11, minute: 0, period: .am)
+            lastTime = Time(hour: 1, minute: 30, period: .pm)
+        }
+        
+        var startTimes = [Time]()
+        var time = firstTime
+        while true {
+            startTimes.append(time)
+            if time.sameAs(time: lastTime) {
+                break
+            }
+            time = Time(referenceTime: time, minutesLater: 30)
+        }
+        
+        return startTimes
     }
     
     func defaultTitle() -> String {
@@ -87,6 +105,17 @@ struct TimeFrame {
     
     var startTime: Time
     var endTime: Time
+    
+    init(startTime: Time, endTime: Time) {
+        self.startTime = startTime
+        self.endTime = endTime
+    }
+    
+    init(startTime: Time, minutesLater: Int) {
+        
+        self.startTime = startTime
+        self.endTime = Time(referenceTime: startTime, minutesLater: minutesLater)
+    }
         
     func format() -> String {
             
@@ -94,41 +123,51 @@ struct TimeFrame {
             
         return formattedTimeFrame
     }
-
-    init(startTime: Time, durationHour: Int, durationMinute: Int) {
-        // TODO: This function creates a TimeFrame object from a start time and a duration
-        self.startTime = startTime
-        
-        var endTimeHour = startTime.hour + durationHour
-        let endTimeMinute: Int
-        if startTime.minute + durationMinute == 60 {
-            endTimeHour += 1
-            endTimeMinute = 0
-        } else {
-            endTimeMinute = startTime.minute + durationMinute
-        }
-        
-        let endTimePeriod: Period
-        if endTimeHour >= 12 && startTime.hour != 12 {
-            endTimePeriod = startTime.period.flip()
-        } else {
-            endTimePeriod = startTime.period
-        }
-        
-        if endTimeHour > 12 {
-            endTimeHour -= 12
-        }
-        
-        self.endTime = Time(hour: endTimeHour, minute: endTimeMinute, period: endTimePeriod)
-    }
-
 }
 
 struct Time {
         
-    let hour: Int
+    var hour: Int
     let minute: Int
     let period: Period
+    
+    init(referenceTime: Time, minutesLater: Int) {
+        // TODO: This function creates a TimeFrame object from a start time and a duration
+        
+        let hoursLater = Int((Float(minutesLater) / 60.0).rounded(.down))
+        
+        self.hour = referenceTime.hour + hoursLater
+        if referenceTime.minute + (minutesLater % 60) == 60 {
+            self.hour += 1
+            self.minute = 0
+        } else {
+            self.minute = referenceTime.minute + (minutesLater % 60)
+        }
+        
+        if self.hour >= 12 && referenceTime.hour != 12 {
+            self.period = referenceTime.period.flip()
+        } else {
+            self.period = referenceTime.period
+        }
+        
+        if self.hour > 12 {
+            self.hour -= 12
+        }
+    }
+    
+    init(hour: Int, minute: Int, period: Period) {
+        self.hour = hour
+        self.minute = minute
+        self.period = period
+    }
+    
+    func sameAs(time: Time) -> Bool{
+        if self.hour == time.hour && self.minute == time.minute && self.period == time.period {
+            return true
+        } else {
+            return false
+        }
+    }
         
     func format() -> String{
         let formattedTime = String(hour) + ":" + String(format: "%02d", minute) + period.format()
@@ -167,10 +206,44 @@ struct DayTimePair {
     let timeFrame: TimeFrame
     
     mutating func format() -> String {
-        let formattedDateTimePair = day.formatDate() + " @ " + timeFrame.format()
+        let formattedDateTimePair = day.formatDayOfWeek() + " " + day.formatDate() + " @ " + timeFrame.format()
         return formattedDateTimePair
     }
 }
 
-// TODO: Duration struct???
+struct Duration {
+    let minutes: Int
+    
+    func format() -> String {
+        
+        let formattedDuration: String
+        let hours = Float(minutes) / 60.0
+        print(hours)
+        if hours < 1 {
+            formattedDuration = String(minutes) + " Minutes"
+        } else if hours == 1 {
+            formattedDuration = "1 Hour"
+        } else {
+            formattedDuration = String(hours.clean) + " Hours"
+        }
+        
+        return formattedDuration
+    }
+    
+    static func createDurations(min: Int, max: Int, length: Int = 30) -> [Duration] {
+        
+        var durations = [Duration]()
+        for minutes in stride(from: min, through: max, by: length) {
+            durations.append(Duration(minutes: minutes))
+        }
+        
+        return durations
+    }
+}
+
+extension Float {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
+}
 

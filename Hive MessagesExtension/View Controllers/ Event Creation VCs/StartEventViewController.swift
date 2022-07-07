@@ -16,11 +16,11 @@ class StartEventViewController: MSMessagesAppViewController {
     
     @IBAction func lunchButtonPressed(_ sender: Any) {
         
-        nextPage(type: Type.lunch)
+        nextPage(type: EventType.lunch)
         self.requestPresentationStyle(.expanded)
     }
     
-    func nextPage(type: Type) {
+    func nextPage(type: EventType) {
         
         let event = Event(title: type.defaultTitle(), type: type)
         

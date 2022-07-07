@@ -15,7 +15,9 @@ class LocationsViewController: UIViewController {
     static let storyboardID = String(describing: LocationsViewController.self)
     
     var event: Event! = nil
-    var locations: [Location]? = []
+    lazy var locations = event.locations
+    
+    var anyLocationSelected: Bool = false
     
     @IBOutlet weak var selectedLocationsTableView: UITableView!
     
@@ -27,6 +29,7 @@ class LocationsViewController: UIViewController {
         selectedLocationsTableView.delegate = self
         selectedLocationsTableView.reloadData()
         
+        updateNextButtonStatus()
     }
         
     @IBAction func addLocationButtonPressed(_ sender: Any) {
@@ -35,8 +38,23 @@ class LocationsViewController: UIViewController {
         navigationController?.present(autocompleteViewController, animated: true)
     }
     
+    func updateNextButtonStatus() {
+        
+        if locations.isEmpty {
+            anyLocationSelected = false
+            //TODO: Color Next button
+        } else {
+            anyLocationSelected = true
+            //TODO: Gray out Next button
+        }
+    }
+    
     @IBAction func nextButtonPressed(_ sender: Any) {
-        nextPage()
+        if anyLocationSelected {
+            nextPage()
+        } else {
+            // TODO: Error message
+        }
     }
     
     func nextPage() {
@@ -51,11 +69,12 @@ class LocationsViewController: UIViewController {
 
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        locations?.append(Location(title: place.name!, place: place))
-        for location in locations! {
+        locations.append(Location(title: place.name!, place: place))
+        for location in locations {
             print(location.title)
         }
         selectedLocationsTableView.reloadData()
+        updateNextButtonStatus()
         navigationController?.dismiss(animated: true)
     }
     
@@ -70,14 +89,14 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
 
 extension LocationsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        locations!.count
+        locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = selectedLocationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
         
-        cell.textLabel?.text = locations![indexPath.row].title
+        cell.textLabel?.text = locations[indexPath.row].title
         
         return cell
     }

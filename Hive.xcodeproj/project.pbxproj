@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		150F9B062864FC1400844AB8 /* TimeStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 150F9B052864FC1400844AB8 /* TimeStructs.swift */; };
 		1531EC3C286BE53700C3F4F9 /* DaysCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531EC3B286BE53700C3F4F9 /* DaysCollectionViewCell.swift */; };
 		156DAE672876351900613360 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE662876351900613360 /* LocationCell.swift */; };
 		156DAE692876354700613360 /* DayTimePairCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE682876354700613360 /* DayTimePairCell.swift */; };
@@ -19,7 +18,6 @@
 		156DAE76287641C600613360 /* StartTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE75287641C600613360 /* StartTimeCell.swift */; };
 		15B213CB28651A5C0071DABD /* ConfirmTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */; };
 		15B213CD286693910071DABD /* TimesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CC286693910071DABD /* TimesCollectionViewCell.swift */; };
-		15B213D02867A0040071DABD /* DateTimePairStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CF2867A0040071DABD /* DateTimePairStruct.swift */; };
 		15B213D6286ABD4C0071DABD /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213D5286ABD4C0071DABD /* Utilities.swift */; };
 		15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */; };
 		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
@@ -34,7 +32,7 @@
 		15D7AF1528622F4600DDC307 /* CalendarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1428622F4600DDC307 /* CalendarDay.swift */; };
 		15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */; };
 		15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */; };
-		15D7AF1B28624DE000DDC307 /* CalendarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1A28624DE000DDC307 /* CalendarCollectionViewCell.swift */; };
+		15D7AF1B28624DE000DDC307 /* CalendarDayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D7AF1A28624DE000DDC307 /* CalendarDayCell.swift */; };
 		8793627D286CFEE400C05180 /* VoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627B286CFEE400C05180 /* VoteViewController.swift */; };
 		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 		CA4E9AA3F3F2E9B70FB1B59D /* libPods-Hive MessagesExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7BBB53B72CCD26BADD5DC /* libPods-Hive MessagesExtension.a */; };
@@ -66,7 +64,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		150F9B052864FC1400844AB8 /* TimeStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeStructs.swift; sourceTree = "<group>"; };
 		1531EC3B286BE53700C3F4F9 /* DaysCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysCollectionViewCell.swift; sourceTree = "<group>"; };
 		156DAE662876351900613360 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		156DAE682876354700613360 /* DayTimePairCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTimePairCell.swift; sourceTree = "<group>"; };
@@ -78,7 +75,6 @@
 		156DAE75287641C600613360 /* StartTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTimeCell.swift; sourceTree = "<group>"; };
 		15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTimesViewController.swift; sourceTree = "<group>"; };
 		15B213CC286693910071DABD /* TimesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimesCollectionViewCell.swift; sourceTree = "<group>"; };
-		15B213CF2867A0040071DABD /* DateTimePairStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTimePairStruct.swift; sourceTree = "<group>"; };
 		15B213D5286ABD4C0071DABD /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
@@ -95,7 +91,7 @@
 		15D7AF1428622F4600DDC307 /* CalendarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDay.swift; sourceTree = "<group>"; };
 		15D7AF1628622F5D00DDC307 /* MonthMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthMetadata.swift; sourceTree = "<group>"; };
 		15D7AF1828624C2E00DDC307 /* DateSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectorViewController.swift; sourceTree = "<group>"; };
-		15D7AF1A28624DE000DDC307 /* CalendarCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionViewCell.swift; sourceTree = "<group>"; };
+		15D7AF1A28624DE000DDC307 /* CalendarDayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDayCell.swift; sourceTree = "<group>"; };
 		3FC8F2BD88B64705CDC5E6B1 /* Pods-Hive MessagesExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.release.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.release.xcconfig"; sourceTree = "<group>"; };
 		56C20084B43A4E48868174A9 /* Pods-Hive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.release.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.release.xcconfig"; sourceTree = "<group>"; };
 		7D43EEC4CA816B9D97B0D7CD /* libPods-Hive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Hive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,7 +123,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		156DAE652876348D00613360 /* Event Creation */ = {
+		156DAE652876348D00613360 /*  Event Creation VCs */ = {
 			isa = PBXGroup;
 			children = (
 				156DAE6C2876362000613360 /* StartEventViewController.swift */,
@@ -136,12 +132,13 @@
 				15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */,
 				156DAE712876382C00613360 /* ConfirmViewController.swift */,
 			);
-			path = "Event Creation";
+			path = " Event Creation VCs";
 			sourceTree = "<group>";
 		};
 		156DAE6E2876366C00613360 /* Old Files */ = {
 			isa = PBXGroup;
 			children = (
+				15B213D5286ABD4C0071DABD /* Utilities.swift */,
 				1531EC3B286BE53700C3F4F9 /* DaysCollectionViewCell.swift */,
 				15B44F492860CB570055B51C /* CreateEventViewController.swift */,
 				15B213CC286693910071DABD /* TimesCollectionViewCell.swift */,
@@ -163,8 +160,6 @@
 		15B213D12867A01A0071DABD /* Structs */ = {
 			isa = PBXGroup;
 			children = (
-				15B213CF2867A0040071DABD /* DateTimePairStruct.swift */,
-				150F9B052864FC1400844AB8 /* TimeStructs.swift */,
 				15B213CE28679F830071DABD /* DateSelectorStructs */,
 				156DAE732876386400613360 /* Event.swift */,
 			);
@@ -174,7 +169,7 @@
 		15B213D22867A02B0071DABD /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				15D7AF1A28624DE000DDC307 /* CalendarCollectionViewCell.swift */,
+				15D7AF1A28624DE000DDC307 /* CalendarDayCell.swift */,
 				156DAE662876351900613360 /* LocationCell.swift */,
 				156DAE682876354700613360 /* DayTimePairCell.swift */,
 				156DAE75287641C600613360 /* StartTimeCell.swift */,
@@ -185,23 +180,13 @@
 		15B44F4F2860E3DA0055B51C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				156DAE6E2876366C00613360 /* Old Files */,
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
 				8793627B286CFEE400C05180 /* VoteViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
-				156DAE652876348D00613360 /* Event Creation */,
+				156DAE652876348D00613360 /*  Event Creation VCs */,
 			);
 			path = "View Controllers";
-			sourceTree = "<group>";
-		};
-		15B44F502860E4010055B51C /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-				15B44F4D2860E3B10055B51C /* Style.swift */,
-				15B213D5286ABD4C0071DABD /* Utilities.swift */,
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		15BA66B6284E8C6800C185CA = {
@@ -245,10 +230,11 @@
 		15BA66CD284E8C6F00C185CA /* Hive MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				15B44F4D2860E3B10055B51C /* Style.swift */,
 				15B44F4F2860E3DA0055B51C /* View Controllers */,
 				15B213D22867A02B0071DABD /* Cells */,
 				15B213D12867A01A0071DABD /* Structs */,
-				15B44F502860E4010055B51C /* Helpers */,
+				156DAE6E2876366C00613360 /* Old Files */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,
 				15BA66D3284E8C7100C185CA /* Assets.xcassets */,
 				15BA66D5284E8C7100C185CA /* Info.plist */,
@@ -439,12 +425,11 @@
 				15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */,
 				15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */,
 				15B213D6286ABD4C0071DABD /* Utilities.swift in Sources */,
-				150F9B062864FC1400844AB8 /* TimeStructs.swift in Sources */,
 				156DAE672876351900613360 /* LocationCell.swift in Sources */,
 				156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */,
 				15B44F4E2860E3B20055B51C /* Style.swift in Sources */,
 				1531EC3C286BE53700C3F4F9 /* DaysCollectionViewCell.swift in Sources */,
-				15D7AF1B28624DE000DDC307 /* CalendarCollectionViewCell.swift in Sources */,
+				15D7AF1B28624DE000DDC307 /* CalendarDayCell.swift in Sources */,
 				15D7AF1528622F4600DDC307 /* CalendarDay.swift in Sources */,
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
 				15B213CB28651A5C0071DABD /* ConfirmTimesViewController.swift in Sources */,
@@ -453,7 +438,6 @@
 				156DAE742876386400613360 /* Event.swift in Sources */,
 				156DAE692876354700613360 /* DayTimePairCell.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
-				15B213D02867A0040071DABD /* DateTimePairStruct.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				156DAE76287641C600613360 /* StartTimeCell.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,

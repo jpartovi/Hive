@@ -791,7 +791,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarCell" id="smY-Zr-Jqg" customClass="CalendarCollectionViewCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarDayCell" id="smY-Zr-Jqg" customClass="CalendarDayCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="q5L-aX-WiK">
@@ -976,8 +976,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-pe-5q2">
-                                <rect key="frame" x="16" y="294" width="288" height="165"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-pe-5q2">
+                                <rect key="frame" x="16" y="294" width="288" height="139"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DayTimePairCell" id="bkq-Fs-6sq" customClass="DayTimePairCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
@@ -990,7 +990,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/Time Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Pa-du-zK8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date/Time Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Pa-du-zK8">
                                 <rect key="frame" x="16" y="265" width="143" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -1005,6 +1005,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FeN-3w-P9n">
+                                <rect key="frame" x="133.5" y="441" width="53" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Post"/>
+                                <connections>
+                                    <action selector="postButtonPressed:" destination="6sw-LR-IQC" eventType="touchUpInside" id="Ycq-Ca-fuI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="pdU-as-zKH"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1013,12 +1021,15 @@
                             <constraint firstItem="3Iy-DN-1go" firstAttribute="leading" secondItem="pdU-as-zKH" secondAttribute="leading" constant="16" id="2hq-Xn-mEd"/>
                             <constraint firstItem="sFf-pe-5q2" firstAttribute="leading" secondItem="pdU-as-zKH" secondAttribute="leading" constant="16" id="2y5-wB-fA6"/>
                             <constraint firstItem="CzU-8g-Rnt" firstAttribute="leading" secondItem="pdU-as-zKH" secondAttribute="leading" constant="16" id="7yM-VY-QSI"/>
+                            <constraint firstItem="FeN-3w-P9n" firstAttribute="top" secondItem="sFf-pe-5q2" secondAttribute="bottom" constant="8" symbolic="YES" id="Bcm-RA-PNe"/>
                             <constraint firstItem="eXw-oT-QiY" firstAttribute="leading" secondItem="pdU-as-zKH" secondAttribute="leading" constant="16" id="Hzl-Iw-LNa"/>
                             <constraint firstItem="eXw-oT-QiY" firstAttribute="height" secondItem="sFf-pe-5q2" secondAttribute="height" multiplier="0.860606" id="OrO-FR-VRw"/>
+                            <constraint firstItem="FeN-3w-P9n" firstAttribute="centerX" secondItem="pdU-as-zKH" secondAttribute="centerX" id="SHd-2D-Gge"/>
                             <constraint firstItem="CzU-8g-Rnt" firstAttribute="top" secondItem="3Iy-DN-1go" secondAttribute="bottom" constant="8" symbolic="YES" id="ZSJ-nm-Y5U"/>
                             <constraint firstItem="eXw-oT-QiY" firstAttribute="top" secondItem="CzU-8g-Rnt" secondAttribute="bottom" constant="8" symbolic="YES" id="ZaV-ns-F1L"/>
                             <constraint firstItem="sFf-pe-5q2" firstAttribute="top" secondItem="9Pa-du-zK8" secondAttribute="bottom" constant="8" symbolic="YES" id="d7V-BV-1g7"/>
                             <constraint firstItem="pdU-as-zKH" firstAttribute="trailing" secondItem="sFf-pe-5q2" secondAttribute="trailing" constant="16" id="ivJ-wD-vvs"/>
+                            <constraint firstItem="pdU-as-zKH" firstAttribute="bottom" secondItem="FeN-3w-P9n" secondAttribute="bottom" constant="60" id="nL4-WZ-bgl"/>
                             <constraint firstItem="9Pa-du-zK8" firstAttribute="top" secondItem="eXw-oT-QiY" secondAttribute="bottom" constant="8" symbolic="YES" id="q4m-aj-LMM"/>
                             <constraint firstItem="3Iy-DN-1go" firstAttribute="top" secondItem="pdU-as-zKH" secondAttribute="top" id="qUb-k8-TWn"/>
                             <constraint firstItem="9Pa-du-zK8" firstAttribute="leading" secondItem="pdU-as-zKH" secondAttribute="leading" constant="16" id="wjz-vv-Vee"/>
@@ -1028,7 +1039,7 @@
                     <size key="freeformSize" width="320" height="532"/>
                     <connections>
                         <outlet property="dayTimePairsTableView" destination="sFf-pe-5q2" id="4er-Hi-jCE"/>
-                        <outlet property="eventNameTextField" destination="3Iy-DN-1go" id="Wv1-xC-EH9"/>
+                        <outlet property="eventTitleTextField" destination="3Iy-DN-1go" id="MQ3-l3-TUb"/>
                         <outlet property="locationsTableView" destination="eXw-oT-QiY" id="DQh-1l-nkd"/>
                     </connections>
                 </viewController>
