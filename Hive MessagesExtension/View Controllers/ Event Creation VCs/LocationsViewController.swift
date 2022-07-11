@@ -74,10 +74,23 @@ class LocationsViewController: UIViewController {
 
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        locations.append(Location(title: place.name!, place: place))
-        selectedLocationsTableView.reloadData()
-        updateNextButtonStatus()
+        
+        
         navigationController?.dismiss(animated: true)
+        
+        showInputDialog(title: "Add this Location",
+                        subtitle: "Enter a name to describe this place (eg. Stacy's House)",
+                        actionTitle: "Add",
+                        cancelTitle: "Cancel",
+                        autofillText: place.name!,
+                        inputPlaceholder: "Enter name here",
+                        inputKeyboardType: .asciiCapable, actionHandler:
+                                { (input:String?) in
+            self.locations.append(Location(title: input!, place: place))
+            self.selectedLocationsTableView.reloadData()
+            self.updateNextButtonStatus()
+
+                                })
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {

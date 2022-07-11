@@ -74,17 +74,17 @@ class ConfirmViewController: MSMessagesAppViewController {
         
         if event.locations.isEmpty {
             locationsLabel.isHidden = true
-            //labelHeightAnchor.constant = 0
+            labelHeightAnchor.constant = 0
             tableViewHeightAnchor.constant = 0
         } else if event.locations.count == 1 {
-            //labelHeightAnchor.constant = 20
+            labelHeightAnchor.constant = 20
             locationsTableView.isHidden = true
-            //tableViewHeightAnchor.constant = 0
+            tableViewHeightAnchor.constant = 0
             locationsLabel.isHidden = false
             locationsLabel.text = "Location: " + event.locations[0].title
         } else {
-            //labelHeightAnchor.constant = 20
-            //tableViewHeightAnchor.constant = 140
+            labelHeightAnchor.constant = 20
+            tableViewHeightAnchor.constant = 140
             locationsLabel.isHidden = false
             locationsLabel.text = "Location Options:"
         }
@@ -210,10 +210,20 @@ extension ConfirmViewController: UITableViewDelegate {
 
 extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        event.locations.append(Location(title: place.name!, place: place))
-        formatLocations()
-        locationsTableView.reloadData()
+        
         navigationController?.dismiss(animated: true)
+        showInputDialog(title: "Add this Location",
+                        subtitle: "Enter a name to describe this place (eg. Stacy's House)",
+                        actionTitle: "Add",
+                        cancelTitle: "Cancel",
+                        autofillText: place.name!,
+                        inputPlaceholder: "Enter name here",
+                        inputKeyboardType: .asciiCapable, actionHandler:
+                                { (input:String?) in
+            self.event.locations.append(Location(title: input!, place: place))
+            self.locationsTableView.reloadData()
+            self.formatLocations()
+                                })
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
