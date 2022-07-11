@@ -15,6 +15,8 @@ class DaySelectorViewController: UIViewController {
     var event: Event! = nil
     lazy var selectedDays = event.days
     
+    @IBOutlet weak var weekDayLabels: UIStackView!
+    
     func nextPage() {
         
         event?.days = selectedDays
@@ -42,13 +44,15 @@ class DaySelectorViewController: UIViewController {
         return dateFormatter
     }()
     
-    
     @IBOutlet var calendarCollectionView: UICollectionView?
+    @IBOutlet weak var nextButton: ContinueHexButton!
     
     private lazy var calendarDays: [CalendarDay] = generateDays(for: today)
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        underlineWeekDayLabels()
         
         today = Date()
     
@@ -60,6 +64,15 @@ class DaySelectorViewController: UIViewController {
         calendarCollectionView!.reloadData()
         
         updateNextButtonStatus()
+    }
+    
+    func underlineWeekDayLabels() {
+        let lineThickness = CGFloat(2)
+        
+        let line = CALayer()
+        line.frame = CGRect(x: 0.0, y: 0.0, width: view.frame.width - 32, height: lineThickness)
+        line.backgroundColor = Style.greyColor.cgColor
+        calendarCollectionView!.layer.addSublayer(line)
     }
     
     func monthMetadata(for today: Date) throws -> MonthMetadata {
@@ -175,9 +188,9 @@ class DaySelectorViewController: UIViewController {
         }
         
         if anyDaySelected {
-            //TODO: Color Next button
+            nextButton.color()
         } else {
-            //TODO: Gray out Next button
+            nextButton.grey()
         }
     }
 }

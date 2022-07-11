@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Messages
+import GooglePlaces
 
 class ConfirmViewController: MSMessagesAppViewController {
     
@@ -18,9 +19,19 @@ class ConfirmViewController: MSMessagesAppViewController {
     var pollFlag = false
     var pollMessage: MSMessage!
     
+    @IBAction func addLocationButtonPressed(_ sender: Any) {
+        
+        let autocompleteViewController = GMSAutocompleteViewController()
+        autocompleteViewController.delegate = self
+        navigationController?.present(autocompleteViewController, animated: true)
+    }
+    
     @IBOutlet var eventTitleTextField: UITextField!
-    @IBOutlet weak var dayTimePairsTableView: UITableView!
+    @IBOutlet weak var locationsLabel: UILabel!
     @IBOutlet weak var locationsTableView: UITableView!
+    @IBOutlet weak var dayTimePairsLabel: UILabel!
+    @IBOutlet weak var dayTimePairsTableView: UITableView!
+    @IBOutlet weak var postButton: LargeHexButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +54,9 @@ class ConfirmViewController: MSMessagesAppViewController {
     func fillEventDetails() {
         
         eventTitleTextField.text = event.title
-        setUpLocationsTableView()
+        locationsTableView.dataSource = self
+        locationsTableView.delegate = self
+        formatLocations()
         setUpDayTimePairsTableView()
     }
     
@@ -52,9 +65,35 @@ class ConfirmViewController: MSMessagesAppViewController {
         dayTimePairsTableView.delegate = self
     }
     
-    func setUpLocationsTableView() {
-        locationsTableView.dataSource = self
-        locationsTableView.delegate = self
+    func formatLocations() {
+        
+        print("Format Locations")
+        
+        let labelHeightAnchor = locationsLabel.heightAnchor.constraint(equalToConstant: 20)
+        let tableViewHeightAnchor = locationsTableView.heightAnchor.constraint(equalToConstant: 140)
+        
+        if event.locations.isEmpty {
+            locationsLabel.isHidden = true
+            //labelHeightAnchor.constant = 0
+            tableViewHeightAnchor.constant = 0
+        } else if event.locations.count == 1 {
+            //labelHeightAnchor.constant = 20
+            locationsTableView.isHidden = true
+            //tableViewHeightAnchor.constant = 0
+            locationsLabel.isHidden = false
+            locationsLabel.text = "Location: " + event.locations[0].title
+        } else {
+            //labelHeightAnchor.constant = 20
+            //tableViewHeightAnchor.constant = 140
+            locationsLabel.isHidden = false
+            locationsLabel.text = "Location Options:"
+        }
+        
+        
+        print(labelHeightAnchor.constant)
+        print(tableViewHeightAnchor.constant)
+        labelHeightAnchor.isActive = true
+        tableViewHeightAnchor.isActive = true
     }
     
     // When the post button is pressed
@@ -90,9 +129,6 @@ class ConfirmViewController: MSMessagesAppViewController {
             components.queryItems = [URLQueryItem(name: "type", value: "invite"), URLQueryItem(name: "title", value: event.title), URLQueryItem(name: "description", value: "DESCRIPTION"), URLQueryItem(name: "address", value: event.locations[0].title)]
             message.url = components.url!
 
-
-
-
             conversation.insert(message) {error in
                 // empty for now
             }
@@ -100,6 +136,12 @@ class ConfirmViewController: MSMessagesAppViewController {
         
         self.requestPresentationStyle(.compact)
         
+    }
+    
+    @objc func deleteLocation(sender: UIButton) {
+        event.locations.remove(at: sender.tag)
+        locationsTableView.reloadData()
+        formatLocations()
     }
 }
 
@@ -110,6 +152,17 @@ extension ConfirmViewController: UITableViewDataSource {
         case dayTimePairsTableView:
             return event.dayTimePairs.count
         case locationsTableView:
+            return 1
+        default:
+            return 0
+        }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        switch tableView {
+        case dayTimePairsTableView:
+            return 1
+        case locationsTableView:
             return event.locations.count
         default:
             return 0
@@ -117,25 +170,57 @@ extension ConfirmViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell: UITableViewCell
-        
+    
         switch tableView {
         case dayTimePairsTableView:
-            cell = dayTimePairsTableView.dequeueReusableCell(withIdentifier: DayTimePairCell.reuseIdentifier, for: indexPath) as! DayTimePairCell
+            let cell = dayTimePairsTableView.dequeueReusableCell(withIdentifier: DayTimePairCell.reuseIdentifier, for: indexPath) as! DayTimePairCell
             cell.textLabel!.text = event.dayTimePairs[indexPath.row].format()
+            return cell
         case locationsTableView:
-            cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath)
-            cell.textLabel?.text = event.locations[indexPath.row].title
+            let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
+            cell.textField.text = event.locations[indexPath.section].title
+            cell.addressLabel.text = event.locations[indexPath.section].place.formattedAddress
+            cell.deleteButton.tag = indexPath.section
+            cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
+            return cell
         default:
             // TODO: This is not right, there should be some sort of error message here
-            cell = UITableViewCell()
+            return UITableViewCell()
         }
-        
-        return cell
     }
 }
 
 extension ConfirmViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        75
+    }
     
+    // Set the spacing between sections
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        0
+    }
+     
+    // Make the background color show through
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
+}
+
+extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        event.locations.append(Location(title: place.name!, place: place))
+        formatLocations()
+        locationsTableView.reloadData()
+        navigationController?.dismiss(animated: true)
+    }
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        navigationController?.dismiss(animated: true)
+    }
+    
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        navigationController?.dismiss(animated: true)
+    }
 }

@@ -4,7 +4,7 @@
 //
 //  Created by Jude Partovi on 6/28/22.
 //
-
+/*
 import UIKit
 
 class DaysCollectionViewCell: UICollectionViewCell {
@@ -103,3 +103,4 @@ private extension DaysCollectionViewCell {
         self.layer.cornerRadius = 20
     }
 }
+*/

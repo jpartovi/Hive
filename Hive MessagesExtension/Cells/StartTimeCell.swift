@@ -17,8 +17,14 @@ class StartTimeCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = Style.lightColor
+        label.textColor = Style.lightTextColor
         return label
+    }()
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
     }()
     
     var time: Time? {
@@ -46,7 +52,7 @@ class StartTimeCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.backgroundColor = Style.primaryColor
+        contentView.addSubview(imageView)
         contentView.addSubview(timeLabel)
     }
 
@@ -57,13 +63,12 @@ class StartTimeCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        // This allows for rotations and trait collection
-        // changes (e.g. entering split view on iPad) to update constraints correctly.
-        // Removing old constraints allows for new ones to be created
-        // regardless of the values of the old ones
         NSLayoutConstraint.activate([
             timeLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
 
@@ -78,11 +83,12 @@ class StartTimeCell: UICollectionViewCell {
 
     func showSelected() {
         // TODO: Show selected
-        self.backgroundColor = Style.secondaryColor
+        imageView.image = UIImage(named: "SelectedLongHex")?.size(width: self.frame.width, height: self.frame.width)
     }
     
     func showUnselected() {
         // TODO: Show unselected
-        self.backgroundColor = Style.primaryColor
+        imageView.image = UIImage(named: "LongHex")?.size(width: self.frame.width, height: self.frame.width)
+
     }
 }

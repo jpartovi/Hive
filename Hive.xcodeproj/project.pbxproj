@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1531EC3C286BE53700C3F4F9 /* DaysCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1531EC3B286BE53700C3F4F9 /* DaysCollectionViewCell.swift */; };
-		156DAE672876351900613360 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE662876351900613360 /* LocationCell.swift */; };
 		156DAE692876354700613360 /* DayTimePairCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE682876354700613360 /* DayTimePairCell.swift */; };
 		156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6A287635E600613360 /* LocationsViewController.swift */; };
 		156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6C2876362000613360 /* StartEventViewController.swift */; };
@@ -16,6 +15,8 @@
 		156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE712876382C00613360 /* ConfirmViewController.swift */; };
 		156DAE742876386400613360 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE732876386400613360 /* Event.swift */; };
 		156DAE76287641C600613360 /* StartTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE75287641C600613360 /* StartTimeCell.swift */; };
+		156DAE782878978900613360 /* EventTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE772878978800613360 /* EventTypeCell.swift */; };
+		156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE79287C7E4000613360 /* LocationCell.swift */; };
 		15B213CB28651A5C0071DABD /* ConfirmTimesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */; };
 		15B213CD286693910071DABD /* TimesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213CC286693910071DABD /* TimesCollectionViewCell.swift */; };
 		15B213D6286ABD4C0071DABD /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B213D5286ABD4C0071DABD /* Utilities.swift */; };
@@ -65,7 +66,6 @@
 
 /* Begin PBXFileReference section */
 		1531EC3B286BE53700C3F4F9 /* DaysCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysCollectionViewCell.swift; sourceTree = "<group>"; };
-		156DAE662876351900613360 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		156DAE682876354700613360 /* DayTimePairCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTimePairCell.swift; sourceTree = "<group>"; };
 		156DAE6A287635E600613360 /* LocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		156DAE6C2876362000613360 /* StartEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartEventViewController.swift; sourceTree = "<group>"; };
@@ -73,6 +73,8 @@
 		156DAE712876382C00613360 /* ConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
 		156DAE732876386400613360 /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		156DAE75287641C600613360 /* StartTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTimeCell.swift; sourceTree = "<group>"; };
+		156DAE772878978800613360 /* EventTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTypeCell.swift; sourceTree = "<group>"; };
+		156DAE79287C7E4000613360 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
 		15B213CA28651A5C0071DABD /* ConfirmTimesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmTimesViewController.swift; sourceTree = "<group>"; };
 		15B213CC286693910071DABD /* TimesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimesCollectionViewCell.swift; sourceTree = "<group>"; };
 		15B213D5286ABD4C0071DABD /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -170,9 +172,10 @@
 			isa = PBXGroup;
 			children = (
 				15D7AF1A28624DE000DDC307 /* CalendarDayCell.swift */,
-				156DAE662876351900613360 /* LocationCell.swift */,
 				156DAE682876354700613360 /* DayTimePairCell.swift */,
 				156DAE75287641C600613360 /* StartTimeCell.swift */,
+				156DAE772878978800613360 /* EventTypeCell.swift */,
+				156DAE79287C7E4000613360 /* LocationCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -425,7 +428,6 @@
 				15D7AF1928624C2E00DDC307 /* DateSelectorViewController.swift in Sources */,
 				15D7AF1728622F5D00DDC307 /* MonthMetadata.swift in Sources */,
 				15B213D6286ABD4C0071DABD /* Utilities.swift in Sources */,
-				156DAE672876351900613360 /* LocationCell.swift in Sources */,
 				156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */,
 				15B44F4E2860E3B20055B51C /* Style.swift in Sources */,
 				1531EC3C286BE53700C3F4F9 /* DaysCollectionViewCell.swift in Sources */,
@@ -436,8 +438,10 @@
 				15B213CD286693910071DABD /* TimesCollectionViewCell.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
 				156DAE742876386400613360 /* Event.swift in Sources */,
+				156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */,
 				156DAE692876354700613360 /* DayTimePairCell.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
+				156DAE782878978900613360 /* EventTypeCell.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				156DAE76287641C600613360 /* StartTimeCell.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,

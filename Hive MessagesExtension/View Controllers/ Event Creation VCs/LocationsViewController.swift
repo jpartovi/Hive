@@ -8,7 +8,6 @@
 import Foundation
 import UIKit
 import GooglePlaces
-//import SwiftUI
 
 class LocationsViewController: UIViewController {
     
@@ -21,12 +20,15 @@ class LocationsViewController: UIViewController {
     
     @IBOutlet weak var selectedLocationsTableView: UITableView!
     
+    @IBOutlet weak var nextButton: ContinueHexButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         selectedLocationsTableView.dataSource = self
         selectedLocationsTableView.delegate = self
+        selectedLocationsTableView.separatorStyle = .none
+        selectedLocationsTableView.showsVerticalScrollIndicator = false
         selectedLocationsTableView.reloadData()
         
         updateNextButtonStatus()
@@ -42,19 +44,16 @@ class LocationsViewController: UIViewController {
         
         if locations.isEmpty {
             anyLocationSelected = false
-            //TODO: Color Next button
+            nextButton.grey(title: "Skip")
         } else {
             anyLocationSelected = true
-            //TODO: Gray out Next button
+            nextButton.color()
         }
     }
     
     @IBAction func nextButtonPressed(_ sender: Any) {
-        if anyLocationSelected {
-            nextPage()
-        } else {
-            // TODO: Error message
-        }
+        
+        nextPage()
     }
     
     func nextPage() {
@@ -65,14 +64,17 @@ class LocationsViewController: UIViewController {
         dateSelectorVC.event = event
         self.navigationController?.pushViewController(dateSelectorVC, animated: true)
     }
+    
+    @objc func deleteLocation(sender: UIButton) {
+        locations.remove(at: sender.tag)
+        selectedLocationsTableView.reloadData()
+        updateNextButtonStatus()
+    }
 }
 
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         locations.append(Location(title: place.name!, place: place))
-        for location in locations {
-            print(location.title)
-        }
         selectedLocationsTableView.reloadData()
         updateNextButtonStatus()
         navigationController?.dismiss(animated: true)
@@ -89,6 +91,10 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
 
 extension LocationsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         locations.count
     }
     
@@ -96,13 +102,30 @@ extension LocationsViewController: UITableViewDataSource {
         
         let cell = selectedLocationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
         
-        cell.textLabel?.text = locations[indexPath.row].title
+        cell.textField.text = locations[indexPath.section].title
+        cell.addressLabel.text = locations[indexPath.section].place.formattedAddress
+        cell.deleteButton.tag = indexPath.section
+        cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
         
         return cell
     }
 }
 
 extension LocationsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        75
+    }
     
+    // Set the spacing between sections
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        0
+    }
+     
+    // Make the background color show through
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.clear
+        return headerView
+    }
 }
 

@@ -18,15 +18,24 @@ struct Event {
     var dayTimePairs = [DayTimePair]()
 }
 
-enum EventType {
+enum EventType: CaseIterable {
+    case brunch
     case lunch
+    case dinner
+    case party
     
     func getDurations() -> [Duration] {
         var min = 60
         var max = 240
         switch self {
+        case .brunch:
+            break
         case .lunch:
             break // default durations
+        case .dinner:
+            break
+        case .party:
+            max = 300
         }
         
         return Duration.createDurations(min: min, max: max)
@@ -36,9 +45,18 @@ enum EventType {
         let firstTime: Time
         let lastTime: Time
         switch self {
+        case .brunch:
+            firstTime = Time(hour: 8, minute: 0, period: .am)
+            lastTime = Time(hour: 11, minute: 30, period: .am)
         case .lunch:
             firstTime = Time(hour: 11, minute: 0, period: .am)
             lastTime = Time(hour: 1, minute: 30, period: .pm)
+        case .dinner:
+            firstTime = Time(hour: 4, minute: 0, period: .pm)
+            lastTime = Time(hour: 7, minute: 30, period: .pm)
+        case .party:
+            firstTime = Time(hour: 6, minute: 0, period: .pm)
+            lastTime = Time(hour: 9, minute: 30, period: .pm)
         }
         
         var startTimes = [Time]()
@@ -56,8 +74,14 @@ enum EventType {
     
     func defaultTitle() -> String {
         switch self {
+        case .brunch:
+            return "Brunch"
         case .lunch:
             return "Lunch"
+        case .dinner:
+            return "Dinner"
+        case .party:
+            return "Party"
         }
     }
 }
@@ -218,7 +242,6 @@ struct Duration {
         
         let formattedDuration: String
         let hours = Float(minutes) / 60.0
-        print(hours)
         if hours < 1 {
             formattedDuration = String(minutes) + " Minutes"
         } else if hours == 1 {

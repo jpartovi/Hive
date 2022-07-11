@@ -18,23 +18,23 @@ class CalendarDayCell: UICollectionViewCell {
         view.backgroundColor = Style.primaryColor
         return view
     }()
-    
+    /*
     private lazy var monthBackgroundView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = false//true
         view.layer.borderWidth = 2
 
-        //view.alpha = 0.5
+        view.alpha = 0
         return view
     }()
-    
+    */
     var numberLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = Style.darkColor
+        label.textColor = Style.darkTextColor
         return label
     }()
 
@@ -43,8 +43,7 @@ class CalendarDayCell: UICollectionViewCell {
             guard let day = day else { return }
 
             numberLabel.text = day.number
-            
-            updateSelectionStatus()
+
             style(inFuture: day.inFuture, inNextMonth: day.inNextMonth, isToday: day.isToday)
         }
     }
@@ -55,7 +54,7 @@ class CalendarDayCell: UICollectionViewCell {
         isAccessibilityElement = true
         accessibilityTraits = .button
         
-        contentView.addSubview(monthBackgroundView)
+        //contentView.addSubview(monthBackgroundView)
         contentView.addSubview(selectionBackgroundView)
         contentView.addSubview(numberLabel)
     }
@@ -83,57 +82,44 @@ class CalendarDayCell: UICollectionViewCell {
             selectionBackgroundView.centerYAnchor.constraint(equalTo: numberLabel.centerYAnchor),
             selectionBackgroundView.centerXAnchor.constraint(equalTo: numberLabel.centerXAnchor),
             selectionBackgroundView.widthAnchor.constraint(equalToConstant: selectorSize),
-            selectionBackgroundView.heightAnchor.constraint(equalTo: selectionBackgroundView.widthAnchor),
+            selectionBackgroundView.heightAnchor.constraint(equalTo: selectionBackgroundView.widthAnchor)//,
             
-            monthBackgroundView.centerYAnchor.constraint(equalTo: numberLabel.centerYAnchor),
-            monthBackgroundView.centerXAnchor.constraint(equalTo: numberLabel.centerXAnchor),
-            monthBackgroundView.widthAnchor.constraint(equalToConstant: frame.width + 1),
-            monthBackgroundView.heightAnchor.constraint(equalToConstant: frame.height)
+            //monthBackgroundView.centerYAnchor.constraint(equalTo: numberLabel.centerYAnchor),
+            //monthBackgroundView.centerXAnchor.constraint(equalTo: numberLabel.centerXAnchor),
+            //monthBackgroundView.widthAnchor.constraint(equalToConstant: frame.width + 1),
+            //monthBackgroundView.heightAnchor.constraint(equalToConstant: frame.height)
         ])
          
 
         selectionBackgroundView.layer.cornerRadius = selectorSize / 2
     }
-
-    func updateSelectionStatus() {
+    
+    func style(inFuture: Bool, inNextMonth: Bool, isToday: Bool) {
+        
         guard let day = day else { return }
         
 
         if day.isSelected {
-            showSelected()
+            selectionBackgroundView.isHidden = false
+            numberLabel.textColor = Style.lightTextColor
         } else {
-            showUnselected()
-        }
-    }
-
-    func showSelected() {
-
-        //numberLabel.textColor = Style.lightColor
-        selectionBackgroundView.isHidden = false
-    }
-    
-    func showUnselected() {
-        
-        selectionBackgroundView.isHidden = true
-    }
-    
-    func style(inFuture: Bool, inNextMonth: Bool, isToday: Bool) {
-
-        if !inFuture {
-            numberLabel.textColor = .secondaryLabel
-            monthBackgroundView.backgroundColor = Style.lightColor
-            monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
-        } else if inNextMonth {
-            numberLabel.textColor = Style.darkColor
-            monthBackgroundView.backgroundColor = Style.tertiaryColor
-            monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
-        } else {
-            numberLabel.textColor = Style.darkColor
-            monthBackgroundView.backgroundColor = Style.secondaryColor
-            if isToday {
-                monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(1).cgColor
+            selectionBackgroundView.isHidden = true
+            if !inFuture {
+                numberLabel.textColor = Style.greyColor
+                //monthBackgroundView.backgroundColor = Style.lightTextColor
+                //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
+            } else if inNextMonth {
+                //monthBackgroundView.backgroundColor = Style.tertiaryColor
+                //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
             } else {
-                monthBackgroundView.layer.borderColor = Style.darkColor.withAlphaComponent(0).cgColor
+                //monthBackgroundView.backgroundColor = Style.secondaryColor
+                if isToday {
+                    //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
+                    numberLabel.textColor = Style.primaryColor
+                } else {
+                    //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
+                    numberLabel.textColor = Style.darkTextColor
+                }
             }
         }
     }

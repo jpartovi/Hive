@@ -22,10 +22,6 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         
         // This should be in an App Delegate, but there is no App Delegate in an iMessage Extension
         GMSPlacesClient.provideAPIKey(googlePlacesAPIKey)
-        
-        for duration in Duration.createDurations(min: 30, max: 240) {
-            print(duration.format())
-        }
     }
     
     // MARK: - Conversation Handling

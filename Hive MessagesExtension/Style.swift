@@ -36,12 +36,35 @@ class Style {
         )
     }
     
+    static func getColourFromPoint(point:CGPoint) -> UIColor {
+        
+        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+
+        var pixelData:[UInt8] = [0, 0, 0, 0]
+
+        let context = CGContext(data: &pixelData, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
+        context!.translateBy(x: -point.x, y: -point.y);
+        //self.layer.render(in: context!)
+
+        let red:CGFloat = CGFloat(pixelData[0])/CGFloat(255.0)
+        let green:CGFloat = CGFloat(pixelData[1])/CGFloat(255.0)
+        let blue:CGFloat = CGFloat(pixelData[2])/CGFloat(255.0)
+        let alpha:CGFloat = CGFloat(pixelData[3])/CGFloat(255.0)
+
+        let color: UIColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        return color
+    }
+    
     // Colors
     static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
-    static let secondaryColor = Style.hexStringToUIColor(hex: "fdc43f")
+    static let secondaryColor = Style.hexStringToUIColor(hex: "EED2A1")
     static let tertiaryColor = Style.hexStringToUIColor(hex: "ffda3d")
-    static let darkColor = Style.hexStringToUIColor(hex: "8E8E8E")
-    static let lightColor = UIColor.white
+    static let lightTextColor = Style.hexStringToUIColor(hex: "FFF7E8")
+    static let darkTextColor = UIColor.black //Style.hexStringToUIColor(hex: "8E8E8E")
+    static let greyColor = UIColor.lightGray
+    static let lightGreyColor = Style.hexStringToUIColor(hex: "E3E3E3")
+    //static let lightColor = UIColor.white
     static let errorColor = UIColor.red
     
     // Formating functions
@@ -74,14 +97,14 @@ class ErrorLabel: UILabel {
 
 class StyleButton: UIButton {
     
-    func style(color: UIColor, filled: Bool, roundedCornerPosition: Int) {
+    func style(color: UIColor = Style.primaryColor, filled: Bool, roundedCornerPosition: Int) {
         self.layer.cornerRadius = min(self.frame.size.height / 2.0, 20)
         self.layer.maskedCorners = RoundedCornerPosition.initWith(position: roundedCornerPosition).mask
         if filled {
             self.layer.backgroundColor = color.cgColor
-            self.tintColor = UIColor.white
+            self.tintColor = Style.lightTextColor
         } else {
-            self.layer.backgroundColor = Style.lightColor.cgColor
+            self.layer.backgroundColor = Style.secondaryColor.cgColor
             self.layer.borderWidth = 2
             self.layer.borderColor = color.cgColor
             self.tintColor = color
@@ -90,6 +113,108 @@ class StyleButton: UIButton {
     
     func embolden() {
         self.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.bold)
+    }
+}
+
+class HexButton: UIButton {
+    
+    func style(imageTag: String, width: CGFloat, height: CGFloat, textColor: UIColor, font: UIFont) {
+        self.setBackgroundImage(UIImage(named: imageTag)?.size(width: width, height: height), for: .normal)
+        self.tintColor = textColor
+        self.titleLabel?.font = font
+    }
+    
+    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        
+        print("hitTest")
+        /*
+        print(type(of: self))
+        
+        for view in self.superview!.superview!.superview!.subviews {
+            print(type(of: view))
+            for subview in view.subviews {
+                print(type(of: subview))
+                for subsubview in subview.subviews {
+                    print(type(of: subsubview))
+                    print(subsubview.tag)
+                    if subsubview.bounds.contains(point) {
+                        if type(of: subsubview) == type(of: HexButton()) {
+                            print("This one^")
+                            return self
+                        }
+                    }
+                }
+            }
+        }
+         */
+        
+        //guard let hitView = super.hitTest(point, with: event) else { return nil }
+    
+        //print(type(of: hitView))
+        
+        guard isUserInteractionEnabled else { return nil }
+        
+        guard !isHidden else { return nil }
+        
+        guard alpha > 0 else { return nil }
+        
+        guard self.point(inside: point, with: event) else { return nil }
+        
+        for subview in self.subviews.reversed() {
+            //subview.backgroundColor = Style.errorColor
+            let convertedPoint = subview.convert(point, from: self)
+            if let candidate = subview.hitTest(convertedPoint, with: event) {
+                print("candidate returned")
+                return candidate
+            }
+        }
+        
+        /*
+        if (!self.bounds.contains(point)) {
+            print("Failed")
+            return nil
+        } else {
+            let color : UIColor = Style.getColourFromPoint(point: point)
+            let alpha = color.cgColor.alpha
+            if alpha <= 0.0 {
+                print("alpha")
+                return nil
+            }
+            return self
+        }
+        */
+        return self
+    }
+}
+
+class LargeHexButton: HexButton {
+    
+    let size: CGFloat = 150
+    let textColor = Style.lightTextColor
+    let textSize = CGFloat(25)
+    
+    override func draw(_ rect: CGRect) {
+        style(imageTag: "ColorHex", width: size, height: size, textColor: textColor, font: .systemFont(ofSize: textSize))
+    }
+}
+
+class ContinueHexButton: HexButton {
+    
+    let size: CGFloat = 100
+    let textSize: CGFloat = 20
+    
+    override func draw(_ rect: CGRect) {
+        //nextStyle()
+    }
+    
+    func color(title: String = "Next") {
+        self.setTitle(title, for: .normal)
+        super.style(imageTag: "ColorHex", width: size, height: size, textColor: Style.lightTextColor, font: .systemFont(ofSize: textSize))
+    }
+    
+    func grey(title: String = "Next") {
+        self.setTitle(title, for: .normal)
+        super.style(imageTag: "GreyHex", width: size, height: size, textColor: UIColor.white, font: .systemFont(ofSize: textSize))
     }
 }
 
@@ -288,6 +413,33 @@ enum RoundedCornerPosition {
             case .topRightBottomLeft:
                 return [.layerMaxXMinYCorner, .layerMinXMaxYCorner]
         }
+    }
+}
+
+extension UIImage {
+    func size(width: CGFloat, height: CGFloat) -> UIImage {
+        let targetSize = CGSize(width: width, height: height)
+
+        // Compute the scaling ratio for the width and height separately
+        let widthScaleRatio = targetSize.width / self.size.width
+        let heightScaleRatio = targetSize.height / self.size.height
+
+        // To keep the aspect ratio, scale by the smaller scaling ratio
+        let scaleFactor = min(widthScaleRatio, heightScaleRatio)
+
+        // Multiply the original image’s dimensions by the scale factor
+        // to determine the scaled image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: self.size.width * scaleFactor,
+            height: self.size.height * scaleFactor
+        )
+
+        let renderer = UIGraphicsImageRenderer(size: scaledImageSize)
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: scaledImageSize))
+        }
+        
+        return scaledImage
     }
 }
 
