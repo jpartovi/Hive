@@ -223,7 +223,7 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
             self.event.locations.append(Location(title: input!, place: place))
             self.locationsTableView.reloadData()
             self.formatLocations()
-                                })
+        })
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
