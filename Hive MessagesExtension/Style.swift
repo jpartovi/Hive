@@ -79,7 +79,7 @@ class Style {
 
 class ErrorLabel: UILabel {
     
-    // BUG: This does not work
+    // TODO: This does not work
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect)
         
@@ -120,7 +120,7 @@ class HexButton: UIButton {
     
     func style(imageTag: String, width: CGFloat, height: CGFloat, textColor: UIColor, font: UIFont) {
         self.setBackgroundImage(UIImage(named: imageTag)?.size(width: width, height: height), for: .normal)
-        self.tintColor = textColor
+        self.setTitleColor(textColor, for: .normal)
         self.titleLabel?.font = font
     }
     

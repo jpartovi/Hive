@@ -12,28 +12,39 @@ class LocationCell: UITableViewCell {
     
     static let reuseIdentifier = String(describing: LocationCell.self)
     
-    let textField: UITextField = {
+    let titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = Style.darkTextColor
+        textField.placeholder = "Enter Location Name"
         return textField
     }()
     
-    let addressLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Style.greyColor
-        return label
+    let changeAddressButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Style.greyColor, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        return button
+    }()
+    
+    let addOrRemoveAddressButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("+ address", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        return button
     }()
     
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
+        //button.clipsToBounds = true
         button.setTitle("X", for: .normal)
         
         button.backgroundColor = Style.greyColor
-        button.tintColor = Style.lightTextColor
+        button.setTitleColor(.white, for: .normal)
         return button
     }()
     
@@ -43,8 +54,9 @@ class LocationCell: UITableViewCell {
         self.backgroundColor = Style.lightGreyColor
         self.layer.cornerRadius = self.frame.height / 2 
         
-        self.contentView.addSubview(textField)
-        self.contentView.addSubview(addressLabel)
+        self.contentView.addSubview(titleTextField)
+        self.contentView.addSubview(changeAddressButton)
+        self.contentView.addSubview(addOrRemoveAddressButton)
         self.contentView.addSubview(deleteButton)
     }
     
@@ -53,15 +65,22 @@ class LocationCell: UITableViewCell {
         let inset = CGFloat(20)
 
         NSLayoutConstraint.activate([
-            textField.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            textField.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
-            textField.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -15),
+            titleTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            titleTextField.rightAnchor.constraint(equalTo: addOrRemoveAddressButton.leftAnchor, constant: -inset),
+            titleTextField.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            titleTextField.heightAnchor.constraint(equalToConstant: 26),
+        
+            changeAddressButton.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            changeAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
+            changeAddressButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            changeAddressButton.heightAnchor.constraint(equalToConstant: 26),
             
-            addressLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            addressLabel.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
-            addressLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 15),
+            addOrRemoveAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
+            addOrRemoveAddressButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            addOrRemoveAddressButton.heightAnchor.constraint(equalToConstant: 26),
+            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: 80),
             
-            deleteButton.heightAnchor.constraint(equalToConstant: min(self.frame.height - (inset * 2), 30)),
+            deleteButton.heightAnchor.constraint(equalToConstant: 26),//min(self.frame.height - (inset * 2), 30)),
             deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor),
             deleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor)

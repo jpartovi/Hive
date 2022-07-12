@@ -87,8 +87,8 @@ enum EventType: CaseIterable {
 }
 
 struct Location {
-    let title: String
-    let place: GMSPlace
+    var title: String
+    var place: GMSPlace?
 }
 
 struct Day {

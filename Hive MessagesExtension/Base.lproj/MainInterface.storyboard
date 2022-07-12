@@ -122,8 +122,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="qpV-tG-Ws5">
-                                <rect key="frame" x="16" y="88" width="288" height="420"/>
+                                <rect key="frame" x="8" y="88" width="304" height="420"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="304" id="BmA-LK-7q5"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="SXf-Uu-ttA">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -145,8 +148,7 @@
                         <viewLayoutGuide key="safeArea" id="GoO-pN-6sG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="qpV-tG-Ws5" firstAttribute="leading" secondItem="GoO-pN-6sG" secondAttribute="leading" constant="16" id="1Gv-pG-mG7"/>
-                            <constraint firstItem="GoO-pN-6sG" firstAttribute="trailing" secondItem="qpV-tG-Ws5" secondAttribute="trailing" constant="16" id="dDj-XW-jLJ"/>
+                            <constraint firstItem="qpV-tG-Ws5" firstAttribute="centerX" secondItem="GoO-pN-6sG" secondAttribute="centerX" id="fN9-2I-k9z"/>
                             <constraint firstItem="GoO-pN-6sG" firstAttribute="bottom" secondItem="qpV-tG-Ws5" secondAttribute="bottom" constant="20" id="pLE-2d-IcU"/>
                             <constraint firstItem="qpV-tG-Ws5" firstAttribute="top" secondItem="GoO-pN-6sG" secondAttribute="top" id="yZ4-WK-bfk"/>
                         </constraints>
@@ -169,24 +171,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y6I-yE-ka8" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="144" y="438" width="32" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nD4-sK-rms" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="115" y="44" width="90" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Next"/>
-                                <connections>
-                                    <action selector="nextButtonPressed:" destination="QE8-NJ-QD1" eventType="touchUpInside" id="xTQ-s0-izS"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nD4-sK-rms">
-                                <rect key="frame" x="105.5" y="44" width="109" height="31"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Add Location"/>
+                                <state key="normal" title="Add Location"/>
                                 <connections>
                                     <action selector="addLocationButtonPressed:" destination="QE8-NJ-QD1" eventType="touchUpInside" id="HB5-Vd-U5U"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="VTZ-b7-ger">
-                                <rect key="frame" x="16" y="76" width="288" height="322"/>
+                                <rect key="frame" x="16" y="75" width="288" height="183"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationCell" id="RfJ-eD-g99" customClass="LocationCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
@@ -199,6 +193,14 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y6I-yE-ka8" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="144" y="298" width="32" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Next"/>
+                                <connections>
+                                    <action selector="continueButtonPressed:" destination="QE8-NJ-QD1" eventType="touchUpInside" id="uiE-c4-loQ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="KeY-Zv-ouz"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -210,18 +212,19 @@
                             <constraint firstItem="KeY-Zv-ouz" firstAttribute="trailing" secondItem="VTZ-b7-ger" secondAttribute="trailing" constant="16" id="RTr-IW-nCi"/>
                             <constraint firstItem="y6I-yE-ka8" firstAttribute="top" secondItem="VTZ-b7-ger" secondAttribute="bottom" constant="40" id="Uce-LH-MHT"/>
                             <constraint firstItem="nD4-sK-rms" firstAttribute="centerX" secondItem="KeY-Zv-ouz" secondAttribute="centerX" id="bS0-29-8AN"/>
-                            <constraint firstItem="KeY-Zv-ouz" firstAttribute="bottom" secondItem="y6I-yE-ka8" secondAttribute="bottom" constant="60" id="tF6-iw-kbu"/>
+                            <constraint firstItem="KeY-Zv-ouz" firstAttribute="bottom" secondItem="y6I-yE-ka8" secondAttribute="bottom" constant="200" id="tF6-iw-kbu"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
-                        <outlet property="nextButton" destination="y6I-yE-ka8" id="MlF-Nb-Jwz"/>
-                        <outlet property="selectedLocationsTableView" destination="VTZ-b7-ger" id="kdh-do-pEd"/>
+                        <outlet property="addLocationButton" destination="nD4-sK-rms" id="tyE-Jm-2Ym"/>
+                        <outlet property="continueButton" destination="y6I-yE-ka8" id="MlF-Nb-Jwz"/>
+                        <outlet property="locationsTableView" destination="VTZ-b7-ger" id="kdh-do-pEd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ybq-57-ISz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5402.898550724638" y="-1927.2321428571427"/>
+            <point key="canvasLocation" x="5406" y="-1927"/>
         </scene>
         <!--Day Selector View Controller-->
         <scene sceneID="0VY-YG-UiY">
@@ -232,7 +235,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kth-rK-qsZ" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="144" y="438" width="32" height="30"/>
+                                <rect key="frame" x="144" y="298" width="32" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Next"/>
                                 <connections>
@@ -320,7 +323,7 @@
                             <constraint firstItem="jwi-h3-VpJ" firstAttribute="trailing" secondItem="cDK-hQ-qYW" secondAttribute="trailing" constant="26.5" id="JiD-a3-zBE"/>
                             <constraint firstItem="3eq-1m-Qxa" firstAttribute="top" secondItem="cDK-hQ-qYW" secondAttribute="bottom" constant="10" id="Ngx-rw-1kg"/>
                             <constraint firstItem="Kth-rK-qsZ" firstAttribute="centerX" secondItem="jwi-h3-VpJ" secondAttribute="centerX" id="Wqk-II-UE4"/>
-                            <constraint firstItem="jwi-h3-VpJ" firstAttribute="bottom" secondItem="Kth-rK-qsZ" secondAttribute="bottom" constant="60" id="dyN-sK-MZP"/>
+                            <constraint firstItem="jwi-h3-VpJ" firstAttribute="bottom" secondItem="Kth-rK-qsZ" secondAttribute="bottom" constant="200" id="dyN-sK-MZP"/>
                             <constraint firstItem="3eq-1m-Qxa" firstAttribute="leading" secondItem="jwi-h3-VpJ" secondAttribute="leading" constant="16" id="hTo-7B-Uj3"/>
                             <constraint firstItem="cDK-hQ-qYW" firstAttribute="top" secondItem="jwi-h3-VpJ" secondAttribute="top" id="xkG-MU-tcj"/>
                         </constraints>
@@ -345,7 +348,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h92-pF-tOe" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="144" y="438" width="32" height="30"/>
+                                <rect key="frame" x="144" y="298" width="32" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Next"/>
                                 <connections>
@@ -353,7 +356,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tt7-PZ-H3T">
-                                <rect key="frame" x="16" y="145" width="288" height="253"/>
+                                <rect key="frame" x="16" y="145" width="288" height="113"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pAZ-Vf-lBM">
                                     <size key="itemSize" width="128" height="128"/>
@@ -398,7 +401,7 @@
                         <constraints>
                             <constraint firstItem="xTH-4h-8La" firstAttribute="centerX" secondItem="hop-0h-FsP" secondAttribute="centerX" id="6L1-Dv-ib2"/>
                             <constraint firstItem="hop-0h-FsP" firstAttribute="trailing" secondItem="tt7-PZ-H3T" secondAttribute="trailing" constant="16" id="DH0-D6-thw"/>
-                            <constraint firstItem="hop-0h-FsP" firstAttribute="bottom" secondItem="h92-pF-tOe" secondAttribute="bottom" constant="60" id="HA8-Wd-u0f"/>
+                            <constraint firstItem="hop-0h-FsP" firstAttribute="bottom" secondItem="h92-pF-tOe" secondAttribute="bottom" constant="200" id="HA8-Wd-u0f"/>
                             <constraint firstItem="tt7-PZ-H3T" firstAttribute="top" secondItem="xTH-4h-8La" secondAttribute="bottom" constant="8" symbolic="YES" id="KMf-Jx-CpC"/>
                             <constraint firstItem="tt7-PZ-H3T" firstAttribute="leading" secondItem="hop-0h-FsP" secondAttribute="leading" constant="16" id="Qq6-cf-l54"/>
                             <constraint firstItem="h92-pF-tOe" firstAttribute="top" secondItem="tt7-PZ-H3T" secondAttribute="bottom" constant="40" id="YCN-m8-n2v"/>

@@ -5,6 +5,12 @@
 //  Created by Jude Partovi on 7/6/22.
 //
 
+// TODO: List
+/*
+ - Allow users to easily select previously used locations
+ - Don't allow nil titles
+ */
+
 import Foundation
 import UIKit
 import GooglePlaces
@@ -16,44 +22,76 @@ class LocationsViewController: UIViewController {
     var event: Event! = nil
     lazy var locations = event.locations
     
-    var anyLocationSelected: Bool = false
+    //var anyLocationSelected: Bool = false
     
-    @IBOutlet weak var selectedLocationsTableView: UITableView!
+    var addressEditingIndex: Int? = nil
     
-    @IBOutlet weak var nextButton: ContinueHexButton!
+    var locationNamesFilled: Bool = false
+    
+    @IBOutlet weak var addLocationButton: HexButton!
+    
+    @IBOutlet weak var locationsTableView: UITableView!
+    
+    @IBOutlet weak var continueButton: ContinueHexButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        selectedLocationsTableView.dataSource = self
-        selectedLocationsTableView.delegate = self
-        selectedLocationsTableView.separatorStyle = .none
-        selectedLocationsTableView.showsVerticalScrollIndicator = false
-        selectedLocationsTableView.reloadData()
+        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, font: .systemFont(ofSize: 18))
         
-        updateNextButtonStatus()
+        locationsTableView.dataSource = self
+        locationsTableView.delegate = self
+        locationsTableView.separatorStyle = .none
+        locationsTableView.showsVerticalScrollIndicator = false
+        locationsTableView.reloadData()
+        
+        updateContinueButtonStatus()
     }
         
     @IBAction func addLocationButtonPressed(_ sender: Any) {
-        let autocompleteViewController = GMSAutocompleteViewController()
-        autocompleteViewController.delegate = self
-        navigationController?.present(autocompleteViewController, animated: true)
+        
+        locations.append(Location(title: "", place: nil))
+        locationsTableView.reloadData()
+        
+        let lastCellIndexPath = IndexPath(row: 0, section: locations.count - 1)
+        locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
+        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+        cell.titleTextField.becomeFirstResponder()
+        updateContinueButtonStatus()
+        
+        // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
     
-    func updateNextButtonStatus() {
+    func updateContinueButtonStatus() {
+        
+        locationNamesFilled = true
+        for location in locations {
+            if location.title == "" {
+                locationNamesFilled = false
+            }
+        }
         
         if locations.isEmpty {
-            anyLocationSelected = false
-            nextButton.grey(title: "Skip")
+            //anyLocationSelected = false
+            continueButton.grey(title: "Skip")
         } else {
-            anyLocationSelected = true
-            nextButton.color()
+            //anyLocationSelected = true
+            if locationNamesFilled {
+                continueButton.color()
+            } else {
+                continueButton.grey()
+            }
         }
     }
     
-    @IBAction func nextButtonPressed(_ sender: Any) {
+    @IBAction func continueButtonPressed(_ sender: Any) {
         
-        nextPage()
+        if locationNamesFilled {
+            nextPage()
+        } else {
+            // TODO: Error???
+        }
+        
     }
     
     func nextPage() {
@@ -66,31 +104,40 @@ class LocationsViewController: UIViewController {
     }
     
     @objc func deleteLocation(sender: UIButton) {
-        locations.remove(at: sender.tag)
-        selectedLocationsTableView.reloadData()
-        updateNextButtonStatus()
+        locationsTableView.reloadData()
+        let index = sender.tag
+        locations.remove(at: index)
+        locationsTableView.deleteSections(IndexSet(integer: index), with: .fade)
+        updateContinueButtonStatus()
+    }
+    
+    @objc func addOrRemoveAddress(sender: UIButton) {
+        addressEditingIndex = sender.tag
+        if locations[addressEditingIndex!].place == nil {
+            let autocompleteViewController = GMSAutocompleteViewController()
+            autocompleteViewController.delegate = self
+            navigationController?.present(autocompleteViewController, animated: true)
+        } else {
+            locations[addressEditingIndex!].place = nil
+            locationsTableView.reloadData()
+        }
+    }
+    
+    @objc func titleTextFieldDidChange(sender: UITextField) {
+        if locations.indices.contains(sender.tag) {
+            locations[sender.tag].title = sender.text ?? ""
+            updateContinueButtonStatus()
+        }
     }
 }
 
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
-        
+        locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place)
+        locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
         
-        showInputDialog(title: "Add this Location",
-                        subtitle: "Enter a name to describe this place (eg. Stacy's House)",
-                        actionTitle: "Add",
-                        cancelTitle: "Cancel",
-                        autofillText: place.name!,
-                        inputPlaceholder: "Enter name here",
-                        inputKeyboardType: .asciiCapable, actionHandler:
-                                { (input:String?) in
-            self.locations.append(Location(title: input!, place: place))
-            self.selectedLocationsTableView.reloadData()
-            self.updateNextButtonStatus()
-
-                                })
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
@@ -113,12 +160,25 @@ extension LocationsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = selectedLocationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
+        let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
         
-        cell.textField.text = locations[indexPath.section].title
-        cell.addressLabel.text = locations[indexPath.section].place.formattedAddress
+        let location = locations[indexPath.section]
+        
+        cell.titleTextField.text = location.title
+        cell.titleTextField.tag = indexPath.section
+        cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
         cell.deleteButton.tag = indexPath.section
         cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
+        cell.addOrRemoveAddressButton.tag = indexPath.section
+        cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
+        if let address = location.place?.formattedAddress {
+            cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
+            cell.changeAddressButton.isHidden = false
+            cell.changeAddressButton.setTitle(address, for: .normal)
+        } else {
+            cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
+            cell.changeAddressButton.isHidden = true
+        }
         
         return cell
     }
@@ -126,7 +186,12 @@ extension LocationsViewController: UITableViewDataSource {
 
 extension LocationsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        75
+        if locations[indexPath.section].place != nil {
+            return 86
+        } else {
+            return 50
+        }
+        
     }
     
     // Set the spacing between sections

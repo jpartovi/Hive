@@ -19,12 +19,8 @@ class ConfirmViewController: MSMessagesAppViewController {
     var pollFlag = false
     var pollMessage: MSMessage!
     
-    @IBAction func addLocationButtonPressed(_ sender: Any) {
-        
-        let autocompleteViewController = GMSAutocompleteViewController()
-        autocompleteViewController.delegate = self
-        navigationController?.present(autocompleteViewController, animated: true)
-    }
+    
+    var addressEditingIndex: Int? = nil
     
     @IBOutlet var eventTitleTextField: UITextField!
     @IBOutlet weak var locationsLabel: UILabel!
@@ -35,9 +31,7 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //print(event)
-        createDayTimePairs()
+                createDayTimePairs()
         fillEventDetails()
     }
     
@@ -67,8 +61,10 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     func formatLocations() {
         
-        print("Format Locations")
+        // TODO: This still doesn't really work going from 1 location to multiple. There should be an option to go from no locations to some.
         
+        print("Format Locations")
+        /*
         let labelHeightAnchor = locationsLabel.heightAnchor.constraint(equalToConstant: 20)
         let tableViewHeightAnchor = locationsTableView.heightAnchor.constraint(equalToConstant: 140)
         
@@ -94,6 +90,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         print(tableViewHeightAnchor.constant)
         labelHeightAnchor.isActive = true
         tableViewHeightAnchor.isActive = true
+         */
     }
     
     // When the post button is pressed
@@ -138,10 +135,47 @@ class ConfirmViewController: MSMessagesAppViewController {
         
     }
     
-    @objc func deleteLocation(sender: UIButton) {
-        event.locations.remove(at: sender.tag)
+    @IBAction func addLocationButtonPressed(_ sender: Any) {
+        event.locations.append(Location(title: "", place: nil))
         locationsTableView.reloadData()
+        
+        let lastCellIndexPath = IndexPath(row: 0, section: event.locations.count - 1)
+        print("Last Cell Index: Row: " + String(lastCellIndexPath.row) + " section: " + String(lastCellIndexPath.section))
+        locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
+        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+        cell.titleTextField.becomeFirstResponder()
         formatLocations()
+        
+        // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
+    }
+    
+    @objc func deleteLocation(sender: UIButton) {
+        locationsTableView.reloadData()
+        let index = sender.tag
+        event.locations.remove(at: index)
+        locationsTableView.deleteSections(IndexSet(integer: index), with: .fade)
+        formatLocations()
+    }
+    
+    @objc func addOrRemoveAddress(sender: UIButton) {
+        addressEditingIndex = sender.tag
+        if event.locations[addressEditingIndex!].place == nil {
+            let autocompleteViewController = GMSAutocompleteViewController()
+            autocompleteViewController.delegate = self
+            navigationController?.present(autocompleteViewController, animated: true)
+        } else {
+            event.locations[addressEditingIndex!].place = nil
+            locationsTableView.reloadData()
+        }
+    }
+    
+    @objc func locationTitleTextFieldDidChange(sender: UITextField) {
+        print(sender.tag)
+        
+        // TODO: Better way to do this?? "try"?
+        if event.locations.indices.contains(sender.tag) {
+            event.locations[sender.tag].title = sender.text ?? ""
+        }
     }
 }
 
@@ -178,10 +212,22 @@ extension ConfirmViewController: UITableViewDataSource {
             return cell
         case locationsTableView:
             let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
-            cell.textField.text = event.locations[indexPath.section].title
-            cell.addressLabel.text = event.locations[indexPath.section].place.formattedAddress
+            let location = event.locations[indexPath.section]
+            cell.titleTextField.text = location.title
+            cell.titleTextField.tag = indexPath.section
+            cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidChange(sender:)), for: .editingChanged)
             cell.deleteButton.tag = indexPath.section
             cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
+            cell.addOrRemoveAddressButton.tag = indexPath.section
+            cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
+            if let address = location.place?.formattedAddress {
+                cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
+                cell.changeAddressButton.isHidden = false
+                cell.changeAddressButton.setTitle(address, for: .normal)
+            } else {
+                cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
+                cell.changeAddressButton.isHidden = true
+            }
             return cell
         default:
             // TODO: This is not right, there should be some sort of error message here
@@ -192,7 +238,15 @@ extension ConfirmViewController: UITableViewDataSource {
 
 extension ConfirmViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        75
+        if !event.locations.isEmpty {
+            if event.locations[indexPath.section].place != nil {
+                return 86
+            } else {
+                return 50
+            }
+        } else {
+            return 50
+        }
     }
     
     // Set the spacing between sections
@@ -211,19 +265,9 @@ extension ConfirmViewController: UITableViewDelegate {
 extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
+        event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place)
+        locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
-        showInputDialog(title: "Add this Location",
-                        subtitle: "Enter a name to describe this place (eg. Stacy's House)",
-                        actionTitle: "Add",
-                        cancelTitle: "Cancel",
-                        autofillText: place.name!,
-                        inputPlaceholder: "Enter name here",
-                        inputKeyboardType: .asciiCapable, actionHandler:
-                                { (input:String?) in
-            self.event.locations.append(Location(title: input!, place: place))
-            self.locationsTableView.reloadData()
-            self.formatLocations()
-        })
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
