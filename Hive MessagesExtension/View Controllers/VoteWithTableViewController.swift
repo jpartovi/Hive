@@ -6,15 +6,21 @@
 //
 
 import UIKit
+import Messages
 
-class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataSource, UITableViewDelegate {
     
+    @IBOutlet var mainView: UIView!
     
     @IBOutlet weak var titleLabel: UILabel!
     
     @IBOutlet weak var voteTable: UITableView!
     
-    @IBOutlet weak var voteButton: StyleButton!
+    let submitButton = UIButton()
+    
+    let submitLabel = UILabel()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,13 +30,89 @@ class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITa
         //voteTable.showsVerticalScrollIndicator = false
         voteTable.reloadData()
         
+        submitButton.translatesAutoresizingMaskIntoConstraints = false
+        submitButton.clipsToBounds = true
+        submitButton.tintColor = Style.lightTextColor
+        
+        submitLabel.text = "Submit Votes"
+        submitLabel.translatesAutoresizingMaskIntoConstraints = false
+        submitLabel.textColor = Style.lightTextColor
+        submitLabel.textAlignment = .center
+        mainView.addSubview(submitButton)
+        mainView.addSubview(submitLabel)
+        
+        
+        NSLayoutConstraint.activate([ submitButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor), submitButton.topAnchor.constraint(equalTo: voteTable.bottomAnchor, constant: -30), submitButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20), /*submitButton.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.8),*/ submitButton.heightAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.4), submitLabel.centerXAnchor.constraint(equalTo: submitButton.centerXAnchor), submitLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor), submitLabel.widthAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.8), submitLabel.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.9)])
+        
+        submitButton.addTarget(self, action:#selector(pickPressed), for: UIControl.Event.touchUpInside)
+        
     }
     
-    var voteGroups = ["A", "B", "C"]
-    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"]]
-    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2]]
-    var isOpen = [false, false, false]
-    var voteSelections = [nil, nil, nil] as [Int?]
+    
+    // TODO: Load data from message URL
+    var voteGroups = ["A", "B", "C", "D (multi-select)"]
+    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
+    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
+    var isOpen = [false, false, false, false]
+    var voteSelections = [[], [], [], []] as [[Int]]
+    var multiSelectable = [false, false, false, true]
+    
+    
+    @IBAction func pickPressed(_ sender: UIButton) {
+        
+        let url = prepareVoteURL()
+        prepareMessage(url)
+        
+    }
+    
+    func prepareVoteURL() -> URL{
+        // TODO: generate URL using vote data
+        return URL(string: "https://placeholder.com")!
+    }
+    
+    func prepareMessage(_ url: URL) {
+        
+        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
+
+        //let message = MSMessage(session: (conversation.selectedMessage?.session)!)
+        let session = MSSession()
+        let message = MSMessage(session: session)
+
+        let layout = MSMessageTemplateLayout()
+        layout.caption = "Vote Placeholder"
+
+        message.layout = layout
+        message.url = url
+        
+        conversation.insert(message)
+        
+        self.requestPresentationStyle(.compact)
+    }
+    
+    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        if presentationStyle == MSMessagesAppPresentationStyle.compact {
+            
+        } else if presentationStyle == MSMessagesAppPresentationStyle.expanded {
+            
+        }
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        
+        
+        submitButton.setImage(UIImage(named: "SelectedLongHex")?.size(width: submitButton.frame.width, height: submitButton.frame.height), for: UIControl.State.selected)
+        submitButton.setImage(UIImage(named: "LongHex")?.size(width: submitButton.frame.width, height: submitButton.frame.height), for: UIControl.State.normal)
+        
+        submitLabel.font = submitLabel.font.withSize(submitLabel.frame.height * 3/10)
+
+        
+        
+    }
+    
+    
+    
+    
     
     
     
@@ -58,12 +140,17 @@ class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITa
         
         let cellView = UIView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height))
         
-        if voteSelections[indexPath.section] == indexPath.row {
-            cellView.backgroundColor = Style.secondaryColor
-            cell.voteCount.backgroundColor = Style.primaryColor
-        } else {
-            cellView.backgroundColor = Style.lightGreyColor
-            cell.voteCount.backgroundColor = Style.greyColor
+        
+        cellView.backgroundColor = Style.lightGreyColor
+        cell.voteCount.backgroundColor = Style.greyColor
+        
+        for selection in voteSelections[indexPath.section] {
+            
+            if selection == indexPath.row {
+                cellView.backgroundColor = Style.secondaryColor
+                cell.voteCount.backgroundColor = Style.primaryColor
+            }
+            
         }
         
         cell.backgroundView = cellView
@@ -71,7 +158,12 @@ class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITa
         
         cell.label.text = voteItems[indexPath.section][indexPath.row]
         cell.counter.text = String(voteTallies[indexPath.section][indexPath.row])
-        cell.voteCount.frame.size.width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteTallies[indexPath.section].max()!) * cell.contentView.frame.width * 3/5
+        
+        let voteMax = voteTallies.reduce(0, {x, y in max(x, y.max()!)})
+        
+        
+        cell.voteCount.frame.size.width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * mainView.frame.width * 2/3
+        
         cell.voteCount.frame.size.height = cell.contentView.frame.height
         cell.voteCount.layer.cornerRadius = cell.voteCount.frame.height/2
         return cell
@@ -100,12 +192,39 @@ class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITa
         headerString.text = voteGroups[section]
         headerView.addSubview(headerString)
         
-        if let selection = voteSelections[section] {
-            let headerSelection = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-20, height: 30))
-            headerSelection.text = voteItems[section][selection]
-            headerSelection.textAlignment = NSTextAlignment.right
-            headerView.addSubview(headerSelection)
+        
+        let headerSelection = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-20, height: 30))
+        
+        if multiSelectable[section] {
+            
+            var tempText = ""
+            
+            var firstItem = true
+            
+            for (vIndex, voteItem) in
+                    voteItems[section].enumerated() {
+                
+                if voteSelections[section].contains(vIndex) {
+                    
+                    if firstItem {
+                        tempText = voteItem
+                        firstItem = false
+                    } else {
+                        tempText = tempText + ", " + voteItem
+                    }
+                    
+                }
+                
+            }
+            
+            headerSelection.text = tempText
+            
+        } else if voteSelections[section] != [] {
+            headerSelection.text = voteItems[section][voteSelections[section][0]]
         }
+        
+        headerSelection.textAlignment = NSTextAlignment.right
+        headerView.addSubview(headerSelection)
         
         let headerTapped = UITapGestureRecognizer(target: self, action:#selector(sectionHeaderTapped))
         headerView.addGestureRecognizer(headerTapped)
@@ -128,99 +247,27 @@ class VoteWithTableViewController: UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if voteSelections[indexPath.section] == indexPath.row {
-            voteSelections[indexPath.section] = nil
+        if voteSelections[indexPath.section].contains(indexPath.row) {
+            
+            voteSelections[indexPath.section] = voteSelections[indexPath.section].filter {$0 != indexPath.row}
+            
             voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] - 1
         } else {
             
-            if voteSelections[indexPath.section] != nil {
-                voteTallies[indexPath.section][voteSelections[indexPath.section]!] = voteTallies[indexPath.section][voteSelections[indexPath.section]!] - 1
+            if !multiSelectable[indexPath.section] && voteSelections[indexPath.section] != [] {
+                
+                voteTallies[indexPath.section][voteSelections[indexPath.section][0]] = voteTallies[indexPath.section][voteSelections[indexPath.section][0]] - 1
+                
+                voteSelections[indexPath.section] = []
+                
+                
             }
             
-            voteSelections[indexPath.section] = indexPath.row
+            voteSelections[indexPath.section].append(indexPath.row)
             voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
         }
         
-        let range = NSMakeRange(indexPath.section, 1)
-        let sectionToReload = NSIndexSet(indexesIn: range)
-        voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
-        
-        
-        
+        voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
     }
     
-    
-    
-    
-    
-    /*let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 80))
-    headerView.backgroundColor = Style.greyColor
-    headerView.tag = section
-    
-    let submitButton: UIButton = {
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 80))
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.clipsToBounds = true
-        button.setImage(UIImage(named: "SelectedLongHex")?.size(width: button.frame.width, height: button.frame.height), for: UIControl.State.selected)
-        button.setImage(UIImage(named: "LongHex")?.size(width: button.frame.width, height: button.frame.height), for: UIControl.State.normal)
-        button.backgroundColor = Style.greyColor
-        button.tintColor = Style.lightTextColor
-        return button
-    }()
-    
-    let submitLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Submit Votes"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Style.lightTextColor
-        return label
-    }()
-    
-    headerView.addSubview(submitButton)
-    headerView.addSubview(submitLabel)*/
-    
-    
-    
-    
-
 }
-
-
-
-/*if trueSection == -1 {
- let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 80))
- headerView.backgroundColor = Style.greyColor
- headerView.tag = section
- 
- let submitButton: UIButton = {
-     let button = UIButton(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 80))
-     button.translatesAutoresizingMaskIntoConstraints = false
-     button.clipsToBounds = true
-     button.setImage(UIImage(named: "SelectedLongHex")?.size(width: button.frame.width, height: button.frame.height), for: UIControl.State.selected)
-     button.setImage(UIImage(named: "LongHex")?.size(width: button.frame.width, height: button.frame.height), for: UIControl.State.normal)
-     button.backgroundColor = Style.greyColor
-     button.tintColor = Style.lightTextColor
-     return button
- }()
- 
- let submitLabel: UILabel = {
-     let label = UILabel()
-     label.text = "Submit Votes"
-     label.translatesAutoresizingMaskIntoConstraints = false
-     label.textColor = Style.lightTextColor
-     return label
- }()
- 
- headerView.addSubview(submitButton)
- headerView.addSubview(submitLabel)
- 
- NSLayoutConstraint.activate([
-     submitButton.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-     submitButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-     submitLabel.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-     submitLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
- ])
- 
- return headerView
- 
-}*/
