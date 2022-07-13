@@ -18,39 +18,60 @@ class StartEventViewController: MSMessagesAppViewController {
     
     @IBOutlet weak var typesCollectionView: UICollectionView!
     
+    let hexBordersCollectionView: UICollectionView = {
+        let layout = HexLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = -30
+        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 130, height: 150)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: layout)
+        collectionView.register(HexBorderCell.self, forCellWithReuseIdentifier: HexBorderCell.reuseIdentifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpTypesCollectionView()
-        /*
-        print("Subviews:")
-        printSubviews(view: self.view)
-        print("Done")
-         */
+        setUpHexCollection()
+        
     }
-    
-    func printSubviews(view: UIView, indentation: Int = 0) {
-        for subview in view.subviews {
-            print(String(repeating: "=", count: (3 * indentation)))
-            print(type(of: subview))
-            if !subview.subviews.isEmpty {
-                printSubviews(view: subview, indentation: indentation + 1)
-            }
-        }
-    }
-    
-    func setUpTypesCollectionView() {
+
+    func setUpHexCollection() {
         typesCollectionView.dataSource = self
         typesCollectionView.delegate = self
-        let layout = HexLayout()
         
+        let layout = HexLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = -30
         layout.minimumLineSpacing = 10
         layout.itemSize = CGSize(width: 130, height: 150)
         typesCollectionView.collectionViewLayout = layout
+        typesCollectionView.backgroundColor = UIColor.clear.withAlphaComponent(0)
         typesCollectionView.reloadData()
+        
+        view.addSubview(hexBordersCollectionView)
+        
+        view.sendSubviewToBack(hexBordersCollectionView)
+        hexBordersCollectionView.dataSource = self
+        hexBordersCollectionView.delegate = self
+        
+        hexBordersCollectionView.reloadData()
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        NSLayoutConstraint.activate([
+            hexBordersCollectionView.topAnchor.constraint(equalTo: typesCollectionView.topAnchor),
+            hexBordersCollectionView.bottomAnchor.constraint(equalTo: typesCollectionView.bottomAnchor),
+            hexBordersCollectionView.leftAnchor.constraint(equalTo: typesCollectionView.leftAnchor),
+            hexBordersCollectionView.rightAnchor.constraint(equalTo: typesCollectionView.rightAnchor),
+            
+        ])
+
+    }
+
     
     func nextPage(type: EventType) {
         
@@ -63,9 +84,8 @@ class StartEventViewController: MSMessagesAppViewController {
     }
     
     @objc func hexTapped(sender: UIButton) {
-        print(types[sender.tag].defaultTitle())
         
-        //typesCollectionView.bringSubviewToFront(typesCollectionView.cellForItem(at: IndexPath(index: sender.tag))!)
+        //print(types[sender.tag].defaultTitle())
         nextPage(type: types[sender.tag])
     }
 }
@@ -77,30 +97,21 @@ extension StartEventViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeCell.reuseIdentifier, for: indexPath) as! EventTypeCell
-        
-        cell.hexButton.setTitle(types[indexPath.row].defaultTitle(), for: .normal)
-        cell.hexButton.tag = indexPath.row
-        cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
-        
-        //typesCollectionView.bringSubviewToFront(typesCollectionView.cellForItem(at: IndexPath(index: sender.tag))!)
-        typesCollectionView.sendSubviewToBack(cell)
-        /*
-        let hexBorder: UIImageView = {
-            let imageView = UIImageView()
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.image = UIImage(named: "HexBorder")?.size(width: 130, height: 150)
-            return imageView
-        }()
-        
-        cell.sub.addSubview(hexBorder)
-        
-        NSLahexBorder    UIImageView    0x00007fc068214b40youtConstraint.activate([
-            hexBorder.centerXAnchor.constraint(equalTo: cell.centerXAnchor),
-            hexBorder.centerYAnchor.constraint(equalTo: cell.centerYAnchor)
-        ])
-        */
-        return cell
+        switch collectionView {
+        case typesCollectionView:
+            let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeHexCell.reuseIdentifier, for: indexPath) as! EventTypeHexCell
+
+            cell.hexButton.setTitle(types[indexPath.row].defaultTitle(), for: .normal)
+            cell.hexButton.tag = indexPath.row
+            cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
+    
+            return cell
+        case hexBordersCollectionView:
+            let cell = hexBordersCollectionView.dequeueReusableCell(withReuseIdentifier: HexBorderCell.reuseIdentifier, for: indexPath) as! HexBorderCell
+            return cell
+        default:
+            return UICollectionViewCell()
+        }
     }
 }
 
@@ -134,14 +145,15 @@ extension StartEventViewController: UICollectionViewDelegateFlowLayout {
 
 class HexLayout: UICollectionViewFlowLayout {
     
-    let cellWidth = CGFloat(130)
-    let cellHeight = CGFloat(150)
+    lazy var cellWidth = self.itemSize.width
+    lazy var cellHeight = self.itemSize.height
     let xOverlap = CGFloat(14)
     let yOverlap = CGFloat(53)
+    let insets = CGFloat(14)
     
-    lazy var offset: CGFloat = (cellWidth - xOverlap) / 2
-
-    var cellPadding: CGFloat = 0
+    lazy var cellPadding = insets
+    
+    lazy var offset: CGFloat = (cellWidth - xOverlap) / 2 //+ insets
 
     var cache = [UICollectionViewLayoutAttributes]()
 
@@ -185,7 +197,6 @@ class HexLayout: UICollectionViewFlowLayout {
             // Calculate insetFrame that can be set to the attribute
             let frame = CGRect(x: xOffset[row] + columnOffest, y: yOffset[row], width: cellWidth, height: cellHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
-
             // Create an instance of UICollectionViewLayoutAttribute, sets its frame using insetFrame and appends the attributes to cache.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             attributes.frame = insetFrame
@@ -220,3 +231,61 @@ protocol StartEventViewControllerDelegate: AnyObject {
   func didFinishTask(sender: StartEventViewController)
 }
 
+class EventTypeHexCell: UICollectionViewCell {
+    
+    static let reuseIdentifier = String(describing: EventTypeHexCell.self)
+    
+    let hexButton: HexButton = {
+        let button = HexButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.style(imageTag: "HexFill", width: 100, height: 116, textColor: Style.lightTextColor, font: .systemFont(ofSize: 20))
+        return button
+    }()
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.contentView.addSubview(hexButton)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        NSLayoutConstraint.activate([
+            hexButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            hexButton.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+}
+
+class HexBorderCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: HexBorderCell.self)
+    
+    let hexBorder: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "HexBorder")?.size(width: 130, height: 150)
+        imageView.clipsToBounds = false
+        return imageView
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        
+        self.contentView.addSubview(hexBorder)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        NSLayoutConstraint.activate([
+            hexBorder.centerXAnchor.constraint(equalTo: centerXAnchor),
+            hexBorder.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+    }
+}

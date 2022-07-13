@@ -24,6 +24,8 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     @IBOutlet var eventTitleTextField: UITextField!
     @IBOutlet weak var locationsLabel: UILabel!
+    @IBOutlet weak var addLocationButton: UIButton!
+    @IBOutlet weak var firstLocationButton: HexButton!
     @IBOutlet weak var locationsTableView: UITableView!
     @IBOutlet weak var dayTimePairsLabel: UILabel!
     @IBOutlet weak var dayTimePairsTableView: UITableView!
@@ -31,7 +33,9 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                createDayTimePairs()
+        
+        firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, font: .systemFont(ofSize: 18))
+        createDayTimePairs()
         fillEventDetails()
     }
     
@@ -60,37 +64,14 @@ class ConfirmViewController: MSMessagesAppViewController {
     }
     
     func formatLocations() {
-        
-        // TODO: This still doesn't really work going from 1 location to multiple. There should be an option to go from no locations to some.
-        
-        print("Format Locations")
-        /*
-        let labelHeightAnchor = locationsLabel.heightAnchor.constraint(equalToConstant: 20)
-        let tableViewHeightAnchor = locationsTableView.heightAnchor.constraint(equalToConstant: 140)
-        
+      
         if event.locations.isEmpty {
-            locationsLabel.isHidden = true
-            labelHeightAnchor.constant = 0
-            tableViewHeightAnchor.constant = 0
-        } else if event.locations.count == 1 {
-            labelHeightAnchor.constant = 20
-            locationsTableView.isHidden = true
-            tableViewHeightAnchor.constant = 0
-            locationsLabel.isHidden = false
-            locationsLabel.text = "Location: " + event.locations[0].title
+            firstLocationButton.isHidden = false
+            addLocationButton.isHidden = true
         } else {
-            labelHeightAnchor.constant = 20
-            tableViewHeightAnchor.constant = 140
-            locationsLabel.isHidden = false
-            locationsLabel.text = "Location Options:"
+            firstLocationButton.isHidden = true
+            addLocationButton.isHidden = false
         }
-        
-        
-        print(labelHeightAnchor.constant)
-        print(tableViewHeightAnchor.constant)
-        labelHeightAnchor.isActive = true
-        tableViewHeightAnchor.isActive = true
-         */
     }
     
     // When the post button is pressed

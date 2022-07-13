@@ -36,26 +36,6 @@ class Style {
         )
     }
     
-    static func getColourFromPoint(point:CGPoint) -> UIColor {
-        
-        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
-        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
-
-        var pixelData:[UInt8] = [0, 0, 0, 0]
-
-        let context = CGContext(data: &pixelData, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
-        context!.translateBy(x: -point.x, y: -point.y);
-        //self.layer.render(in: context!)
-
-        let red:CGFloat = CGFloat(pixelData[0])/CGFloat(255.0)
-        let green:CGFloat = CGFloat(pixelData[1])/CGFloat(255.0)
-        let blue:CGFloat = CGFloat(pixelData[2])/CGFloat(255.0)
-        let alpha:CGFloat = CGFloat(pixelData[3])/CGFloat(255.0)
-
-        let color: UIColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
-        return color
-    }
-    
     // Colors
     static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
     static let secondaryColor = Style.hexStringToUIColor(hex: "EED2A1")
@@ -124,57 +104,35 @@ class HexButton: UIButton {
         self.titleLabel?.font = font
     }
     
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    func getColourFromPoint(point:CGPoint) -> UIColor {
         
-        print("hitTest")
-        /*
-        print(type(of: self))
-        
-        for view in self.superview!.superview!.superview!.subviews {
-            print(type(of: view))
-            for subview in view.subviews {
-                print(type(of: subview))
-                for subsubview in subview.subviews {
-                    print(type(of: subsubview))
-                    print(subsubview.tag)
-                    if subsubview.bounds.contains(point) {
-                        if type(of: subsubview) == type(of: HexButton()) {
-                            print("This one^")
-                            return self
-                        }
-                    }
-                }
-            }
-        }
-         */
-        
-        //guard let hitView = super.hitTest(point, with: event) else { return nil }
+        let colorSpace:CGColorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+
+        var pixelData:[UInt8] = [0, 0, 0, 0]
+
+        let context = CGContext(data: &pixelData, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
+        context!.translateBy(x: -point.x, y: -point.y);
+        self.layer.render(in: context!)
+
+        let red:CGFloat = CGFloat(pixelData[0])/CGFloat(255.0)
+        let green:CGFloat = CGFloat(pixelData[1])/CGFloat(255.0)
+        let blue:CGFloat = CGFloat(pixelData[2])/CGFloat(255.0)
+        let alpha:CGFloat = CGFloat(pixelData[3])/CGFloat(255.0)
+
+        let color: UIColor = UIColor(red: red, green: green, blue: blue, alpha: alpha)
+        return color
+    }
+
     
-        //print(type(of: hitView))
+    internal override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
-        guard isUserInteractionEnabled else { return nil }
-        
-        guard !isHidden else { return nil }
-        
-        guard alpha > 0 else { return nil }
-        
-        guard self.point(inside: point, with: event) else { return nil }
-        
-        for subview in self.subviews.reversed() {
-            //subview.backgroundColor = Style.errorColor
-            let convertedPoint = subview.convert(point, from: self)
-            if let candidate = subview.hitTest(convertedPoint, with: event) {
-                print("candidate returned")
-                return candidate
-            }
-        }
-        
-        /*
         if (!self.bounds.contains(point)) {
             print("Failed")
             return nil
         } else {
-            let color : UIColor = Style.getColourFromPoint(point: point)
+            let color : UIColor = getColourFromPoint(point: point)
+            print(color)
             let alpha = color.cgColor.alpha
             if alpha <= 0.0 {
                 print("alpha")
@@ -182,8 +140,6 @@ class HexButton: UIButton {
             }
             return self
         }
-        */
-        return self
     }
 }
 

@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = ""
+//#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
 
 extension UIViewController {
     func showInputDialog(title:String? = nil,
@@ -47,4 +47,10 @@ extension UIScrollView {
      let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
      self.setContentOffset(bottomOffset, animated: animated)
   }
+}
+
+extension Float {
+    var clean: String {
+       return self.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", self) : String(self)
+    }
 }
