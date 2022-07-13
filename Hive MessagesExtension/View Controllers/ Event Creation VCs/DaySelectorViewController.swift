@@ -15,6 +15,7 @@ class DaySelectorViewController: UIViewController {
     var event: Event! = nil
     lazy var selectedDays = event.days
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var weekDayLabels: UIStackView!
     
     func nextPage() {
@@ -51,6 +52,10 @@ class DaySelectorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addHexFooter()
+        
+        promptLabel.style(text: "Which day(s) might work?")
         
         underlineWeekDayLabels()
         

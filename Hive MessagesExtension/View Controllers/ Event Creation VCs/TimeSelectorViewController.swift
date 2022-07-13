@@ -22,8 +22,15 @@ class TimeSelectorViewController: UIViewController {
     lazy var durations = event.type.getDurations()
     var selectedDuration: Duration? = nil
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var durationPicker: UIPickerView!
+    @IBOutlet weak var durationView: UIStackView!
+    @IBOutlet weak var includeDurationButton: UIButton!
     
+    @IBAction func includeDurationButtonPressed(_ sender: Any) {
+        includeDurationButton.isHidden = true
+        durationView.isHidden = false
+    }
     @IBOutlet weak var startTimesCollectionView: UICollectionView!
     let cellsPerRow = 2
     let rows = 3
@@ -35,6 +42,11 @@ class TimeSelectorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addHexFooter()
+        
+        durationView.isHidden = true
+        
+        promptLabel.style(text: "What time(s) might this event start?")
         durationPicker.dataSource = self
         durationPicker.delegate = self
         

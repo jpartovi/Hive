@@ -32,8 +32,7 @@ class LocationCell: UITableViewCell {
     let addOrRemoveAddressButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("+ address", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Style.primaryColor, for: .normal)
         return button
     }()
     

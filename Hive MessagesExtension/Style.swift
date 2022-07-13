@@ -39,13 +39,19 @@ class Style {
     // Colors
     static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
     static let secondaryColor = Style.hexStringToUIColor(hex: "EED2A1")
-    static let tertiaryColor = Style.hexStringToUIColor(hex: "ffda3d")
+    static let tertiaryColor = Style.hexStringToUIColor(hex: "6798C5")
     static let lightTextColor = Style.hexStringToUIColor(hex: "FFF7E8")
     static let darkTextColor = UIColor.black //Style.hexStringToUIColor(hex: "8E8E8E")
     static let greyColor = UIColor.lightGray
     static let lightGreyColor = Style.hexStringToUIColor(hex: "E3E3E3")
     //static let lightColor = UIColor.white
     static let errorColor = UIColor.red
+    
+    // Font
+    static func font(size: CGFloat = 18) -> UIFont {
+        let font = UIFont(name: "Helvetica", size: size)!
+        return font
+    }
     
     // Formating functions
     static func styleTextFieldAndLabel(_ textField: UITextField,_ label: UILabel) {
@@ -56,6 +62,8 @@ class Style {
         textField.layer.addSublayer(bottomLine)
     }
 }
+
+
 
 class ErrorLabel: UILabel {
     
@@ -72,6 +80,15 @@ class ErrorLabel: UILabel {
     func showMessage(message: String) {
         self.text = message
         self.alpha = 1
+    }
+}
+
+class StyleLabel: UILabel {
+    func style(text: String, textColor: UIColor = Style.tertiaryColor, fontSize: CGFloat = 30) {
+        self.text = text
+        self.textColor = textColor
+        self.font = Style.font(size: fontSize)
+        self.numberOfLines = 0
     }
 }
 
@@ -98,10 +115,10 @@ class StyleButton: UIButton {
 
 class HexButton: UIButton {
     
-    func style(imageTag: String, width: CGFloat, height: CGFloat, textColor: UIColor, font: UIFont) {
+    func style(imageTag: String = "ColorHex", width: CGFloat, height: CGFloat, textColor: UIColor = Style.lightTextColor, fontSize: CGFloat = 18) {
         self.setBackgroundImage(UIImage(named: imageTag)?.size(width: width, height: height), for: .normal)
         self.setTitleColor(textColor, for: .normal)
-        self.titleLabel?.font = font
+        self.titleLabel?.font = Style.font(size: fontSize)
     }
     
     func getColourFromPoint(point:CGPoint) -> UIColor {
@@ -128,14 +145,12 @@ class HexButton: UIButton {
     internal override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
         if (!self.bounds.contains(point)) {
-            print("Failed")
             return nil
         } else {
             let color : UIColor = getColourFromPoint(point: point)
             print(color)
             let alpha = color.cgColor.alpha
             if alpha <= 0.0 {
-                print("alpha")
                 return nil
             }
             return self
@@ -146,11 +161,10 @@ class HexButton: UIButton {
 class LargeHexButton: HexButton {
     
     let size: CGFloat = 150
-    let textColor = Style.lightTextColor
-    let textSize = CGFloat(25)
+    let textSize: CGFloat = 25
     
     override func draw(_ rect: CGRect) {
-        style(imageTag: "ColorHex", width: size, height: size, textColor: textColor, font: .systemFont(ofSize: textSize))
+        style(imageTag: "ColorHex", width: size, height: size, fontSize: textSize)
     }
 }
 
@@ -165,12 +179,12 @@ class ContinueHexButton: HexButton {
     
     func color(title: String = "Next") {
         self.setTitle(title, for: .normal)
-        super.style(imageTag: "ColorHex", width: size, height: size, textColor: Style.lightTextColor, font: .systemFont(ofSize: textSize))
+        super.style(imageTag: "ColorHex", width: size, height: size, fontSize: textSize)
     }
     
     func grey(title: String = "Next") {
         self.setTitle(title, for: .normal)
-        super.style(imageTag: "GreyHex", width: size, height: size, textColor: UIColor.white, font: .systemFont(ofSize: textSize))
+        super.style(imageTag: "GreyHex", width: size, height: size, textColor: UIColor.white, fontSize: textSize)
     }
 }
 

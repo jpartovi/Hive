@@ -28,6 +28,7 @@ class LocationsViewController: UIViewController {
     
     var locationNamesFilled: Bool = false
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: HexButton!
     
     @IBOutlet weak var locationsTableView: UITableView!
@@ -37,7 +38,11 @@ class LocationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, font: .systemFont(ofSize: 18))
+        addHexFooter()
+        
+        promptLabel.style(text: "Do you know where you want to host?")
+        
+        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         
         locationsTableView.dataSource = self
         locationsTableView.delegate = self

@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-//#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
+#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = ""
 
 extension UIViewController {
     func showInputDialog(title:String? = nil,
@@ -38,6 +38,14 @@ extension UIViewController {
         alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func addHexFooter() {
+        let footerImage = UIImage(named: "HexFooter")?.size(width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        let footerImageView = UIImageView( image: footerImage)
+        footerImageView.frame = CGRect(x: 0, y: self.view.frame.height - self.view.frame.width * 0.34, width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        self.view.addSubview(footerImageView)
+        self.view.sendSubviewToBack(footerImageView)
     }
 }
 

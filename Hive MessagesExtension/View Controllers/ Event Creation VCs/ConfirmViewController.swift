@@ -34,9 +34,23 @@ class ConfirmViewController: MSMessagesAppViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, font: .systemFont(ofSize: 18))
+        styleEventTitleTextField()
+        
+        firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         createDayTimePairs()
         fillEventDetails()
+    }
+    
+    func styleEventTitleTextField() {
+        
+        eventTitleTextField.borderStyle = .none
+        eventTitleTextField.font = Style.font(size: 30)
+        eventTitleTextField.textColor = Style.tertiaryColor
+        let underlineThickness = CGFloat(2)
+        let underline = CALayer()
+        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: view.frame.width - 32, height: underlineThickness)
+        underline.backgroundColor = Style.tertiaryColor.cgColor
+        eventTitleTextField.layer.addSublayer(underline)
     }
     
     func createDayTimePairs() {
