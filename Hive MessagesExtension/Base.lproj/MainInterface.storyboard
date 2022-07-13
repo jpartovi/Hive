@@ -626,6 +626,63 @@
             </objects>
             <point key="canvasLocation" x="4136" y="-1928"/>
         </scene>
+        <!--Vote With Table View Controller-->
+        <scene sceneID="8EI-M3-oUD">
+            <objects>
+                <viewController storyboardIdentifier="VoteWithTableViewController" id="eBB-1l-hDV" customClass="VoteWithTableViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="eQk-0B-b2N">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="bs5-xC-yDN">
+                                <rect key="frame" x="0.0" y="82" width="320" height="295"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="DlX-rd-stk" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="320" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DlX-rd-stk" id="4k8-4K-4rZ">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nn1-p8-Da5">
+                                <rect key="frame" x="120" y="34" width="80" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKr-uj-zti" userLabel="Vote" customClass="StyleButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="144" y="420" width="32" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Vote"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="0k4-TN-AYI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="BKr-uj-zti" firstAttribute="centerX" secondItem="0k4-TN-AYI" secondAttribute="centerX" id="2yU-or-g5o"/>
+                            <constraint firstItem="nn1-p8-Da5" firstAttribute="centerX" secondItem="0k4-TN-AYI" secondAttribute="centerX" id="8Rk-bg-2bK"/>
+                            <constraint firstItem="bs5-xC-yDN" firstAttribute="centerX" secondItem="0k4-TN-AYI" secondAttribute="centerX" id="EkE-nI-MKM"/>
+                            <constraint firstItem="BKr-uj-zti" firstAttribute="top" secondItem="bs5-xC-yDN" secondAttribute="bottom" constant="43" id="JWp-mS-Z85"/>
+                            <constraint firstItem="bs5-xC-yDN" firstAttribute="width" secondItem="eQk-0B-b2N" secondAttribute="width" id="aTF-MT-snB"/>
+                            <constraint firstItem="0k4-TN-AYI" firstAttribute="top" secondItem="nn1-p8-Da5" secondAttribute="top" constant="10" id="gsb-P2-Fp8"/>
+                            <constraint firstItem="bs5-xC-yDN" firstAttribute="top" secondItem="nn1-p8-Da5" secondAttribute="bottom" constant="27" id="mPa-IS-HtZ"/>
+                            <constraint firstItem="0k4-TN-AYI" firstAttribute="bottom" secondItem="BKr-uj-zti" secondAttribute="bottom" constant="78" id="xeg-BC-k08"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="titleLabel" destination="nn1-p8-Da5" id="3Wr-eB-V52"/>
+                        <outlet property="voteButton" destination="BKr-uj-zti" id="CCI-19-k3O"/>
+                        <outlet property="voteTable" destination="bs5-xC-yDN" id="zWJ-jr-T7z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eMQ-p3-I5D" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2489.8550724637685" y="-927.45535714285711"/>
+        </scene>
     </scenes>
     <color key="tintColor" red="0.87450980392156863" green="0.62352941176470589" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
