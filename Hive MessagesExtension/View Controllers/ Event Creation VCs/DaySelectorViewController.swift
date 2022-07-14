@@ -5,6 +5,8 @@
 //  Created by Jude Partovi on 6/21/22.
 //
 
+// TODO: Design questions: Should the calendar start on monday and end on sunday? or stay how it is? Benefit of this is that there are no cutoff weekends. Also, should the weekends be highlighted?
+
 import Foundation
 import UIKit
 
@@ -15,15 +17,22 @@ class DaySelectorViewController: UIViewController {
     var event: Event! = nil
     lazy var selectedDays = event.days
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var weekDayLabels: UIStackView!
     
     func nextPage() {
         
         event?.days = selectedDays
+        if event.type == .allDay {
+            let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
+            confirmVC.event = event
+            self.navigationController?.pushViewController(confirmVC, animated: true)
+        } else {
+            let timeSelectorVC = (storyboard?.instantiateViewController(withIdentifier: TimeSelectorViewController.storyboardID) as? TimeSelectorViewController)!
+            timeSelectorVC.event = event
+            self.navigationController?.pushViewController(timeSelectorVC, animated: true)
+        }
         
-        let timeSelectorVC = (storyboard?.instantiateViewController(withIdentifier: TimeSelectorViewController.storyboardID) as? TimeSelectorViewController)!
-        timeSelectorVC.event = event
-        self.navigationController?.pushViewController(timeSelectorVC, animated: true)
     }
     
     var anyDaySelected: Bool = false
@@ -51,6 +60,10 @@ class DaySelectorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        addHexFooter()
+        
+        promptLabel.style(text: "Which day(s) might work?")
         
         underlineWeekDayLabels()
         

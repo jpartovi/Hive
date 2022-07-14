@@ -16,6 +16,7 @@ class StartEventViewController: MSMessagesAppViewController {
     
     let types = EventType.allCases
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var typesCollectionView: UICollectionView!
     
     let hexBordersCollectionView: UICollectionView = {
@@ -32,6 +33,8 @@ class StartEventViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        promptLabel.style(text: "What kind of event are you hosting?")
         
         setUpHexCollection()
         
@@ -101,7 +104,7 @@ extension StartEventViewController: UICollectionViewDataSource {
         case typesCollectionView:
             let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeHexCell.reuseIdentifier, for: indexPath) as! EventTypeHexCell
 
-            cell.hexButton.setTitle(types[indexPath.row].defaultTitle(), for: .normal)
+            cell.hexButton.setTitle(types[indexPath.row].label(), for: .normal)
             cell.hexButton.tag = indexPath.row
             cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
     
@@ -238,7 +241,7 @@ class EventTypeHexCell: UICollectionViewCell {
     let hexButton: HexButton = {
         let button = HexButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.style(imageTag: "HexFill", width: 100, height: 116, textColor: Style.lightTextColor, font: .systemFont(ofSize: 20))
+        button.style(imageTag: "HexFill", width: 100, height: 116, fontSize: 20)
         return button
     }()
     

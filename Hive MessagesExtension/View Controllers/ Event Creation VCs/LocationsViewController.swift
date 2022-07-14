@@ -28,6 +28,7 @@ class LocationsViewController: UIViewController {
     
     var locationNamesFilled: Bool = false
     
+    @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: HexButton!
     
     @IBOutlet weak var locationsTableView: UITableView!
@@ -37,7 +38,11 @@ class LocationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, font: .systemFont(ofSize: 18))
+        addHexFooter()
+        
+        promptLabel.style(text: "Do you know where you want to host?")
+        
+        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         
         locationsTableView.dataSource = self
         locationsTableView.delegate = self
@@ -53,7 +58,7 @@ class LocationsViewController: UIViewController {
         locations.append(Location(title: "", place: nil))
         locationsTableView.reloadData()
         
-        let lastCellIndexPath = IndexPath(row: 0, section: locations.count - 1)
+        let lastCellIndexPath = IndexPath(row: locations.count - 1, section: 0)
         locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
         let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
         cell.titleTextField.becomeFirstResponder()
@@ -107,7 +112,7 @@ class LocationsViewController: UIViewController {
         locationsTableView.reloadData()
         let index = sender.tag
         locations.remove(at: index)
-        locationsTableView.deleteSections(IndexSet(integer: index), with: .fade)
+        locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         updateContinueButtonStatus()
     }
     
@@ -123,6 +128,7 @@ class LocationsViewController: UIViewController {
         }
     }
     
+    // TODO: Shouldn't they all just be saved when done is pressed? more efficient
     @objc func titleTextFieldDidChange(sender: UITextField) {
         if locations.indices.contains(sender.tag) {
             locations[sender.tag].title = sender.text ?? ""
@@ -151,10 +157,6 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
 
 extension LocationsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
         locations.count
     }
     
@@ -162,14 +164,14 @@ extension LocationsViewController: UITableViewDataSource {
         
         let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
         
-        let location = locations[indexPath.section]
+        let location = locations[indexPath.row]
         
         cell.titleTextField.text = location.title
-        cell.titleTextField.tag = indexPath.section
+        cell.titleTextField.tag = indexPath.row
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
-        cell.deleteButton.tag = indexPath.section
+        cell.deleteButton.tag = indexPath.row
         cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
-        cell.addOrRemoveAddressButton.tag = indexPath.section
+        cell.addOrRemoveAddressButton.tag = indexPath.row
         cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
         if let address = location.place?.formattedAddress {
             cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
@@ -182,28 +184,26 @@ extension LocationsViewController: UITableViewDataSource {
         
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let verticalPadding: CGFloat = 8
+
+        let maskLayer = CALayer()
+        maskLayer.cornerRadius = LocationCell.cornerRadius
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+        cell.layer.mask = maskLayer
+    }
 }
 
 extension LocationsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if locations[indexPath.section].place != nil {
+        if locations[indexPath.row].place != nil {
             return 86
         } else {
             return 50
         }
         
-    }
-    
-    // Set the spacing between sections
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        0
-    }
-     
-    // Make the background color show through
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
     }
 }
 

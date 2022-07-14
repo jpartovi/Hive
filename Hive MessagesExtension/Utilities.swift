@@ -39,6 +39,14 @@ extension UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func addHexFooter() {
+        let footerImage = UIImage(named: "HexFooter")?.size(width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        let footerImageView = UIImageView( image: footerImage)
+        footerImageView.frame = CGRect(x: 0, y: self.view.frame.height - self.view.frame.width * 0.34, width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        self.view.addSubview(footerImageView)
+        self.view.sendSubviewToBack(footerImageView)
+    }
 }
 
 extension UIScrollView {

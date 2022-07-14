@@ -13,8 +13,37 @@ struct Event {
     let type: EventType
     var locations = [Location]()
     var days = [Day]()
-    var times = [TimeFrame]()
-    var dayTimePairs = [DayTimePair]()
+    var times = [Time]()
+    var daysAndTimes: [Day : [Time]] = [:]
+    var duration: Duration? = nil
+    
+    mutating func buildURLComponents() -> URLComponents {
+        
+        var queryItems = [URLQueryItem]()
+    
+        queryItems.append(URLQueryItem(name: "title", value: title))
+        
+        if !locations.isEmpty {
+            queryItems.append(contentsOf: locations[0].makeURLQueryItem())
+        }
+        
+        queryItems.append(days[0].makeURLQueryItem())
+        
+        if !times.isEmpty {
+            queryItems.append(times[0].makeURLQueryItem())
+        }
+        
+        if duration != nil {
+            queryItems.append(duration!.makeURLQueryItem())
+        }
+        
+        print(queryItems)
+        
+        var URLComponents = URLComponents()
+        URLComponents.queryItems = queryItems
+        
+        return URLComponents
+    }
 }
 
 enum EventType: CaseIterable {
@@ -22,6 +51,8 @@ enum EventType: CaseIterable {
     case lunch
     case dinner
     case party
+    case allDay
+    case custom
     
     func getDurations() -> [Duration] {
         var min = 60
@@ -30,11 +61,15 @@ enum EventType: CaseIterable {
         case .brunch:
             break
         case .lunch:
-            break // default durations
+            break
         case .dinner:
             break
         case .party:
             max = 300
+        case .allDay:
+            return []
+        case .custom:
+            max = 360
         }
         
         return Duration.createDurations(min: min, max: max)
@@ -56,6 +91,11 @@ enum EventType: CaseIterable {
         case .party:
             firstTime = Time(hour: 6, minute: 0, period: .pm)
             lastTime = Time(hour: 9, minute: 30, period: .pm)
+        case .allDay:
+            return []
+        case .custom:
+            firstTime = Time(hour: 6, minute: 0, period: .am)
+            lastTime = Time(hour: 11, minute: 30, period: .pm)
         }
         
         var startTimes = [Time]()
@@ -71,6 +111,23 @@ enum EventType: CaseIterable {
         return startTimes
     }
     
+    func label() -> String {
+        switch self {
+        case .brunch:
+            return "Brunch"
+        case .lunch:
+            return "Lunch"
+        case .dinner:
+            return "Dinner"
+        case .party:
+            return "Party"
+        case .allDay:
+            return "All-Day"
+        case .custom:
+            return "Custom"
+        }
+    }
+    
     func defaultTitle() -> String {
         switch self {
         case .brunch:
@@ -81,6 +138,10 @@ enum EventType: CaseIterable {
             return "Dinner"
         case .party:
             return "Party"
+        case .allDay:
+            return "All-Day"
+        case .custom:
+            return ""
         }
     }
 }
@@ -88,9 +149,18 @@ enum EventType: CaseIterable {
 struct Location {
     var title: String
     var place: GMSPlace?
+    
+    func makeURLQueryItem() -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
+        queryItems.append(URLQueryItem(name: "locationTitle", value: title))
+        if place != nil {
+            queryItems.append(URLQueryItem(name: "locationID", value: place!.placeID))
+        }
+        return queryItems
+    }
 }
 
-struct Day {
+struct Day: Hashable {
     
     var date: Date
     
@@ -122,29 +192,10 @@ struct Day {
         
         return formattedDayOfWeek
     }
-}
-
-struct TimeFrame {
     
-    var startTime: Time
-    var endTime: Time
-    
-    init(startTime: Time, endTime: Time) {
-        self.startTime = startTime
-        self.endTime = endTime
-    }
-    
-    init(startTime: Time, minutesLater: Int) {
+    mutating func makeURLQueryItem() -> URLQueryItem {
         
-        self.startTime = startTime
-        self.endTime = Time(referenceTime: startTime, minutesLater: minutesLater)
-    }
-        
-    func format() -> String {
-            
-        let formattedTimeFrame = startTime.format() + "-" + endTime.format()
-            
-        return formattedTimeFrame
+        return URLQueryItem(name: "day", value: self.formatDate())
     }
 }
 
@@ -192,10 +243,22 @@ struct Time {
         }
     }
         
-    func format() -> String{
-        let formattedTime = String(hour) + ":" + String(format: "%02d", minute) + period.format()
+    func format(duration: Duration?) -> String{
+        
+        let formattedTime: String
+        if duration == nil {
+            formattedTime = String(hour) + ":" + String(format: "%02d", minute) + period.format()
+        } else {
+            let endTime = Time(referenceTime: self, minutesLater: duration!.minutes)
             
+            formattedTime = String(self.hour) + ":" + String(format: "%02d", self.minute) + self.period.format() + "-" + String(endTime.hour) + ":" + String(format: "%02d", endTime.minute) + endTime.period.format()
+        }
+        
         return formattedTime
+    }
+    
+    func makeURLQueryItem() -> URLQueryItem {
+        return URLQueryItem(name: "time", value: self.format(duration: nil))
     }
 }
 
@@ -226,11 +289,11 @@ enum Period {
 struct DayTimePair {
     
     var day: Day
-    let timeFrame: TimeFrame
+    let time: Time
     
-    mutating func format() -> String {
-        let formattedDateTimePair = day.formatDayOfWeek() + " " + day.formatDate() + " @ " + timeFrame.format()
-        return formattedDateTimePair
+    mutating func format(duration: Duration?) -> String {
+        let formattedDayTimePair = day.formatDayOfWeek() + " " + day.formatDate() + " @ " + time.format(duration: duration)
+        return formattedDayTimePair
     }
 }
 
@@ -260,5 +323,9 @@ struct Duration {
         }
         
         return durations
+    }
+    
+    func makeURLQueryItem() -> URLQueryItem {
+        return URLQueryItem(name: "duration", value: String(self.minutes))
     }
 }
