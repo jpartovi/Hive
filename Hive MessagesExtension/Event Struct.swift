@@ -14,8 +14,36 @@ struct Event {
     var locations = [Location]()
     var days = [Day]()
     var times = [Time]()
+    var daysAndTimes: [Day : [Time]] = [:]
     var duration: Duration? = nil
-    //var dayTimePairs = [DayTimePair]()
+    
+    mutating func buildURLComponents() -> URLComponents {
+        
+        var queryItems = [URLQueryItem]()
+    
+        queryItems.append(URLQueryItem(name: "title", value: title))
+        
+        if !locations.isEmpty {
+            queryItems.append(contentsOf: locations[0].makeURLQueryItem())
+        }
+        
+        queryItems.append(days[0].makeURLQueryItem())
+        
+        if !times.isEmpty {
+            queryItems.append(times[0].makeURLQueryItem())
+        }
+        
+        if duration != nil {
+            queryItems.append(duration!.makeURLQueryItem())
+        }
+        
+        print(queryItems)
+        
+        var URLComponents = URLComponents()
+        URLComponents.queryItems = queryItems
+        
+        return URLComponents
+    }
 }
 
 enum EventType: CaseIterable {
@@ -121,6 +149,15 @@ enum EventType: CaseIterable {
 struct Location {
     var title: String
     var place: GMSPlace?
+    
+    func makeURLQueryItem() -> [URLQueryItem] {
+        var queryItems = [URLQueryItem]()
+        queryItems.append(URLQueryItem(name: "locationTitle", value: title))
+        if place != nil {
+            queryItems.append(URLQueryItem(name: "locationID", value: place!.placeID))
+        }
+        return queryItems
+    }
 }
 
 struct Day: Hashable {
@@ -154,6 +191,11 @@ struct Day: Hashable {
         let formattedDayOfWeek = String(dayOfWeekFormatter.string(from: date).prefix(3))
         
         return formattedDayOfWeek
+    }
+    
+    mutating func makeURLQueryItem() -> URLQueryItem {
+        
+        return URLQueryItem(name: "day", value: self.formatDate())
     }
 }
 
@@ -213,6 +255,10 @@ struct Time {
         }
         
         return formattedTime
+    }
+    
+    func makeURLQueryItem() -> URLQueryItem {
+        return URLQueryItem(name: "time", value: self.format(duration: nil))
     }
 }
 
@@ -277,5 +323,9 @@ struct Duration {
         }
         
         return durations
+    }
+    
+    func makeURLQueryItem() -> URLQueryItem {
+        return URLQueryItem(name: "duration", value: String(self.minutes))
     }
 }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		156DAE692876354700613360 /* DayAndTimesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE682876354700613360 /* DayAndTimesCell.swift */; };
 		156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6A287635E600613360 /* LocationsViewController.swift */; };
 		156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6C2876362000613360 /* StartEventViewController.swift */; };
 		156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6F287637EC00613360 /* DaySelectorViewController.swift */; };
@@ -55,7 +54,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		156DAE682876354700613360 /* DayAndTimesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayAndTimesCell.swift; sourceTree = "<group>"; };
 		156DAE6A287635E600613360 /* LocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		156DAE6C2876362000613360 /* StartEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartEventViewController.swift; sourceTree = "<group>"; };
 		156DAE6F287637EC00613360 /* DaySelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorViewController.swift; sourceTree = "<group>"; };
@@ -120,7 +118,6 @@
 		15B213D22867A02B0071DABD /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				156DAE682876354700613360 /* DayAndTimesCell.swift */,
 				156DAE79287C7E4000613360 /* LocationCell.swift */,
 			);
 			path = Cells;
@@ -377,7 +374,6 @@
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
 				156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */,
-				156DAE692876354700613360 /* DayAndTimesCell.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,

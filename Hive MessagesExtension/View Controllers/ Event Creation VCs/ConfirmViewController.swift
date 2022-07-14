@@ -107,6 +107,7 @@ class ConfirmViewController: MSMessagesAppViewController {
          
          */
         
+        // TODO: Make sure all text fields have contents (eventTitle + locationTitles)
         event.title = eventTitleTextField.text!
         
         // LoadDaysAndTimes
@@ -119,41 +120,86 @@ class ConfirmViewController: MSMessagesAppViewController {
                 }
             }
         }
-        print(daysAndTimes)
+        event.daysAndTimes = daysAndTimes
         
+        // Load current conversation
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
         
+        // Load current session or create new session
         let session = conversation.selectedMessage?.session ?? MSSession()
         
-        let alternateMessageLayout = MSMessageTemplateLayout()
-        alternateMessageLayout.caption = "Caption"
-        alternateMessageLayout.imageTitle = "Image Title"
-        alternateMessageLayout.imageSubtitle = "Image subtitle"
-        alternateMessageLayout.trailingCaption = "Trailing caption"
-        alternateMessageLayout.subcaption = "Subcaption"
-        alternateMessageLayout.trailingSubcaption = "Trailing subcaption"
+        var caption: String
+        let image: UIImage
+        let imageTitle: String
+        let imageSubtitle: String
+        let trailingCaption: String
+        let subcaption: String
+        let trailingSubcaption: String
+        let summaryText: String
+        let messageComponents: URLComponents
         
-        let message = MSMessage(session: session)
-        let messageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
         
-        message.layout = alternateMessageLayout
-        message.summaryText = "Summary Text"
-        
-        if pollFlag {
+        if event.locations.count > 1 || event.days.count > 1 || event.times.count > 1 {
+            // TODO: POLL
+            
+            caption = ""
+            image = UIImage()
+            imageTitle = ""
+            imageSubtitle = ""
+            trailingCaption = ""
+            subcaption = ""
+            trailingSubcaption = ""
+            summaryText = ""
+            
+            messageComponents = event.buildURLComponents()
+            
             conversation.insert(pollMessage) {error in
                 // empty for now
             }
         } else {
-            var components = URLComponents()
-            components.queryItems = [URLQueryItem(name: "type", value: "invite")]
-            components.queryItems = [URLQueryItem(name: "type", value: "invite"), URLQueryItem(name: "title", value: event.title), URLQueryItem(name: "description", value: "DESCRIPTION"), URLQueryItem(name: "address", value: event.locations[0].title)]
-            message.url = components.url!
-
-            conversation.insert(message) {error in
-                // empty for now
+            // RSVP invite
+            
+            caption = "Come to " + event.title
+            if event.locations.isEmpty {
+                caption += "!"
+            } else {
+                caption += " at " + event.locations[0].title + "!"
             }
+            image = UIImage(named: "MessageHeader")!
+            imageTitle = ""
+            imageSubtitle = ""
+            trailingCaption = ""
+            subcaption = event.days[0].formatDate() + " @ " + event.times[0].format(duration: event.duration)
+            trailingSubcaption = ""
+            
+            summaryText = "Invite to " + event.title
+            
+            messageComponents = event.buildURLComponents()
         }
         
+        // Construct message layout
+        let messageLayout = MSMessageTemplateLayout()
+        
+        messageLayout.caption = caption
+        messageLayout.image = image
+        messageLayout.imageTitle = imageTitle
+        messageLayout.imageSubtitle = imageSubtitle
+        messageLayout.trailingCaption = trailingCaption
+        messageLayout.subcaption = subcaption
+        messageLayout.trailingSubcaption = trailingSubcaption
+        
+        // Construct message
+        let message = MSMessage(session: session)
+        message.layout = messageLayout
+        message.summaryText = summaryText
+        message.url = messageComponents.url
+
+        // Add message to conversation
+        conversation.insert(message) {error in
+            // empty for now
+        }
+        
+        // Shrink app window
         self.requestPresentationStyle(.compact)
     }
     
@@ -219,7 +265,7 @@ extension ConfirmViewController: UITableViewDataSource {
         case daysAndTimesTableView:
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: DayAndTimesCell.reuseIdentifier, for: indexPath) as! DayAndTimesCell
             var day = event.days[indexPath.row]
-            cell.dayLabel.text = day.formatDate() + ":"
+            cell.dayLabel.text = day.formatDate()
             for time in daysAndTimes[day]! {
                 cell.times.append((time, true))
             }
@@ -307,3 +353,154 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
         navigationController?.dismiss(animated: true)
     }
 }
+
+class DayAndTimesCell: UITableViewCell {
+    
+    static let reuseIdentifier = String(describing: DayAndTimesCell.self)
+    
+    static let cornerRadius: CGFloat = 20
+    
+    var times = [(time: Time, isSelected: Bool)]()
+    var duration: Duration? = nil
+    
+    let dayLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let timesCollectionView: UICollectionView = {
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 105, height: 30)
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isPagingEnabled = true
+        collectionView.register(TimeCell.self, forCellWithReuseIdentifier: TimeCell.reuseIdentifier)
+        collectionView.backgroundColor = Style.lightGreyColor
+        return collectionView
+    }()
+    
+    // TODO: Add a delete button??
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        
+        
+        self.backgroundColor = Style.lightGreyColor
+        
+        contentView.addSubview(timesCollectionView)
+        contentView.addSubview(dayLabel)
+    
+        timesCollectionView.dataSource = self
+        timesCollectionView.delegate = self
+        timesCollectionView.reloadData()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let inset: CGFloat = 10
+
+        NSLayoutConstraint.activate([
+            dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: inset),
+            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
+            timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
+        ])
+        
+        timesCollectionView.layer.cornerRadius = 5
+    }
+}
+
+extension DayAndTimesCell: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        times.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: TimeCell.reuseIdentifier, for: indexPath) as! TimeCell
+        cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)//duration)
+        cell.deleteIcon.tag = indexPath.row
+        if times[indexPath.row].isSelected {
+            cell.backgroundColor = Style.primaryColor
+            cell.timeLabel.textColor = Style.lightTextColor
+        } else {
+            cell.backgroundColor = Style.greyColor
+            cell.timeLabel.textColor = UIColor.white
+        }
+        return cell
+    }
+    
+    
+}
+
+extension DayAndTimesCell: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        times[indexPath.row].isSelected = !times[indexPath.row].isSelected
+        timesCollectionView.reloadData()
+    }
+}
+
+class TimeCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: TimeCell.self)
+    
+    let timeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    let deleteIcon: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.backgroundColor = Style.lightGreyColor
+        label.textColor = Style.greyColor
+        label.textAlignment = .center
+        label.text = "X"
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        // Apply rounded corners
+        self.layer.cornerRadius = 5
+        
+        contentView.addSubview(timeLabel)
+        contentView.addSubview(deleteIcon)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        
+        self.contentView.layer.cornerRadius = 5
+        
+        let inset: CGFloat = 5
+
+        NSLayoutConstraint.activate([
+            timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            deleteIcon.heightAnchor.constraint(equalToConstant: self.frame.height - (inset * 2)),
+            deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
+            deleteIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            deleteIcon.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+        
+        deleteIcon.layer.masksToBounds = true
+        deleteIcon.layer.cornerRadius = deleteIcon.frame.height / 2
+    }
+}
+

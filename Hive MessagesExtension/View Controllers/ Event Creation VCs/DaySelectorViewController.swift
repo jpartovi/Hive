@@ -23,10 +23,16 @@ class DaySelectorViewController: UIViewController {
     func nextPage() {
         
         event?.days = selectedDays
+        if event.type == .allDay {
+            let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
+            confirmVC.event = event
+            self.navigationController?.pushViewController(confirmVC, animated: true)
+        } else {
+            let timeSelectorVC = (storyboard?.instantiateViewController(withIdentifier: TimeSelectorViewController.storyboardID) as? TimeSelectorViewController)!
+            timeSelectorVC.event = event
+            self.navigationController?.pushViewController(timeSelectorVC, animated: true)
+        }
         
-        let timeSelectorVC = (storyboard?.instantiateViewController(withIdentifier: TimeSelectorViewController.storyboardID) as? TimeSelectorViewController)!
-        timeSelectorVC.event = event
-        self.navigationController?.pushViewController(timeSelectorVC, animated: true)
     }
     
     var anyDaySelected: Bool = false
