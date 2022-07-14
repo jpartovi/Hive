@@ -104,7 +104,7 @@ extension StartEventViewController: UICollectionViewDataSource {
         case typesCollectionView:
             let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeHexCell.reuseIdentifier, for: indexPath) as! EventTypeHexCell
 
-            cell.hexButton.setTitle(types[indexPath.row].defaultTitle(), for: .normal)
+            cell.hexButton.setTitle(types[indexPath.row].label(), for: .normal)
             cell.hexButton.tag = indexPath.row
             cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
     

@@ -53,6 +53,17 @@ class Style {
         return font
     }
     
+    static func commaList(items: [String]) -> String {
+        var commaList = ""
+        for (index, item) in items.enumerated() {
+            commaList += item
+            if index != items.count - 1 {
+                commaList += ", "
+            }
+        }
+        return commaList
+    }
+    
     // Formating functions
     static func styleTextFieldAndLabel(_ textField: UITextField,_ label: UILabel) {
         let bottomLine = CALayer()
@@ -148,23 +159,12 @@ class HexButton: UIButton {
             return nil
         } else {
             let color : UIColor = getColourFromPoint(point: point)
-            print(color)
             let alpha = color.cgColor.alpha
             if alpha <= 0.0 {
                 return nil
             }
             return self
         }
-    }
-}
-
-class LargeHexButton: HexButton {
-    
-    let size: CGFloat = 150
-    let textSize: CGFloat = 25
-    
-    override func draw(_ rect: CGRect) {
-        style(imageTag: "ColorHex", width: size, height: size, fontSize: textSize)
     }
 }
 
@@ -177,12 +177,12 @@ class ContinueHexButton: HexButton {
         //nextStyle()
     }
     
-    func color(title: String = "Next") {
+    func color(title: String = "Done") {
         self.setTitle(title, for: .normal)
         super.style(imageTag: "ColorHex", width: size, height: size, fontSize: textSize)
     }
     
-    func grey(title: String = "Next") {
+    func grey(title: String = "Done") {
         self.setTitle(title, for: .normal)
         super.style(imageTag: "GreyHex", width: size, height: size, textColor: UIColor.white, fontSize: textSize)
     }

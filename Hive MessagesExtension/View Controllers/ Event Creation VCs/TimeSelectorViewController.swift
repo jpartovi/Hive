@@ -17,9 +17,9 @@ class TimeSelectorViewController: UIViewController {
     var event: Event! = nil
     lazy var startTimes: [Time] = event.type.getStartTimes()
     var startTimesSelectionKey: [(Time, Bool)] = []
-    lazy var selectedTimeFrames = event.times
+    lazy var selectedTimes = event.times
     var anyStartTimeSelected: Bool = false
-    lazy var durations = event.type.getDurations()
+    lazy var durations: [Duration?] = [nil] + event.type.getDurations()
     var selectedDuration: Duration? = nil
     
     @IBOutlet weak var promptLabel: StyleLabel!
@@ -28,6 +28,11 @@ class TimeSelectorViewController: UIViewController {
     @IBOutlet weak var includeDurationButton: UIButton!
     
     @IBAction func includeDurationButtonPressed(_ sender: Any) {
+        
+        let defaultDurationIndex = 2
+        durationPicker.selectRow(defaultDurationIndex, inComponent: 0, animated: true)
+        selectedDuration = durations[defaultDurationIndex]
+        
         includeDurationButton.isHidden = true
         durationView.isHidden = false
     }
@@ -50,9 +55,7 @@ class TimeSelectorViewController: UIViewController {
         durationPicker.dataSource = self
         durationPicker.delegate = self
         
-        let defaultDurationIndex = 2
-        durationPicker.selectRow(defaultDurationIndex, inComponent: 0, animated: true)
-        selectedDuration = durations[defaultDurationIndex]
+        
         
         loadStartTimeSelectionKey()
     
@@ -73,27 +76,22 @@ class TimeSelectorViewController: UIViewController {
     
     @IBAction func nextButtonPressed(_ sender: Any) {
         
-        if anyStartTimeSelected {
-            selectedTimeFrames = []
-            
-            for (startTime, isSelected) in startTimesSelectionKey {
-                if isSelected {
-                    // TODO: Make TimeFrame object
-                    selectedTimeFrames.append(TimeFrame(startTime: startTime, minutesLater: selectedDuration!.minutes))
-                }
+        selectedTimes = []
+        for (startTime, isSelected) in startTimesSelectionKey {
+            if isSelected {
+                // TODO: Make TimeFrame object
+                selectedTimes.append(startTime)
             }
-
-            nextPage()
-            
-        } else {
-            // TODO: Show some error message!
         }
         
+        nextPage()
     }
+
     
     func nextPage() {
         
-        event.times = selectedTimeFrames
+        event.times = selectedTimes
+        event.duration = selectedDuration
         
         let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
         confirmVC.event = event
@@ -114,7 +112,7 @@ class TimeSelectorViewController: UIViewController {
         if anyStartTimeSelected {
             nextButton.color()
         } else {
-            nextButton.grey()
+            nextButton.grey(title: "Skip")
         }
     }
 }
@@ -130,8 +128,15 @@ extension TimeSelectorViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let duration = durations[row]
-        return duration.format()    }
+        
+        let label: String
+        if let duration: Duration = durations[row] {
+            label = duration.format()
+        } else {
+            label = "None"
+        }
+        return label
+    }
 }
 
 extension TimeSelectorViewController: UIPickerViewDelegate {
@@ -223,7 +228,7 @@ class StartTimeCell: UICollectionViewCell {
                 return
             }
             
-            timeLabel.text = time.format()
+            timeLabel.text = time.format(duration: nil)
         }
     }
     

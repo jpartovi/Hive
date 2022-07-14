@@ -106,7 +106,7 @@ class PollViewController: UIViewController {
             
             
             let label = UITextField()
-            label.text = pollitem.format()
+            label.text = pollitem.format(duration: nil) // TEMPORARY! duration needs to be passed in URL to message
             label.borderStyle = UITextField.BorderStyle.roundedRect
             
             label.translatesAutoresizingMaskIntoConstraints = false

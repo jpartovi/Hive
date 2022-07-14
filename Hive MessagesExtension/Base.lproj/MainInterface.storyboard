@@ -518,7 +518,7 @@
                                     <constraint firstAttribute="height" constant="140" id="fo6-cg-2cn"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DayTimePairCell" id="bkq-Fs-6sq" customClass="DayTimePairCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DayAndTimesCell" id="bkq-Fs-6sq" customClass="DayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bkq-Fs-6sq" id="gD9-Pn-Gfi">
@@ -540,7 +540,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FeN-3w-P9n" customClass="LargeHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FeN-3w-P9n" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="144.5" y="442" width="31" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Post"/>
@@ -597,7 +597,7 @@
                     <connections>
                         <outlet property="addLocationButton" destination="MTd-bL-ddD" id="Eap-Nk-sbi"/>
                         <outlet property="dayTimePairsLabel" destination="9Pa-du-zK8" id="fzf-W5-mYu"/>
-                        <outlet property="dayTimePairsTableView" destination="sFf-pe-5q2" id="4er-Hi-jCE"/>
+                        <outlet property="daysAndTimesTableView" destination="sFf-pe-5q2" id="4er-Hi-jCE"/>
                         <outlet property="eventTitleTextField" destination="3Iy-DN-1go" id="MQ3-l3-TUb"/>
                         <outlet property="firstLocationButton" destination="MlA-x1-zke" id="4rx-Dy-JsN"/>
                         <outlet property="locationsLabel" destination="CzU-8g-Rnt" id="vad-Wy-eez"/>
@@ -683,6 +683,56 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uhw-gw-xnG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4136" y="-1928"/>
+        </scene>
+        <!--Vote With Table View Controller-->
+        <scene sceneID="4k7-Rv-jxx">
+            <objects>
+                <viewController storyboardIdentifier="VoteWithTableViewController" id="2YG-NF-zxX" customClass="VoteWithTableViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gkC-km-vh2">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kjK-8U-KdE">
+                                <rect key="frame" x="0.0" y="97" width="320" height="356"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="ql1-ZL-Rgt" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="320" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ql1-ZL-Rgt" id="vNV-bW-PjG">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xO5-yW-wQX">
+                                <rect key="frame" x="120" y="60" width="80" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Znl-PA-Rnz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kjK-8U-KdE" firstAttribute="top" secondItem="xO5-yW-wQX" secondAttribute="bottom" constant="16" id="01W-tp-o6z"/>
+                            <constraint firstItem="Znl-PA-Rnz" firstAttribute="top" secondItem="xO5-yW-wQX" secondAttribute="top" constant="-16" id="2FO-4U-BCA"/>
+                            <constraint firstItem="kjK-8U-KdE" firstAttribute="centerX" secondItem="Znl-PA-Rnz" secondAttribute="centerX" id="O4v-f0-7cI"/>
+                            <constraint firstItem="Znl-PA-Rnz" firstAttribute="bottom" secondItem="kjK-8U-KdE" secondAttribute="bottom" constant="75" id="Ulr-39-tId"/>
+                            <constraint firstItem="xO5-yW-wQX" firstAttribute="centerX" secondItem="Znl-PA-Rnz" secondAttribute="centerX" id="YKV-hr-2mk"/>
+                            <constraint firstItem="kjK-8U-KdE" firstAttribute="width" secondItem="gkC-km-vh2" secondAttribute="width" id="wpc-pv-HjT"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="mainView" destination="gkC-km-vh2" id="3xM-dq-Lzc"/>
+                        <outlet property="titleLabel" destination="xO5-yW-wQX" id="2YN-tI-41Z"/>
+                        <outlet property="voteTable" destination="kjK-8U-KdE" id="Btk-H0-VcG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kNC-Lf-CXa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2489.8550724637685" y="-927.45535714285711"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.87450980392156863" green="0.62352941176470589" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>

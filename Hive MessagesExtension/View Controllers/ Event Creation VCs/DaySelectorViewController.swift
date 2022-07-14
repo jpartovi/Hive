@@ -5,6 +5,8 @@
 //  Created by Jude Partovi on 6/21/22.
 //
 
+// TODO: Design questions: Should the calendar start on monday and end on sunday? or stay how it is? Benefit of this is that there are no cutoff weekends. Also, should the weekends be highlighted?
+
 import Foundation
 import UIKit
 

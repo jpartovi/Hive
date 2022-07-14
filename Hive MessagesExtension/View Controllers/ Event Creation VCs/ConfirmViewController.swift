@@ -16,6 +16,8 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     var event: Event! = nil
     
+    var daysAndTimes: [Day : [Time]] = [:]
+    
     var pollFlag = false
     var pollMessage: MSMessage!
     
@@ -28,17 +30,21 @@ class ConfirmViewController: MSMessagesAppViewController {
     @IBOutlet weak var firstLocationButton: HexButton!
     @IBOutlet weak var locationsTableView: UITableView!
     @IBOutlet weak var dayTimePairsLabel: UILabel!
-    @IBOutlet weak var dayTimePairsTableView: UITableView!
-    @IBOutlet weak var postButton: LargeHexButton!
+    @IBOutlet weak var daysAndTimesTableView: UITableView!
+    @IBOutlet weak var postButton: HexButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addHexFooter()
+        
         styleEventTitleTextField()
         
         firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
-        createDayTimePairs()
+        loadDaysAndTimes()
         fillEventDetails()
+        
+        postButton.style(width: 130, height: 150, fontSize: 25)
     }
     
     func styleEventTitleTextField() {
@@ -51,18 +57,14 @@ class ConfirmViewController: MSMessagesAppViewController {
         underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: view.frame.width - 32, height: underlineThickness)
         underline.backgroundColor = Style.tertiaryColor.cgColor
         eventTitleTextField.layer.addSublayer(underline)
+        eventTitleTextField.placeholder = "Event Title"
     }
     
-    func createDayTimePairs() {
-        var dayTimePairs = [DayTimePair]()
+    func loadDaysAndTimes() {
         for day in event.days {
-            for timeFrame in event.times {
-                dayTimePairs.append(DayTimePair(day: day, timeFrame: timeFrame))
-            }
+            daysAndTimes[day] = (event.times)
         }
-        event.dayTimePairs = dayTimePairs
     }
-    
     func fillEventDetails() {
         
         eventTitleTextField.text = event.title
@@ -73,8 +75,8 @@ class ConfirmViewController: MSMessagesAppViewController {
     }
     
     func setUpDayTimePairsTableView() {
-        dayTimePairsTableView.dataSource = self
-        dayTimePairsTableView.delegate = self
+        daysAndTimesTableView.dataSource = self
+        daysAndTimesTableView.delegate = self
     }
     
     func formatLocations() {
@@ -91,7 +93,33 @@ class ConfirmViewController: MSMessagesAppViewController {
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
+        // TODO: Data to encode
+        /*
+         - Event title
+         - Event type (key)?
+         - Location options
+            - Location name
+            - GMSPlace ID
+         - Days and times
+            - Day in string form
+            - Followed by times in string form
+         - Duration
+         
+         */
+        
         event.title = eventTitleTextField.text!
+        
+        // LoadDaysAndTimes
+        for (index, day) in event.days.enumerated() {
+            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! DayAndTimesCell
+            daysAndTimes[day] = []
+            for (time, isSelected) in cell.times {
+                if isSelected {
+                    daysAndTimes[day]!.append(time)
+                }
+            }
+        }
+        print(daysAndTimes)
         
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
         
@@ -127,15 +155,13 @@ class ConfirmViewController: MSMessagesAppViewController {
         }
         
         self.requestPresentationStyle(.compact)
-        
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil))
         locationsTableView.reloadData()
         
-        let lastCellIndexPath = IndexPath(row: 0, section: event.locations.count - 1)
-        print("Last Cell Index: Row: " + String(lastCellIndexPath.row) + " section: " + String(lastCellIndexPath.section))
+        let lastCellIndexPath = IndexPath(row: event.locations.count - 1, section: 0)
         locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
         let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
         cell.titleTextField.becomeFirstResponder()
@@ -148,7 +174,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         locationsTableView.reloadData()
         let index = sender.tag
         event.locations.remove(at: index)
-        locationsTableView.deleteSections(IndexSet(integer: index), with: .fade)
+        locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         formatLocations()
     }
     
@@ -178,19 +204,8 @@ extension ConfirmViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
-        case dayTimePairsTableView:
-            return event.dayTimePairs.count
-        case locationsTableView:
-            return 1
-        default:
-            return 0
-        }
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        switch tableView {
-        case dayTimePairsTableView:
-            return 1
+        case daysAndTimesTableView:
+            return daysAndTimes.count
         case locationsTableView:
             return event.locations.count
         default:
@@ -201,19 +216,24 @@ extension ConfirmViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         switch tableView {
-        case dayTimePairsTableView:
-            let cell = dayTimePairsTableView.dequeueReusableCell(withIdentifier: DayTimePairCell.reuseIdentifier, for: indexPath) as! DayTimePairCell
-            cell.textLabel!.text = event.dayTimePairs[indexPath.row].format()
+        case daysAndTimesTableView:
+            let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: DayAndTimesCell.reuseIdentifier, for: indexPath) as! DayAndTimesCell
+            var day = event.days[indexPath.row]
+            cell.dayLabel.text = day.formatDate() + ":"
+            for time in daysAndTimes[day]! {
+                cell.times.append((time, true))
+            }
+            cell.duration = event.duration
             return cell
         case locationsTableView:
             let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
-            let location = event.locations[indexPath.section]
+            let location = event.locations[indexPath.row]
             cell.titleTextField.text = location.title
-            cell.titleTextField.tag = indexPath.section
+            cell.titleTextField.tag = indexPath.row
             cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidChange(sender:)), for: .editingChanged)
-            cell.deleteButton.tag = indexPath.section
+            cell.deleteButton.tag = indexPath.row
             cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
-            cell.addOrRemoveAddressButton.tag = indexPath.section
+            cell.addOrRemoveAddressButton.tag = indexPath.row
             cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
             if let address = location.place?.formattedAddress {
                 cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
@@ -229,31 +249,45 @@ extension ConfirmViewController: UITableViewDataSource {
             return UITableViewCell()
         }
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        switch tableView {
+        case locationsTableView:
+            let verticalPadding: CGFloat = 8
+            let maskLayer = CALayer()
+            maskLayer.cornerRadius = LocationCell.cornerRadius
+            maskLayer.backgroundColor = UIColor.black.cgColor
+            maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+            cell.layer.mask = maskLayer
+        case daysAndTimesTableView:
+            let verticalPadding: CGFloat = 8
+            let maskLayer = CALayer()
+            maskLayer.cornerRadius = DayAndTimesCell.cornerRadius
+            maskLayer.backgroundColor = UIColor.black.cgColor
+            maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+            cell.layer.mask = maskLayer
+        default:
+            break
+        }
+        
+    }
 }
 
 extension ConfirmViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if !event.locations.isEmpty {
-            if event.locations[indexPath.section].place != nil {
+        switch tableView {
+        case locationsTableView:
+            if event.locations[indexPath.row].place != nil {
                 return 86
             } else {
                 return 50
             }
-        } else {
+        case daysAndTimesTableView:
             return 50
+        default:
+            return 0
         }
-    }
-    
-    // Set the spacing between sections
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        0
-    }
-     
-    // Make the background color show through
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.clear
-        return headerView
     }
 }
 

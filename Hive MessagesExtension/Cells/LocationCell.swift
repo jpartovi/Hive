@@ -12,6 +12,8 @@ class LocationCell: UITableViewCell {
     
     static let reuseIdentifier = String(describing: LocationCell.self)
     
+    static let cornerRadius: CGFloat = 20
+    
     let titleTextField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -39,7 +41,6 @@ class LocationCell: UITableViewCell {
     let deleteButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        //button.clipsToBounds = true
         button.setTitle("X", for: .normal)
         
         button.backgroundColor = Style.greyColor
@@ -51,7 +52,6 @@ class LocationCell: UITableViewCell {
         super.init(coder: aDecoder)
         
         self.backgroundColor = Style.lightGreyColor
-        self.layer.cornerRadius = self.frame.height / 2 
         
         self.contentView.addSubview(titleTextField)
         self.contentView.addSubview(changeAddressButton)
@@ -61,7 +61,8 @@ class LocationCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let inset = CGFloat(20)
+        
+        let inset = CGFloat(10)
 
         NSLayoutConstraint.activate([
             titleTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
@@ -84,7 +85,6 @@ class LocationCell: UITableViewCell {
             deleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-        
         
         deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
     }
