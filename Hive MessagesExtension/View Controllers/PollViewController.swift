@@ -4,7 +4,7 @@
 //
 //  Created by Jack Albright on 6/20/22.
 //
-
+/*
 import UIKit
 import Messages
 
@@ -106,7 +106,7 @@ class PollViewController: UIViewController {
             
             
             let label = UITextField()
-            label.text = pollitem.format(duration: nil) // TEMPORARY! duration needs to be passed in URL to message
+            label.text = pollitem.format()
             label.borderStyle = UITextField.BorderStyle.roundedRect
             
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -212,3 +212,4 @@ protocol PollViewControllerDelegate: AnyObject {
   func didFinishTask(sender: PollViewController)
     
 }
+*/

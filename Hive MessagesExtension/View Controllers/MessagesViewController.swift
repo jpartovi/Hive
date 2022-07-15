@@ -86,6 +86,13 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         
         if conversation.selectedMessage == nil {
             controller = instantiateStartEventViewController()
+            
+            //controller = (storyboard?.instantiateViewController(withIdentifier: "InviteViewController") as? InviteViewController)!
+            
+            //controller.delegate = self
+            //controller.myID = conversation.localParticipantIdentifier.uuidString
+            //controller.mURL = conversation.selectedMessage?.url
+            
         } else {
             guard let messageURL = conversation.selectedMessage?.url else {return}
             guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
@@ -99,6 +106,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             */
             
             let value = queryItems[0].value!
+            
             print("Type: " + value)
             
             if value == "invite" {

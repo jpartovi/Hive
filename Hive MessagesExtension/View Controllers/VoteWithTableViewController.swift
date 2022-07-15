@@ -180,15 +180,29 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         return 50
     }
     
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 10))
+        return footerView
+    }
+
+    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
-        headerView.backgroundColor = Style.primaryColor
+        headerView.layer.cornerRadius = headerView.frame.height/2
+        headerView.backgroundColor = Style.lightTextColor
         headerView.tag = section
         
-        let headerString = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-10, height: 30))
+        headerView.layer.borderWidth = 3
+        headerView.layer.borderColor = Style.tertiaryColor.cgColor
+        
+        let headerString = UILabel(frame: CGRect(x: 13, y: 10, width: tableView.frame.size.width-10, height: 30))
         headerString.text = voteGroups[section]
         headerView.addSubview(headerString)
         
@@ -226,24 +240,53 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         headerSelection.textAlignment = NSTextAlignment.right
         headerView.addSubview(headerSelection)
         
-        let headerTapped = UITapGestureRecognizer(target: self, action:#selector(sectionHeaderTapped))
+        let headerTapped = UITapGestureRecognizer(target: self, action: #selector(sectionHeaderTapped))
         headerView.addGestureRecognizer(headerTapped)
+        
+        let headerTouchDown = UILongPressGestureRecognizer(target: self, action: #selector(sectionHeaderTouchDown))
+        headerTouchDown.minimumPressDuration = 0
+        headerView.addGestureRecognizer(headerTouchDown)
         
         return headerView
     }
     
+    @objc func sectionHeaderTouchDown(recognizer: UILongPressGestureRecognizer) {
+        if recognizer.state == .began {
+            
+            let shadeView = UIView(frame: CGRect(x: 0, y: 0, width: recognizer.view!.frame.width, height: recognizer.view!.frame.height))
+            shadeView.layer.cornerRadius = shadeView.frame.height/2
+            shadeView.backgroundColor = Style.greyColor
+            shadeView.layer.borderWidth = 3
+            shadeView.layer.borderColor = Style.greyColor.cgColor
+            shadeView.alpha = 0.5
+            recognizer.view!.addSubview(shadeView)
+            
+        } else if recognizer.state == .ended {
+            
+            let indexPath = NSIndexPath(row: 0, section: recognizer.view!.tag)
+            if (indexPath.row == 0) {
+                
+                isOpen[indexPath.section] = !isOpen[indexPath.section]
+                let range = NSMakeRange(indexPath.section, 1)
+                let sectionToReload = NSIndexSet(indexesIn: range)
+                voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
+            }
+        }
+        
+        
+        
+    }
+    
     @objc func sectionHeaderTapped(recognizer: UITapGestureRecognizer) {
         
-        let indexPath = NSIndexPath(row: 0, section: recognizer.view!.tag)
-        if (indexPath.row == 0) {
-            
-            isOpen[indexPath.section] = !isOpen[indexPath.section]
-            let range = NSMakeRange(indexPath.section, 1)
-            let sectionToReload = NSIndexSet(indexesIn: range)
-            voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
-        }
+        
 
     }
+
+    
+    
+    
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

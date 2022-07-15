@@ -8,7 +8,9 @@
 import UIKit
 import Messages
 
-class VoteViewController: MSMessagesAppViewController {
+//class VoteViewController: MSMessagesAppViewController {
+
+class VoteViewController: UITableViewController {
     
     var delegate: MessagesViewController?
     static let storyboardID = "VoteViewController"
@@ -65,7 +67,7 @@ class VoteViewController: MSMessagesAppViewController {
         
         conversation.insert(message)
         
-        self.requestPresentationStyle(.compact)
+        //self.requestPresentationStyle(.compact)
     }
     
     
@@ -109,6 +111,12 @@ class VoteViewController: MSMessagesAppViewController {
         
         return (components?.url!)!
     }
+    
+    
+    
+    var arrayForBool: [String]!
+    var sectionTitleArray: [String]!
+    var sectionContentDict: [String : NSArray]!
     
     
     override func viewDidLoad() {
@@ -199,7 +207,119 @@ class VoteViewController: MSMessagesAppViewController {
             votelabels[index].text = entry
             countlabels[index].text = counts[index]
         }*/
+        
+        
+        arrayForBool = ["0","0","0"]
+        sectionTitleArray = ["Pool A","Pool B","Pool C"]
+        var tmp1 : NSArray = ["New Zealand","Australia","Bangladesh","Sri Lanka"]
+        var string1 = sectionTitleArray[0]
+        sectionContentDict[string1] = tmp1
+        var tmp2 : NSArray = ["India","South Africa","UAE","Pakistan"]
+        string1 = sectionTitleArray[1]
+        sectionContentDict[string1] = tmp2
+        self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
+        
     }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return sectionTitleArray.count
+    }
+
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+
+        if(Bool(arrayForBool[section]) == true)
+        {
+            var tps = sectionTitleArray[section]
+            var count1 = (sectionContentDict[tps])!
+            return count1.count
+        }
+        return 0;
+    }
+
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "ABC"
+    }
+
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+
+        return 50
+    }
+
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if(Bool(arrayForBool[indexPath.section]) == true){
+            return 100
+        }
+
+        return 2;
+    }
+
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+        headerView.backgroundColor = Style.primaryColor
+        headerView.tag = section
+
+        let headerString = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-10, height: 30)) as UILabel
+        headerString.text = sectionTitleArray[section]
+        headerView.addSubview(headerString)
+
+        let headerTapped = UITapGestureRecognizer (target: self, action:Selector(("sectionHeaderTapped:")))
+        headerView.addGestureRecognizer(headerTapped)
+
+        return headerView
+    }
+
+    func sectionHeaderTapped(recognizer: UITapGestureRecognizer) {
+        print("Tapping working")
+        print(recognizer.view?.tag)
+
+        var indexPath : NSIndexPath = NSIndexPath(row: 0, section:recognizer.view!.tag)
+        if (indexPath.row == 0) {
+
+            var collapsed = Bool(arrayForBool[indexPath.section])
+            collapsed = !collapsed!
+
+            arrayForBool[indexPath.section] = String(collapsed!)
+            //reload specific section animated
+            var range = NSMakeRange(indexPath.section, 1)
+            var sectionToReload = NSIndexSet(indexesIn: range)
+            self.tableView.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
+        }
+
+    }
+
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+
+        let CellIdentifier = "Cell"
+        var cell :UITableViewCell
+        cell = self.tableView.dequeueReusableCell(withIdentifier: CellIdentifier)!
+
+        var manyCells : Bool = Bool(arrayForBool[indexPath.section])!
+
+        if (!manyCells) {
+            //  cell.textLabel.text = @"click to enlarge";
+        } else {
+            var content = sectionContentDict[sectionTitleArray[indexPath.section]]!
+            cell.textLabel?.text = content.object(at: indexPath.row) as? String
+            cell.backgroundColor = UIColor.green
+        }
+
+        return cell
+    }
+    
+    
     
     // MARK: - Conversation Handling
 

@@ -20,6 +20,8 @@ struct Event {
     mutating func buildURL() -> URL {
         
         var queryItems = [URLQueryItem]()
+        
+        queryItems.append(URLQueryItem(name: "messageType", value: "invite"))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
         
@@ -38,6 +40,8 @@ struct Event {
         if duration != nil {
             queryItems.append(duration!.makeURLQueryItem())
         }
+        
+        queryItems.append(URLQueryItem(name: "endEvent", value: ""))
         
         print(queryItems)
         
@@ -66,7 +70,7 @@ struct Event {
         var location = Location(title: "", place: nil)
         var day: Day? = nil
         var time: Time? = nil
-        let duration: Duration? = nil
+        var duration: Duration? = nil
         
         
         
@@ -89,8 +93,10 @@ struct Event {
                 time = Time(queryString: value!)
             case "duration":
                 if Int(value!) != 0 {
-                    self.duration = Duration(minutes: Int(value!)!)
+                    duration = Duration(minutes: Int(value!)!)
                 }
+            case "endEvent":
+                break
             default:
                 print("Uncaught query name " + name)
             }
@@ -277,7 +283,9 @@ struct Location {
                 print("An error occurred: \(error.localizedDescription)")
                 return
             }
+            print(place)
             if let place = place {
+                print("place is place")
                 placeFromId = place
             } else {
                 fatalError("Place couldn't be loaded")

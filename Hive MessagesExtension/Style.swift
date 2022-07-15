@@ -413,3 +413,54 @@ extension UIImage {
     }
 }
 
+
+
+
+
+
+
+class LargeHexButton: HexButton {
+    
+    let size: CGFloat = 150
+    let textColor = Style.lightTextColor
+    let textSize = CGFloat(25)
+    
+    override func draw(_ rect: CGRect) {
+        style(imageTag: "ColorHex", width: size, height: size, textColor: textColor)
+    }
+}
+
+class SelectionLargeHexButton: LargeHexButton {
+    
+    var active: Bool = false
+    
+    override func draw(_ rect: CGRect) {
+        
+        // Update selection status
+        setSelectionAppearance()
+    }
+    
+    // Set the selected properties
+    func setSelected() {
+        style(imageTag: "HexGreen", width: size, height: size, textColor: textColor)
+    }
+    
+    // Set the deselcted properties
+    func setDeselected() {
+        style(imageTag: "ColorHex", width: size, height: size, textColor: textColor)
+    }
+    
+    func changeSelectionStatus() {
+        active = !active
+        setSelectionAppearance()
+    }
+    
+    func setSelectionAppearance() {
+        if active {
+            setSelected()
+        } else {
+            setDeselected()
+        }
+    }
+    
+}
