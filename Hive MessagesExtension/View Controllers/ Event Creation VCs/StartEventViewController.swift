@@ -34,6 +34,8 @@ class StartEventViewController: MSMessagesAppViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(Date())
+        
         promptLabel.style(text: "What kind of event are you hosting?")
         
         setUpHexCollection()

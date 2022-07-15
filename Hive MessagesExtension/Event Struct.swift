@@ -10,18 +10,20 @@ import GooglePlaces
 
 struct Event {
     var title: String
-    let type: EventType
+    var type: EventType
     var locations = [Location]()
     var days = [Day]()
     var times = [Time]()
     var daysAndTimes: [Day : [Time]] = [:]
     var duration: Duration? = nil
     
-    mutating func buildURLComponents() -> URLComponents {
+    mutating func buildURL() -> URL {
         
         var queryItems = [URLQueryItem]()
     
         queryItems.append(URLQueryItem(name: "title", value: title))
+        
+        queryItems.append(type.makeURLQueryItem())
         
         if !locations.isEmpty {
             queryItems.append(contentsOf: locations[0].makeURLQueryItem())
@@ -42,7 +44,68 @@ struct Event {
         var URLComponents = URLComponents()
         URLComponents.queryItems = queryItems
         
-        return URLComponents
+        return URLComponents.url!
+    }
+    
+    init(title: String, type: EventType, locations: [Location] = [], days: [Day] = [], times: [Time] = [], daysAndTimes: [Day : [Time]] = [:], duration: Duration? = nil) {
+        self.title = title
+        self.type = type
+        self.locations = locations
+        self.days = days
+        self.times = times
+        self.daysAndTimes = daysAndTimes
+        self.duration = duration
+    }
+    
+    init(url: URL) {
+        let components = URLComponents(url: url,
+                resolvingAgainstBaseURL: false)
+        
+        var title: String? = nil
+        var type: EventType? = nil
+        var location = Location(title: "", place: nil)
+        var day: Day? = nil
+        var time: Time? = nil
+        let duration: Duration? = nil
+        
+        
+        
+        for (_, queryItem) in (components!.queryItems!.enumerated()){
+            let name = queryItem.name
+            let value = queryItem.value
+            
+            switch name {
+            case "title":
+                title = value!
+            case "type":
+                type = EventType(queryString: value!)
+            case "locationTitle":
+                location.title = value!
+            case "locationId":
+                location.place = Location.getPlaceFromID(id: value!)
+            case "day":
+                day = Day(queryString: value!)
+            case "time":
+                time = Time(queryString: value!)
+            case "duration":
+                if Int(value!) != 0 {
+                    self.duration = Duration(minutes: Int(value!)!)
+                }
+            default:
+                print("Uncaught query name " + name)
+            }
+        }
+        self.title = title!
+        self.type = type!
+        self.locations = [location]
+        self.days = [day!]
+        if time == nil {
+            self.times = [Time]()
+        } else {
+            self.times = [time!]
+        }
+        self.daysAndTimes = [:]
+        self.duration = duration
     }
 }
 
@@ -73,6 +136,25 @@ enum EventType: CaseIterable {
         }
         
         return Duration.createDurations(min: min, max: max)
+    }
+    
+    init(queryString: String) {
+        switch queryString {
+        case "brunch":
+            self = .brunch
+        case "lunch":
+            self = .lunch
+        case "dinner":
+            self = .dinner
+        case "party":
+            self = .party
+        case "all-day":
+            self = .allDay
+        case "custom":
+            self = .custom
+        default:
+            fatalError("Unrecognized EventType key")
+        }
     }
     
     func getStartTimes() -> [Time] {
@@ -144,6 +226,25 @@ enum EventType: CaseIterable {
             return ""
         }
     }
+    
+    func makeURLQueryItem() -> URLQueryItem {
+        let type: String
+        switch self {
+        case .brunch:
+            type = "brunch"
+        case .lunch:
+            type = "lunch"
+        case .dinner:
+            type = "dinner"
+        case .party:
+            type = "party"
+        case .allDay:
+            type = "all-Day"
+        case .custom:
+            type = "custom"
+        }
+        return URLQueryItem(name: "type", value: type)
+    }
 }
 
 struct Location {
@@ -154,9 +255,36 @@ struct Location {
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: "locationTitle", value: title))
         if place != nil {
-            queryItems.append(URLQueryItem(name: "locationID", value: place!.placeID))
+            queryItems.append(URLQueryItem(name: "locationId", value: place!.placeID))
         }
         return queryItems
+    }
+    
+    init(title: String, place: GMSPlace?) {
+        self.title = title
+        self.place = place
+    }
+    
+    static func getPlaceFromID (id: String) -> GMSPlace {
+        
+        let fields = GMSPlaceField()
+        let placesClient = GMSPlacesClient()
+        var placeFromId: GMSPlace?
+        placesClient.fetchPlace(fromPlaceID: id, placeFields: fields, sessionToken: nil, callback: {
+            (place: GMSPlace?, error: Error?) in
+            if let error = error {
+                
+                print("An error occurred: \(error.localizedDescription)")
+                return
+            }
+            if let place = place {
+                placeFromId = place
+            } else {
+                fatalError("Place couldn't be loaded")
+            }
+        })
+        
+        return placeFromId!
     }
 }
 
@@ -173,6 +301,12 @@ struct Day: Hashable {
     lazy var monthFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "M"
+        return dateFormatter
+    }()
+    
+    lazy var stringFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter
     }()
     
@@ -194,8 +328,51 @@ struct Day: Hashable {
     }
     
     mutating func makeURLQueryItem() -> URLQueryItem {
+        /*
+        let calendar = Calendar(identifier: .gregorian)
+        let dateComponents = calendar.dateComponents(
+            [.calendar, .timeZone,
+             .era, .quarter,
+             .year, .month, .day,
+             .hour, .minute, .second, .nanosecond,
+             .weekday, .weekdayOrdinal,
+             .weekOfMonth, .weekOfYear, .yearForWeekOfYear],
+            from: date)
+        let year = yearFormatter.string(from: date)
+        let month = monthFormatter
+        let date = dateComponents.date?.timeIntervalSinceReferenceDate
+        let
+        let timeZone: String = dateComponents.timeZone!.identifier
+        */
+        let dateString = stringFormatter.string(from: date)
+        print(dateString)
         
-        return URLQueryItem(name: "day", value: self.formatDate())
+        return URLQueryItem(name: "day", value: dateString)
+    }
+    
+    init(date: Date) {
+        self.date = date
+    }
+    
+    init(queryString: String) {
+        
+        let year = Int(queryString.substring(to: 4))!
+        let month = Int(queryString.substring(with: 5..<7))
+        let date = Int(queryString.substring(with: 8..<10))
+        
+        // Specify date components
+        var dateComponents = DateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = date
+        //dateComponents.timeZone = //TimeZone(abbreviation: "JST") // Japan Standard Time
+        dateComponents.hour = 12
+        dateComponents.minute = 0
+
+        // Create date from components
+        let calendar = Calendar(identifier: .gregorian)
+        self.date = calendar.date(from: dateComponents)!
+        print(date)
     }
 }
 
@@ -235,6 +412,12 @@ struct Time {
         self.period = period
     }
     
+    init(queryString: String) {
+        self.hour = Int(queryString.substring(to: 2))!
+        self.minute = Int(queryString.substring(with: 3..<5))!
+        self.period = Period(string: queryString.substring(with: 6..<8))
+    }
+    
     func sameAs(time: Time) -> Bool{
         if self.hour == time.hour && self.minute == time.minute && self.period == time.period {
             return true
@@ -258,7 +441,9 @@ struct Time {
     }
     
     func makeURLQueryItem() -> URLQueryItem {
-        return URLQueryItem(name: "time", value: self.format(duration: nil))
+        
+        let timeString = String(format: "%02d", hour) + ":" + String(format: "%02d", minute) + "." + period.format()
+        return URLQueryItem(name: "time", value: timeString)
     }
 }
 
@@ -282,6 +467,17 @@ enum Period {
             return .pm
         case .pm:
             return .am
+        }
+    }
+    
+    init(string: String) {
+        switch string {
+        case "am":
+            self = .am
+        case "pm":
+            self = .pm
+        default:
+            fatalError("Unrecognized Period String")
         }
     }
 }

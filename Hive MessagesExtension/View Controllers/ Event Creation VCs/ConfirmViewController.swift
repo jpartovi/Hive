@@ -136,7 +136,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         let subcaption: String
         let trailingSubcaption: String
         let summaryText: String
-        let messageComponents: URLComponents
+        let messageURL: URL
         
         
         if event.locations.count > 1 || event.days.count > 1 || event.times.count > 1 {
@@ -151,7 +151,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             trailingSubcaption = ""
             summaryText = ""
             
-            messageComponents = event.buildURLComponents()
+            messageURL = event.buildURL()
             
             conversation.insert(pollMessage) {error in
                 // empty for now
@@ -174,7 +174,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             
             summaryText = "Invite to " + event.title
             
-            messageComponents = event.buildURLComponents()
+            messageURL = event.buildURL()
         }
         
         // Construct message layout
@@ -192,7 +192,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         let message = MSMessage(session: session)
         message.layout = messageLayout
         message.summaryText = summaryText
-        message.url = messageComponents.url
+        message.url = messageURL
 
         // Add message to conversation
         conversation.insert(message) {error in
