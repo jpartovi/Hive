@@ -10,6 +10,9 @@ import Messages
 
 class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataSource, UITableViewDelegate {
     
+    var delegate: VoteWithTableViewControllerDelegate?
+    static let storyboardID = "VoteWithTableViewController"
+    
     @IBOutlet var mainView: UIView!
     
     @IBOutlet weak var titleLabel: UILabel!
@@ -19,10 +22,33 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
     let submitButton = UIButton()
     
     let submitLabel = UILabel()
+    
+    var myID: String!
+    var mURL: URL!
+    
+    var loadedEvent: Event!
+    
+    var voteGroups: [String] = []
+    var voteItems: [[String]] = []
+    var voteTallies: [[Int]] = []
+    var isOpen: [Bool] = []
+    var voteSelections: [[Int]] = []
+    var multiSelectable: [Bool] = []
+    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
+    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
+    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
+    var isOpen = [false, false, false, false]
+    var voteSelections = [[], [], [], []] as [[Int]]
+    var multiSelectable = [false, false, false, true]*/
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        loadedEvent = Event(url: mURL)
+        decodeEvent(loadedEvent)
+        decodeRSVPs(url: mURL)
 
         voteTable.dataSource = self
         voteTable.delegate = self
@@ -48,14 +74,80 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         
     }
     
+    func decodeEvent(_ event: Event) {
+        
+        if event.locations.count != 1 {
+            titleLabel.text = "Poll for " + event.title
+            
+            if event.locations.count != 0 {
+                voteGroups.append("Location")
+                var allLoc: [String] = []
+                for location in event.locations {
+                    allLoc.append(location.title)
+                }
+                voteItems.append(allLoc)
+                voteTallies.append([])
+                isOpen.append(false)
+                voteSelections.append([])
+                multiSelectable.append(false)
+            }
+            
+        } else {
+            titleLabel.text = "Poll for " + event.title + " at " + event.locations[0].title
+        }
+        if event.daysAndTimes.count > 1 {
+            voteGroups.append("Day/Time")
+            var allDay: [String] = []
+            for (day, dtimes) in event.daysAndTimes {
+                for time in dtimes {
+                    var mutableDay = day
+                    allDay.append(mutableDay.formatDate() + " @ " + time.format(duration: event.duration))
+                }
+            }
+            voteItems.append(allDay)
+            voteTallies.append([])
+            isOpen.append(false)
+            voteSelections.append([])
+            multiSelectable.append(true)
+        }
+        
+    }
     
-    // TODO: Load data from message URL
-    var voteGroups = ["A", "B", "C", "D (multi-select)"]
+    
+    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
     var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
     var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
     var isOpen = [false, false, false, false]
     var voteSelections = [[], [], [], []] as [[Int]]
-    var multiSelectable = [false, false, false, true]
+    var multiSelectable = [false, false, false, true]*/
+    
+    
+    func decodeRSVPs(url: URL) {
+        let components = URLComponents(url: url,
+                resolvingAgainstBaseURL: false)
+        
+        var endFlag = false
+        for (_, queryItem) in (components!.queryItems!.enumerated()){
+            let name = queryItem.name
+            let value = queryItem.value
+            
+            if name == "endEvent" {
+                endFlag = true
+            } else if endFlag {
+                
+                //TODO: Handle RSVP data decoding
+                
+            }
+        }
+        
+        //Dummy code
+        for (indexA, voteList) in voteItems.enumerated(){
+            for _ in voteList {
+                voteTallies[indexA].append(0)
+            }
+        }
+        
+    }
     
     
     @IBAction func pickPressed(_ sender: UIButton) {
@@ -155,11 +247,10 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         
         cell.backgroundView = cellView
         
-        
         cell.label.text = voteItems[indexPath.section][indexPath.row]
         cell.counter.text = String(voteTallies[indexPath.section][indexPath.row])
         
-        let voteMax = voteTallies.reduce(0, {x, y in max(x, y.max()!)})
+        let voteMax = voteTallies.reduce(0, {x, y in max(x, y.max()!)}) + 1
         
         
         cell.voteCount.frame.size.width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * mainView.frame.width * 2/3
@@ -312,5 +403,12 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         
         voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
     }
+    
+}
+
+
+protocol VoteWithTableViewControllerDelegate: AnyObject {
+    
+  func didFinishTask(sender: VoteWithTableViewController)
     
 }

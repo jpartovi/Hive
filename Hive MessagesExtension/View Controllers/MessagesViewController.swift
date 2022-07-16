@@ -9,7 +9,7 @@ import UIKit
 import Messages
 import GooglePlaces
 
-class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, UINavigationControllerDelegate {
+class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, VoteWithTableViewControllerDelegate, UINavigationControllerDelegate {
     
     static var conversation: MSConversation? = nil
     
@@ -184,7 +184,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     func instantiateVoteViewController(conversation: MSConversation) -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteViewController.storyboardID) as? VoteViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteWithTableViewController.storyboardID) as? VoteWithTableViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
             
         controller.delegate = self
         controller.myID = conversation.localParticipantIdentifier.uuidString
@@ -193,7 +193,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         return controller
     }
     
-    func didFinishTask(sender: VoteViewController) {
+    func didFinishTask(sender: VoteWithTableViewController) {
     
     }
     
