@@ -34,12 +34,7 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
     var isOpen: [Bool] = []
     var voteSelections: [[Int]] = []
     var multiSelectable: [Bool] = []
-    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
-    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
-    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
-    var isOpen = [false, false, false, false]
-    var voteSelections = [[], [], [], []] as [[Int]]
-    var multiSelectable = [false, false, false, true]*/
+    
 
     
     override func viewDidLoad() {
@@ -86,7 +81,7 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                     allLoc.append(location.title)
                 }
                 voteItems.append(allLoc)
-                voteTallies.append([])
+                voteTallies.append([Int](repeating: 0, count: event.locations.count))
                 isOpen.append(false)
                 voteSelections.append([])
                 multiSelectable.append(false)
@@ -98,14 +93,16 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         if event.daysAndTimes.count > 1 {
             voteGroups.append("Day/Time")
             var allDay: [String] = []
+            var timeCount = 0
             for (day, dtimes) in event.daysAndTimes {
+                timeCount += dtimes.count
                 for time in dtimes {
                     var mutableDay = day
                     allDay.append(mutableDay.formatDate() + " @ " + time.format(duration: event.duration))
                 }
             }
             voteItems.append(allDay)
-            voteTallies.append([])
+            voteTallies.append([Int](repeating: 0, count: timeCount))
             isOpen.append(false)
             voteSelections.append([])
             multiSelectable.append(true)
@@ -127,6 +124,7 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                 resolvingAgainstBaseURL: false)
         
         var endFlag = false
+        var meFlag = false
         for (_, queryItem) in (components!.queryItems!.enumerated()){
             let name = queryItem.name
             let value = queryItem.value
@@ -135,17 +133,28 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                 endFlag = true
             } else if endFlag {
                 
-                //TODO: Handle RSVP data decoding
+                if name == myID && value == "start" {
+                    meFlag = true
+                } else if name == myID && value == "end" {
+                    break
+                } else if meFlag {
+                    voteSelections[Int(name)!].append(Int(value!)!)
+                }
+                
+                if (value != "start") && (value != "end") {
+                    voteTallies[Int(name)!][Int(value!)!] += 1
+                }
+                
                 
             }
         }
         
         //Dummy code
-        for (indexA, voteList) in voteItems.enumerated(){
+        /*for (indexA, voteList) in voteItems.enumerated(){
             for _ in voteList {
                 voteTallies[indexA].append(0)
             }
-        }
+        }*/
         
     }
     
@@ -157,9 +166,58 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         
     }
     
+    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
+    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
+    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
+    var isOpen = [false, false, false, false]
+    var voteSelections = [[], [], [], []] as [[Int]]
+    var multiSelectable = [false, false, false, true]*/
+    
+    
     func prepareVoteURL() -> URL{
-        // TODO: generate URL using vote data
-        return URL(string: "https://placeholder.com")!
+        
+        var components = URLComponents(url: mURL,
+                resolvingAgainstBaseURL: false)
+        
+        var endFlag = false
+        var meFlag = false
+        var startIndex = 0
+        var endIndex = 0
+        for (index, queryItem) in (components!.queryItems!.enumerated()){
+            let name = queryItem.name
+            let value = queryItem.value
+            
+            if name == "endEvent" {
+                endFlag = true
+            } else if endFlag {
+                
+                if name == myID && value == "start" {
+                    startIndex = index
+                    meFlag = true
+                } else if name == myID && value == "end" {
+                    endIndex = index
+                    break
+                }
+                
+            }
+        }
+        
+        var newItems: [URLQueryItem] = []
+        for (indexA, voteList) in voteSelections.enumerated(){
+            for (_, oneVote) in voteList.enumerated(){
+                newItems.append(URLQueryItem(name: String(indexA), value: String(oneVote)))
+            }
+        }
+        
+        
+        if meFlag {
+            newItems = Array((components?.queryItems!)!.prefix(through: startIndex)) + newItems + Array((components?.queryItems!)!.suffix(from: endIndex))
+            components?.queryItems = newItems
+        } else {
+            components?.queryItems! += [URLQueryItem(name: myID, value: "start")] + newItems + [URLQueryItem(name: myID, value: "end")]
+        }
+        
+        return (components?.url!)!
     }
     
     func prepareMessage(_ url: URL) {
@@ -171,13 +229,12 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         let message = MSMessage(session: session)
 
         let layout = MSMessageTemplateLayout()
-        layout.caption = "Vote Placeholder"
 
         message.layout = layout
         message.url = url
         
         conversation.insert(message)
-        
+        //conversation.insertText(url.absoluteString)
         self.requestPresentationStyle(.compact)
     }
     
