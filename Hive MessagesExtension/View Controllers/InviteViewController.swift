@@ -257,9 +257,8 @@ class InviteViewController: MSMessagesAppViewController {
         
         print("Send")
         
-        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
-        
         conversation.send(message)
+        
         
         self.requestPresentationStyle(.compact)
     }

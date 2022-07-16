@@ -151,11 +151,11 @@ class ConfirmViewController: MSMessagesAppViewController {
             trailingSubcaption = ""
             summaryText = ""
             
-            messageURL = event.buildURL()
+            messageURL = event.buildVoteURL()
             
-            conversation.insert(pollMessage) {error in
+            /*conversation.insert(pollMessage) {error in
                 // empty for now
-            }
+            }*/
         } else {
             // RSVP invite
             
@@ -179,7 +179,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             // TODO: Doesn't work for some reason
             summaryText = "Invite to " + event.title
             
-            messageURL = event.buildURL()
+            messageURL = event.buildRSVPURL()
         }
         
         // Construct message layout
