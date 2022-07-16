@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -24,7 +23,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6j-bj-qp4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2283" y="-1375"/>
+            <point key="canvasLocation" x="3161" y="-1577"/>
         </scene>
         <!--Invite View Controller-->
         <scene sceneID="DQ2-O4-Cay">
@@ -94,22 +93,22 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aB4-O5-aQv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3270.289855072464" y="-953.57142857142856"/>
+            <point key="canvasLocation" x="4527" y="-1233"/>
         </scene>
         <!--Vote Table View Controller-->
         <scene sceneID="RZj-AX-iwW">
             <objects>
                 <tableViewController storyboardIdentifier="VoteTableViewController" id="ViG-Hh-M0G" customClass="VoteTableViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="27K-CG-4lT">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="cZC-VD-iGq" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="44.5" width="320" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cZC-VD-iGq" id="L2g-sA-0dh">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -119,10 +118,11 @@
                             <outlet property="delegate" destination="ViG-Hh-M0G" id="AD9-dp-ppo"/>
                         </connections>
                     </tableView>
+                    <size key="freeformSize" width="320" height="528"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KL7-U2-3eU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3035" y="-1499"/>
+            <point key="canvasLocation" x="5720" y="-1233"/>
         </scene>
         <!--Vote With Table View Controller-->
         <scene sceneID="ECc-qU-EYE">
@@ -133,7 +133,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
-                                <rect key="frame" x="0.0" y="97" width="320" height="356"/>
+                                <rect key="frame" x="0.0" y="237" width="320" height="216"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="oqD-IW-uP0" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
@@ -151,20 +151,41 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r3N-fl-jyh">
+                                <rect key="frame" x="16" y="89" width="288" height="140"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="QZg-Pc-mrX"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DayAndTimesCell" id="7Mc-wn-gYw" customClass="DayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7Mc-wn-gYw" id="7sZ-LJ-6fa">
+                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AUO-3P-b70"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="Hx6-O8-szG"/>
+                            <constraint firstItem="r3N-fl-jyh" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="bottom" constant="8" symbolic="YES" id="PSb-Xt-XBj"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="top" constant="-16" id="SWu-bh-E2n"/>
                             <constraint firstItem="49J-CZ-eci" firstAttribute="width" secondItem="jTB-Mh-SNv" secondAttribute="width" id="T1y-aQ-ONz"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="bottom" secondItem="49J-CZ-eci" secondAttribute="bottom" constant="75" id="X5j-VA-Ldc"/>
+                            <constraint firstItem="49J-CZ-eci" firstAttribute="top" secondItem="r3N-fl-jyh" secondAttribute="bottom" constant="8" symbolic="YES" id="XOj-uG-Hxy"/>
+                            <constraint firstItem="AUO-3P-b70" firstAttribute="trailing" secondItem="r3N-fl-jyh" secondAttribute="trailing" constant="16" id="bJr-Eq-utc"/>
                             <constraint firstItem="49J-CZ-eci" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="h2Y-Se-7bV"/>
-                            <constraint firstItem="49J-CZ-eci" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="bottom" constant="16" id="tbJ-pN-8kJ"/>
+                            <constraint firstItem="r3N-fl-jyh" firstAttribute="leading" secondItem="AUO-3P-b70" secondAttribute="leading" constant="16" id="z9D-tS-DLB"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
+                        <outlet property="daysAndTimesTableView" destination="r3N-fl-jyh" id="zRn-Xh-HVo"/>
                         <outlet property="mainView" destination="jTB-Mh-SNv" id="mI9-zz-eVi"/>
                         <outlet property="titleLabel" destination="C1v-xz-QVR" id="JZi-F8-kKl"/>
                         <outlet property="voteTable" destination="49J-CZ-eci" id="tqP-53-Ptm"/>
@@ -172,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="772-nu-0V6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2489.8550724637685" y="-927.45535714285711"/>
+            <point key="canvasLocation" x="3959" y="-1233"/>
         </scene>
         <!--Time Selector View Controller-->
         <scene sceneID="cp4-m4-Iap">

@@ -142,6 +142,14 @@ extension TimeSelectorViewController: UIPickerViewDataSource {
 extension TimeSelectorViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedDuration = durations[row]
+        //pickerView.subviews[0].subviews[0].subviews[2].bounds = pickerView.subviews[0].subviews[0].subviews[2].frame.inset(by: UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10))
+        //pickerView.subviews[0].subviews[0].subviews[2].layer.cornerRadius = 10
+        //pickerView.subviews[0].subviews[0].subviews[2].backgroundColor = Style.primaryColor
+    }
+
+    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        //this will trigger attributedTitleForRow-method to be called
+        pickerView.reloadAllComponents()
     }
 }
 

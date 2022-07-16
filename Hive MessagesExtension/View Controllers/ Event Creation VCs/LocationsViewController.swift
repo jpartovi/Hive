@@ -55,7 +55,7 @@ class LocationsViewController: UIViewController {
         
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         
-        locations.append(Location(title: "", place: nil))
+        locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
         
         let lastCellIndexPath = IndexPath(row: locations.count - 1, section: 0)
@@ -140,7 +140,9 @@ class LocationsViewController: UIViewController {
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
-        locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place)
+        //print(Location(title: locations[addressEditingIndex!].title, place: Location.getPlaceFromID(id: place.placeID!)))
+        
+        locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place, address: place.formattedAddress!)
         locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
         
@@ -173,7 +175,7 @@ extension LocationsViewController: UITableViewDataSource {
         cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
         cell.addOrRemoveAddressButton.tag = indexPath.row
         cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
-        if let address = location.place?.formattedAddress {
+        if let address = location.address {
             cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
             cell.changeAddressButton.isHidden = false
             cell.changeAddressButton.setTitle(address, for: .normal)

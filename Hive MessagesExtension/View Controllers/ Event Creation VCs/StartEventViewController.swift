@@ -34,14 +34,11 @@ class StartEventViewController: MSMessagesAppViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(Date())
-        
         promptLabel.style(text: "What kind of event are you hosting?")
         
         setUpHexCollection()
-        
     }
-
+ 
     func setUpHexCollection() {
         typesCollectionView.dataSource = self
         typesCollectionView.delegate = self
@@ -64,8 +61,8 @@ class StartEventViewController: MSMessagesAppViewController {
         hexBordersCollectionView.reloadData()
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         NSLayoutConstraint.activate([
             hexBordersCollectionView.topAnchor.constraint(equalTo: typesCollectionView.topAnchor),
@@ -74,7 +71,6 @@ class StartEventViewController: MSMessagesAppViewController {
             hexBordersCollectionView.rightAnchor.constraint(equalTo: typesCollectionView.rightAnchor),
             
         ])
-
     }
 
     
@@ -145,6 +141,21 @@ extension StartEventViewController: UICollectionViewDelegateFlowLayout {
         let height = 150
         
         return CGSize(width: width, height: height)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        var slaveTable: UIScrollView? = nil
+            
+        if typesCollectionView == scrollView {
+            slaveTable = hexBordersCollectionView;
+        } else if hexBordersCollectionView == scrollView {
+            slaveTable = self.typesCollectionView;
+        }
+        
+        let offset: CGPoint = CGPoint(x: slaveTable!.contentOffset.x, y: scrollView.contentOffset.y)
+        
+        slaveTable?.setContentOffset(offset, animated: false)
     }
 }
 

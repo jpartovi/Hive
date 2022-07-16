@@ -14,6 +14,10 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
     
     @IBOutlet weak var titleLabel: UILabel!
     
+    @IBOutlet weak var daysAndTimesTableView: UITableView!
+    
+    var daysAndTimes: [Day : [Time]] = [:]
+    
     @IBOutlet weak var voteTable: UITableView!
     
     let submitButton = UIButton()
@@ -129,12 +133,10 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         } else {
             return 0
         }
-        
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         
         let cell = tableView.dequeueReusableCell(withIdentifier: VoteCell.reuseIdentifier, for: indexPath) as! VoteCell
         
@@ -150,7 +152,6 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                 cellView.backgroundColor = Style.secondaryColor
                 cell.voteCount.backgroundColor = Style.primaryColor
             }
-            
         }
         
         cell.backgroundView = cellView
@@ -188,11 +189,8 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 10))
         return footerView
     }
-
-    
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
         headerView.layer.cornerRadius = headerView.frame.height/2
@@ -226,9 +224,7 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                     } else {
                         tempText = tempText + ", " + voteItem
                     }
-                    
                 }
-                
             }
             
             headerSelection.text = tempText
@@ -272,21 +268,11 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
                 voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
             }
         }
-        
-        
-        
     }
     
     @objc func sectionHeaderTapped(recognizer: UITapGestureRecognizer) {
-        
-        
 
     }
-
-    
-    
-    
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -312,5 +298,4 @@ class VoteWithTableViewController: MSMessagesAppViewController, UITableViewDataS
         
         voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
     }
-    
 }

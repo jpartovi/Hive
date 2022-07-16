@@ -133,7 +133,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         let imageTitle: String
         let imageSubtitle: String
         let trailingCaption: String
-        let subcaption: String
+        var subcaption: String
         let trailingSubcaption: String
         let summaryText: String
         let messageURL: URL
@@ -169,9 +169,14 @@ class ConfirmViewController: MSMessagesAppViewController {
             imageTitle = ""
             imageSubtitle = ""
             trailingCaption = ""
-            subcaption = event.days[0].formatDate() + " @ " + event.times[0].format(duration: event.duration)
+            subcaption = event.days[0].formatDate()
+            if !event.times.isEmpty {
+                subcaption += " @ " + event.times[0].format(duration: event.duration)
+            }
+            
             trailingSubcaption = ""
             
+            // TODO: Doesn't work for some reason
             summaryText = "Invite to " + event.title
             
             messageURL = event.buildURL()
@@ -204,7 +209,7 @@ class ConfirmViewController: MSMessagesAppViewController {
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
-        event.locations.append(Location(title: "", place: nil))
+        event.locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
         
         let lastCellIndexPath = IndexPath(row: event.locations.count - 1, section: 0)
@@ -281,7 +286,7 @@ extension ConfirmViewController: UITableViewDataSource {
             cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
             cell.addOrRemoveAddressButton.tag = indexPath.row
             cell.addOrRemoveAddressButton.addTarget(nil, action: #selector(addOrRemoveAddress(sender:)), for: .touchUpInside)
-            if let address = location.place?.formattedAddress {
+            if let address = location.address {
                 cell.addOrRemoveAddressButton.setTitle("- address", for: .normal)
                 cell.changeAddressButton.isHidden = false
                 cell.changeAddressButton.setTitle(address, for: .normal)
@@ -340,7 +345,7 @@ extension ConfirmViewController: UITableViewDelegate {
 extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
-        event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place)
+        event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place, address: place.formattedAddress!)
         locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
     }

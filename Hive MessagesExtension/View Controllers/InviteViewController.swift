@@ -97,8 +97,8 @@ class InviteViewController: MSMessagesAppViewController {
         
         var informationTextObject = ""
         
-        if let place = event.locations[0].place {
-            informationTextObject = informationTextObject + (place.formattedAddress)! + "\n"
+        if let address = event.locations[0].address {
+            informationTextObject = informationTextObject + address + "\n"
         }
         
         var day = event.days[0]
@@ -195,7 +195,7 @@ class InviteViewController: MSMessagesAppViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.prepareMessage(components!.url!)
+            self.prepareMessage(components!.url!, summaryText: "I can come to " + self.loadedEvent.title + "!")
             self.dismiss()
         }
         
@@ -235,22 +235,25 @@ class InviteViewController: MSMessagesAppViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.prepareMessage(components!.url!)
+            self.prepareMessage(components!.url!, summaryText: "I can't come to " + self.loadedEvent.title)
             self.dismiss()
         }
         
     }
     
-    func prepareMessage(_ url: URL) {
+    func prepareMessage(_ url: URL, summaryText: String) {
         
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
 
         let message = MSMessage(session: (conversation.selectedMessage?.session)!)
 
-        let layout = conversation.selectedMessage?.layout
-
+        let layout = conversation.selectedMessage?.layout as! MSMessageTemplateLayout
+        
+        layout.image = UIImage(named: "MessageHeader")
+        
         message.layout = layout
         message.url = url
+        message.summaryText = ""
         
         print("Send")
         

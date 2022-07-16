@@ -16,6 +16,8 @@
 		15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */; };
 		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
 		15B44F4E2860E3B20055B51C /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4D2860E3B10055B51C /* Style.swift */; };
+		15B5D26A28823625004267E2 /* VoteWithTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B5D26928823624004267E2 /* VoteWithTableViewController.swift */; };
+		15B5D26C28833B25004267E2 /* VoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B5D26B28833B25004267E2 /* VoteCell.swift */; };
 		15BA66C1284E8C6E00C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66C0284E8C6E00C185CA /* Assets.xcassets */; };
 		15BA66C7284E8C6F00C185CA /* Hive MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		15BA66CC284E8C6F00C185CA /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15BA66CB284E8C6F00C185CA /* Messages.framework */; };
@@ -63,6 +65,8 @@
 		15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		15B44F4D2860E3B10055B51C /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		15B5D26928823624004267E2 /* VoteWithTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoteWithTableViewController.swift; path = "Hive MessagesExtension/View Controllers/VoteWithTableViewController.swift"; sourceTree = SOURCE_ROOT; };
+		15B5D26B28833B25004267E2 /* VoteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteCell.swift; sourceTree = "<group>"; };
 		15BA66BD284E8C6800C185CA /* Hive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66C0284E8C6E00C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Hive MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				156DAE79287C7E4000613360 /* LocationCell.swift */,
+				15B5D26B28833B25004267E2 /* VoteCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -130,6 +135,7 @@
 				156DAE652876348D00613360 /*  Event Creation VCs */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
 				8793627B286CFEE400C05180 /* VoteViewController.swift */,
+				15B5D26928823624004267E2 /* VoteWithTableViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 			);
 			path = "View Controllers";
@@ -375,8 +381,10 @@
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
 				156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
+				15B5D26C28833B25004267E2 /* VoteCell.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,
+				15B5D26A28823625004267E2 /* VoteWithTableViewController.swift in Sources */,
 				156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */,
 				156DAE7E287CD02900613360 /* Utilities.swift in Sources */,
 			);
