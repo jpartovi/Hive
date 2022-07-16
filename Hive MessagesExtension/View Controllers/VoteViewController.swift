@@ -21,7 +21,6 @@ class VoteViewController: UITableViewController {
     
     var curPick = -1
     var dispPick = -1
-    let daysAndTimes = 
     
     @IBOutlet weak var scrollview: UIView!
     
