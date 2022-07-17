@@ -112,7 +112,9 @@ class ConfirmViewController: MSMessagesAppViewController {
         
         // LoadDaysAndTimes
         for (index, day) in event.days.enumerated() {
-            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! DayAndTimesCell
+            
+            // TODO: can't load cells out of the view!
+            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
             daysAndTimes[day] = []
             for (time, isSelected) in cell.times {
                 if isSelected {
@@ -268,7 +270,7 @@ extension ConfirmViewController: UITableViewDataSource {
     
         switch tableView {
         case daysAndTimesTableView:
-            let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: DayAndTimesCell.reuseIdentifier, for: indexPath) as! DayAndTimesCell
+            let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: EditingDayAndTimesCell.reuseIdentifier, for: indexPath) as! EditingDayAndTimesCell
             var day = event.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
             for time in daysAndTimes[day]! {
@@ -314,7 +316,7 @@ extension ConfirmViewController: UITableViewDataSource {
         case daysAndTimesTableView:
             let verticalPadding: CGFloat = 8
             let maskLayer = CALayer()
-            maskLayer.cornerRadius = DayAndTimesCell.cornerRadius
+            maskLayer.cornerRadius = EditingDayAndTimesCell.cornerRadius
             maskLayer.backgroundColor = UIColor.black.cgColor
             maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
             cell.layer.mask = maskLayer
@@ -359,9 +361,9 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     }
 }
 
-class DayAndTimesCell: UITableViewCell {
+class EditingDayAndTimesCell: UITableViewCell {
     
-    static let reuseIdentifier = String(describing: DayAndTimesCell.self)
+    static let reuseIdentifier = String(describing: EditingDayAndTimesCell.self)
     
     static let cornerRadius: CGFloat = 20
     
@@ -383,7 +385,7 @@ class DayAndTimesCell: UITableViewCell {
         
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isPagingEnabled = true
-        collectionView.register(TimeCell.self, forCellWithReuseIdentifier: TimeCell.reuseIdentifier)
+        collectionView.register(EditingTimeCell.self, forCellWithReuseIdentifier: EditingTimeCell.reuseIdentifier)
         collectionView.backgroundColor = Style.lightGreyColor
         return collectionView
     }()
@@ -424,13 +426,13 @@ class DayAndTimesCell: UITableViewCell {
     }
 }
 
-extension DayAndTimesCell: UICollectionViewDataSource {
+extension EditingDayAndTimesCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         times.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: TimeCell.reuseIdentifier, for: indexPath) as! TimeCell
+        let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: EditingTimeCell.reuseIdentifier, for: indexPath) as! EditingTimeCell
         cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)//duration)
         cell.deleteIcon.tag = indexPath.row
         if times[indexPath.row].isSelected {
@@ -446,15 +448,15 @@ extension DayAndTimesCell: UICollectionViewDataSource {
     
 }
 
-extension DayAndTimesCell: UICollectionViewDelegate {
+extension EditingDayAndTimesCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         times[indexPath.row].isSelected = !times[indexPath.row].isSelected
         timesCollectionView.reloadData()
     }
 }
 
-class TimeCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: TimeCell.self)
+class EditingTimeCell: UICollectionViewCell {
+    static let reuseIdentifier = String(describing: EditingTimeCell.self)
     
     let timeLabel: UILabel = {
         let label = UILabel()
