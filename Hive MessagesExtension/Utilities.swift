@@ -84,3 +84,32 @@ extension String {
         return String(self[startIndex..<endIndex])
     }
 }
+
+let fadePercentage: Double = 0.2
+
+extension UIScrollView {
+    
+/*
+    open override func layoutSubviews() {
+
+        super.layoutSubviews()
+        
+        //self.bounds = self.frame.inset(by: UIEdgeInsets(top: self.frame.height * fadePercentage, left: 0, bottom: self.frame.height * fadePercentage, right: 0))
+
+        let transparent = UIColor.clear.cgColor
+        let opaque = UIColor.black.cgColor
+
+        let maskLayer = CALayer()
+        maskLayer.frame = self.bounds
+
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: self.bounds.origin.x, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+        gradientLayer.colors = [transparent, opaque, opaque, transparent]
+        gradientLayer.locations = [0, NSNumber(floatLiteral: fadePercentage), NSNumber(floatLiteral: 1 - fadePercentage), 1]
+
+        maskLayer.addSublayer(gradientLayer)
+        self.layer.mask = maskLayer
+
+    }
+ */
+}

@@ -104,7 +104,6 @@ struct Event {
         let components = URLComponents(url: url,
                 resolvingAgainstBaseURL: false)
         
-        
         if components!.queryItems![0].name == "messageType" && components!.queryItems![0].value == "vote" {
             
             var title: String? = nil
@@ -116,7 +115,6 @@ struct Event {
             var curDay: Day? = nil
             var duration: Duration? = nil
             
-            
             for (_, queryItem) in (components!.queryItems!.enumerated()){
                 let name = queryItem.name
                 let value = queryItem.value
@@ -127,12 +125,12 @@ struct Event {
                 case "type":
                     type = EventType(queryString: value!)
                 case "locationTitle":
-                    locations.append(Location(title: value!, place: nil))
-                case "locationId":
-                    locations.append(Location(title: locations.removeLast().title, place: Location.getPlaceFromID(id: value!)))
+                    locations.append(Location(title: value!, place: nil, address: nil))
+                case "locationAddress":
+                    locations.append(Location(title: locations.removeLast().title, place: nil, address: value!))
                 case "day":
                     curDay = Day(queryString: value!)
-                    daysAndTimes[curDay!] = []
+                    daysAndTimes[curDay!] = [Time]()
                 case "time":
                     var curTimes = daysAndTimes[curDay!]!
                     curTimes.append(Time(queryString: value!))
@@ -145,12 +143,16 @@ struct Event {
                     break
                 default:
                     print("Uncaught query name " + name)
+
                 }
             }
             self.title = title!
             self.type = type!
             self.locations = locations
-            self.days = []
+            self.days = Array(daysAndTimes.keys)
+            self.days.sort {
+                $0.date < $1.date
+            }
             self.times = []
             self.daysAndTimes = daysAndTimes
             self.duration = duration
@@ -159,7 +161,7 @@ struct Event {
         
             var title: String? = nil
             var type: EventType? = nil
-            var location = Location(title: "", place: nil)
+            var location = Location(title: "", place: nil, address: nil)
             var day: Day? = nil
             var time: Time? = nil
             var duration: Duration? = nil
@@ -349,28 +351,35 @@ enum EventType: CaseIterable {
 struct Location {
     var title: String
     var place: GMSPlace?
+    var address: String?
     
     func makeURLQueryItem() -> [URLQueryItem] {
         var queryItems = [URLQueryItem]()
         queryItems.append(URLQueryItem(name: "locationTitle", value: title))
-        if place != nil {
-            queryItems.append(URLQueryItem(name: "locationId", value: place!.placeID))
+        if address != nil {
+            queryItems.append(URLQueryItem(name: "locationAddress", value: address))
         }
         return queryItems
     }
     
-    init(title: String, place: GMSPlace?) {
+    init(title: String, place: GMSPlace?, address: String?) {
         self.title = title
         self.place = place
+        self.address = address
     }
     
+    // TODO: This does NOT work - WHYYYYYY??
     static func getPlaceFromID (id: String) -> GMSPlace {
         
-        let fields = GMSPlaceField()
-        let placesClient = GMSPlacesClient()
+        let fields = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) | UInt(GMSPlaceField.addressComponents.rawValue) | UInt(GMSPlaceField.placeID.rawValue))
+        let placesClient = GMSPlacesClient.shared()
         var placeFromId: GMSPlace?
+        
+        print("Trying")
+        /*
         placesClient.fetchPlace(fromPlaceID: id, placeFields: fields, sessionToken: nil, callback: {
             (place: GMSPlace?, error: Error?) in
+            print("======================")
             if let error = error {
                 
                 print("An error occurred: \(error.localizedDescription)")
@@ -378,13 +387,31 @@ struct Location {
             }
             print(place)
             if let place = place {
-                print("place is place")
+                print(place.name)
                 placeFromId = place
             } else {
                 fatalError("Place couldn't be loaded")
             }
         })
+        */
         
+        placesClient.lookUpPlaceID(id, callback: { (place, error) -> Void in
+            print("=================")
+            if let error = error {
+                    print("lookup place id query error: \(error.localizedDescription)")
+                    return
+            }
+
+            if let place = place {
+                print("Place name \(place.name)")
+                print("Place address \(place.formattedAddress)")
+                print("Place placeID \(place.placeID)")
+                print("Place attributions \(place.attributions)")
+                placeFromId = place
+            } else {
+                print("No place details for \(id)")
+            }
+        })
         return placeFromId!
     }
 }
