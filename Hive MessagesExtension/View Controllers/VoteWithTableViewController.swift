@@ -126,9 +126,9 @@ class VoteWithTableViewController: MSMessagesAppViewController {
             if mulDayMulTimeFlag {
                 // GRID LAYOUT
                 daysAndTimesGroupIndex = voteGroups.count
-                // name the voteGroups entry "daysAndTimes"
-                voteGroups.append("daysAndTimes")
-                voteItems.append([String](repeating: "-", count: dayTimeCount)) //not needed with grid view
+                // name the voteGroups entry "Days and Times"
+                voteGroups.append("Days and Times")
+                voteItems.append([String](repeating: "", count: dayTimeCount)) //not needed with grid view
                 voteTallies.append([Int](repeating: 0, count: dayTimeCount))
                 isOpen.append(false)
                 voteSelections.append([])
@@ -273,13 +273,6 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         
     }
     
-    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
-    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
-    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
-    var isOpen = [false, false, false, false]
-    var voteSelections = [[], [], [], []] as [[Int]]
-    var multiSelectable = [false, false, false, true]*/
-    
     
     func prepareVoteURL() -> URL{
         
@@ -331,9 +324,9 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
 
-        //let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-        let session = MSSession()
-        let message = MSMessage(session: session)
+        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
+        //let session = MSSession()
+        //let message = MSMessage(session: session)
 
         let layout = MSMessageTemplateLayout()
 
@@ -417,7 +410,7 @@ extension VoteWithTableViewController: UITableViewDataSource {
             return loadedEvent.daysAndTimes.count
         case voteTable:
             if isOpen[section] {
-                if voteGroups[section] == "daysAndTimes" {
+                if voteGroups[section] == "Days and Times" {
                     return daysAndTimesMagicIndexes.count
                 } else {
                     return voteItems[section].count
@@ -449,8 +442,10 @@ extension VoteWithTableViewController: UITableViewDataSource {
             cell.duration = loadedEvent.duration
             return cell
         case voteTable:
-            if voteGroups[indexPath.section] == "daysAndTimes" {
+            if voteGroups[indexPath.section] == "Days and Times" {
                 let cell = voteTable.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
+                cell.curView = self
+                cell.curIndex = indexPath.row
                 var day = loadedEvent.days[indexPath.row]
                 cell.dayLabel.text = day.formatDate()
                 for (index, time) in loadedEvent.daysAndTimes[day]!.enumerated() {
@@ -511,7 +506,7 @@ extension VoteWithTableViewController: UITableViewDelegate {
             break
         case voteTable:
             
-            if voteGroups[indexPath.section] == "daysAndTimes" {
+            if voteGroups[indexPath.section] == "Days and Times" {
                 // TODO: Maybe make it so that all of the times get selected?
                 return
             }
@@ -665,6 +660,9 @@ extension VoteWithTableViewController: UITableViewDelegate {
 
 class VotingDayAndTimesCell: UITableViewCell {
     
+    var curView: VoteWithTableViewController!
+    var curIndex: Int!
+    
     static let reuseIdentifier = String(describing: VotingDayAndTimesCell.self)
     
     static let cornerRadius: CGFloat = 20
@@ -750,15 +748,57 @@ extension VotingDayAndTimesCell: UICollectionViewDataSource {
     
 }
 
+/*if voteSelections[indexPath.section].contains(indexPath.row) {
+    
+    voteSelections[indexPath.section] = voteSelections[indexPath.section].filter {$0 != indexPath.row}
+    
+    voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] - 1
+} else {
+    
+    if !multiSelectable[indexPath.section] && voteSelections[indexPath.section] != [] {
+        
+        voteTallies[indexPath.section][voteSelections[indexPath.section][0]] = voteTallies[indexPath.section][voteSelections[indexPath.section][0]] - 1
+        
+        voteSelections[indexPath.section] = []
+        
+        
+    }
+    
+    voteSelections[indexPath.section].append(indexPath.row)
+    voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
+}
+
+voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)*/
+
+
+
+
+/*var voteGroups = ["A", "B", "C", "D (multi-select)"]
+var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
+var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
+var isOpen = [false, false, false, false]
+var voteSelections = [[], [], [], []] as [[Int]]
+var multiSelectable = [false, false, false, true]*/
+
+
 extension VotingDayAndTimesCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let magicIndex = curView.daysAndTimesMagicIndexes[curIndex]
         if times[indexPath.row].isVoted {
             times[indexPath.row].isVoted = false
             times[indexPath.row].votes -= 1
+            
+            curView.voteSelections[curView.daysAndTimesGroupIndex] = curView.voteSelections[curView.daysAndTimesGroupIndex].filter {$0 != magicIndex + indexPath.row}
+            
         } else {
             times[indexPath.row].isVoted = true
             times[indexPath.row].votes += 1
+            
+            curView.voteSelections[curView.daysAndTimesGroupIndex].append(magicIndex + indexPath.row)
         }
+        
+        
+        curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex + indexPath.row] = times[indexPath.row].votes
         
         timesCollectionView.reloadData()
     }
