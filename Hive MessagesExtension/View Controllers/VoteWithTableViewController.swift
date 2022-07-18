@@ -76,7 +76,7 @@ class VoteWithTableViewController: MSMessagesAppViewController {
     
         
         //Hides daysAndTimesTableView, remove this view later
-        daysAndTimesTableView.removeFromSuperview()
+        daysAndTimesTableView.isHidden = true
     
     }
     
