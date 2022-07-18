@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = ""
+//#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
 
 extension UIViewController {
     func showInputDialog(title:String? = nil,

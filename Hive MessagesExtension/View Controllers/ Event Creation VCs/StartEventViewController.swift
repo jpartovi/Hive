@@ -33,7 +33,13 @@ class StartEventViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /*
+        DispatchQueue.main.async {
+            var frame = self.typesCollectionView.frame
+            frame.size.height = self.typesCollectionView.contentSize.height
+            self.typesCollectionView.frame = frame
+        }
+        */
         promptLabel.style(text: "What kind of event are you hosting?")
         
         setUpHexCollection()
@@ -93,7 +99,7 @@ class StartEventViewController: MSMessagesAppViewController {
 
 extension StartEventViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        types.count
+        types.count//12
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -103,6 +109,7 @@ extension StartEventViewController: UICollectionViewDataSource {
             let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeHexCell.reuseIdentifier, for: indexPath) as! EventTypeHexCell
 
             cell.hexButton.setTitle(types[indexPath.row].label(), for: .normal)
+            //cell.hexButton.setTitle("Button", for: .normal)
             cell.hexButton.tag = indexPath.row
             cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
     

@@ -389,6 +389,7 @@ class CalendarDayCell: UICollectionViewCell {
             } else if inNextMonth {
                 //monthBackgroundView.backgroundColor = Style.tertiaryColor
                 //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
+                numberLabel.textColor = Style.darkTextColor
             } else {
                 //monthBackgroundView.backgroundColor = Style.secondaryColor
                 if isToday {

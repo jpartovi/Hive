@@ -24,13 +24,16 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     var addressEditingIndex: Int? = nil
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var eventTitleTextField: UITextField!
     @IBOutlet weak var locationsLabel: UILabel!
     @IBOutlet weak var addLocationButton: UIButton!
     @IBOutlet weak var firstLocationButton: HexButton!
     @IBOutlet weak var locationsTableView: UITableView!
+    @IBOutlet weak var locationsTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var dayTimePairsLabel: UILabel!
     @IBOutlet weak var daysAndTimesTableView: UITableView!
+    @IBOutlet weak var daysAndTimesTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var postButton: HexButton!
     
     override func viewDidLoad() {
@@ -90,6 +93,21 @@ class ConfirmViewController: MSMessagesAppViewController {
         }
     }
     
+    func updateTableViewHeights() {
+        
+        self.locationsTableViewHeightConstraint.constant = self.locationsTableView.contentSize.height
+        self.locationsTableView.layoutIfNeeded()
+        self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+        self.daysAndTimesTableView.layoutIfNeeded()
+        scrollView.contentSize = CGSize(width: self.view.frame.width - (2 * 16), height: 1200)
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.updateViewConstraints()
+        
+        updateTableViewHeights()
+    }
+    
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
@@ -144,8 +162,8 @@ class ConfirmViewController: MSMessagesAppViewController {
         if event.locations.count > 1 || event.days.count > 1 || event.times.count > 1 {
             // TODO: POLL
             
-            caption = ""
-            image = UIImage()
+            caption = "Poll for " + event.title
+            image = UIImage(named: "MessageHeader")!
             imageTitle = ""
             imageSubtitle = ""
             trailingCaption = ""
@@ -213,6 +231,7 @@ class ConfirmViewController: MSMessagesAppViewController {
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
+        updateTableViewHeights()
         
         let lastCellIndexPath = IndexPath(row: event.locations.count - 1, section: 0)
         locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
@@ -229,6 +248,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         event.locations.remove(at: index)
         locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         formatLocations()
+        updateTableViewHeights()
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
@@ -241,6 +261,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             event.locations[addressEditingIndex!].place = nil
             locationsTableView.reloadData()
         }
+        updateTableViewHeights()
     }
     
     @objc func locationTitleTextFieldDidChange(sender: UITextField) {
@@ -415,6 +436,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dayLabel.widthAnchor.constraint(equalToConstant: 40),
             
             timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: inset),
             timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
