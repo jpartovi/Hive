@@ -80,6 +80,10 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         // Use this method to finalize any behaviors associated with the change in presentation style.
     }
     
+    override func didSelect(_ message: MSMessage, conversation: MSConversation) {
+        presentViewController(for: conversation, with: presentationStyle)
+    }
+    
     private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
         
         let controller: UIViewController

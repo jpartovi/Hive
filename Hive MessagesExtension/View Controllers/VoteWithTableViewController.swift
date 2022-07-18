@@ -37,7 +37,9 @@ class VoteWithTableViewController: MSMessagesAppViewController {
     var voteSelections: [[Int]] = []
     var multiSelectable: [Bool] = []
     
-
+    
+    var daysAndTimesMagicIndexes: [Int] = []
+    var daysAndTimesGroupIndex: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,6 +73,11 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         NSLayoutConstraint.activate([ submitButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor), submitButton.topAnchor.constraint(equalTo: voteTable.bottomAnchor, constant: -30), submitButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20), /*submitButton.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.8),*/ submitButton.heightAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.4), submitLabel.centerXAnchor.constraint(equalTo: submitButton.centerXAnchor), submitLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor), submitLabel.widthAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.8), submitLabel.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.9)])
         
         submitButton.addTarget(self, action:#selector(pickPressed), for: UIControl.Event.touchUpInside)
+    
+        
+        //Hides daysAndTimesTableView, remove this view later
+        daysAndTimesTableView.removeFromSuperview()
+    
     }
     
     func decodeEvent(_ event: Event) {
@@ -104,21 +111,29 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         
         // Multiple days
         if event.days.count > 1 {
-            for (day, times) in event.daysAndTimes {
-                
-                // Multiple days multiple times
+            var mulDayMulTimeFlag = false
+            var dayTimeCount = 0
+            for day in event.days {
+                let times = event.daysAndTimes[day]!
+                daysAndTimesMagicIndexes.append(dayTimeCount)
+                dayTimeCount += times.count
                 if times.count > 1 {
-                    // GRID LAYOUT
-                    // name the voteGroups entry "daysAndTimes"
-                    voteGroups.append("daysAndTimes")
-                    voteItems.append([String](repeating: "-", count: event.days.count)) // ????
-                    voteTallies.append([Int](repeating: 0, count: event.days.count))
-                    isOpen.append(false)
-                    voteSelections.append([])
-                    multiSelectable.append(false)
-
-                    return
+                    mulDayMulTimeFlag = true
                 }
+            }
+            
+            // Multiple days multiple times
+            if mulDayMulTimeFlag {
+                // GRID LAYOUT
+                daysAndTimesGroupIndex = voteGroups.count
+                // name the voteGroups entry "daysAndTimes"
+                voteGroups.append("daysAndTimes")
+                voteItems.append([String](repeating: "-", count: dayTimeCount)) //not needed with grid view
+                voteTallies.append([Int](repeating: 0, count: dayTimeCount))
+                isOpen.append(false)
+                voteSelections.append([])
+                multiSelectable.append(false)
+                return
             }
             
             // Multiple days no time
@@ -402,7 +417,11 @@ extension VoteWithTableViewController: UITableViewDataSource {
             return loadedEvent.daysAndTimes.count
         case voteTable:
             if isOpen[section] {
-                return voteItems[section].count
+                if voteGroups[section] == "daysAndTimes" {
+                    return daysAndTimesMagicIndexes.count
+                } else {
+                    return voteItems[section].count
+                }
             } else {
                 return 0
             }
@@ -418,8 +437,14 @@ extension VoteWithTableViewController: UITableViewDataSource {
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
             var day = loadedEvent.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
-            for time in loadedEvent.daysAndTimes[day]! {
-                cell.times.append((time, false, 0)) // TODO: need to laod previous votes here (replace "false" and "0")
+            for (index, time) in loadedEvent.daysAndTimes[day]!.enumerated() {
+                let flatIndex = daysAndTimesMagicIndexes[indexPath.row] + index
+                
+                print(daysAndTimesMagicIndexes)
+                print(voteSelections)
+                print(voteTallies)
+                
+                cell.times.append((time, voteSelections[daysAndTimesGroupIndex].contains(flatIndex), voteTallies[daysAndTimesGroupIndex][flatIndex])) // TODO: need to laod previous votes here (replace "false" and "0")
             }
             cell.duration = loadedEvent.duration
             return cell
@@ -428,8 +453,9 @@ extension VoteWithTableViewController: UITableViewDataSource {
                 let cell = voteTable.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
                 var day = loadedEvent.days[indexPath.row]
                 cell.dayLabel.text = day.formatDate()
-                for time in loadedEvent.daysAndTimes[day]! {
-                    cell.times.append((time, false, 0)) // TODO: need to laod previous votes here (replace "false" and "0")
+                for (index, time) in loadedEvent.daysAndTimes[day]!.enumerated() {
+                    let flatIndex = daysAndTimesMagicIndexes[indexPath.row] + index
+                    cell.times.append((time, voteSelections[indexPath.section].contains(flatIndex), voteTallies[indexPath.section][flatIndex])) // TODO: need to laod previous votes here (replace "false" and "0")
                 }
                 cell.duration = loadedEvent.duration
                 return cell
