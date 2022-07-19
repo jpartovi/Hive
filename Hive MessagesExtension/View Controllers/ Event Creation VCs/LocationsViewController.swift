@@ -28,12 +28,43 @@ class LocationsViewController: UIViewController {
     
     var locationNamesFilled: Bool = false
     
+    var expandToNext: Bool = false
+    
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: HexButton!
     
     @IBOutlet weak var locationsTableView: UITableView!
     
     @IBOutlet weak var continueButton: ContinueHexButton!
+    
+    
+    @IBOutlet var compactConstraints: [NSLayoutConstraint]!
+    
+    @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
+    
+    func changedConstraints(compact: Bool){
+        
+        if compact {
+            promptLabel.font = Style.font(size: 20)
+            for constraint in expandedConstraints {
+                constraint.isActive = false
+            }
+            for constraint in compactConstraints {
+                constraint.isActive = true
+            }
+        } else {
+            promptLabel.font = Style.font(size: 30)
+            for constraint in compactConstraints {
+                constraint.isActive = false
+            }
+            for constraint in expandedConstraints {
+                constraint.isActive = true
+            }
+        }
+        
+        locationsTableView.reloadData()
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,21 +123,33 @@ class LocationsViewController: UIViewController {
     @IBAction func continueButtonPressed(_ sender: Any) {
         
         if locationNamesFilled {
-            nextPage()
+            expandAndNextPage()
         } else {
             // TODO: Error???
         }
         
     }
     
+    func expandAndNextPage() {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            expandToNext = true
+            MVC.requestPresentationStyle(.expanded)
+            //triggers code in MessagesViewController that calls nextPage after completion
+        } else {
+            nextPage()
+        }
+    }
+    
     func nextPage() {
         
         event?.locations = locations
-        
         let dateSelectorVC = (storyboard?.instantiateViewController(withIdentifier: DaySelectorViewController.storyboardID) as? DaySelectorViewController)!
         dateSelectorVC.event = event
         self.navigationController?.pushViewController(dateSelectorVC, animated: true)
     }
+    
+    
     
     @objc func deleteLocation(sender: UIButton) {
         locationsTableView.reloadData()

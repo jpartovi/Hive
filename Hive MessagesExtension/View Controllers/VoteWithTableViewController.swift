@@ -17,7 +17,7 @@ class VoteWithTableViewController: MSMessagesAppViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var daysAndTimesTableView: UITableView!
+    //@IBOutlet weak var daysAndTimesTableView: UITableView!
     
     @IBOutlet weak var voteTable: UITableView!
     
@@ -48,9 +48,9 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         decodeEvent(loadedEvent)
         decodeRSVPs(url: mURL)
     
-        daysAndTimesTableView.dataSource = self
-        daysAndTimesTableView.delegate = self
-        daysAndTimesTableView.reloadData()
+        //daysAndTimesTableView.dataSource = self
+        //daysAndTimesTableView.delegate = self
+        //daysAndTimesTableView.reloadData()
 
         voteTable.dataSource = self
         voteTable.delegate = self
@@ -70,13 +70,13 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         mainView.addSubview(submitLabel)
         
         
-        NSLayoutConstraint.activate([ submitButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor), submitButton.topAnchor.constraint(equalTo: voteTable.bottomAnchor, constant: -30), submitButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20), /*submitButton.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.8),*/ submitButton.heightAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.4), submitLabel.centerXAnchor.constraint(equalTo: submitButton.centerXAnchor), submitLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor), submitLabel.widthAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.8), submitLabel.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.9)])
+        NSLayoutConstraint.activate([ submitButton.centerXAnchor.constraint(equalTo: mainView.centerXAnchor), /*submitButton.topAnchor.constraint(equalTo: voteTable.bottomAnchor, constant: -30),*/ submitButton.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -20), submitButton.widthAnchor.constraint(equalTo: mainView.widthAnchor, multiplier: 0.8), submitButton.heightAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.4), submitLabel.centerXAnchor.constraint(equalTo: submitButton.centerXAnchor), submitLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor), submitLabel.widthAnchor.constraint(equalTo: submitButton.widthAnchor, multiplier: 0.8), submitLabel.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.9)])
         
         submitButton.addTarget(self, action:#selector(pickPressed), for: UIControl.Event.touchUpInside)
     
         
         //Hides daysAndTimesTableView, remove this view later
-        daysAndTimesTableView.isHidden = true
+        //daysAndTimesTableView.isHidden = true
     
     }
     
@@ -329,7 +329,7 @@ class VoteWithTableViewController: MSMessagesAppViewController {
         //let message = MSMessage(session: session)
 
         let layout = MSMessageTemplateLayout()
-
+        
         message.layout = layout
         message.url = url
         
@@ -387,6 +387,11 @@ class VoteWithTableViewController: MSMessagesAppViewController {
 
     }
     
+    override func willResignActive(with conversation: MSConversation) {
+        self.view.window!.rootViewController?.dismiss(animated: false)
+        super.willResignActive(with: conversation)
+    }
+    
    
 }
 
@@ -394,8 +399,8 @@ extension VoteWithTableViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         switch tableView {
-        case daysAndTimesTableView:
-            return 1
+        //case daysAndTimesTableView:
+        //    return 1
         case voteTable:
             return voteGroups.count
         default:
@@ -406,8 +411,8 @@ extension VoteWithTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
-        case daysAndTimesTableView:
-            return loadedEvent.daysAndTimes.count
+        //case daysAndTimesTableView:
+        //    return loadedEvent.daysAndTimes.count
         case voteTable:
             if isOpen[section] {
                 if voteGroups[section] == "Days and Times" {
@@ -426,7 +431,7 @@ extension VoteWithTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         switch tableView {
-        case daysAndTimesTableView:
+        /*case daysAndTimesTableView:
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
             var day = loadedEvent.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
@@ -440,7 +445,7 @@ extension VoteWithTableViewController: UITableViewDataSource {
                 cell.times.append((time, voteSelections[daysAndTimesGroupIndex].contains(flatIndex), voteTallies[daysAndTimesGroupIndex][flatIndex])) // TODO: need to laod previous votes here (replace "false" and "0")
             }
             cell.duration = loadedEvent.duration
-            return cell
+            return cell*/
         case voteTable:
             if voteGroups[indexPath.section] == "Days and Times" {
                 let cell = voteTable.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
@@ -482,13 +487,13 @@ extension VoteWithTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
         switch tableView {
-        case daysAndTimesTableView:
+        /*case daysAndTimesTableView:
             let verticalPadding: CGFloat = 8
             let maskLayer = CALayer()
             maskLayer.cornerRadius = VotingDayAndTimesCell.cornerRadius
             maskLayer.backgroundColor = UIColor.black.cgColor
             maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
-            cell.layer.mask = maskLayer
+            cell.layer.mask = maskLayer*/
         case voteTable:
             break
         default:
@@ -502,8 +507,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch tableView {
-        case daysAndTimesTableView:
-            break
+        //case daysAndTimesTableView:
+         //   break
         case voteTable:
             
             if voteGroups[indexPath.section] == "Days and Times" {
@@ -539,8 +544,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
-        case daysAndTimesTableView:
-            return 50
+        //case daysAndTimesTableView:
+        //    return 50
         case voteTable:
             return 50
         default:
@@ -550,8 +555,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch tableView {
-        case daysAndTimesTableView:
-            return nil
+        //case daysAndTimesTableView:
+        //    return nil
         case voteTable:
             return voteGroups[section]
         default:
@@ -562,8 +567,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         switch tableView {
-        case daysAndTimesTableView:
-            return 0
+        //case daysAndTimesTableView:
+        //   return 0
         case voteTable:
             return 50
         default: return 0
@@ -572,8 +577,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         switch tableView {
-        case daysAndTimesTableView:
-            return 0
+        //case daysAndTimesTableView:
+        //    return 0
         case voteTable:
             return 10
         default:
@@ -583,8 +588,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         switch tableView {
-        case daysAndTimesTableView:
-            return nil
+        //case daysAndTimesTableView:
+        //    return nil
         case voteTable:
             let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 10))
             return footerView
@@ -596,8 +601,8 @@ extension VoteWithTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         switch tableView {
-        case daysAndTimesTableView:
-            return nil
+        //case daysAndTimesTableView:
+        //    return nil
         case voteTable:
         
             let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))

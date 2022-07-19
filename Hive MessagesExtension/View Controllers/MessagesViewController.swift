@@ -72,9 +72,73 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         // Called before the extension transitions to a new presentation style.
     
         // Use this method to prepare for the change in presentation style.
+        
+        
     }
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        print(children[0].children)
+        for child in children {
+            if let child = child as? VoteWithTableViewController {
+                if presentationStyle == .compact {
+                    print("VOTE COMPACT")
+                    //child.willMove(toParent: nil)
+                    //child.view.removeFromSuperview()
+                    //child.removeFromParent()
+                    //child.dismiss(animated: true)
+                    self.view.window!.rootViewController?.dismiss(animated: false)
+                    dismiss()
+                }
+            } else if let child = child as? InviteViewController {
+                if presentationStyle == .compact {
+                    self.view.window!.rootViewController?.dismiss(animated: false)
+                    dismiss()
+                }
+            } else if let child = child as? UINavigationController {
+                
+                for subchild in child.children {
+                    if let subchild = subchild as? ConfirmViewController {
+                        if presentationStyle == .compact {
+                            subchild.scrollViewTrailingConstraint.constant = 160
+                            for constraint in subchild.expandConstraints {
+                                constraint.isActive = false
+                            }
+                            for constraint in subchild.compactConstraints {
+                                constraint.isActive = true
+                            }
+                        } else if presentationStyle == .expanded {
+                            subchild.scrollViewTrailingConstraint.constant = 16
+                            for constraint in subchild.compactConstraints {
+                                constraint.isActive = false
+                            }
+                            for constraint in subchild.expandConstraints {
+                                constraint.isActive = true
+                            }
+                        }
+                        subchild.locationsTableView.reloadData()
+                        subchild.daysAndTimesTableView.reloadData()
+                        
+                        subchild.formatLocations()
+                        subchild.updateTableViewHeights()
+                        subchild.updateContentView()
+                        //subchild.styleEventTitleTextField()
+                        //subchild.updateTableViewHeights()
+                        
+                        //print(subchild.eventTitleTextField.layer.sublayers?[0].frame.width)
+                    } else if let subchild = subchild as? LocationsViewController {
+                        if presentationStyle == .compact {
+                            subchild.changedConstraints(compact: true)
+                        } else if presentationStyle == .expanded {
+                            subchild.changedConstraints(compact: false)
+                            if subchild.expandToNext {
+                                subchild.nextPage()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         // Called after the extension transitions to a new presentation style.
     
         // Use this method to finalize any behaviors associated with the change in presentation style.
