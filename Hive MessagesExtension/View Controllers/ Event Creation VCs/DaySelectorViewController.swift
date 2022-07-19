@@ -15,14 +15,26 @@ class DaySelectorViewController: UIViewController {
     static let storyboardID = String(describing: DaySelectorViewController.self)
     
     var event: Event! = nil
-    lazy var selectedDays = event.days
+    var selectedDays = [Day]()
     
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var weekDayLabels: UIStackView!
     
+    func updateEventObject() {
+        selectedDays = []
+        
+        for calendarDay in calendarDays {
+            if calendarDay.isSelected {
+                
+                selectedDays.append(calendarDay.day)
+            }
+        }
+        event?.days = selectedDays
+        
+    }
+    
     func nextPage() {
         
-        event?.days = selectedDays
         if event.type == .allDay {
             let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
             confirmVC.event = event
@@ -56,7 +68,7 @@ class DaySelectorViewController: UIViewController {
     @IBOutlet var calendarCollectionView: UICollectionView?
     @IBOutlet weak var nextButton: ContinueHexButton!
     
-    private lazy var calendarDays: [CalendarDay] = generateDays(for: today)
+    var calendarDays = [CalendarDay]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +89,17 @@ class DaySelectorViewController: UIViewController {
         calendarCollectionView!.reloadData()
         
         updateNextButtonStatus()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // TODO: Day selections show late because this block is in this function
+        selectedDays = event.days
+        calendarDays = generateDays(for: today)
+        calendarCollectionView?.reloadData()
+        
+        navigationController?.delegate = self
     }
     
     func underlineWeekDayLabels() {
@@ -149,14 +172,12 @@ class DaySelectorViewController: UIViewController {
         let date = calendar.date(byAdding: .day, value: dayOffset, to: today) ?? today
         
         var isSelected = false
-        //if selectedDays != nil {
-            for day in selectedDays {
-                if day.date == date {
-                    isSelected = true
-                    break
-                }
+        for day in selectedDays {
+            if day.sameAs(date: date) {
+                isSelected = true
+                break
             }
-        //}
+        }
         
         return CalendarDay(
             day: Day(date: date),
@@ -175,16 +196,7 @@ class DaySelectorViewController: UIViewController {
     @IBAction func nextButtonPressed(_ sender: Any) {
         
         if anyDaySelected {
-            
-            selectedDays = []
-            
-            for calendarDay in calendarDays {
-                if calendarDay.isSelected {
-                    
-                    selectedDays.append(calendarDay.day)
-                }
-            }
-            
+            updateEventObject()
             nextPage()
         }
     }
@@ -229,10 +241,7 @@ extension DaySelectorViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     
-    
-    
-    // TODO: When a cell is selected...
-    
+    // When a cell is selected
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         var day = calendarDays[indexPath.row]
@@ -266,6 +275,16 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
         let height = width
         
         return CGSize(width: width, height: width)
+    }
+}
+
+extension DaySelectorViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        
+        if type(of: viewController) == LocationsViewController.self {
+            updateEventObject()
+            (viewController as? LocationsViewController)?.event = event
+        }
     }
 }
 

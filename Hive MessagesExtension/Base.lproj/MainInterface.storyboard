@@ -292,11 +292,11 @@
             <objects>
                 <viewController storyboardIdentifier="ConfirmViewController" id="jZe-Gd-Ekf" customClass="ConfirmViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2az-mK-R86">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="532"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mdp-qL-vwd">
-                                <rect key="frame" x="16" y="44" width="288" height="468"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mdp-qL-vwd">
+                                <rect key="frame" x="16" y="44" width="288" height="390"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7yb-JN-KFm">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="34"/>
@@ -352,14 +352,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0A-mE-Isj" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="128.5" y="418.5" width="31" height="30"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Post"/>
-                                        <connections>
-                                            <action selector="postButtonPressed:" destination="jZe-Gd-Ekf" eventType="touchUpInside" id="qaL-Qc-eFR"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5fh-us-7ja" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="99" y="126.5" width="90" height="30"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -368,13 +360,13 @@
                                             <action selector="addLocationButtonPressed:" destination="jZe-Gd-Ekf" eventType="touchUpInside" id="0aF-Yn-uWU"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qg3-Te-AM9">
-                                        <rect key="frame" x="138" y="41" width="33" height="21"/>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qg3-Te-AM9">
+                                        <rect key="frame" x="132" y="41" width="63" height="23"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="fsZ-d3-iIE"/>
+                                            <constraint firstAttribute="height" constant="23" id="4VD-Ek-RRH"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="+"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="+ Add"/>
                                         <connections>
                                             <action selector="addLocationButtonPressed:" destination="jZe-Gd-Ekf" eventType="touchUpInside" id="UPK-8g-oII"/>
                                         </connections>
@@ -389,15 +381,12 @@
                                     <constraint firstItem="caS-ve-S27" firstAttribute="top" secondItem="ATc-Kf-BB5" secondAttribute="bottom" constant="8" symbolic="YES" id="GKE-0O-Vzx"/>
                                     <constraint firstItem="5fh-us-7ja" firstAttribute="centerX" secondItem="ydz-YF-ior" secondAttribute="centerX" id="Nlr-Lz-p18"/>
                                     <constraint firstItem="cpJ-h9-6TV" firstAttribute="leading" secondItem="Mdp-qL-vwd" secondAttribute="leading" id="Oba-Uk-a3z"/>
-                                    <constraint firstItem="Qg3-Te-AM9" firstAttribute="top" secondItem="7yb-JN-KFm" secondAttribute="bottom" constant="7" id="RRX-JD-QJl"/>
                                     <constraint firstItem="ATc-Kf-BB5" firstAttribute="top" secondItem="ydz-YF-ior" secondAttribute="bottom" constant="8" symbolic="YES" id="RcE-e8-Bef"/>
-                                    <constraint firstItem="ydz-YF-ior" firstAttribute="top" secondItem="Qg3-Te-AM9" secondAttribute="bottom" constant="8.5" id="URV-58-khK"/>
-                                    <constraint firstItem="B0A-mE-Isj" firstAttribute="centerX" secondItem="Mdp-qL-vwd" secondAttribute="centerX" id="f3C-Kt-fzC"/>
                                     <constraint firstItem="ydz-YF-ior" firstAttribute="centerX" secondItem="Mdp-qL-vwd" secondAttribute="centerX" id="fW8-qd-iax"/>
                                     <constraint firstItem="ydz-YF-ior" firstAttribute="width" secondItem="Mdp-qL-vwd" secondAttribute="width" id="gSZ-p2-Qvm"/>
+                                    <constraint firstItem="Qg3-Te-AM9" firstAttribute="centerY" secondItem="cpJ-h9-6TV" secondAttribute="centerY" id="j9W-Av-SCa"/>
                                     <constraint firstItem="5fh-us-7ja" firstAttribute="centerY" secondItem="ydz-YF-ior" secondAttribute="centerY" id="l80-10-0dA"/>
                                     <constraint firstItem="caS-ve-S27" firstAttribute="width" secondItem="Mdp-qL-vwd" secondAttribute="width" id="mnf-wR-iEw"/>
-                                    <constraint firstItem="B0A-mE-Isj" firstAttribute="top" secondItem="caS-ve-S27" secondAttribute="bottom" constant="29" id="ocd-n1-beM"/>
                                     <constraint firstItem="caS-ve-S27" firstAttribute="centerX" secondItem="Mdp-qL-vwd" secondAttribute="centerX" id="pNN-De-uAN"/>
                                     <constraint firstItem="7yb-JN-KFm" firstAttribute="width" secondItem="Mdp-qL-vwd" secondAttribute="width" id="r9Y-X6-Wc9"/>
                                     <constraint firstItem="cpJ-h9-6TV" firstAttribute="top" secondItem="7yb-JN-KFm" secondAttribute="bottom" constant="8" symbolic="YES" id="sPr-4p-9F6"/>
@@ -405,17 +394,27 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="QgM-rB-j4M"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="fL9-sP-ys0"/>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B0A-mE-Isj" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="144.5" y="476" width="31" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Post"/>
+                                <connections>
+                                    <action selector="postButtonPressed:" destination="jZe-Gd-Ekf" eventType="touchUpInside" id="qaL-Qc-eFR"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="miL-ws-szC"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="B0A-mE-Isj" firstAttribute="centerX" secondItem="2az-mK-R86" secondAttribute="centerX" id="Cpo-mg-lwl"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="top" secondItem="miL-ws-szC" secondAttribute="top" id="EnW-OI-c1h"/>
-                            <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="20" id="cGt-z1-Bcc"/>
+                            <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="B0A-mE-Isj" secondAttribute="bottom" constant="79" id="I7d-j9-wmt"/>
+                            <constraint firstItem="B0A-mE-Isj" firstAttribute="top" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="42" id="Txm-UW-y0m"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="leading" secondItem="miL-ws-szC" secondAttribute="leading" constant="16" id="eh5-cc-off"/>
                             <constraint firstItem="miL-ws-szC" firstAttribute="trailing" secondItem="Mdp-qL-vwd" secondAttribute="trailing" constant="16" id="x64-rn-KlG"/>
                         </constraints>
                     </view>
-                    <size key="freeformSize" width="320" height="532"/>
+                    <size key="freeformSize" width="320" height="585"/>
                     <connections>
                         <outlet property="addLocationButton" destination="Qg3-Te-AM9" id="Fh5-Nk-Cdn"/>
                         <outlet property="dayTimePairsLabel" destination="ATc-Kf-BB5" id="r75-PO-efG"/>
@@ -432,7 +431,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tcs-AC-WSx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6957.971014492754" y="-1925.2232142857142"/>
+            <point key="canvasLocation" x="6957.971014492754" y="-1907.4776785714284"/>
         </scene>
         <!--Day Selector View Controller-->
         <scene sceneID="YFo-n0-3Ue">
@@ -713,6 +712,7 @@
             <point key="canvasLocation" x="5405.7971014492759" y="-1927.2321428571427"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.87450980389999999" green="0.62352941179999999" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

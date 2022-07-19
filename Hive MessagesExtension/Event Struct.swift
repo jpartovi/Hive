@@ -239,6 +239,25 @@ enum EventType: CaseIterable {
         return Duration.createDurations(min: min, max: max)
     }
     
+    func getDefaultDuration() -> Duration {
+        var duration = Duration(minutes: 90)
+        switch self {
+        case .brunch:
+            break
+        case .lunch:
+            break
+        case .dinner:
+            break
+        case .party:
+            duration = Duration.init(minutes: 180)
+        case .allDay:
+            fatalError("EventType 'All-Day' has no default duration.")
+        case .custom:
+            Duration(minutes: 60)
+        }
+        return duration
+    }
+    
     init(queryString: String) {
         switch queryString {
         case "brunch":
@@ -500,7 +519,11 @@ struct Day: Hashable {
         // Create date from components
         let calendar = Calendar(identifier: .gregorian)
         self.date = calendar.date(from: dateComponents)!
-        print(date)
+    }
+    
+    func sameAs(date: Date) -> Bool {
+        let calendar = Calendar(identifier: .gregorian)
+        return calendar.isDate(self.date, equalTo: date, toGranularity: .day)
     }
 }
 

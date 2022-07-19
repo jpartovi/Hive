@@ -17,10 +17,10 @@ class TimeSelectorViewController: UIViewController {
     var event: Event! = nil
     lazy var startTimes: [Time] = event.type.getStartTimes()
     var startTimesSelectionKey: [(Time, Bool)] = []
-    lazy var selectedTimes = event.times
+    var selectedTimes = [Time]()
     var anyStartTimeSelected: Bool = false
     lazy var durations: [Duration?] = [nil] + event.type.getDurations()
-    var selectedDuration: Duration? = nil
+    lazy var selectedDuration: Duration? = event.duration
     
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var durationPicker: UIPickerView!
@@ -29,12 +29,7 @@ class TimeSelectorViewController: UIViewController {
     
     @IBAction func includeDurationButtonPressed(_ sender: Any) {
         
-        let defaultDurationIndex = 2
-        durationPicker.selectRow(defaultDurationIndex, inComponent: 0, animated: true)
-        selectedDuration = durations[defaultDurationIndex]
-        
-        includeDurationButton.isHidden = true
-        durationView.isHidden = false
+        showDurationPicker()
     }
     @IBOutlet weak var startTimesCollectionView: UICollectionView!
     let cellsPerRow = 2
@@ -48,50 +43,95 @@ class TimeSelectorViewController: UIViewController {
         super.viewDidLoad()
         
         addHexFooter()
-        
-        durationView.isHidden = true
-        
+                
         promptLabel.style(text: "What time(s) might this event start?")
+        
         durationPicker.dataSource = self
         durationPicker.delegate = self
         
-        
-        
-        loadStartTimeSelectionKey()
     
         startTimesCollectionView.contentInsetAdjustmentBehavior = .always
         startTimesCollectionView.register(StartTimeCell.self, forCellWithReuseIdentifier: StartTimeCell.reuseIdentifier)
         startTimesCollectionView.dataSource = self
         startTimesCollectionView.delegate = self
-        startTimesCollectionView.reloadData()
         
         updateNextButtonStatus()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        selectedTimes = event.times
+        loadStartTimeSelectionKey()
+        startTimesCollectionView.reloadData()
+        
+        navigationController?.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        formatDurationView()
+    }
+    
+    func formatDurationView() {
+        if selectedDuration == nil {
+            hideDurationPicker()
+        } else {
+            showDurationPicker()
+        }
+    }
+    
+    func hideDurationPicker() {
+        includeDurationButton.isHidden = false
+        durationView.isHidden = true
+    }
+    
+    func showDurationPicker() {
+        if selectedDuration == nil {
+            selectedDuration = event.type.getDefaultDuration()
+        }
+        
+        let durationIndex = durations.firstIndex(where: {$0?.minutes == selectedDuration?.minutes})!
+        durationPicker.selectRow(durationIndex, inComponent: 0, animated: true)
+        
+        includeDurationButton.isHidden = true
+        durationView.isHidden = false
+    }
+    
     func loadStartTimeSelectionKey() {
         for time in startTimes {
-            startTimesSelectionKey.append((time, false))
+            let isSelected: Bool
+            if selectedTimes.contains(where: { $0.sameAs(time: time) } ) {
+                isSelected = true
+            } else {
+                isSelected = false
+            }
+            startTimesSelectionKey.append((time, isSelected))
         }
     }
     
     @IBAction func nextButtonPressed(_ sender: Any) {
         
+        updateEventObject()
+        
+        nextPage()
+    }
+    
+    func updateEventObject() {
         selectedTimes = []
         for (startTime, isSelected) in startTimesSelectionKey {
             if isSelected {
-                // TODO: Make TimeFrame object
                 selectedTimes.append(startTime)
             }
         }
         
-        nextPage()
+        event.times = selectedTimes
+        event.duration = selectedDuration
     }
 
     
     func nextPage() {
-        
-        event.times = selectedTimes
-        event.duration = selectedDuration
         
         let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
         confirmVC.event = event
@@ -167,9 +207,11 @@ extension TimeSelectorViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StartTimeCell.reuseIdentifier, for: indexPath) as! StartTimeCell
 
         cell.time = startTime
-        cell.timeSelected = isSelected
-        
-        // TODO: What if there are already selected start times??? (load duration and start times from event object)
+        if isSelected {
+            cell.showSelected()
+        } else {
+            cell.showUnselected()
+        }
         
         return cell
     }
@@ -184,6 +226,11 @@ extension TimeSelectorViewController: UICollectionViewDelegateFlowLayout {
         isSelected = !isSelected
         startTimesSelectionKey[indexPath.row] = (startTime, isSelected)
         startTimesCollectionView!.reloadData()
+        if !event.daysAndTimes.isEmpty {
+            for day in event.days {
+                event.daysAndTimes[day]?.append(startTime)
+            }
+        }
         
         updateNextButtonStatus()
     }
@@ -207,6 +254,18 @@ extension TimeSelectorViewController: UICollectionViewDelegateFlowLayout {
         let height = 50
         
         return CGSize(width: width, height: height)
+    }
+}
+
+extension TimeSelectorViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        
+        if type(of: viewController) == DaySelectorViewController.self {
+            updateEventObject()
+            print("TimeVC sent")
+            print(event.days)
+            (viewController as? DaySelectorViewController)?.event = event
+        }
     }
 }
 
@@ -239,17 +298,6 @@ class StartTimeCell: UICollectionViewCell {
             timeLabel.text = time.format(duration: nil)
         }
     }
-    
-    var timeSelected: Bool? {
-        didSet {
-            guard timeSelected != nil else {
-                print ("Error loading time selection status")
-                return
-            }
-            
-            updateSelectionStatus()
-        }
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -273,16 +321,7 @@ class StartTimeCell: UICollectionViewCell {
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
-
-    func updateSelectionStatus() {
-
-        if timeSelected! {
-            showSelected()
-        } else {
-            showUnselected()
-        }
-    }
-
+    
     func showSelected() {
         // TODO: Show selected
         imageView.image = UIImage(named: "SelectedLongHex")?.size(width: self.frame.width, height: self.frame.width)

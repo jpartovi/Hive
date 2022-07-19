@@ -16,7 +16,7 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     var event: Event! = nil
     
-    var daysAndTimes: [Day : [Time]] = [:]
+    lazy var daysAndTimes: [Day : [Time]] = event.daysAndTimes
     
     var pollFlag = false
     var pollMessage: MSMessage!
@@ -39,6 +39,11 @@ class ConfirmViewController: MSMessagesAppViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
+        addLocationButton.backgroundColor = Style.primaryColor
+        addLocationButton.setTitle("+ Add", for: .normal)
+        addLocationButton.setTitleColor(Style.lightTextColor, for: .normal)
+        
         addHexFooter()
         
         styleEventTitleTextField()
@@ -48,6 +53,12 @@ class ConfirmViewController: MSMessagesAppViewController {
         fillEventDetails()
         
         postButton.style(width: 130, height: 150, fontSize: 25)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.delegate = self
     }
     
     func styleEventTitleTextField() {
@@ -64,8 +75,10 @@ class ConfirmViewController: MSMessagesAppViewController {
     }
     
     func loadDaysAndTimes() {
-        for day in event.days {
-            daysAndTimes[day] = (event.times)
+        if event.daysAndTimes.isEmpty {
+            for day in event.days {
+                daysAndTimes[day] = (event.times)
+            }
         }
     }
     func fillEventDetails() {
@@ -85,9 +98,11 @@ class ConfirmViewController: MSMessagesAppViewController {
     func formatLocations() {
       
         if event.locations.isEmpty {
+            locationsLabel.isHidden = true
             firstLocationButton.isHidden = false
             addLocationButton.isHidden = true
         } else {
+            locationsLabel.isHidden = false
             firstLocationButton.isHidden = true
             addLocationButton.isHidden = false
         }
@@ -95,17 +110,60 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     func updateTableViewHeights() {
         
-        self.locationsTableViewHeightConstraint.constant = self.locationsTableView.contentSize.height
+        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 50)
         self.locationsTableView.layoutIfNeeded()
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         self.daysAndTimesTableView.layoutIfNeeded()
-        scrollView.contentSize = CGSize(width: self.view.frame.width - (2 * 16), height: 1200)
+
+        //scrollView.layoutIfNeeded()
+        scrollView.contentSize = CGSize(width: self.view.frame.width - (2 * 16), height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
+        //scrollView.isScrollEnabled = true
     }
     
     override func viewWillLayoutSubviews() {
         super.updateViewConstraints()
         
         updateTableViewHeights()
+    }
+    
+    func updateEventObject() {
+        // TODO: Make sure all text fields have contents (eventTitle + locationTitles)
+        event.title = eventTitleTextField.text!
+        
+        // LoadDaysAndTimes
+        for (index, day) in event.days.enumerated() {
+            
+            // TODO: can't load cells out of the view!
+            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
+            daysAndTimes[day] = []
+            for (time, isSelected) in cell.times {
+                if isSelected {
+                    daysAndTimes[day]!.append(time)
+                }
+            }
+        }
+        event.daysAndTimes = daysAndTimes
+
+        for (dayIndex, day) in event.days.enumerated() {
+            if event.daysAndTimes[day]!.isEmpty {
+                event.days.remove(at: dayIndex)
+                event.daysAndTimes.removeValue(forKey: day)
+            }
+        }
+        
+        for (timeIndex, time) in event.times.enumerated() {
+            var timeIncluded = false
+            for day in event.days {
+                if event.daysAndTimes[day]!.contains(where: { $0.sameAs(time: time) }) {
+                    timeIncluded = true
+                    continue
+                }
+            }
+            if !timeIncluded {
+                event.times.remove(at: timeIndex)
+            }
+        }
+        print(event.times)
     }
     
     // When the post button is pressed
@@ -125,22 +183,7 @@ class ConfirmViewController: MSMessagesAppViewController {
          
          */
         
-        // TODO: Make sure all text fields have contents (eventTitle + locationTitles)
-        event.title = eventTitleTextField.text!
-        
-        // LoadDaysAndTimes
-        for (index, day) in event.days.enumerated() {
-            
-            // TODO: can't load cells out of the view!
-            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
-            daysAndTimes[day] = []
-            for (time, isSelected) in cell.times {
-                if isSelected {
-                    daysAndTimes[day]!.append(time)
-                }
-            }
-        }
-        event.daysAndTimes = daysAndTimes
+        updateEventObject()
         
         // Load current conversation
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
@@ -294,8 +337,14 @@ extension ConfirmViewController: UITableViewDataSource {
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: EditingDayAndTimesCell.reuseIdentifier, for: indexPath) as! EditingDayAndTimesCell
             var day = event.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
-            for time in daysAndTimes[day]! {
-                cell.times.append((time, true))
+            for time in event.times {
+                var isSelected = false
+                for selectedTime in daysAndTimes[day]! {
+                    if time.sameAs(time: selectedTime) {
+                        isSelected = true
+                    }
+                }
+                cell.times.append((time, isSelected))
             }
             cell.duration = event.duration
             return cell
@@ -379,6 +428,18 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     
     func wasCancelled(_ viewController: GMSAutocompleteViewController) {
         navigationController?.dismiss(animated: true)
+    }
+}
+
+extension ConfirmViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if type(of: viewController) == TimeSelectorViewController.self {
+            updateEventObject()
+            (viewController as? TimeSelectorViewController)?.event = event
+        } else if type(of: viewController) == DaySelectorViewController.self {
+            updateEventObject()
+            (viewController as? DaySelectorViewController)?.event = event
+        }
     }
 }
 
@@ -493,6 +554,7 @@ class EditingTimeCell: UICollectionViewCell {
         label.textColor = Style.greyColor
         label.textAlignment = .center
         label.text = "X"
+        
         return label
     }()
     
@@ -514,7 +576,7 @@ class EditingTimeCell: UICollectionViewCell {
         super.layoutSubviews()
         
         
-        self.contentView.layer.cornerRadius = 5
+        //self.contentView.layer.cornerRadius = 5
         
         let inset: CGFloat = 5
 
