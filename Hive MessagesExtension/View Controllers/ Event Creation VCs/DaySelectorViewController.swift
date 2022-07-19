@@ -31,6 +31,9 @@ class DaySelectorViewController: UIViewController {
         }
         event?.days = selectedDays
         
+        print("DaySelector updated event")
+        print(event.daysAndTimes)
+        print(event.days)
     }
     
     func nextPage() {
@@ -57,7 +60,7 @@ class DaySelectorViewController: UIViewController {
     
     var today: Date!
     
-    let calendar = Calendar(identifier: .gregorian)
+    //let calendar = Calendar(identifier: .gregorian)
     
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
@@ -79,7 +82,13 @@ class DaySelectorViewController: UIViewController {
         
         underlineWeekDayLabels()
         
+        //let calendar = Calendar(identifier: .gregorian)
+        let currentDate = Date()
+        print(calendar.dateComponents(in: calendar.timeZone, from: currentDate))
+        
         today = Date()
+        print("today")
+        print(today)
     
         calendarCollectionView!.contentInsetAdjustmentBehavior = .always
         calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
@@ -87,8 +96,6 @@ class DaySelectorViewController: UIViewController {
         calendarCollectionView!.delegate = self
         
         calendarCollectionView!.reloadData()
-        
-        updateNextButtonStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -98,8 +105,12 @@ class DaySelectorViewController: UIViewController {
         selectedDays = event.days
         calendarDays = generateDays(for: today)
         calendarCollectionView?.reloadData()
+        updateNextButtonStatus()
         
         navigationController?.delegate = self
+        
+        print("Date View Appeared")
+        print(event.daysAndTimes)
     }
     
     func underlineWeekDayLabels() {
@@ -163,11 +174,16 @@ class DaySelectorViewController: UIViewController {
         }
         
         days[offsetInInitialRow - 1].isToday = true
+        
+        print(days[0].day)
 
         return days
     }
 
     func generateDay(offsetBy dayOffset: Int, for today: Date, inFuture: Bool, inNextMonth: Bool) -> CalendarDay {
+        
+        print(dayOffset)
+        print(today)
           
         let date = calendar.date(byAdding: .day, value: dayOffset, to: today) ?? today
         
@@ -245,8 +261,17 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         var day = calendarDays[indexPath.row]
+        print(day.day)
         
         if day.inFuture {
+            if !event.daysAndTimes.isEmpty {
+                if day.isSelected {
+                    event.daysAndTimes.removeValue(forKey: day.day)
+                } else {
+                    event.daysAndTimes[day.day] = event.times
+                    print(event.daysAndTimes[day.day])
+                }
+            }
             day.isSelected = !day.isSelected
             calendarDays[indexPath.row] = day
             calendarCollectionView!.reloadData()

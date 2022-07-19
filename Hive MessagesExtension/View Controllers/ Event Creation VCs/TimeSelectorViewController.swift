@@ -100,6 +100,7 @@ class TimeSelectorViewController: UIViewController {
     }
     
     func loadStartTimeSelectionKey() {
+        startTimesSelectionKey = []
         for time in startTimes {
             let isSelected: Bool
             if selectedTimes.contains(where: { $0.sameAs(time: time) } ) {
@@ -223,15 +224,20 @@ extension TimeSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         var (startTime, isSelected) = startTimesSelectionKey[indexPath.row]
+        if !event.daysAndTimes.isEmpty {
+            if isSelected {
+                for day in event.days {
+                    event.daysAndTimes[day]?.removeAll(where: { $0.sameAs(time: startTime) })
+                }
+            } else {
+                for day in event.days {
+                    event.daysAndTimes[day]?.append(startTime)
+                }
+            }
+        }
         isSelected = !isSelected
         startTimesSelectionKey[indexPath.row] = (startTime, isSelected)
         startTimesCollectionView!.reloadData()
-        if !event.daysAndTimes.isEmpty {
-            for day in event.days {
-                event.daysAndTimes[day]?.append(startTime)
-            }
-        }
-        
         updateNextButtonStatus()
     }
     
@@ -262,8 +268,6 @@ extension TimeSelectorViewController: UINavigationControllerDelegate {
         
         if type(of: viewController) == DaySelectorViewController.self {
             updateEventObject()
-            print("TimeVC sent")
-            print(event.days)
             (viewController as? DaySelectorViewController)?.event = event
         }
     }

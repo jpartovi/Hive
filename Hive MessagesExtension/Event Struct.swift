@@ -476,7 +476,7 @@ struct Day: Hashable {
     
     mutating func makeURLQueryItem() -> URLQueryItem {
         /*
-        let calendar = Calendar(identifier: .gregorian)
+        //let calendar = Calendar(identifier: .gregorian)
         let dateComponents = calendar.dateComponents(
             [.calendar, .timeZone,
              .era, .quarter,
@@ -517,12 +517,12 @@ struct Day: Hashable {
         dateComponents.minute = 0
 
         // Create date from components
-        let calendar = Calendar(identifier: .gregorian)
+        //let calendar = Calendar(identifier: .gregorian)
         self.date = calendar.date(from: dateComponents)!
     }
     
     func sameAs(date: Date) -> Bool {
-        let calendar = Calendar(identifier: .gregorian)
+        //let calendar = Calendar(identifier: .gregorian)
         return calendar.isDate(self.date, equalTo: date, toGranularity: .day)
     }
 }

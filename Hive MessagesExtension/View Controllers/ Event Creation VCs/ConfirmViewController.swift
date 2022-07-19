@@ -132,8 +132,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         
         // LoadDaysAndTimes
         for (index, day) in event.days.enumerated() {
-            
-            // TODO: can't load cells out of the view!
+            print(day)
             let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
             daysAndTimes[day] = []
             for (time, isSelected) in cell.times {
@@ -142,28 +141,31 @@ class ConfirmViewController: MSMessagesAppViewController {
                 }
             }
         }
-        event.daysAndTimes = daysAndTimes
-
-        for (dayIndex, day) in event.days.enumerated() {
-            if event.daysAndTimes[day]!.isEmpty {
-                event.days.remove(at: dayIndex)
-                event.daysAndTimes.removeValue(forKey: day)
+        
+        for day in event.days {
+            if daysAndTimes[day]!.isEmpty {
+                event.days.remove(at: event.days.firstIndex(of: day)!)//dayIndex)
+                daysAndTimes.removeValue(forKey: day)
             }
         }
         
-        for (timeIndex, time) in event.times.enumerated() {
+        for time in event.times {
             var timeIncluded = false
             for day in event.days {
-                if event.daysAndTimes[day]!.contains(where: { $0.sameAs(time: time) }) {
+                if daysAndTimes[day]!.contains(where: { $0.sameAs(time: time) }) {
                     timeIncluded = true
                     continue
                 }
             }
             if !timeIncluded {
-                event.times.remove(at: timeIndex)
+                event.times.remove(at: event.times.firstIndex(where: { $0.sameAs(time: time) })!)
             }
         }
-        print(event.times)
+        
+        event.daysAndTimes = daysAndTimes
+        
+        print("Loaded event")
+        print(event.daysAndTimes)
     }
     
     // When the post button is pressed
