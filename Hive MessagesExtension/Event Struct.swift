@@ -475,22 +475,7 @@ struct Day: Hashable {
     }
     
     mutating func makeURLQueryItem() -> URLQueryItem {
-        /*
-        //let calendar = Calendar(identifier: .gregorian)
-        let dateComponents = calendar.dateComponents(
-            [.calendar, .timeZone,
-             .era, .quarter,
-             .year, .month, .day,
-             .hour, .minute, .second, .nanosecond,
-             .weekday, .weekdayOrdinal,
-             .weekOfMonth, .weekOfYear, .yearForWeekOfYear],
-            from: date)
-        let year = yearFormatter.string(from: date)
-        let month = monthFormatter
-        let date = dateComponents.date?.timeIntervalSinceReferenceDate
-        let
-        let timeZone: String = dateComponents.timeZone!.identifier
-        */
+
         let dateString = stringFormatter.string(from: date)
         print(dateString)
         
@@ -512,7 +497,6 @@ struct Day: Hashable {
         dateComponents.year = year
         dateComponents.month = month
         dateComponents.day = date
-        //dateComponents.timeZone = //TimeZone(abbreviation: "JST") // Japan Standard Time
         dateComponents.hour = 12
         dateComponents.minute = 0
 

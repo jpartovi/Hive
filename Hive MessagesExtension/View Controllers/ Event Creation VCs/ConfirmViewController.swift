@@ -585,9 +585,11 @@ class EditingTimeCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            timeLabel.widthAnchor.constraint(equalToConstant: 60),
             
             deleteIcon.heightAnchor.constraint(equalToConstant: self.frame.height - (inset * 2)),
-            deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
+            //deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
+            deleteIcon.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: inset),
             deleteIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             deleteIcon.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])

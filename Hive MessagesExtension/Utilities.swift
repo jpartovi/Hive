@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-#error ("Insert Google Places API Key below, then delete this line")
+//#error ("Insert Google Places API Key below, then delete this line")
 let googlePlacesAPIKey = ""
 
 let calendar = Calendar(identifier: .gregorian)
