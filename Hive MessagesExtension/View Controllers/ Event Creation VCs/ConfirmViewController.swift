@@ -44,6 +44,7 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Days", event.days)
         
         
         addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
@@ -363,6 +364,7 @@ extension ConfirmViewController: UITableViewDataSource {
             cell.dayLabel.text = day.formatDate()
             for time in event.times {
                 var isSelected = false
+                print("Days2", day)
                 for selectedTime in daysAndTimes[day]! {
                     if time.sameAs(time: selectedTime) {
                         isSelected = true

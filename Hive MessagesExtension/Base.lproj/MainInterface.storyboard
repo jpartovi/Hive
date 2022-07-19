@@ -695,6 +695,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="mHp-3y-CdP"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sum-f7-dbF" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="115" y="160" width="90" height="30"/>
@@ -726,7 +731,7 @@
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="leading" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="fKk-V9-oiU"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="L0P-wK-uBH" secondAttribute="trailing" constant="16" id="lwz-Gi-6dK"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="16" id="m3Z-Om-2GP"/>
-                            <constraint firstItem="L0P-wK-uBH" firstAttribute="centerY" secondItem="ZWX-YA-dv7" secondAttribute="centerY" id="zbx-Ch-Ko8"/>
+                            <constraint firstItem="L0P-wK-uBH" firstAttribute="centerY" secondItem="ZWX-YA-dv7" secondAttribute="centerY" constant="30" id="zbx-Ch-Ko8"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -750,12 +755,10 @@
                         <outletCollection property="expandedConstraints" destination="BCQ-C8-mh5" collectionClass="NSMutableArray" id="dG9-1Q-OzE"/>
                         <outletCollection property="compactConstraints" destination="C7U-n1-vxh" collectionClass="NSMutableArray" id="ch3-hp-xbl"/>
                         <outletCollection property="expandedConstraints" destination="DSj-fJ-3uA" collectionClass="NSMutableArray" id="cdl-M5-cWb"/>
-                        <outletCollection property="expandedConstraints" destination="Bmb-fe-PUa" collectionClass="NSMutableArray" id="WqK-CM-niF"/>
                         <outletCollection property="expandedConstraints" destination="RBs-aP-fgE" collectionClass="NSMutableArray" id="3mi-p8-ejg"/>
                         <outletCollection property="expandedConstraints" destination="Sm8-k4-0Dr" collectionClass="NSMutableArray" id="dc0-mC-vaI"/>
                         <outletCollection property="expandedConstraints" destination="e8e-Bc-8fh" collectionClass="NSMutableArray" id="9kV-Rq-Ni6"/>
                         <outletCollection property="compactConstraints" destination="zbx-Ch-Ko8" collectionClass="NSMutableArray" id="8sz-yp-NPb"/>
-                        <outletCollection property="compactConstraints" destination="MQz-fg-Uqw" collectionClass="NSMutableArray" id="OEO-rE-c6g"/>
                         <outletCollection property="compactConstraints" destination="amZ-8H-3J1" collectionClass="NSMutableArray" id="JW3-XE-8c5"/>
                         <outletCollection property="compactConstraints" destination="T76-2C-qF3" collectionClass="NSMutableArray" id="oZg-Ki-fH9"/>
                         <outletCollection property="compactConstraints" destination="lwz-Gi-6dK" collectionClass="NSMutableArray" id="nOD-Bk-tfq"/>

@@ -77,7 +77,6 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        print(children[0].children)
         for child in children {
             if let child = child as? VoteWithTableViewController {
                 if presentationStyle == .compact {
@@ -95,44 +94,42 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                     dismiss()
                 }
             } else if let child = child as? UINavigationController {
-                
-                for subchild in child.children {
-                    if let subchild = subchild as? ConfirmViewController {
-                        if presentationStyle == .compact {
-                            subchild.scrollViewTrailingConstraint.constant = 160
-                            for constraint in subchild.expandConstraints {
-                                constraint.isActive = false
-                            }
-                            for constraint in subchild.compactConstraints {
-                                constraint.isActive = true
-                            }
-                        } else if presentationStyle == .expanded {
-                            subchild.scrollViewTrailingConstraint.constant = 16
-                            for constraint in subchild.compactConstraints {
-                                constraint.isActive = false
-                            }
-                            for constraint in subchild.expandConstraints {
-                                constraint.isActive = true
-                            }
+                let subchild = child.children.last //the view controller being presented
+                if let subchild = subchild as? ConfirmViewController {
+                    if presentationStyle == .compact {
+                        subchild.scrollViewTrailingConstraint.constant = 160
+                        for constraint in subchild.expandConstraints {
+                            constraint.isActive = false
                         }
-                        subchild.locationsTableView.reloadData()
-                        subchild.daysAndTimesTableView.reloadData()
-                        
-                        subchild.formatLocations()
-                        subchild.updateTableViewHeights()
-                        subchild.updateContentView()
-                        //subchild.styleEventTitleTextField()
-                        //subchild.updateTableViewHeights()
-                        
-                        //print(subchild.eventTitleTextField.layer.sublayers?[0].frame.width)
-                    } else if let subchild = subchild as? LocationsViewController {
-                        if presentationStyle == .compact {
-                            subchild.changedConstraints(compact: true)
-                        } else if presentationStyle == .expanded {
-                            subchild.changedConstraints(compact: false)
-                            if subchild.expandToNext {
-                                subchild.nextPage()
-                            }
+                        for constraint in subchild.compactConstraints {
+                            constraint.isActive = true
+                        }
+                    } else if presentationStyle == .expanded {
+                        subchild.scrollViewTrailingConstraint.constant = 16
+                        for constraint in subchild.compactConstraints {
+                            constraint.isActive = false
+                        }
+                        for constraint in subchild.expandConstraints {
+                            constraint.isActive = true
+                        }
+                    }
+                    subchild.locationsTableView.reloadData()
+                    subchild.daysAndTimesTableView.reloadData()
+                    
+                    subchild.formatLocations()
+                    subchild.updateTableViewHeights()
+                    subchild.updateContentView()
+                    //subchild.styleEventTitleTextField()
+                    //subchild.updateTableViewHeights()
+                    
+                    //print(subchild.eventTitleTextField.layer.sublayers?[0].frame.width)
+                } else if let subchild = subchild as? LocationsViewController {
+                    if presentationStyle == .compact {
+                        subchild.changedConstraints(compact: true)
+                    } else if presentationStyle == .expanded {
+                        subchild.changedConstraints(compact: false)
+                        if subchild.expandToNext {
+                            subchild.nextPage()
                         }
                     }
                 }
