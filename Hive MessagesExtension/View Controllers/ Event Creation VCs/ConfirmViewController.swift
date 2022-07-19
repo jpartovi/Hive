@@ -36,8 +36,16 @@ class ConfirmViewController: MSMessagesAppViewController {
     @IBOutlet weak var daysAndTimesTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var postButton: HexButton!
     
+    @IBOutlet weak var scrollViewTrailingConstraint: NSLayoutConstraint!
+    
+    @IBOutlet var compactConstraints: [NSLayoutConstraint]!
+    @IBOutlet var expandConstraints: [NSLayoutConstraint]!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("Days", event.days)
+        
         
         addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
         addLocationButton.backgroundColor = Style.primaryColor
@@ -58,7 +66,14 @@ class ConfirmViewController: MSMessagesAppViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        updateContentView()
         navigationController?.delegate = self
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        if scrollView.contentOffset.x>0 {
+            scrollView.contentOffset.x = 0
+        }
     }
     
     func styleEventTitleTextField() {
@@ -68,7 +83,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         eventTitleTextField.textColor = Style.tertiaryColor
         let underlineThickness = CGFloat(2)
         let underline = CALayer()
-        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: view.frame.width - 32, height: underlineThickness)
+        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: /*view.frame.width - 32*/ scrollView.frame.width, height: underlineThickness)
         underline.backgroundColor = Style.tertiaryColor.cgColor
         eventTitleTextField.layer.addSublayer(underline)
         eventTitleTextField.placeholder = "Event Title"
@@ -114,9 +129,10 @@ class ConfirmViewController: MSMessagesAppViewController {
         self.locationsTableView.layoutIfNeeded()
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         self.daysAndTimesTableView.layoutIfNeeded()
-
         //scrollView.layoutIfNeeded()
-        scrollView.contentSize = CGSize(width: self.view.frame.width - (2 * 16), height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
+        scrollView.contentSize = CGSize(width: /*self.view.frame.width - (2 * 16)*/ scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
+        
+        print("SCROLLVIEW WIDTH", scrollView.frame.width)
         //scrollView.isScrollEnabled = true
     }
     
@@ -143,7 +159,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         }
         
         for day in event.days {
-            if daysAndTimes[day]!.isEmpty {
+            if daysAndTimes[day]!.isEmpty && !event.times.isEmpty {
                 event.days.remove(at: event.days.firstIndex(of: day)!)//dayIndex)
                 daysAndTimes.removeValue(forKey: day)
             }
@@ -163,7 +179,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         }
         
         event.daysAndTimes = daysAndTimes
-        
+
         print("Loaded event")
         print(event.daysAndTimes)
     }
@@ -234,6 +250,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             imageTitle = ""
             imageSubtitle = ""
             trailingCaption = ""
+            print(event.days)
             subcaption = event.days[0].formatDate()
             if !event.times.isEmpty {
                 subcaption += " @ " + event.times[0].format(duration: event.duration)
@@ -317,6 +334,12 @@ class ConfirmViewController: MSMessagesAppViewController {
             event.locations[sender.tag].title = sender.text ?? ""
         }
     }
+    
+    func updateContentView() {
+        print("scrollView.contentSize.width", scrollView.contentSize.width)
+        scrollView.contentSize.width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
+    }
+    
 }
 
 extension ConfirmViewController: UITableViewDataSource {
@@ -333,7 +356,7 @@ extension ConfirmViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
+
         switch tableView {
         case daysAndTimesTableView:
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: EditingDayAndTimesCell.reuseIdentifier, for: indexPath) as! EditingDayAndTimesCell
@@ -341,6 +364,7 @@ extension ConfirmViewController: UITableViewDataSource {
             cell.dayLabel.text = day.formatDate()
             for time in event.times {
                 var isSelected = false
+                print("Days2", day)
                 for selectedTime in daysAndTimes[day]! {
                     if time.sameAs(time: selectedTime) {
                         isSelected = true

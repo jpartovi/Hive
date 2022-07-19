@@ -483,7 +483,8 @@ struct Day: Hashable {
     }
     
     init(date: Date) {
-        self.date = date
+        let cal = Calendar(identifier: .gregorian)
+        self.date = cal.date(bySettingHour: 12, minute: 0, second: 0, of: date)!
     }
     
     init(queryString: String) {

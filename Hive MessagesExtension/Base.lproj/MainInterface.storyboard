@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -407,12 +408,22 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="B0A-mE-Isj" firstAttribute="centerX" secondItem="2az-mK-R86" secondAttribute="centerX" id="Cpo-mg-lwl"/>
+                            <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="16" id="DaU-yI-o7t"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="top" secondItem="miL-ws-szC" secondAttribute="top" id="EnW-OI-c1h"/>
                             <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="B0A-mE-Isj" secondAttribute="bottom" constant="79" id="I7d-j9-wmt"/>
                             <constraint firstItem="B0A-mE-Isj" firstAttribute="top" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="42" id="Txm-UW-y0m"/>
+                            <constraint firstItem="miL-ws-szC" firstAttribute="trailing" secondItem="B0A-mE-Isj" secondAttribute="trailing" constant="16" id="cyC-RQ-ZNv"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="leading" secondItem="miL-ws-szC" secondAttribute="leading" constant="16" id="eh5-cc-off"/>
+                            <constraint firstItem="B0A-mE-Isj" firstAttribute="centerY" secondItem="miL-ws-szC" secondAttribute="centerY" id="qvf-6k-Oo5"/>
                             <constraint firstItem="miL-ws-szC" firstAttribute="trailing" secondItem="Mdp-qL-vwd" secondAttribute="trailing" constant="16" id="x64-rn-KlG"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="DaU-yI-o7t"/>
+                                <exclude reference="cyC-RQ-ZNv"/>
+                                <exclude reference="qvf-6k-Oo5"/>
+                            </mask>
+                        </variation>
                     </view>
                     <size key="freeformSize" width="320" height="585"/>
                     <connections>
@@ -427,6 +438,13 @@
                         <outlet property="locationsTableViewHeightConstraint" destination="3M1-nG-PDF" id="zsm-Kq-YME"/>
                         <outlet property="postButton" destination="B0A-mE-Isj" id="ZSb-U3-Pbk"/>
                         <outlet property="scrollView" destination="Mdp-qL-vwd" id="76A-kg-VQO"/>
+                        <outlet property="scrollViewTrailingConstraint" destination="x64-rn-KlG" id="JnE-jU-3qv"/>
+                        <outletCollection property="compactConstraints" destination="qvf-6k-Oo5" collectionClass="NSMutableArray" id="Udg-ue-zYq"/>
+                        <outletCollection property="compactConstraints" destination="cyC-RQ-ZNv" collectionClass="NSMutableArray" id="NtR-nt-bBZ"/>
+                        <outletCollection property="expandConstraints" destination="Cpo-mg-lwl" collectionClass="NSMutableArray" id="om2-ee-PJJ"/>
+                        <outletCollection property="expandConstraints" destination="Txm-UW-y0m" collectionClass="NSMutableArray" id="0qK-nG-ong"/>
+                        <outletCollection property="expandConstraints" destination="I7d-j9-wmt" collectionClass="NSMutableArray" id="T9d-zJ-PhK"/>
+                        <outletCollection property="compactConstraints" destination="DaU-yI-o7t" collectionClass="NSMutableArray" id="h6u-bf-wzj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tcs-AC-WSx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -645,7 +663,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L0P-wK-uBH" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="144" y="298" width="32" height="30"/>
+                                <rect key="frame" x="144" y="291" width="32" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="L0P-wK-uBH" secondAttribute="height" multiplier="242:279" id="ZnZ-jk-hHQ"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Next"/>
                                 <connections>
@@ -674,6 +695,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="mHp-3y-CdP"/>
+                                    </mask>
+                                </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sum-f7-dbF" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="115" y="160" width="90" height="30"/>
@@ -687,17 +713,38 @@
                         <viewLayoutGuide key="safeArea" id="ZWX-YA-dv7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="0kM-SX-lRh"/>
+                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="2ag-gs-OqD"/>
                             <constraint firstItem="Sum-f7-dbF" firstAttribute="top" secondItem="jaJ-SC-CJy" secondAttribute="bottom" constant="8" symbolic="YES" id="7BI-gd-6FI"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="16" id="BCQ-C8-mh5"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="Bmb-fe-PUa"/>
+                            <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="136" id="C7U-n1-vxh"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="L0P-wK-uBH" secondAttribute="bottom" constant="200" id="DSj-fJ-3uA"/>
+                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="MQz-fg-Uqw"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="62" id="RBs-aP-fgE"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="top" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="40" id="Sm8-k4-0Dr"/>
-                            <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="T76-2C-qF3"/>
+                            <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="T76-2C-qF3"/>
+                            <constraint firstItem="L0P-wK-uBH" firstAttribute="leading" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="16" id="ZGR-Br-Mwr"/>
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="top" secondItem="Sum-f7-dbF" secondAttribute="bottom" constant="1" id="adU-pT-irt"/>
+                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="16" id="amZ-8H-3J1"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="e8e-Bc-8fh"/>
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="leading" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="fKk-V9-oiU"/>
+                            <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="L0P-wK-uBH" secondAttribute="trailing" constant="16" id="lwz-Gi-6dK"/>
+                            <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="16" id="m3Z-Om-2GP"/>
+                            <constraint firstItem="L0P-wK-uBH" firstAttribute="centerY" secondItem="ZWX-YA-dv7" secondAttribute="centerY" constant="30" id="zbx-Ch-Ko8"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="C7U-n1-vxh"/>
+                                <exclude reference="lwz-Gi-6dK"/>
+                                <exclude reference="m3Z-Om-2GP"/>
+                                <exclude reference="MQz-fg-Uqw"/>
+                                <exclude reference="amZ-8H-3J1"/>
+                                <exclude reference="T76-2C-qF3"/>
+                                <exclude reference="ZGR-Br-Mwr"/>
+                                <exclude reference="zbx-Ch-Ko8"/>
+                            </mask>
+                        </variation>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
@@ -705,6 +752,19 @@
                         <outlet property="continueButton" destination="L0P-wK-uBH" id="9Ui-9k-BcJ"/>
                         <outlet property="locationsTableView" destination="1kZ-FP-u3U" id="QCU-gF-8ah"/>
                         <outlet property="promptLabel" destination="jaJ-SC-CJy" id="cww-ot-VLf"/>
+                        <outletCollection property="expandedConstraints" destination="BCQ-C8-mh5" collectionClass="NSMutableArray" id="dG9-1Q-OzE"/>
+                        <outletCollection property="compactConstraints" destination="C7U-n1-vxh" collectionClass="NSMutableArray" id="ch3-hp-xbl"/>
+                        <outletCollection property="expandedConstraints" destination="DSj-fJ-3uA" collectionClass="NSMutableArray" id="cdl-M5-cWb"/>
+                        <outletCollection property="expandedConstraints" destination="RBs-aP-fgE" collectionClass="NSMutableArray" id="3mi-p8-ejg"/>
+                        <outletCollection property="expandedConstraints" destination="Sm8-k4-0Dr" collectionClass="NSMutableArray" id="dc0-mC-vaI"/>
+                        <outletCollection property="expandedConstraints" destination="e8e-Bc-8fh" collectionClass="NSMutableArray" id="9kV-Rq-Ni6"/>
+                        <outletCollection property="compactConstraints" destination="zbx-Ch-Ko8" collectionClass="NSMutableArray" id="8sz-yp-NPb"/>
+                        <outletCollection property="compactConstraints" destination="amZ-8H-3J1" collectionClass="NSMutableArray" id="JW3-XE-8c5"/>
+                        <outletCollection property="compactConstraints" destination="T76-2C-qF3" collectionClass="NSMutableArray" id="oZg-Ki-fH9"/>
+                        <outletCollection property="compactConstraints" destination="lwz-Gi-6dK" collectionClass="NSMutableArray" id="nOD-Bk-tfq"/>
+                        <outletCollection property="compactConstraints" destination="ZGR-Br-Mwr" collectionClass="NSMutableArray" id="kZf-Rd-EYn"/>
+                        <outletCollection property="compactConstraints" destination="m3Z-Om-2GP" collectionClass="NSMutableArray" id="Qdc-9m-ECG"/>
+                        <outletCollection property="expandedConstraints" destination="0kM-SX-lRh" collectionClass="NSMutableArray" id="ev2-cu-lKE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTr-ck-qI8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

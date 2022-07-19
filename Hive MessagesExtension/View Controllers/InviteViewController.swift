@@ -264,6 +264,12 @@ class InviteViewController: MSMessagesAppViewController {
     }
     
     
+    override func willResignActive(with conversation: MSConversation) {
+        self.view.window!.rootViewController?.dismiss(animated: false)
+        super.willResignActive(with: conversation)
+    }
+    
+    
 }
 
 
