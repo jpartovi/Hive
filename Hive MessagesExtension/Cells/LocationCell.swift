@@ -62,7 +62,7 @@ class LocationCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        let inset = CGFloat(10)
+        let inset: CGFloat = 10
 
         NSLayoutConstraint.activate([
             titleTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),

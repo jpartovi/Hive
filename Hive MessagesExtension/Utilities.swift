@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 //#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = ""
+let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
 
 let calendar = Calendar(identifier: .gregorian)
 
@@ -50,6 +50,18 @@ extension UIViewController {
         footerImageView.frame = CGRect(x: 0, y: self.view.frame.height - self.view.frame.width * 0.34, width: self.view.frame.width, height: self.view.frame.width * 0.34)
         self.view.addSubview(footerImageView)
         self.view.sendSubviewToBack(footerImageView)
+    }
+    
+    func enableTouchAwayKeyboardDismiss() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
 }
 

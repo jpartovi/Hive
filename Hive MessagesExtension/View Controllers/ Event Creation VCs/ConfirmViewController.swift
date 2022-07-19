@@ -44,8 +44,8 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Days", event.days)
         
+        enableTouchAwayKeyboardDismiss()
         
         addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
         addLocationButton.backgroundColor = Style.primaryColor
@@ -53,8 +53,6 @@ class ConfirmViewController: MSMessagesAppViewController {
         addLocationButton.setTitleColor(Style.lightTextColor, for: .normal)
         
         addHexFooter()
-        
-        styleEventTitleTextField()
         
         firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         loadDaysAndTimes()
@@ -76,17 +74,18 @@ class ConfirmViewController: MSMessagesAppViewController {
         }
     }
     
-    func styleEventTitleTextField() {
+    func styleEventTitleTextField(width: CGFloat) {
         
         eventTitleTextField.borderStyle = .none
         eventTitleTextField.font = Style.font(size: 30)
         eventTitleTextField.textColor = Style.tertiaryColor
         let underlineThickness = CGFloat(2)
         let underline = CALayer()
-        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: /*view.frame.width - 32*/ scrollView.frame.width, height: underlineThickness)
+        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: width, height: underlineThickness)
         underline.backgroundColor = Style.tertiaryColor.cgColor
         eventTitleTextField.layer.addSublayer(underline)
         eventTitleTextField.placeholder = "Event Title"
+        eventTitleTextField.adjustsFontSizeToFitWidth = false
     }
     
     func loadDaysAndTimes() {
@@ -99,15 +98,50 @@ class ConfirmViewController: MSMessagesAppViewController {
     func fillEventDetails() {
         
         eventTitleTextField.text = event.title
-        locationsTableView.dataSource = self
-        locationsTableView.delegate = self
-        formatLocations()
+        setUpLocationsTableView()
         setUpDayTimePairsTableView()
     }
     
     func setUpDayTimePairsTableView() {
+        /*
+        // Multiple days
+        if event.days.count > 1 {
+            for day in event.days {
+                if event.daysAndTimes[day]!.count > 1 {
+                    // Multiple days multiple times
+                    return
+                }
+            }
+            
+            
+            if event.daysAndTimes[event.days[0]]!.isEmpty {
+                // Multiple days no time
+                return
+            } else {
+                // Multiple days 1 time
+                return
+            }
+        }
+        
+        var day = event.days[0]
+        
+        if event.daysAndTimes[day]!.count <= 1 {
+            // 1 day 0/1 time - Put day/day+time in a label
+            return
+        } else {
+            // 1 day multiple times
+            return
+        }
+        
+        */
         daysAndTimesTableView.dataSource = self
         daysAndTimesTableView.delegate = self
+    }
+    
+    func setUpLocationsTableView() {
+        locationsTableView.dataSource = self
+        locationsTableView.delegate = self
+        formatLocations()
     }
     
     func formatLocations() {
@@ -142,11 +176,8 @@ class ConfirmViewController: MSMessagesAppViewController {
         updateTableViewHeights()
     }
     
-    func updateEventObject() {
-        // TODO: Make sure all text fields have contents (eventTitle + locationTitles)
-        event.title = eventTitleTextField.text!
-        
-        // LoadDaysAndTimes
+    func updateDaysAndTimes() {
+        // Load DaysAndTimes
         for (index, day) in event.days.enumerated() {
             print(day)
             let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
@@ -157,14 +188,24 @@ class ConfirmViewController: MSMessagesAppViewController {
                 }
             }
         }
+    }
+    
+    func updateEventObject() {
         
+        event.title = eventTitleTextField.text!
+        
+        updateDaysAndTimes()
+        
+        /*
         for day in event.days {
             if daysAndTimes[day]!.isEmpty && !event.times.isEmpty {
                 event.days.remove(at: event.days.firstIndex(of: day)!)//dayIndex)
                 daysAndTimes.removeValue(forKey: day)
             }
         }
+         */
         
+        // Remove any times that aren't selected anywhere
         for time in event.times {
             var timeIncluded = false
             for day in event.days {
@@ -177,29 +218,13 @@ class ConfirmViewController: MSMessagesAppViewController {
                 event.times.remove(at: event.times.firstIndex(where: { $0.sameAs(time: time) })!)
             }
         }
-        
         event.daysAndTimes = daysAndTimes
-
-        print("Loaded event")
-        print(event.daysAndTimes)
     }
     
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
-        // TODO: Data to encode
-        /*
-         - Event title
-         - Event type (key)?
-         - Location options
-            - Location name
-            - GMSPlace ID
-         - Days and times
-            - Day in string form
-            - Followed by times in string form
-         - Duration
-         
-         */
+        // TODO: Make sure all text fields have contents (eventTitle + locationTitles), and make sure there is at least one date
         
         updateEventObject()
         
@@ -337,9 +362,19 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     func updateContentView() {
         print("scrollView.contentSize.width", scrollView.contentSize.width)
-        scrollView.contentSize.width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
+        let width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
+        scrollView.contentSize.width = width
+        styleEventTitleTextField(width: width)
     }
     
+    @objc func deleteDay(sender: UIButton) {
+        let index = sender.tag
+        daysAndTimesTableView.reloadData()
+        updateDaysAndTimes()
+        let day = event.days.remove(at: index)
+        daysAndTimes.removeValue(forKey: day)
+        daysAndTimesTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
+    }
 }
 
 extension ConfirmViewController: UITableViewDataSource {
@@ -359,9 +394,19 @@ extension ConfirmViewController: UITableViewDataSource {
 
         switch tableView {
         case daysAndTimesTableView:
+            
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: EditingDayAndTimesCell.reuseIdentifier, for: indexPath) as! EditingDayAndTimesCell
             var day = event.days[indexPath.row]
-            cell.dayLabel.text = day.formatDate()
+            if daysAndTimes.count == 1 {
+                cell.deleteButton.isHidden = true
+                cell.timesCollectionView.rightAnchor.constraint(equalTo: cell.rightAnchor, constant: -10).isActive = true
+            } else {
+                cell.deleteButton.isHidden = false
+                cell.deleteButton.tag = indexPath.row
+                cell.deleteButton.addTarget(nil, action: #selector(deleteDay(sender:)), for: .touchUpInside)
+            }
+            
+            cell.times = []
             for time in event.times {
                 var isSelected = false
                 for selectedTime in daysAndTimes[day]! {
@@ -371,7 +416,23 @@ extension ConfirmViewController: UITableViewDataSource {
                 }
                 cell.times.append((time, isSelected))
             }
-            cell.duration = event.duration
+            
+            if event.times.count == 1 {
+                
+                cell.dayLabel.isHidden = true
+                cell.timesCollectionView.isHidden = true
+                cell.dayAndTimeLabel.isHidden = false
+                cell.dayAndTimeLabel.text = day.formatDate() + " @ " + event.times[0].format(duration: event.duration)
+                
+            } else {
+                
+                cell.dayLabel.isHidden = false
+                cell.timesCollectionView.isHidden = false
+                cell.dayAndTimeLabel.isHidden = true
+                cell.dayLabel.text = day.formatDate()
+                cell.duration = event.duration
+                cell.timesCollectionView.reloadData()
+            }
             return cell
         case locationsTableView:
             let cell = locationsTableView.dequeueReusableCell(withIdentifier: LocationCell.reuseIdentifier, for: indexPath) as! LocationCell
@@ -461,9 +522,11 @@ extension ConfirmViewController: UINavigationControllerDelegate {
         if type(of: viewController) == TimeSelectorViewController.self {
             updateEventObject()
             (viewController as? TimeSelectorViewController)?.event = event
+            (viewController as? TimeSelectorViewController)?.updateSelections()
         } else if type(of: viewController) == DaySelectorViewController.self {
             updateEventObject()
             (viewController as? DaySelectorViewController)?.event = event
+            (viewController as? DaySelectorViewController)?.updateSelections()
         }
     }
 }
@@ -477,16 +540,25 @@ class EditingDayAndTimesCell: UITableViewCell {
     var times = [(time: Time, isSelected: Bool)]()
     var duration: Duration? = nil
     
+    let dayAndTimeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        return label
+    }()
+    
     let dayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
         return label
     }()
     
     let timesCollectionView: UICollectionView = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 105, height: 30)
+        //layout.itemSize = CGSize(width: 105, height: 30)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -497,17 +569,25 @@ class EditingDayAndTimesCell: UITableViewCell {
         return collectionView
     }()
     
-    // TODO: Add a delete button??
+    let deleteButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("X", for: .normal)
+        
+        button.backgroundColor = Style.greyColor
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
-        
         
         self.backgroundColor = Style.lightGreyColor
         
         contentView.addSubview(timesCollectionView)
         contentView.addSubview(dayLabel)
+        contentView.addSubview(dayAndTimeLabel)
+        contentView.addSubview(deleteButton)
     
         timesCollectionView.dataSource = self
         timesCollectionView.delegate = self
@@ -524,13 +604,22 @@ class EditingDayAndTimesCell: UITableViewCell {
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             dayLabel.widthAnchor.constraint(equalToConstant: 45),
             
+            dayAndTimeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            dayAndTimeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
+            deleteButton.heightAnchor.constraint(equalToConstant: 26),
+            deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor),
+            deleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            
             timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
-            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            timesCollectionView.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -5),
             timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
             timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
         ])
         
         timesCollectionView.layer.cornerRadius = 5
+        deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
     }
 }
 
@@ -556,10 +645,20 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
     
 }
 
-extension EditingDayAndTimesCell: UICollectionViewDelegate {
+extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        times[indexPath.row].isSelected = !times[indexPath.row].isSelected
-        timesCollectionView.reloadData()
+        for (index, (time, isSelected)) in times.enumerated() {
+            if isSelected && index != indexPath.row {
+                times[indexPath.row].isSelected = !times[indexPath.row].isSelected
+                timesCollectionView.reloadData()
+                return
+            }
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let timeString = times[indexPath.row].time.format(duration: nil)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Style.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
     }
 }
 
@@ -569,6 +668,7 @@ class EditingTimeCell: UICollectionViewCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = Style.font(size: 18)
         return label
     }()
     
@@ -608,17 +708,16 @@ class EditingTimeCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            timeLabel.widthAnchor.constraint(equalToConstant: 67),
             
             deleteIcon.heightAnchor.constraint(equalToConstant: self.frame.height - (inset * 2)),
             deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
             deleteIcon.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: inset),
-            //deleteIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             deleteIcon.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         
         deleteIcon.layer.masksToBounds = true
         deleteIcon.layer.cornerRadius = deleteIcon.frame.height / 2
+        //self.frame.width = timeLabel.frame.width + deleteIcon.frame.width + (inset * 3)
     }
 }
 

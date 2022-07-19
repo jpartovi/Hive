@@ -20,7 +20,7 @@ class LocationsViewController: UIViewController {
     static let storyboardID = String(describing: LocationsViewController.self)
     
     var event: Event! = nil
-    lazy var locations = event.locations
+    var locations = [Location]()
     
     //var anyLocationSelected: Bool = false
     
@@ -69,6 +69,8 @@ class LocationsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        enableTouchAwayKeyboardDismiss()
+        
         addHexFooter()
         
         promptLabel.style(text: "Do you know where you want to host?")
@@ -79,8 +81,13 @@ class LocationsViewController: UIViewController {
         locationsTableView.delegate = self
         locationsTableView.separatorStyle = .none
         locationsTableView.showsVerticalScrollIndicator = false
-        locationsTableView.reloadData()
         
+        updateLocations()
+    }
+    
+    func updateLocations() {
+        locations = event.locations
+        locationsTableView.reloadData()
         updateContinueButtonStatus()
     }
         

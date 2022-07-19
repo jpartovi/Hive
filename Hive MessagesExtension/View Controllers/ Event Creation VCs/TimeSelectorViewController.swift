@@ -55,15 +55,18 @@ class TimeSelectorViewController: UIViewController {
         startTimesCollectionView.dataSource = self
         startTimesCollectionView.delegate = self
         
+        updateSelections()
+    }
+    
+    func updateSelections() {
+        selectedTimes = event.times
+        loadStartTimeSelectionKey()
+        startTimesCollectionView.reloadData()
         updateNextButtonStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        selectedTimes = event.times
-        loadStartTimeSelectionKey()
-        startTimesCollectionView.reloadData()
         
         navigationController?.delegate = self
     }
@@ -269,6 +272,7 @@ extension TimeSelectorViewController: UINavigationControllerDelegate {
         if type(of: viewController) == DaySelectorViewController.self {
             updateEventObject()
             (viewController as? DaySelectorViewController)?.event = event
+            (viewController as? DaySelectorViewController)?.updateSelections()
         }
     }
 }
