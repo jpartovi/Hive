@@ -13,6 +13,8 @@ let googlePlacesAPIKey = ""
 
 let calendar = Calendar(identifier: .gregorian)
 
+let messageSummaryText = "Message sent with Hive"
+
 extension UIViewController {
     func showInputDialog(title:String? = nil,
                          subtitle:String? = nil,

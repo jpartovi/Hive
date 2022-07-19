@@ -216,7 +216,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         let trailingCaption: String
         var subcaption: String
         let trailingSubcaption: String
-        let summaryText: String
+        let summaryText: String = messageSummaryText
         let messageURL: URL
         
         
@@ -230,7 +230,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             trailingCaption = ""
             subcaption = ""
             trailingSubcaption = ""
-            summaryText = ""
+            //summaryText = "Poll for " + event.title
             
             messageURL = event.buildVoteURL()
             
@@ -259,7 +259,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             trailingSubcaption = ""
             
             // TODO: Doesn't work for some reason
-            summaryText = "Invite to " + event.title
+            //summaryText = "Invite to " + event.title
             
             messageURL = event.buildRSVPURL()
         }
@@ -364,7 +364,6 @@ extension ConfirmViewController: UITableViewDataSource {
             cell.dayLabel.text = day.formatDate()
             for time in event.times {
                 var isSelected = false
-                print("Days2", day)
                 for selectedTime in daysAndTimes[day]! {
                     if time.sameAs(time: selectedTime) {
                         isSelected = true
@@ -523,9 +522,9 @@ class EditingDayAndTimesCell: UITableViewCell {
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            dayLabel.widthAnchor.constraint(equalToConstant: 40),
+            dayLabel.widthAnchor.constraint(equalToConstant: 45),
             
-            timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: inset),
+            timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
             timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
             timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
@@ -609,12 +608,12 @@ class EditingTimeCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            timeLabel.widthAnchor.constraint(equalToConstant: 60),
+            timeLabel.widthAnchor.constraint(equalToConstant: 67),
             
             deleteIcon.heightAnchor.constraint(equalToConstant: self.frame.height - (inset * 2)),
-            //deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
+            deleteIcon.widthAnchor.constraint(equalTo: deleteIcon.heightAnchor),
             deleteIcon.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: inset),
-            deleteIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            //deleteIcon.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
             deleteIcon.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
         

@@ -152,11 +152,11 @@ class DaySelectorViewController: UIViewController {
 
         let numberOfDaysInMonth = metadata.numberOfDays
         let offsetInInitialRow = metadata.firstDayWeekday
-        let firstDayOfMonth = metadata.firstDay
+        //let firstDayOfMonth = metadata.firstDay
 
         var days: [CalendarDay] = []
         
-        let firstDay = Int(dateFormatter.string(from: today))! - offsetInInitialRow + 1
+        //let firstDay = Int(dateFormatter.string(from: today))! - offsetInInitialRow + 1
         
         for day in (1...(cellsPerRow * rows)) {
             
@@ -299,7 +299,7 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
         let width = Int(collectionView.frame.width - marginsAndInsets) / cellsPerRow
         let height = width
         
-        return CGSize(width: width, height: width)
+        return CGSize(width: width, height: height)
     }
 }
 
