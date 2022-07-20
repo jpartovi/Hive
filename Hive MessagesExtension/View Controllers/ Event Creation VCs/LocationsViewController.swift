@@ -55,7 +55,6 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
                 constraint.isActive = true
             }
         } else {
-            addHexFooter()
             promptLabel.font = Style.font(size: 30)
             for constraint in compactConstraints {
                 constraint.isActive = false
@@ -68,33 +67,12 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         locationsTableView.reloadData()
     }
     
-    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        super.willTransition(to: presentationStyle)
-        print("will transition")
-        if presentationStyle == .expanded {
-            print("expanded")
-            addHexFooter()
-        }
-    }
-    
-    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        super.didTransition(to: presentationStyle)
-        print("did transition")
-        if presentationStyle == .expanded {
-            print("expanded")
-            addHexFooter()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         enableTouchAwayKeyboardDismiss()
         
-        
-        if presentationStyle == .expanded {
-            addHexFooter()
-        }
+        addHexFooter()
         
         promptLabel.style(text: "Do you know where you want to host?")
         
@@ -106,6 +84,12 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         locationsTableView.showsVerticalScrollIndicator = false
         
         updateLocations()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.delegate = self
     }
     
     func updateLocations() {
@@ -279,6 +263,14 @@ extension LocationsViewController: UITableViewDelegate {
             return 50
         }
         
+    }
+}
+
+extension LocationsViewController: UINavigationControllerDelegate {
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if type(of: viewController) == StartEventViewController.self {
+            expandView()
+        }
     }
 }
 

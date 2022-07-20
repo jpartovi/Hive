@@ -402,9 +402,11 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == LocationsViewController.self {
+            expandView()
             updateEventObject()
-            (viewController as? LocationsViewController)?.event = event
-            (viewController as? LocationsViewController)?.updateLocations()
+            (viewController as! LocationsViewController).event = event
+            (viewController as! LocationsViewController).updateLocations()
+            
         }
     }
 }

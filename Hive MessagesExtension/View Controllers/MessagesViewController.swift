@@ -87,8 +87,6 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                     //child.dismiss(animated: true)
                     self.view.window!.rootViewController?.dismiss(animated: false)
                     dismiss()
-                } else if presentationStyle == .expanded {
-                    //child.addHexFooter()
                 }
             } else if let child = child as? InviteViewController {
                 if presentationStyle == .compact {

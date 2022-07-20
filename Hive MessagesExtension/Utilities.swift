@@ -65,6 +65,13 @@ extension UIViewController {
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
+    
+    func expandView() {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            MVC.requestPresentationStyle(.expanded)
+        }
+    }
 }
 
 extension UIScrollView {

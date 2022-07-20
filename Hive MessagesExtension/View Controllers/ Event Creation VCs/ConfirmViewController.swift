@@ -521,14 +521,19 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
 
 extension ConfirmViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        
         if type(of: viewController) == TimeSelectorViewController.self {
+            expandView()
             updateEventObject()
-            (viewController as? TimeSelectorViewController)?.event = event
-            (viewController as? TimeSelectorViewController)?.updateSelections()
+            (viewController as! TimeSelectorViewController).event = event
+            (viewController as! TimeSelectorViewController).updateSelections()
+            (viewController as! TimeSelectorViewController)
         } else if type(of: viewController) == DaySelectorViewController.self {
+            expandView()
             updateEventObject()
-            (viewController as? DaySelectorViewController)?.event = event
-            (viewController as? DaySelectorViewController)?.updateSelections()
+            (viewController as! DaySelectorViewController).event = event
+            (viewController as! DaySelectorViewController).updateSelections()
+            (viewController as! DaySelectorViewController)
         }
     }
 }
