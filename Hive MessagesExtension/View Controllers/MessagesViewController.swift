@@ -137,9 +137,9 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         subchild.changedConstraints(compact: true)
                     } else if presentationStyle == .expanded {
                         subchild.changedConstraints(compact: false)
-                        /*if subchild.expandToNext {
+                        if subchild.expandToNext {
                             subchild.nextPage()
-                        }*/
+                        }
                     }
                 }
             }

@@ -53,6 +53,8 @@ class DaySelectorViewController: UIViewController {
     
     var calendarDays = [CalendarDay]()
     
+    var expandToNext: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -128,6 +130,7 @@ class DaySelectorViewController: UIViewController {
         }
         loadMonthLabel()
         updateContentView()
+        calendarCollectionView!.reloadData()
     }
     
     func updateContentView() {
@@ -145,6 +148,17 @@ class DaySelectorViewController: UIViewController {
             }
         }
         event?.days = selectedDays
+    }
+    
+    func expandAndNextPage() {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            expandToNext = true
+            MVC.requestPresentationStyle(.expanded)
+            //triggers code in MessagesViewController that calls nextPage after completion
+        } else {
+            nextPage()
+        }
     }
     
     func nextPage() {
@@ -165,7 +179,7 @@ class DaySelectorViewController: UIViewController {
         let calendar = Calendar.current
         
         if compactView {
-            let belowIndex = Int(floor(scrollView.contentOffset.x/(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width)!)) + 3
+            let belowIndex = Int(floor(scrollView.contentOffset.x/(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width)! + 2.5))
             
             let belowDate: Day
             
@@ -287,7 +301,7 @@ class DaySelectorViewController: UIViewController {
         
         if anyDaySelected {
             updateEventObject()
-            nextPage()
+            expandAndNextPage()
         }
     }
     
@@ -326,6 +340,10 @@ extension DaySelectorViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDayCell.reuseIdentifier, for: indexPath) as! CalendarDayCell
 
         cell.day = day
+        
+        
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
         return cell
     }
@@ -475,7 +493,7 @@ class CalendarDayCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        self.layoutIfNeeded()
         // This allows for rotations and trait collection
         // changes (e.g. entering split view on iPad) to update constraints correctly.
         // Removing old constraints allows for new ones to be created
