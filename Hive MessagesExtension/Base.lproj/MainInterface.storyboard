@@ -458,7 +458,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdz-n3-PIX" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bdz-n3-PIX" customClass="ContinueHexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="144" y="298" width="32" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Next"/>
@@ -466,30 +466,8 @@
                                     <action selector="nextButtonPressed:" destination="L2v-bx-V3n" eventType="touchUpInside" id="QCq-8B-AJq"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Rwn-M5-KIh">
-                                <rect key="frame" x="16" y="181.5" width="288" height="76.5"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="V4l-dv-pi5">
-                                    <size key="itemSize" width="40" height="40"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarDayCell" id="GNC-TC-fw2" customClass="CalendarDayCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Xv7-0v-GH2">
-                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </collectionViewCellContentView>
-                                        <size key="customSize" width="40" height="40"/>
-                                    </collectionViewCell>
-                                </cells>
-                            </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" distribution="fillEqually" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="MNm-8v-H7s">
-                                <rect key="frame" x="28" y="151" width="265.5" height="20.5"/>
+                                <rect key="frame" x="28" y="150.5" width="265.5" height="20.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlJ-Du-8bv">
                                         <rect key="frame" x="0.0" y="0.0" width="16.5" height="20.5"/>
@@ -535,8 +513,8 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="20" y="106" width="280" height="46"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="20" y="74" width="280" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="ghQ-nU-18d"/>
                                 </constraints>
@@ -544,29 +522,126 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="4rO-ad-lsh">
+                                <rect key="frame" x="16" y="181" width="288" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Rwn-M5-KIh">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="77"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="160" id="i1G-e0-Rdb"/>
+                                        </constraints>
+                                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="V4l-dv-pi5">
+                                            <size key="itemSize" width="40" height="40"/>
+                                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        </collectionViewFlowLayout>
+                                        <cells>
+                                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CalendarDayCell" id="GNC-TC-fw2" customClass="CalendarDayCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Xv7-0v-GH2">
+                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </collectionViewCellContentView>
+                                                <size key="customSize" width="40" height="40"/>
+                                            </collectionViewCell>
+                                        </cells>
+                                    </collectionView>
+                                </subviews>
+                                <viewLayoutGuide key="safeArea" id="jbc-3K-PIj"/>
+                                <constraints>
+                                    <constraint firstItem="Rwn-M5-KIh" firstAttribute="top" secondItem="lbD-dg-TcL" secondAttribute="top" id="Xpw-kR-qq9"/>
+                                    <constraint firstItem="lbD-dg-TcL" firstAttribute="bottom" secondItem="Rwn-M5-KIh" secondAttribute="bottom" id="YA3-9R-gCR"/>
+                                    <constraint firstItem="Rwn-M5-KIh" firstAttribute="leading" secondItem="lbD-dg-TcL" secondAttribute="leading" id="kaW-0h-zwn"/>
+                                    <constraint firstItem="lbD-dg-TcL" firstAttribute="trailing" secondItem="Rwn-M5-KIh" secondAttribute="trailing" id="nM4-Vt-tMI"/>
+                                    <constraint firstItem="Rwn-M5-KIh" firstAttribute="height" secondItem="HX4-Fz-xVF" secondAttribute="height" id="sjZ-Ew-qDJ"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="lbD-dg-TcL"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="HX4-Fz-xVF"/>
+                            </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Gm-hQJ">
+                                <rect key="frame" x="135.5" y="114" width="49" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="15" id="y3Q-w1-sf3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="y3Q-w1-sf3"/>
+                                    </mask>
+                                </variation>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="EsS-q1-vKW"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="MNm-8v-H7s" firstAttribute="top" secondItem="ajv-TN-q44" secondAttribute="bottom" constant="21" id="3tc-mw-z2U"/>
-                            <constraint firstItem="ajv-TN-q44" firstAttribute="centerX" secondItem="EsS-q1-vKW" secondAttribute="centerX" id="74D-sk-9Se"/>
-                            <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="Rwn-M5-KIh" secondAttribute="trailing" constant="16" id="7mo-29-Nir"/>
+                            <constraint firstItem="cqz-Gm-hQJ" firstAttribute="top" secondItem="ajv-TN-q44" secondAttribute="bottom" constant="16" identifier="Compact" id="4un-zm-zkl"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="centerX" secondItem="ajv-TN-q44" secondAttribute="centerX" id="74D-sk-9Se"/>
+                            <constraint firstItem="Bdz-n3-PIX" firstAttribute="centerY" secondItem="EsS-q1-vKW" secondAttribute="centerY" identifier="Compact" id="BhH-nX-rob"/>
+                            <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" constant="16" identifier="Compact" id="CuK-9P-Fvj"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="MNm-8v-H7s" secondAttribute="trailing" constant="26.5" id="G1j-2s-Xa2"/>
-                            <constraint firstItem="Rwn-M5-KIh" firstAttribute="top" secondItem="MNm-8v-H7s" secondAttribute="bottom" constant="10" id="GRG-1i-6jU"/>
+                            <constraint firstItem="4rO-ad-lsh" firstAttribute="top" secondItem="cqz-Gm-hQJ" secondAttribute="bottom" constant="10" identifier="Compact" id="GVD-Ud-9Ji"/>
+                            <constraint firstItem="Rwn-M5-KIh" firstAttribute="width" secondItem="EsS-q1-vKW" secondAttribute="width" multiplier="0.9" id="Gr8-tV-AMj"/>
+                            <constraint firstItem="Bdz-n3-PIX" firstAttribute="leading" secondItem="4rO-ad-lsh" secondAttribute="trailing" constant="16" identifier="Compact" id="Lay-pq-kI0"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="bottom" secondItem="4rO-ad-lsh" secondAttribute="bottom" constant="16" identifier="Compact" id="M7C-i1-7ex"/>
                             <constraint firstItem="MNm-8v-H7s" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="28" id="O64-pe-t2R"/>
-                            <constraint firstItem="Rwn-M5-KIh" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="P01-0i-wHY"/>
-                            <constraint firstItem="Bdz-n3-PIX" firstAttribute="top" secondItem="Rwn-M5-KIh" secondAttribute="bottom" constant="40" id="WzM-bh-7aF"/>
+                            <constraint firstItem="4rO-ad-lsh" firstAttribute="centerX" secondItem="cqz-Gm-hQJ" secondAttribute="centerX" id="OQY-RL-rf0"/>
+                            <constraint firstItem="4rO-ad-lsh" firstAttribute="top" secondItem="MNm-8v-H7s" secondAttribute="bottom" constant="10" id="OtJ-fJ-oyr"/>
+                            <constraint firstItem="4rO-ad-lsh" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="P01-0i-wHY"/>
+                            <constraint firstItem="Bdz-n3-PIX" firstAttribute="top" secondItem="4rO-ad-lsh" secondAttribute="bottom" constant="40" id="Ru1-Ib-hdV"/>
+                            <constraint firstItem="MNm-8v-H7s" firstAttribute="top" secondItem="cqz-Gm-hQJ" secondAttribute="bottom" constant="16" id="Vl3-33-Ie1"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="centerX" secondItem="EsS-q1-vKW" secondAttribute="centerX" id="abA-Zq-hQ2"/>
-                            <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" constant="62" id="hoc-KV-ndB"/>
+                            <constraint firstItem="Rwn-M5-KIh" firstAttribute="width" secondItem="Cra-WU-BAc" secondAttribute="width" multiplier="2.7" id="gjr-XP-0Ej"/>
+                            <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" constant="30" id="hoc-KV-ndB"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="Bdz-n3-PIX" secondAttribute="trailing" constant="16" identifier="Compact" id="kwQ-nB-Y1y"/>
+                            <constraint firstItem="ajv-TN-q44" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Bdz-n3-PIX" secondAttribute="top" id="mQy-vY-Vps"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="bottom" secondItem="Bdz-n3-PIX" secondAttribute="bottom" constant="200" id="vFr-cr-3rq"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="4rO-ad-lsh" secondAttribute="trailing" constant="16" id="wrz-K1-WVM"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="M7C-i1-7ex"/>
+                                <exclude reference="kwQ-nB-Y1y"/>
+                                <exclude reference="vFr-cr-3rq"/>
+                                <exclude reference="CuK-9P-Fvj"/>
+                                <exclude reference="GVD-Ud-9Ji"/>
+                                <exclude reference="gjr-XP-0Ej"/>
+                                <exclude reference="BhH-nX-rob"/>
+                                <exclude reference="Lay-pq-kI0"/>
+                            </mask>
+                        </variation>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
                         <outlet property="calendarCollectionView" destination="Rwn-M5-KIh" id="haL-4H-qLZ"/>
+                        <outlet property="monthLabel" destination="cqz-Gm-hQJ" id="IWA-Q2-IJt"/>
                         <outlet property="nextButton" destination="Bdz-n3-PIX" id="SDb-hV-57c"/>
                         <outlet property="promptLabel" destination="ajv-TN-q44" id="dgb-Rz-Ade"/>
+                        <outlet property="scrollView" destination="4rO-ad-lsh" id="GiE-sn-bqB"/>
                         <outlet property="weekDayLabels" destination="MNm-8v-H7s" id="uJ1-IF-pT5"/>
+                        <outletCollection property="compactConstraints" destination="Lay-pq-kI0" collectionClass="NSMutableArray" id="CrB-Cs-5CR"/>
+                        <outletCollection property="compactConstraints" destination="BhH-nX-rob" collectionClass="NSMutableArray" id="lLa-w1-egO"/>
+                        <outletCollection property="compactConstraints" destination="CuK-9P-Fvj" collectionClass="NSMutableArray" id="dbj-f3-TqY"/>
+                        <outletCollection property="compactConstraints" destination="kwQ-nB-Y1y" collectionClass="NSMutableArray" id="pde-Jg-XYj"/>
+                        <outletCollection property="compactConstraints" destination="M7C-i1-7ex" collectionClass="NSMutableArray" id="Fhj-g5-S5T"/>
+                        <outletCollection property="expandedConstraints" destination="G1j-2s-Xa2" collectionClass="NSMutableArray" id="Ymj-Ul-R0V"/>
+                        <outletCollection property="expandedConstraints" destination="wrz-K1-WVM" collectionClass="NSMutableArray" id="qeb-Js-gig"/>
+                        <outletCollection property="expandedConstraints" destination="hoc-KV-ndB" collectionClass="NSMutableArray" id="VSH-fH-rii"/>
+                        <outletCollection property="expandedConstraints" destination="O64-pe-t2R" collectionClass="NSMutableArray" id="qPB-qf-Mml"/>
+                        <outletCollection property="expandedConstraints" destination="OtJ-fJ-oyr" collectionClass="NSMutableArray" id="krS-bJ-o6X"/>
+                        <outletCollection property="expandedConstraints" destination="Ru1-Ib-hdV" collectionClass="NSMutableArray" id="Jsg-gU-y2j"/>
+                        <outletCollection property="expandedConstraints" destination="abA-Zq-hQ2" collectionClass="NSMutableArray" id="SOU-IV-HBv"/>
+                        <outletCollection property="compactConstraints" destination="gjr-XP-0Ej" collectionClass="NSMutableArray" id="FaO-wA-dN9"/>
+                        <outletCollection property="expandedConstraints" destination="Gr8-tV-AMj" collectionClass="NSMutableArray" id="0XT-fm-aVA"/>
+                        <outletCollection property="expandedConstraints" destination="Vl3-33-Ie1" collectionClass="NSMutableArray" id="f2A-YX-Pic"/>
+                        <outletCollection property="compactConstraints" destination="GVD-Ud-9Ji" collectionClass="NSMutableArray" id="Z3n-8B-ceZ"/>
+                        <outletCollection property="expandedConstraints" destination="i1G-e0-Rdb" collectionClass="NSMutableArray" id="OuL-dY-peY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rFe-Ae-sRf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

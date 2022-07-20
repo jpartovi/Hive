@@ -132,6 +132,15 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                             subchild.nextPage()
                         }
                     }
+                } else if let subchild = subchild as? DaySelectorViewController {
+                    if presentationStyle == .compact {
+                        subchild.changedConstraints(compact: true)
+                    } else if presentationStyle == .expanded {
+                        subchild.changedConstraints(compact: false)
+                        /*if subchild.expandToNext {
+                            subchild.nextPage()
+                        }*/
+                    }
                 }
             }
         }
