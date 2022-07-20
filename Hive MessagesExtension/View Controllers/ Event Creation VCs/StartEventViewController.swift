@@ -87,12 +87,11 @@ class StartEventViewController: MSMessagesAppViewController {
         let locationsVC = (storyboard?.instantiateViewController(withIdentifier: LocationsViewController.storyboardID) as? LocationsViewController)!
         locationsVC.event = event
         self.navigationController?.pushViewController(locationsVC, animated: true)
-        self.requestPresentationStyle(.expanded)
+        //self.requestPresentationStyle(.expanded)
     }
     
     @objc func hexTapped(sender: UIButton) {
         
-        //print(types[sender.tag].defaultTitle())
         nextPage(type: types[sender.tag])
     }
 }

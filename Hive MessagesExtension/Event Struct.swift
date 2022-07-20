@@ -216,7 +216,7 @@ enum EventType: CaseIterable {
     case dinner
     case party
     case allDay
-    case custom
+    case other
     
     func getDurations() -> [Duration] {
         var min = 60
@@ -232,7 +232,7 @@ enum EventType: CaseIterable {
             max = 300
         case .allDay:
             return []
-        case .custom:
+        case .other:
             max = 360
         }
         
@@ -252,7 +252,7 @@ enum EventType: CaseIterable {
             duration = Duration.init(minutes: 180)
         case .allDay:
             fatalError("EventType 'All-Day' has no default duration.")
-        case .custom:
+        case .other:
             Duration(minutes: 60)
         }
         return duration
@@ -270,8 +270,8 @@ enum EventType: CaseIterable {
             self = .party
         case "all-day":
             self = .allDay
-        case "custom":
-            self = .custom
+        case "other":
+            self = .other
         default:
             fatalError("Unrecognized EventType key")
         }
@@ -295,7 +295,7 @@ enum EventType: CaseIterable {
             lastTime = Time(hour: 9, minute: 30, period: .pm)
         case .allDay:
             return []
-        case .custom:
+        case .other:
             firstTime = Time(hour: 6, minute: 0, period: .am)
             lastTime = Time(hour: 11, minute: 30, period: .pm)
         }
@@ -325,8 +325,8 @@ enum EventType: CaseIterable {
             return "Party"
         case .allDay:
             return "All-Day"
-        case .custom:
-            return "Custom"
+        case .other:
+            return "Other"
         }
     }
     
@@ -342,7 +342,7 @@ enum EventType: CaseIterable {
             return "Party"
         case .allDay:
             return "All-Day"
-        case .custom:
+        case .other:
             return ""
         }
     }
@@ -360,8 +360,8 @@ enum EventType: CaseIterable {
             type = "party"
         case .allDay:
             type = "all-Day"
-        case .custom:
-            type = "custom"
+        case .other:
+            type = "other"
         }
         return URLQueryItem(name: "type", value: type)
     }
@@ -463,8 +463,11 @@ struct Day: Hashable {
         return dateFormatter
     }()
     
-    mutating func formatDate() -> String {
-        let formattedDate = monthFormatter.string(from: date) + "/" + dateFormatter.string(from: date)
+    mutating func formatDate(time: Time? = nil, duration: Duration? = nil) -> String {
+        var formattedDate = monthFormatter.string(from: date) + "/" + dateFormatter.string(from: date)
+        if time != nil {
+            formattedDate += " @ " + (time?.format(duration: duration))!
+        }
         return formattedDate
     }
     
@@ -615,17 +618,6 @@ enum Period {
         default:
             fatalError("Unrecognized Period String")
         }
-    }
-}
-
-struct DayTimePair {
-    
-    var day: Day
-    let time: Time
-    
-    mutating func format(duration: Duration?) -> String {
-        let formattedDayTimePair = day.formatDayOfWeek() + " " + day.formatDate() + " @ " + time.format(duration: duration)
-        return formattedDayTimePair
     }
 }
 

@@ -9,7 +9,7 @@ import UIKit
 import Messages
 import GooglePlaces
 
-class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, VoteWithTableViewControllerDelegate, UINavigationControllerDelegate {
+class MessagesViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, VoteViewControllerDelegate, UINavigationControllerDelegate {
     
     static var conversation: MSConversation? = nil
     
@@ -78,7 +78,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         for child in children {
-            if let child = child as? VoteWithTableViewController {
+            if let child = child as? VoteViewController {
                 if presentationStyle == .compact {
                     print("VOTE COMPACT")
                     //child.willMove(toParent: nil)
@@ -87,6 +87,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                     //child.dismiss(animated: true)
                     self.view.window!.rootViewController?.dismiss(animated: false)
                     dismiss()
+                } else if presentationStyle == .expanded {
+                    //child.addHexFooter()
                 }
             } else if let child = child as? InviteViewController {
                 if presentationStyle == .compact {
@@ -249,7 +251,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     func instantiateVoteViewController(conversation: MSConversation) -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteWithTableViewController.storyboardID) as? VoteWithTableViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteViewController.storyboardID) as? VoteViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
             
         controller.delegate = self
         controller.myID = conversation.localParticipantIdentifier.uuidString
@@ -258,7 +260,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         return controller
     }
     
-    func didFinishTask(sender: VoteWithTableViewController) {
+    func didFinishTask(sender: VoteViewController) {
     
     }
     

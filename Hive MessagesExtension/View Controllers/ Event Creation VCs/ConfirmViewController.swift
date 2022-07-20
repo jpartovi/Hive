@@ -276,9 +276,11 @@ class ConfirmViewController: MSMessagesAppViewController {
             imageSubtitle = ""
             trailingCaption = ""
             print(event.days)
-            subcaption = event.days[0].formatDate()
-            if !event.times.isEmpty {
-                subcaption += " @ " + event.times[0].format(duration: event.duration)
+            
+            if event.times.isEmpty {
+                subcaption = event.days[0].formatDate()
+            } else {
+                subcaption = event.days[0].formatDate(time: event.times[0], duration: event.duration)
             }
             
             trailingSubcaption = ""
@@ -422,7 +424,7 @@ extension ConfirmViewController: UITableViewDataSource {
                 cell.dayLabel.isHidden = true
                 cell.timesCollectionView.isHidden = true
                 cell.dayAndTimeLabel.isHidden = false
-                cell.dayAndTimeLabel.text = day.formatDate() + " @ " + event.times[0].format(duration: event.duration)
+                cell.dayAndTimeLabel.text = day.formatDate(time: event.times[0], duration: event.duration)
                 
             } else {
                 

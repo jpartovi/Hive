@@ -14,8 +14,9 @@
 import Foundation
 import UIKit
 import GooglePlaces
+import Messages
 
-class LocationsViewController: UIViewController {
+class LocationsViewController: MSMessagesAppViewController {//UIViewController {
     
     static let storyboardID = String(describing: LocationsViewController.self)
     
@@ -43,6 +44,7 @@ class LocationsViewController: UIViewController {
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
     
     func changedConstraints(compact: Bool){
+        print("changed")
         
         if compact {
             promptLabel.font = Style.font(size: 20)
@@ -53,6 +55,7 @@ class LocationsViewController: UIViewController {
                 constraint.isActive = true
             }
         } else {
+            addHexFooter()
             promptLabel.font = Style.font(size: 30)
             for constraint in compactConstraints {
                 constraint.isActive = false
@@ -61,9 +64,26 @@ class LocationsViewController: UIViewController {
                 constraint.isActive = true
             }
         }
-        
+
         locationsTableView.reloadData()
-        
+    }
+    
+    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        super.willTransition(to: presentationStyle)
+        print("will transition")
+        if presentationStyle == .expanded {
+            print("expanded")
+            addHexFooter()
+        }
+    }
+    
+    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        super.didTransition(to: presentationStyle)
+        print("did transition")
+        if presentationStyle == .expanded {
+            print("expanded")
+            addHexFooter()
+        }
     }
     
     override func viewDidLoad() {
@@ -71,7 +91,10 @@ class LocationsViewController: UIViewController {
         
         enableTouchAwayKeyboardDismiss()
         
-        addHexFooter()
+        
+        if presentationStyle == .expanded {
+            addHexFooter()
+        }
         
         promptLabel.style(text: "Do you know where you want to host?")
         

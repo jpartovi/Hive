@@ -8,8 +8,8 @@
 import Foundation
 import UIKit
 
-//#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
+#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = ""
 
 let calendar = Calendar(identifier: .gregorian)
 
@@ -45,9 +45,11 @@ extension UIViewController {
     }
     
     func addHexFooter() {
-        let footerImage = UIImage(named: "HexFooter")?.size(width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        let frameHeight = self.view.frame.height
+        let frameWidth = self.view.frame.width
+        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth * 0.34)
         let footerImageView = UIImageView( image: footerImage)
-        footerImageView.frame = CGRect(x: 0, y: self.view.frame.height - self.view.frame.width * 0.34, width: self.view.frame.width, height: self.view.frame.width * 0.34)
+        footerImageView.frame = CGRect(x: 0, y: frameHeight - footerImageView.frame.height, width: frameWidth, height: footerImageView.frame.height)
         self.view.addSubview(footerImageView)
         self.view.sendSubviewToBack(footerImageView)
     }
