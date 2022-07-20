@@ -17,8 +17,126 @@ class DaySelectorViewController: UIViewController {
     var event: Event! = nil
     var selectedDays = [Day]()
     
+    var compactView: Bool = false
+    
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var weekDayLabels: UIStackView!
+    
+    @IBOutlet weak var monthLabel: UILabel!
+    
+    @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
+    @IBOutlet var compactConstraints: [NSLayoutConstraint]!
+    
+    var anyDaySelected: Bool = false
+    
+    var cellsPerRow = 7
+    var rows = 3
+    let inset: CGFloat = 0//10
+    let minimumLineSpacing: CGFloat = 0 //10
+    let minimumInteritemSpacing: CGFloat = 0 //10
+    
+    var today = Date()
+    
+    let line = CALayer()
+    
+    //let calendar = Calendar(identifier: .gregorian)
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d"
+        return dateFormatter
+    }()
+    
+    @IBOutlet var calendarCollectionView: UICollectionView?
+    @IBOutlet weak var nextButton: ContinueHexButton!
+    
+    var calendarDays = [CalendarDay]()
+    
+    var expandToNext: Bool = false
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        addHexFooter()
+        
+        promptLabel.style(text: "Which day(s) might work?")
+        
+        underlineWeekDayLabels()
+    
+        calendarCollectionView?.translatesAutoresizingMaskIntoConstraints = false
+        calendarCollectionView!.contentInsetAdjustmentBehavior = .always
+        calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
+        
+        calendarCollectionView!.dataSource = self
+        calendarCollectionView!.delegate = self
+        
+        updateSelections()
+        calendarCollectionView!.reloadData()
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(calendarCollectionView!)
+        scrollView.delegate = self
+        updateContentView()
+    }
+    
+    func updateSelections() {
+        // TODO: Day selections show late because this block is in this function
+        selectedDays = event.days
+        calendarDays = generateDays(for: today)
+        calendarCollectionView?.reloadData()
+        updateNextButtonStatus()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.delegate = self
+        
+        loadMonthLabel()
+    }
+    
+    func changedConstraints(compact: Bool){
+        
+        compactView = compact
+        
+        if compact {
+            promptLabel.font = Style.font(size: 20)
+            cellsPerRow = 21
+            rows = 1
+            for constraint in expandedConstraints {
+                constraint.isActive = false
+            }
+            for constraint in compactConstraints {
+                constraint.isActive = true
+            }
+            line.isHidden = true
+            weekDayLabels.isHidden = true
+            monthLabel.isHidden = false
+            line.removeFromSuperlayer()
+        } else {
+            promptLabel.font = Style.font(size: 30)
+            cellsPerRow = 7
+            rows = 3
+            line.isHidden = false
+            weekDayLabels.isHidden = false
+            calendarCollectionView!.layer.addSublayer(line)
+            for constraint in compactConstraints {
+                constraint.isActive = false
+            }
+            for constraint in expandedConstraints {
+                constraint.isActive = true
+            }
+        }
+        loadMonthLabel()
+        updateContentView()
+        calendarCollectionView!.reloadData()
+    }
+    
+    func updateContentView() {
+        scrollView.contentSize.width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
+        print(calendarCollectionView!.frame.size)
+    }
     
     func updateEventObject() {
         selectedDays = []
@@ -30,6 +148,17 @@ class DaySelectorViewController: UIViewController {
             }
         }
         event?.days = selectedDays
+    }
+    
+    func expandAndNextPage() {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            expandToNext = true
+            MVC.requestPresentationStyle(.expanded)
+            //triggers code in MessagesViewController that calls nextPage after completion
+        } else {
+            nextPage()
+        }
     }
     
     func nextPage() {
@@ -46,65 +175,41 @@ class DaySelectorViewController: UIViewController {
         
     }
     
-    var anyDaySelected: Bool = false
-    
-    let cellsPerRow = 7
-    let rows = 3
-    let inset: CGFloat = 0//10
-    let minimumLineSpacing: CGFloat = 0 //10
-    let minimumInteritemSpacing: CGFloat = 0 //10
-    
-    var today = Date()
-    
-    //let calendar = Calendar(identifier: .gregorian)
-    
-    private lazy var dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d"
-        return dateFormatter
-    }()
-    
-    @IBOutlet var calendarCollectionView: UICollectionView?
-    @IBOutlet weak var nextButton: ContinueHexButton!
-    
-    var calendarDays = [CalendarDay]()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func loadMonthLabel() {
+        let calendar = Calendar.current
         
-        addHexFooter()
-        
-        promptLabel.style(text: "Which day(s) might work?")
-        
-        underlineWeekDayLabels()
-    
-        calendarCollectionView!.contentInsetAdjustmentBehavior = .always
-        calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
-        
-        calendarCollectionView!.dataSource = self
-        calendarCollectionView!.delegate = self
-        
-        updateSelections()
-    }
-    
-    func updateSelections() {
-        // TODO: Day selections show late because this block is in this function
-        selectedDays = event.days
-        calendarDays = generateDays(for: today)
-        calendarCollectionView?.reloadData()
-        updateNextButtonStatus()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        navigationController?.delegate = self
+        if compactView {
+            let belowIndex = Int(floor(scrollView.contentOffset.x/(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width)! + 2.5))
+            
+            let belowDate: Day
+            
+            
+            if belowIndex < 0 {
+                belowDate = calendarDays[0].day
+            } else if belowIndex >= calendarDays.count {
+                belowDate = calendarDays.last!.day
+            } else {
+                belowDate = calendarDays[belowIndex].day
+            }
+            
+            let month = calendar.component(.month, from: belowDate.date)
+            //let components = calendar.dateComponents([.day,.month,.year], from: belowDate.date)
+            //let month = components.month!
+            monthLabel.text = DateFormatter().monthSymbols[month - 1]
+        } else {
+            let month1 = calendar.component(.month, from: (calendarDays.first?.day.date)!)
+            let month2 = calendar.component(.month, from: (calendarDays.last?.day.date)!)
+            
+            if month1 == month2 {
+                monthLabel.text = DateFormatter().monthSymbols[month1 - 1]
+            } else {
+                monthLabel.text = DateFormatter().monthSymbols[month1 - 1] + "/" + DateFormatter().monthSymbols[month2 - 1]
+            }
+        }
     }
     
     func underlineWeekDayLabels() {
         let lineThickness = CGFloat(2)
-        
-        let line = CALayer()
         line.frame = CGRect(x: 0.0, y: 0.0, width: view.frame.width - 32, height: lineThickness)
         line.backgroundColor = Style.greyColor.cgColor
         calendarCollectionView!.layer.addSublayer(line)
@@ -196,7 +301,7 @@ class DaySelectorViewController: UIViewController {
         
         if anyDaySelected {
             updateEventObject()
-            nextPage()
+            expandAndNextPage()
         }
     }
     
@@ -217,6 +322,9 @@ class DaySelectorViewController: UIViewController {
             nextButton.grey()
         }
     }
+    
+    
+    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -232,6 +340,10 @@ extension DaySelectorViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDayCell.reuseIdentifier, for: indexPath) as! CalendarDayCell
 
         cell.day = day
+        
+        
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
         return cell
     }
@@ -262,9 +374,9 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    /*func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
             return UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        }
+        }*/
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return minimumLineSpacing
@@ -284,6 +396,8 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+
+
 extension DaySelectorViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
@@ -291,6 +405,16 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
             updateEventObject()
             (viewController as? LocationsViewController)?.event = event
             (viewController as? LocationsViewController)?.updateLocations()
+        }
+    }
+}
+
+extension DaySelectorViewController: UIScrollViewDelegate {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        loadMonthLabel()
+        if scrollView.contentOffset.y < 0 {
+            scrollView.contentOffset.y = 0
         }
     }
 }
@@ -369,7 +493,7 @@ class CalendarDayCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        self.layoutIfNeeded()
         // This allows for rotations and trait collection
         // changes (e.g. entering split view on iPad) to update constraints correctly.
         // Removing old constraints allows for new ones to be created

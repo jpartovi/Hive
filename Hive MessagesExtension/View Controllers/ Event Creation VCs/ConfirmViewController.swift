@@ -718,8 +718,6 @@ class EditingTimeCell: UICollectionViewCell {
         ])
         
         deleteIcon.layer.masksToBounds = true
-        deleteIcon.layer.cornerRadius = deleteIcon.frame.height / 2
-        //self.frame.width = timeLabel.frame.width + deleteIcon.frame.width + (inset * 3)
+        deleteIcon.layer.cornerRadius = self.frame.height/2 - inset
     }
 }
-
