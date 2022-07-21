@@ -8,21 +8,14 @@
 import Foundation
 import UIKit
 
-#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = ""
-
-let calendar = Calendar(identifier: .gregorian)
-
-let messageSummaryText = "Message sent with Hive"
-
 extension UIViewController {
-    func showInputDialog(title:String? = nil,
-                         subtitle:String? = nil,
-                         actionTitle:String? = "Add",
-                         cancelTitle:String? = "Cancel",
-                         autofillText:String? = nil,
-                         inputPlaceholder:String? = nil,
-                         inputKeyboardType:UIKeyboardType = UIKeyboardType.default,
+    func showInputDialog(title: String,
+                         subtitle: String? = nil,
+                         actionTitle: String? = "Done",
+                         cancelTitle: String? = "Cancel",
+                         autofillText: String? = nil,
+                         inputPlaceholder: String? = nil,
+                         inputKeyboardType: UIKeyboardType = UIKeyboardType.default,
                          cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
                          actionHandler: ((_ text: String?) -> Void)? = nil) {
         
@@ -72,14 +65,28 @@ extension UIViewController {
             MVC.requestPresentationStyle(.expanded)
         }
     }
+    
+    func textFieldsFull(textFields: [StyleTextField], withDisplay: Bool) -> Bool {
+        var textFieldsFull = true
+        print(textFields)
+        for textField in textFields {
+            if textField.getStatus(withDisplay: withDisplay) == false {
+                textFieldsFull = false
+            }
+        }
+        return textFieldsFull
+    }
 }
+// textfields
+// show empty on did finish editing
+// show full on is editing
 
 extension UIScrollView {
-   func scrollToBottom(animated: Bool) {
-     if self.contentSize.height < self.bounds.size.height { return }
-     let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
-     self.setContentOffset(bottomOffset, animated: animated)
-  }
+    func scrollToBottom(animated: Bool) {
+        if self.contentSize.height < self.bounds.size.height { return }
+        let bottomOffset = CGPoint(x: 0, y: self.contentSize.height - self.bounds.size.height)
+        self.setContentOffset(bottomOffset, animated: animated)
+    }
 }
 
 extension Float {
@@ -137,4 +144,31 @@ extension UIScrollView {
 
     }
  */
+}
+
+extension UIImage {
+    func size(width: CGFloat, height: CGFloat) -> UIImage {
+        let targetSize = CGSize(width: width, height: height)
+
+        // Compute the scaling ratio for the width and height separately
+        let widthScaleRatio = targetSize.width / self.size.width
+        let heightScaleRatio = targetSize.height / self.size.height
+
+        // To keep the aspect ratio, scale by the smaller scaling ratio
+        let scaleFactor = min(widthScaleRatio, heightScaleRatio)
+
+        // Multiply the original image’s dimensions by the scale factor
+        // to determine the scaled image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: self.size.width * scaleFactor,
+            height: self.size.height * scaleFactor
+        )
+
+        let renderer = UIGraphicsImageRenderer(size: scaledImageSize)
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: scaledImageSize))
+        }
+        
+        return scaledImage
+    }
 }

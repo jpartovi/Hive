@@ -21,11 +21,12 @@ class ConfirmViewController: MSMessagesAppViewController {
     var pollFlag = false
     var pollMessage: MSMessage!
     
+    var textFields = [StyleTextField]()
     
     var addressEditingIndex: Int? = nil
     
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet var eventTitleTextField: UITextField!
+    @IBOutlet var eventTitleTextField: StyleTextField!
     @IBOutlet weak var locationsLabel: UILabel!
     @IBOutlet weak var addLocationButton: UIButton!
     @IBOutlet weak var firstLocationButton: HexButton!
@@ -54,17 +55,20 @@ class ConfirmViewController: MSMessagesAppViewController {
         
         addHexFooter()
         
-        firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
+        //firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
+        firstLocationButton.size(size: 150, textSize: 18)
+        firstLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Style.lightTextColor)
         loadDaysAndTimes()
         fillEventDetails()
         
-        postButton.style(width: 130, height: 150, fontSize: 25)
+        postButton.size(size: 150, textSize: 25)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         updateContentView()
+        
         navigationController?.delegate = self
     }
     
@@ -72,20 +76,6 @@ class ConfirmViewController: MSMessagesAppViewController {
         if scrollView.contentOffset.x>0 {
             scrollView.contentOffset.x = 0
         }
-    }
-    
-    func styleEventTitleTextField(width: CGFloat) {
-        
-        eventTitleTextField.borderStyle = .none
-        eventTitleTextField.font = Style.font(size: 30)
-        eventTitleTextField.textColor = Style.tertiaryColor
-        let underlineThickness = CGFloat(2)
-        let underline = CALayer()
-        underline.frame = CGRect(x: 0.0, y: eventTitleTextField.frame.height - underlineThickness, width: width, height: underlineThickness)
-        underline.backgroundColor = Style.tertiaryColor.cgColor
-        eventTitleTextField.layer.addSublayer(underline)
-        eventTitleTextField.placeholder = "Event Title"
-        eventTitleTextField.adjustsFontSizeToFitWidth = false
     }
     
     func loadDaysAndTimes() {
@@ -174,6 +164,9 @@ class ConfirmViewController: MSMessagesAppViewController {
         super.updateViewConstraints()
         
         updateTableViewHeights()
+        eventTitleTextField.style(placeholderText: "Event Title", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
+        eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
+        updatePostButtonStatus()
     }
     
     func updateDaysAndTimes() {
@@ -191,8 +184,6 @@ class ConfirmViewController: MSMessagesAppViewController {
     }
     
     func updateEventObject() {
-        
-        event.title = eventTitleTextField.text!
         
         updateDaysAndTimes()
         
@@ -221,10 +212,22 @@ class ConfirmViewController: MSMessagesAppViewController {
         event.daysAndTimes = daysAndTimes
     }
     
+    func updateTextFieldList () {
+        textFields = [eventTitleTextField]
+        for (index, _) in event.locations.enumerated() {
+            let cell = locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! LocationCell
+            textFields.append(cell.titleTextField)
+        }
+    }
+    
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
-        // TODO: Make sure all text fields have contents (eventTitle + locationTitles), and make sure there is at least one date
+        // Make sure all text fields are full
+        if !textFieldsFull(textFields: textFields, withDisplay: true) {
+            // ERROR
+            return
+        }
         
         updateEventObject()
         
@@ -317,6 +320,17 @@ class ConfirmViewController: MSMessagesAppViewController {
         self.requestPresentationStyle(.compact)
     }
     
+    func updatePostButtonStatus() {
+        
+        updateTextFieldList()
+        
+        if textFieldsFull(textFields: textFields, withDisplay: false) {
+            postButton.color(title: "Post")
+        } else {
+            postButton.grey(title: "Post")
+        }
+    }
+    
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
@@ -327,8 +341,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
         cell.titleTextField.becomeFirstResponder()
         formatLocations()
-        
-        // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
+        updatePostButtonStatus()
     }
     
     @objc func deleteLocation(sender: UIButton) {
@@ -338,6 +351,7 @@ class ConfirmViewController: MSMessagesAppViewController {
         locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         formatLocations()
         updateTableViewHeights()
+        updatePostButtonStatus()
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
@@ -353,20 +367,26 @@ class ConfirmViewController: MSMessagesAppViewController {
         updateTableViewHeights()
     }
     
-    @objc func locationTitleTextFieldDidChange(sender: UITextField) {
-        print(sender.tag)
+    @objc func locationTitleTextFieldDidChange(sender: StyleTextField) {
         
-        // TODO: Better way to do this?? "try"?
         if event.locations.indices.contains(sender.tag) {
             event.locations[sender.tag].title = sender.text ?? ""
+            sender.getStatus(withDisplay: true)
+            updatePostButtonStatus()
         }
+    }
+    
+    @objc func eventTitleTextFieldDidChange(sender: StyleTextField) {
+        
+        event.title = sender.text ?? ""
+        sender.getStatus(withDisplay: true)
+        updatePostButtonStatus()
     }
     
     func updateContentView() {
         print("scrollView.contentSize.width", scrollView.contentSize.width)
         let width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
         scrollView.contentSize.width = width
-        styleEventTitleTextField(width: width)
     }
     
     @objc func deleteDay(sender: UIButton) {

@@ -64,6 +64,11 @@ class InviteViewController: MSMessagesAppViewController {
         yesBar.addSubview(yesCounts)
         noBar.addSubview(noCounts)
         
+        yesButton.size(size: 150, textSize: 25)
+        yesButton.style(title: "Yes")
+        noButton.size(size: 150, textSize: 25)
+        noButton.style(title: "No")
+        
         yesCounts.text = String(yesNum)
         noCounts.text = String(noNum)
         yesCounts.textColor = Style.lightTextColor
@@ -253,7 +258,7 @@ class InviteViewController: MSMessagesAppViewController {
         
         message.layout = layout
         message.url = url
-        message.summaryText = ""
+        message.summaryText = messageSummaryText
         
         print("Send")
         

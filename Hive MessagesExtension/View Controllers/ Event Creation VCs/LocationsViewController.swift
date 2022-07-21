@@ -23,11 +23,7 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
     var event: Event! = nil
     var locations = [Location]()
     
-    //var anyLocationSelected: Bool = false
-    
     var addressEditingIndex: Int? = nil
-    
-    var locationNamesFilled: Bool = false
     
     var expandToNext: Bool = false
     
@@ -36,12 +32,14 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
     
     @IBOutlet weak var locationsTableView: UITableView!
     
-    @IBOutlet weak var continueButton: ContinueHexButton!
+    @IBOutlet weak var continueButton: HexButton!
     
     
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
+    
+    var textFields = [StyleTextField]()
     
     func changedConstraints(compact: Bool){
         print("changed")
@@ -76,7 +74,9 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         
         promptLabel.style(text: "Do you know where you want to host?")
         
-        addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
+        //addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
+        addLocationButton.size(size: 150, textSize: 18)
+        addLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Style.lightTextColor)
         
         locationsTableView.dataSource = self
         locationsTableView.delegate = self
@@ -112,31 +112,34 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
     
-    func updateContinueButtonStatus() {
-        
-        locationNamesFilled = true
-        for location in locations {
-            if location.title == "" {
-                locationNamesFilled = false
-            }
+    func updateTextFieldList() {
+        textFields = []
+        for (index, _) in locations.enumerated() {
+            let cell = locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! LocationCell
+            textFields.append(cell.titleTextField)
         }
+    }
+    
+    func updateContinueButtonStatus() {
+
+        updateTextFieldList()
         
         if locations.isEmpty {
-            //anyLocationSelected = false
             continueButton.grey(title: "Skip")
         } else {
-            //anyLocationSelected = true
-            if locationNamesFilled {
-                continueButton.color()
+            if textFieldsFull(textFields: textFields, withDisplay: false) {
+                continueButton.color(title: "Done")
             } else {
-                continueButton.grey()
+                continueButton.grey(title: "Done")
             }
         }
     }
     
     @IBAction func continueButtonPressed(_ sender: Any) {
         
-        if locationNamesFilled {
+        updateTextFieldList()
+        
+        if textFieldsFull(textFields: textFields, withDisplay: true) {
             expandAndNextPage()
         } else {
             // TODO: Error???
@@ -185,11 +188,17 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         }
     }
     
-    // TODO: Shouldn't they all just be saved when done is pressed? more efficient
-    @objc func titleTextFieldDidChange(sender: UITextField) {
+    @objc func titleTextFieldDidChange(sender: StyleTextField) {
         if locations.indices.contains(sender.tag) {
             locations[sender.tag].title = sender.text ?? ""
+            sender.getStatus(withDisplay: true)
             updateContinueButtonStatus()
+        }
+    }
+    
+    @objc func titleTextFieldDidFinishEditing(sender: StyleTextField) {
+        if locations.indices.contains(sender.tag) {
+            //sender.getStatus()
         }
     }
 }
@@ -228,6 +237,7 @@ extension LocationsViewController: UITableViewDataSource {
         cell.titleTextField.text = location.title
         cell.titleTextField.tag = indexPath.row
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
+        cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidFinishEditing(sender:)), for: .editingDidEnd)
         cell.deleteButton.tag = indexPath.row
         cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
         cell.addOrRemoveAddressButton.tag = indexPath.row
@@ -274,3 +284,83 @@ extension LocationsViewController: UINavigationControllerDelegate {
     }
 }
 
+class LocationCell: UITableViewCell {
+    
+    static let reuseIdentifier = String(describing: LocationCell.self)
+    
+    static let cornerRadius: CGFloat = 20
+    
+    let titleTextField: StyleTextField = {
+        let textField = StyleTextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    let changeAddressButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Style.greyColor, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.titleLabel?.lineBreakMode = .byTruncatingTail
+        return button
+    }()
+    
+    let addOrRemoveAddressButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitleColor(Style.primaryColor, for: .normal)
+        return button
+    }()
+    
+    let deleteButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("X", for: .normal)
+        
+        button.backgroundColor = Style.greyColor
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        self.backgroundColor = Style.lightGreyColor
+        
+        self.contentView.addSubview(titleTextField)
+        self.contentView.addSubview(changeAddressButton)
+        self.contentView.addSubview(addOrRemoveAddressButton)
+        self.contentView.addSubview(deleteButton)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let inset: CGFloat = 10
+
+        NSLayoutConstraint.activate([
+            titleTextField.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            titleTextField.rightAnchor.constraint(equalTo: addOrRemoveAddressButton.leftAnchor, constant: -inset),
+            titleTextField.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            titleTextField.heightAnchor.constraint(equalToConstant: 26),
+        
+            changeAddressButton.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            changeAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
+            changeAddressButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            changeAddressButton.heightAnchor.constraint(equalToConstant: 26),
+            
+            addOrRemoveAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
+            addOrRemoveAddressButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            addOrRemoveAddressButton.heightAnchor.constraint(equalToConstant: 26),
+            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: 80),
+            
+            deleteButton.heightAnchor.constraint(equalToConstant: 26),//min(self.frame.height - (inset * 2), 30)),
+            deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor),
+            deleteButton.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            deleteButton.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ])
+        
+        deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
+        titleTextField.style(placeholderText: "Enter Location Name")
+    }
+}

@@ -7,12 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		151BC1E3288882E800B330DF /* Global Variables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151BC1E2288882E800B330DF /* Global Variables.swift */; };
+		151BC1E52888842000B330DF /* Custom Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 151BC1E42888842000B330DF /* Custom Elements.swift */; };
+		1545E0132888B031004DD491 /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0122888B031004DD491 /* EventType.swift */; };
+		1545E0152888B056004DD491 /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0142888B056004DD491 /* Location.swift */; };
+		1545E0172888B07C004DD491 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0162888B07C004DD491 /* Day.swift */; };
+		1545E0192888B0B9004DD491 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0182888B0B9004DD491 /* Time.swift */; };
+		1545E01B2888B0CD004DD491 /* Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E01A2888B0CD004DD491 /* Duration.swift */; };
 		156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6A287635E600613360 /* LocationsViewController.swift */; };
 		156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6C2876362000613360 /* StartEventViewController.swift */; };
 		156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6F287637EC00613360 /* DaySelectorViewController.swift */; };
 		156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE712876382C00613360 /* ConfirmViewController.swift */; };
-		156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE79287C7E4000613360 /* LocationCell.swift */; };
-		156DAE7E287CD02900613360 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE7D287CD02800613360 /* Utilities.swift */; };
+		156DAE7E287CD02900613360 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE7D287CD02800613360 /* Extensions.swift */; };
 		15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */; };
 		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
 		15B44F4E2860E3B20055B51C /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4D2860E3B10055B51C /* Style.swift */; };
@@ -23,7 +29,7 @@
 		15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */; };
 		15BA66D2284E8C6F00C185CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */; };
 		15BA66D4284E8C7100C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D3284E8C7100C185CA /* Assets.xcassets */; };
-		15EEE7AB287E3E1500FDAE2B /* Event Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEE7AA287E3E1500FDAE2B /* Event Struct.swift */; };
+		15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEE7AA287E3E1500FDAE2B /* Event.swift */; };
 		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 		CA4E9AA3F3F2E9B70FB1B59D /* libPods-Hive MessagesExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7BBB53B72CCD26BADD5DC /* libPods-Hive MessagesExtension.a */; };
 		F8CDEF024AF89E0876B91725 /* libPods-Hive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D43EEC4CA816B9D97B0D7CD /* libPods-Hive.a */; };
@@ -54,12 +60,18 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		151BC1E2288882E800B330DF /* Global Variables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Global Variables.swift"; sourceTree = "<group>"; };
+		151BC1E42888842000B330DF /* Custom Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Elements.swift"; sourceTree = "<group>"; };
+		1545E0122888B031004DD491 /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
+		1545E0142888B056004DD491 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		1545E0162888B07C004DD491 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
+		1545E0182888B0B9004DD491 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		1545E01A2888B0CD004DD491 /* Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duration.swift; sourceTree = "<group>"; };
 		156DAE6A287635E600613360 /* LocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		156DAE6C2876362000613360 /* StartEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartEventViewController.swift; sourceTree = "<group>"; };
 		156DAE6F287637EC00613360 /* DaySelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorViewController.swift; sourceTree = "<group>"; };
 		156DAE712876382C00613360 /* ConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmViewController.swift; sourceTree = "<group>"; };
-		156DAE79287C7E4000613360 /* LocationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationCell.swift; sourceTree = "<group>"; };
-		156DAE7D287CD02800613360 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		156DAE7D287CD02800613360 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
 		15B44F4D2860E3B10055B51C /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
@@ -72,7 +84,7 @@
 		15BA66D1284E8C6F00C185CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		15BA66D3284E8C7100C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66D5284E8C7100C185CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		15EEE7AA287E3E1500FDAE2B /* Event Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event Struct.swift"; sourceTree = "<group>"; };
+		15EEE7AA287E3E1500FDAE2B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3FC8F2BD88B64705CDC5E6B1 /* Pods-Hive MessagesExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.release.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.release.xcconfig"; sourceTree = "<group>"; };
 		56C20084B43A4E48868174A9 /* Pods-Hive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.release.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.release.xcconfig"; sourceTree = "<group>"; };
 		7D43EEC4CA816B9D97B0D7CD /* libPods-Hive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Hive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -103,6 +115,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1545E0112888B016004DD491 /* Event Structs */ = {
+			isa = PBXGroup;
+			children = (
+				15EEE7AA287E3E1500FDAE2B /* Event.swift */,
+				1545E0122888B031004DD491 /* EventType.swift */,
+				1545E0142888B056004DD491 /* Location.swift */,
+				1545E0162888B07C004DD491 /* Day.swift */,
+				1545E0182888B0B9004DD491 /* Time.swift */,
+				1545E01A2888B0CD004DD491 /* Duration.swift */,
+			);
+			path = "Event Structs";
+			sourceTree = "<group>";
+		};
 		156DAE652876348D00613360 /*  Event Creation VCs */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,22 +140,14 @@
 			path = " Event Creation VCs";
 			sourceTree = "<group>";
 		};
-		15B213D22867A02B0071DABD /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				156DAE79287C7E4000613360 /* LocationCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		15B44F4F2860E3DA0055B51C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
-				8793627C286CFEE400C05180 /* PollViewController.swift */,
-				15B5D26928823624004267E2 /* VoteViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
+				15B5D26928823624004267E2 /* VoteViewController.swift */,
+				8793627C286CFEE400C05180 /* PollViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -176,11 +193,12 @@
 		15BA66CD284E8C6F00C185CA /* Hive MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
-				15B44F4F2860E3DA0055B51C /* View Controllers */,
-				15B213D22867A02B0071DABD /* Cells */,
-				15EEE7AA287E3E1500FDAE2B /* Event Struct.swift */,
+				151BC1E2288882E800B330DF /* Global Variables.swift */,
+				151BC1E42888842000B330DF /* Custom Elements.swift */,
+				156DAE7D287CD02800613360 /* Extensions.swift */,
 				15B44F4D2860E3B10055B51C /* Style.swift */,
-				156DAE7D287CD02800613360 /* Utilities.swift */,
+				1545E0112888B016004DD491 /* Event Structs */,
+				15B44F4F2860E3DA0055B51C /* View Controllers */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,
 				15BA66D3284E8C7100C185CA /* Assets.xcassets */,
 				15BA66D5284E8C7100C185CA /* Info.plist */,
@@ -367,18 +385,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				8793627E286CFEE400C05180 /* PollViewController.swift in Sources */,
-				15EEE7AB287E3E1500FDAE2B /* Event Struct.swift in Sources */,
+				1545E0132888B031004DD491 /* EventType.swift in Sources */,
+				1545E0152888B056004DD491 /* Location.swift in Sources */,
+				151BC1E3288882E800B330DF /* Global Variables.swift in Sources */,
+				15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */,
 				156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */,
+				1545E0192888B0B9004DD491 /* Time.swift in Sources */,
 				15B44F4E2860E3B20055B51C /* Style.swift in Sources */,
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
+				151BC1E52888842000B330DF /* Custom Elements.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
-				156DAE7B287C7E4100613360 /* LocationCell.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
+				1545E0172888B07C004DD491 /* Day.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,
 				15B5D26A28823625004267E2 /* VoteViewController.swift in Sources */,
 				156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */,
-				156DAE7E287CD02900613360 /* Utilities.swift in Sources */,
+				156DAE7E287CD02900613360 /* Extensions.swift in Sources */,
+				1545E01B2888B0CD004DD491 /* Duration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

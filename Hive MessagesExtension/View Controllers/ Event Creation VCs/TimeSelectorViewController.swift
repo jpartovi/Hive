@@ -37,7 +37,7 @@ class TimeSelectorViewController: UIViewController {
     let inset: CGFloat = 10
     let minimumLineSpacing: CGFloat = 10
     let minimumInteritemSpacing: CGFloat = 10
-    @IBOutlet weak var nextButton: ContinueHexButton!
+    @IBOutlet weak var nextButton: HexButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +154,7 @@ class TimeSelectorViewController: UIViewController {
         }
         
         if anyStartTimeSelected {
-            nextButton.color()
+            nextButton.color(title: "Done")
         } else {
             nextButton.grey(title: "Skip")
         }

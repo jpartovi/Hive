@@ -49,7 +49,7 @@ class DaySelectorViewController: UIViewController {
     }()
     
     @IBOutlet var calendarCollectionView: UICollectionView?
-    @IBOutlet weak var nextButton: ContinueHexButton!
+    @IBOutlet weak var nextButton: HexButton!
     
     var calendarDays = [CalendarDay]()
     
@@ -92,6 +92,10 @@ class DaySelectorViewController: UIViewController {
         super.viewDidAppear(animated)
         
         navigationController?.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         loadMonthLabel()
     }
@@ -317,9 +321,9 @@ class DaySelectorViewController: UIViewController {
         }
         
         if anyDaySelected {
-            nextButton.color()
+            nextButton.color(title: "Done")
         } else {
-            nextButton.grey()
+            nextButton.grey(title: "Done")
         }
     }
     

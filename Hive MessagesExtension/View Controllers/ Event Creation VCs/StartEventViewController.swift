@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Messages
 
-class StartEventViewController: MSMessagesAppViewController {
+class StartEventViewController: UIViewController {
     
     var delegate: StartEventViewControllerDelegate?
     static let storyboardID = String(describing: StartEventViewController.self)
@@ -82,12 +82,11 @@ class StartEventViewController: MSMessagesAppViewController {
     
     func nextPage(type: EventType) {
         
+        expandView()
         let event = Event(title: type.defaultTitle(), type: type)
-        
         let locationsVC = (storyboard?.instantiateViewController(withIdentifier: LocationsViewController.storyboardID) as? LocationsViewController)!
         locationsVC.event = event
         self.navigationController?.pushViewController(locationsVC, animated: true)
-        //self.requestPresentationStyle(.expanded)
     }
     
     @objc func hexTapped(sender: UIButton) {
@@ -107,8 +106,7 @@ extension StartEventViewController: UICollectionViewDataSource {
         case typesCollectionView:
             let cell = typesCollectionView.dequeueReusableCell(withReuseIdentifier: EventTypeHexCell.reuseIdentifier, for: indexPath) as! EventTypeHexCell
 
-            cell.hexButton.setTitle(types[indexPath.row].label(), for: .normal)
-            //cell.hexButton.setTitle("Button", for: .normal)
+            cell.hexButton.style(title: types[indexPath.row].label(), imageTag: "HexFill")
             cell.hexButton.tag = indexPath.row
             cell.hexButton.addTarget(nil, action: #selector(hexTapped(sender:)), for: .touchUpInside)
     
@@ -260,7 +258,7 @@ class EventTypeHexCell: UICollectionViewCell {
     let hexButton: HexButton = {
         let button = HexButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.style(imageTag: "HexFill", width: 100, height: 116, fontSize: 20)
+        button.size(size: 116, textSize: 20)
         return button
     }()
     
