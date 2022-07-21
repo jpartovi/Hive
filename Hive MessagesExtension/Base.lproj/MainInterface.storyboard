@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -170,16 +171,26 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ux-hy-RNE" userLabel="Create Event" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="191" y="418" width="88" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Create Event"/>
+                                <connections>
+                                    <action selector="createEventButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="gEN-wU-ofj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AUO-3P-b70"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerY" secondItem="Il1-n0-leK" secondAttribute="centerY" id="00D-fu-MjL"/>
                             <constraint firstItem="0EQ-h5-lk3" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="bottom" constant="8" symbolic="YES" id="4Mb-71-HkM"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="7lu-wG-L1l"/>
                             <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="Hx6-O8-szG"/>
                             <constraint firstItem="1hl-qe-PCn" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="LhB-uX-a5N"/>
                             <constraint firstItem="49J-CZ-eci" firstAttribute="leading" secondItem="AUO-3P-b70" secondAttribute="leading" constant="16" id="MVf-Yp-NWe"/>
                             <constraint firstItem="1hl-qe-PCn" firstAttribute="top" secondItem="0EQ-h5-lk3" secondAttribute="bottom" constant="2" id="NQ7-mf-LDX"/>
+                            <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="75" id="Xg0-TM-PVj"/>
                             <constraint firstItem="49J-CZ-eci" firstAttribute="top" secondItem="1hl-qe-PCn" secondAttribute="bottom" constant="8" symbolic="YES" id="iD6-T2-1oO"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="-75" id="ipg-Cl-Wmo"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="bottom" secondItem="Il1-n0-leK" secondAttribute="bottom" constant="80" id="joo-Z6-b6s"/>
@@ -197,6 +208,7 @@
                     <navigationItem key="navigationItem" id="aOw-Bi-1Lo"/>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
+                        <outlet property="createEventButton" destination="0Ux-hy-RNE" id="RhZ-Ar-Wv1"/>
                         <outlet property="dayAndTimeLabel" destination="1hl-qe-PCn" id="0Xj-rH-UKi"/>
                         <outlet property="locationLabel" destination="0EQ-h5-lk3" id="osd-5A-rzG"/>
                         <outlet property="promptLabel" destination="C1v-xz-QVR" id="JZi-F8-kKl"/>

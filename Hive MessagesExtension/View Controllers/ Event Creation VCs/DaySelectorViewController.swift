@@ -96,7 +96,7 @@ class DaySelectorViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        print("viewDidLayoutSubviews")
         loadMonthLabel()
     }
     
@@ -132,9 +132,11 @@ class DaySelectorViewController: UIViewController {
                 constraint.isActive = true
             }
         }
-        loadMonthLabel()
         updateContentView()
         calendarCollectionView!.reloadData()
+        print("changedConstraints")
+        //print(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0)))
+        //loadMonthLabel()
     }
     
     func updateContentView() {
@@ -183,10 +185,16 @@ class DaySelectorViewController: UIViewController {
         let calendar = Calendar.current
         
         if compactView {
-            let belowIndex = Int(floor(scrollView.contentOffset.x/(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width)! + 2.5))
+            
+            var belowIndex: Int
+            
+            if let cellWidth = calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width {
+                belowIndex = Int(floor(scrollView.contentOffset.x/cellWidth + 2.5))
+            } else {
+                belowIndex = 0
+            }
             
             let belowDate: Day
-            
             
             if belowIndex < 0 {
                 belowDate = calendarDays[0].day

@@ -15,7 +15,7 @@ struct Event {
     var daysAndTimes: [Day : [Time]] = [:]
     var duration: Duration? = nil
     
-    mutating func buildRSVPURL() -> URL {
+    mutating func buildRSVPURL(ID: String) -> URL {
         //For RSVP Invite
         
         var queryItems = [URLQueryItem]()
@@ -23,6 +23,8 @@ struct Event {
         queryItems.append(URLQueryItem(name: "messageType", value: "invite"))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
+        
+        queryItems.append(URLQueryItem(name: "hostID", value: ID))
         
         queryItems.append(type.makeURLQueryItem())
         
@@ -50,7 +52,7 @@ struct Event {
         return URLComponents.url!
     }
     
-    mutating func buildVoteURL() -> URL {
+    mutating func buildVoteURL(ID: String) -> URL {
         //For Voting
         
         var queryItems = [URLQueryItem]()
@@ -58,6 +60,8 @@ struct Event {
         queryItems.append(URLQueryItem(name: "messageType", value: "vote"))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
+        
+        queryItems.append(URLQueryItem(name: "hostID", value: ID))
         
         queryItems.append(type.makeURLQueryItem())
         
