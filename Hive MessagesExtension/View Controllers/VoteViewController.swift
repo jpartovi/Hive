@@ -12,7 +12,7 @@ import Messages
 
 class VoteViewController: MSMessagesAppViewController {
     
-    var delegate: VoteViewControllerDelegate?
+    //var delegate: VoteViewControllerDelegate?
     static let storyboardID = String(describing: VoteViewController.self)
     
     @IBOutlet weak var promptLabel: StyleLabel!
@@ -23,10 +23,20 @@ class VoteViewController: MSMessagesAppViewController {
     
     @IBOutlet weak var submitButton: HexButton!
     
+    @IBOutlet weak var createEventButton: HexButton!
+    
+    
+    @IBOutlet var clientConstraints: [NSLayoutConstraint]!
+    
+    @IBOutlet var hostConstraints: [NSLayoutConstraint]!
+    
+    
+    
     let cellInsets: CGFloat = 8
     
     var myID: String!
     var mURL: URL!
+    var isHost: Bool = false
     
     var loadedEvent: Event!
     
@@ -56,6 +66,17 @@ class VoteViewController: MSMessagesAppViewController {
                 
         submitButton.size(size: 150, textSize: 25)
         submitButton.style(title: "Submit")
+        
+        if isHost {
+            for constraint in clientConstraints {
+                constraint.isActive = false
+            }
+            for constraint in hostConstraints {
+                constraint.isActive = true
+            }
+            createEventButton.isHidden = false
+        }
+        
     }
     
     func decodeEvent(_ event: Event) {
@@ -195,7 +216,9 @@ class VoteViewController: MSMessagesAppViewController {
             let name = queryItem.name
             let value = queryItem.value
             
-            if name == "endEvent" {
+            if name == "hostID" && value == myID {
+                isHost = true
+            } else if name == "endEvent" {
                 endFlag = true
             } else if endFlag {
                 
@@ -228,6 +251,25 @@ class VoteViewController: MSMessagesAppViewController {
         prepareMessage(url)
         
     }
+    
+    @IBAction func createEventButtonPressed(_ sender: UIButton) {
+        
+        let url = prepareVoteURL()
+        
+        let inputeventVC = (storyboard?.instantiateViewController(withIdentifier: InputEventViewController.storyboardID) as? InputEventViewController)!
+        inputeventVC.myID = myID
+        inputeventVC.mURL = url
+        inputeventVC.voteGroups = voteGroups
+        inputeventVC.voteItems = voteItems
+        inputeventVC.voteTallies = voteTallies
+        inputeventVC.isOpen = isOpen
+        inputeventVC.voteSelections = [Int?](repeating: nil, count: voteGroups.count)
+        inputeventVC.daysAndTimesMagicIndexes = daysAndTimesMagicIndexes
+        inputeventVC.daysAndTimesGroupIndex = daysAndTimesGroupIndex
+        self.navigationController?.pushViewController(inputeventVC, animated: true)
+        
+    }
+    
     
     
     func prepareVoteURL() -> URL{
@@ -312,11 +354,8 @@ class VoteViewController: MSMessagesAppViewController {
     
     
     override func viewDidAppear(_ animated: Bool) {
-        /*
-        submitButton.setImage(UIImage(named: "SelectedLongHex")?.size(width: submitButton.frame.width, height: submitButton.frame.height), for: UIControl.State.selected)
-        submitButton.setImage(UIImage(named: "LongHex")?.size(width: submitButton.frame.width, height: submitButton.frame.height), for: UIControl.State.normal)
-        */
-        //submitLabel.font = submitLabel.font.withSize(submitLabel.frame.height * 3/10)
+
+        
     }
     
     @objc func sectionHeaderTouchDown(recognizer: UILongPressGestureRecognizer) {
@@ -356,8 +395,7 @@ class VoteViewController: MSMessagesAppViewController {
 extension VoteViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-
-            voteGroups.count
+        voteGroups.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -381,6 +419,7 @@ extension VoteViewController: UITableViewDataSource {
             cell.curIndex = indexPath.row
             var day = loadedEvent.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
+            cell.times = []
             for (index, time) in loadedEvent.daysAndTimes[day]!.enumerated() {
                 let flatIndex = daysAndTimesMagicIndexes[indexPath.row] + index
                 cell.times.append((time, voteSelections[indexPath.section].contains(flatIndex), voteTallies[indexPath.section][flatIndex])) // TODO: need to laod previous votes here (replace "false" and "0")

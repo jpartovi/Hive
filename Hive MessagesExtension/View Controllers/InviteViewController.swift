@@ -190,8 +190,8 @@ class InviteViewController: MSMessagesAppViewController {
                 components!.queryItems!.append(URLQueryItem(name: myID, value: "Yes"))
             }
             
-            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum), animateTime: 0.5)
-            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum), animateTime: 0.5)
+            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
+            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
             yesCounts.text = String(yesNum)
             noCounts.text = String(noNum)
             
@@ -230,8 +230,8 @@ class InviteViewController: MSMessagesAppViewController {
                 components!.queryItems!.append(URLQueryItem(name: myID, value: "No"))
             }
             
-            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum), animateTime: 0.5)
-            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum), animateTime: 0.5)
+            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
+            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
             yesCounts.text = String(yesNum)
             noCounts.text = String(noNum)
             
@@ -266,12 +266,6 @@ class InviteViewController: MSMessagesAppViewController {
         
         
         self.requestPresentationStyle(.compact)
-    }
-    
-    
-    override func willResignActive(with conversation: MSConversation) {
-        self.view.window!.rootViewController?.dismiss(animated: false)
-        super.willResignActive(with: conversation)
     }
     
     

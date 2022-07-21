@@ -137,11 +137,11 @@ class ConfirmViewController: MSMessagesAppViewController {
     func formatLocations() {
       
         if event.locations.isEmpty {
-            locationsLabel.isHidden = true
+            //locationsLabel.isHidden = true
             firstLocationButton.isHidden = false
             addLocationButton.isHidden = true
         } else {
-            locationsLabel.isHidden = false
+            //locationsLabel.isHidden = false
             firstLocationButton.isHidden = true
             addLocationButton.isHidden = false
         }
@@ -149,8 +149,9 @@ class ConfirmViewController: MSMessagesAppViewController {
     
     func updateTableViewHeights() {
         
-        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 50)
+        
         self.locationsTableView.layoutIfNeeded()
+        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         self.daysAndTimesTableView.layoutIfNeeded()
         //scrollView.layoutIfNeeded()
@@ -260,7 +261,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             trailingSubcaption = ""
             //summaryText = "Poll for " + event.title
             
-            messageURL = event.buildVoteURL()
+            messageURL = event.buildVoteURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
             
             /*conversation.insert(pollMessage) {error in
                 // empty for now
@@ -291,7 +292,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             // TODO: Doesn't work for some reason
             //summaryText = "Invite to " + event.title
             
-            messageURL = event.buildRSVPURL()
+            messageURL = event.buildRSVPURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
         }
         
         // Construct message layout

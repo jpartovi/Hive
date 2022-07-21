@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Messages
 
-class StartEventViewController: UIViewController {
+class StartEventViewController: MSMessagesAppViewController {
     
     var delegate: StartEventViewControllerDelegate?
     static let storyboardID = String(describing: StartEventViewController.self)

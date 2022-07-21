@@ -92,8 +92,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 }
             } else if let child = child as? InviteViewController {
                 if presentationStyle == .compact {
-                    self.view.window!.rootViewController?.dismiss(animated: false)
                     dismiss()
+                    self.view.window!.rootViewController?.dismiss(animated: false)
                 }
             } else if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
@@ -260,7 +260,9 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     func instantiateVoteViewController(conversation: MSConversation) -> UIViewController {
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteViewController.storyboardID) as? VoteViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
+        //guard let controller = storyboard?.instantiateViewController(withIdentifier: VoteViewController.storyboardID) as? VoteViewController else { fatalError("Unable to instantiate an PollViewController from the storyboard") }
+        
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "VoteNavigationController") as? VoteNavigationController else { fatalError("Unable to instantiate an VoteNavigationController from the storyboard") }
             
         controller.delegate = self
         controller.myID = conversation.localParticipantIdentifier.uuidString

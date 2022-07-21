@@ -30,6 +30,8 @@
 		15BA66D2284E8C6F00C185CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */; };
 		15BA66D4284E8C7100C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D3284E8C7100C185CA /* Assets.xcassets */; };
 		15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEE7AA287E3E1500FDAE2B /* Event.swift */; };
+		873938802889D37A001EF213 /* VoteNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8739387F2889D37A001EF213 /* VoteNavigationController.swift */; };
+		873938822889D386001EF213 /* InputEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873938812889D386001EF213 /* InputEventViewController.swift */; };
 		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 		CA4E9AA3F3F2E9B70FB1B59D /* libPods-Hive MessagesExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7BBB53B72CCD26BADD5DC /* libPods-Hive MessagesExtension.a */; };
 		F8CDEF024AF89E0876B91725 /* libPods-Hive.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D43EEC4CA816B9D97B0D7CD /* libPods-Hive.a */; };
@@ -88,6 +90,8 @@
 		3FC8F2BD88B64705CDC5E6B1 /* Pods-Hive MessagesExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.release.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.release.xcconfig"; sourceTree = "<group>"; };
 		56C20084B43A4E48868174A9 /* Pods-Hive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.release.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.release.xcconfig"; sourceTree = "<group>"; };
 		7D43EEC4CA816B9D97B0D7CD /* libPods-Hive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Hive.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8739387F2889D37A001EF213 /* VoteNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoteNavigationController.swift; path = "../../../../Downloads/Hive-main 2/Hive MessagesExtension/View Controllers/VoteNavigationController.swift"; sourceTree = "<group>"; };
+		873938812889D386001EF213 /* InputEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = InputEventViewController.swift; path = "../../../../Downloads/Hive-main 2/Hive MessagesExtension/View Controllers/InputEventViewController.swift"; sourceTree = "<group>"; };
 		8793627C286CFEE400C05180 /* PollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PollViewController.swift; sourceTree = "<group>"; };
 		A461ADED5559EC7E5110A076 /* Pods-Hive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.debug.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.debug.xcconfig"; sourceTree = "<group>"; };
 		C3C83F8103D77ECEEF1A0B21 /* Pods-Hive MessagesExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.debug.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +148,8 @@
 			isa = PBXGroup;
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
+				8739387F2889D37A001EF213 /* VoteNavigationController.swift */,
+				873938812889D386001EF213 /* InputEventViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				15B5D26928823624004267E2 /* VoteViewController.swift */,
@@ -384,6 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				873938822889D386001EF213 /* InputEventViewController.swift in Sources */,
 				8793627E286CFEE400C05180 /* PollViewController.swift in Sources */,
 				1545E0132888B031004DD491 /* EventType.swift in Sources */,
 				1545E0152888B056004DD491 /* Location.swift in Sources */,
@@ -395,6 +402,7 @@
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
 				151BC1E52888842000B330DF /* Custom Elements.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
+				873938802889D37A001EF213 /* VoteNavigationController.swift in Sources */,
 				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
 				1545E0172888B07C004DD491 /* Day.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
