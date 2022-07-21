@@ -42,6 +42,7 @@ class StyleTextField: UITextField {
         self.borderStyle = .none
     }
     
+    // Check if the textfield is empty or not
     func getStatus(withDisplay: Bool) -> Bool {
         let color: UIColor
         let isFull: Bool
