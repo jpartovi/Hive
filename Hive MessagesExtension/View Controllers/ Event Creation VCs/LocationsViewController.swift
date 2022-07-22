@@ -72,8 +72,6 @@ class LocationsViewController: StyleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        enableTouchAwayKeyboardDismiss()
-        
         addHexFooter()
         
         promptLabel.style(text: "Do you know where you want to host?")
@@ -95,24 +93,42 @@ class LocationsViewController: StyleViewController {
 
     @IBOutlet weak var nextBottom: NSLayoutConstraint!
     
+    @IBOutlet weak var tableBottom: NSLayoutConstraint!
+    
+    @IBOutlet weak var tableBottomKeyboard: NSLayoutConstraint!
+    
     @objc func keyboardWillShow(notification: NSNotification) {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            MVC.requestPresentationStyle(.expanded)
+            
+        }
+        
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            /*if self.view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height/2
-                
-            }*/
-            //nextBottom.constant += keyboardSize.height - 90
+            
+            tableBottom.isActive = false
+            
+            tableBottomKeyboard.constant = keyboardSize.height + 16
+            
+            tableBottomKeyboard.isActive = true
+            
+            print("new constraints")
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
+        
+        tableBottomKeyboard.isActive = false
+        
+        tableBottom.isActive = true
+        
         /*if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }*/
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        /*if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
 
             //nextBottom.constant -= keyboardSize.height - 90
-        }
+        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -137,6 +153,7 @@ class LocationsViewController: StyleViewController {
         let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
         cell.titleTextField.resetColor()
         cell.titleTextField.becomeFirstResponder()
+        print("becamefirstresponder")
         updateContinueButtonStatus()
         
         // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens

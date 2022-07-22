@@ -393,6 +393,11 @@ class VoteViewController: StyleViewController {
                 let range = NSMakeRange(indexPath.section, 1)
                 let sectionToReload = NSIndexSet(indexesIn: range)
                 voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
+                if indexPath.section == daysAndTimesGroupIndex {
+                    for (index, _) in daysAndTimesMagicIndexes.enumerated() {
+                        (voteTable.cellForRow(at: IndexPath(row: index, section: daysAndTimesGroupIndex)) as? VotingDayAndTimesCell)?.timesCollectionView.reloadData()
+                    }
+                }
             }
         }
     }
@@ -434,12 +439,8 @@ extension VoteViewController: UITableViewDataSource {
             cell.curIndex = indexPath.row
             var day = loadedEvent.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
-            cell.times = []
-            for (index, time) in loadedEvent.daysAndTimes[day]!.enumerated() {
-                let flatIndex = daysAndTimesMagicIndexes[indexPath.row] + index
-                cell.times.append((time, voteSelections[indexPath.section].contains(flatIndex), voteTallies[indexPath.section][flatIndex])) // TODO: need to laod previous votes here (replace "false" and "0")
-            }
             cell.duration = loadedEvent.duration
+            cell.timesCollectionView.reloadData()
             return cell
         }
         let cell = voteTable.dequeueReusableCell(withIdentifier: VoteCell.reuseIdentifier, for: indexPath) as! VoteCell
@@ -571,7 +572,7 @@ class VotingDayAndTimesCell: UITableViewCell {
     
     static let cornerRadius: CGFloat = 20
     
-    var times = [(time: Time, isVoted: Bool, votes: Int)]()
+    //var times = [(time: Time, isVoted: Bool, votes: Int)]()
     var duration: Duration? = nil
     
     let dayLabel: UILabel = {
@@ -600,7 +601,7 @@ class VotingDayAndTimesCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.layer.cornerRadius = self.frame.height / 2 
+        //self.layer.cornerRadius = self.frame.height / 2
         
         self.backgroundColor = Style.lightGreyColor
         
@@ -634,14 +635,15 @@ class VotingDayAndTimesCell: UITableViewCell {
 
 extension VotingDayAndTimesCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        times.count
+        return curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]!.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let magicIndex = curView.daysAndTimesMagicIndexes[curIndex] + indexPath.row
         let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: VotingTimeCell.reuseIdentifier, for: indexPath) as! VotingTimeCell
-        cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)//duration)
-        cell.voteCountLabel.text = String(times[indexPath.row].votes)
-        if times[indexPath.row].isVoted {
+        cell.timeLabel.text = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
+        cell.voteCountLabel.text = String(curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex])
+        if curView.voteSelections[curView.daysAndTimesGroupIndex].contains(magicIndex) {
             cell.backgroundColor = Style.primaryColor
             cell.timeLabel.textColor = Style.lightTextColor
         } else {
@@ -689,29 +691,23 @@ var multiSelectable = [false, false, false, true]*/
 
 extension VotingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let magicIndex = curView.daysAndTimesMagicIndexes[curIndex]
-        if times[indexPath.row].isVoted {
-            times[indexPath.row].isVoted = false
-            times[indexPath.row].votes -= 1
-            
-            curView.voteSelections[curView.daysAndTimesGroupIndex] = curView.voteSelections[curView.daysAndTimesGroupIndex].filter {$0 != magicIndex + indexPath.row}
-            
+        let magicIndex = curView.daysAndTimesMagicIndexes[curIndex] + indexPath.row
+        if curView.voteSelections[curView.daysAndTimesGroupIndex].contains(magicIndex) {
+            curView.voteSelections[curView.daysAndTimesGroupIndex] = curView.voteSelections[curView.daysAndTimesGroupIndex].filter {$0 != magicIndex}
+            curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex] -= 1
         } else {
-            times[indexPath.row].isVoted = true
-            times[indexPath.row].votes += 1
-            
-            curView.voteSelections[curView.daysAndTimesGroupIndex].append(magicIndex + indexPath.row)
+            curView.voteSelections[curView.daysAndTimesGroupIndex].append(magicIndex)
+            curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex] += 1
         }
         
-        
-        curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex + indexPath.row] = times[indexPath.row].votes
-        
-        timesCollectionView.reloadData()
+        for (index, _) in curView.daysAndTimesMagicIndexes.enumerated() {
+            (curView.voteTable.cellForRow(at: IndexPath(row: index, section: curView.daysAndTimesGroupIndex)) as? VotingDayAndTimesCell)?.timesCollectionView.reloadData()
+        }
         curView.updateSubmitButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let timeString = times[indexPath.row].time.format(duration: nil)
+        let timeString = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
         return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Style.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
     }
 }

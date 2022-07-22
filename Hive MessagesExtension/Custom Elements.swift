@@ -48,6 +48,7 @@ class StyleTextField: UITextField {
     }
 
     @objc func doneButtonAction(sender: StyleTextField){
+        print("donebuttonaction")
         superview!.endEditing(true)
     }
     
@@ -245,6 +246,7 @@ class StyleViewController: MSMessagesAppViewController {
     
     //Calls this function when the tap is recognized.
     @objc func dismissKeyboard() {
+        print("dismissed")
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
