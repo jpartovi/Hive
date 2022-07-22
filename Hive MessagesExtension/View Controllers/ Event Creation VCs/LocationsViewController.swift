@@ -27,6 +27,8 @@ class LocationsViewController: StyleViewController {
     
     var expandToNext: Bool = false
     
+    //var textFieldExpand: StyleTextField? = nil
+    
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: HexButton!
     
@@ -39,10 +41,7 @@ class LocationsViewController: StyleViewController {
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
     
-    var textFields = [StyleTextField]()
-    
     func changedConstraints(compact: Bool){
-        print("changed")
         
         if compact {
             promptLabel.font = Style.font(size: 20)
@@ -63,6 +62,11 @@ class LocationsViewController: StyleViewController {
         }
 
         locationsTableView.reloadData()
+        
+        /*if textFieldExpand != nil {
+            textFieldExpand!.becomeFirstResponder()
+            textFieldExpand = nil
+        }*/
     }
     
     override func viewDidLoad() {
@@ -84,7 +88,31 @@ class LocationsViewController: StyleViewController {
         locationsTableView.showsVerticalScrollIndicator = false
         
         updateLocations()
-        updateTextFieldList()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @IBOutlet weak var nextBottom: NSLayoutConstraint!
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            /*if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height/2
+                
+            }*/
+            //nextBottom.constant += keyboardSize.height - 90
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        /*if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }*/
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+
+            //nextBottom.constant -= keyboardSize.height - 90
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -107,44 +135,37 @@ class LocationsViewController: StyleViewController {
         let lastCellIndexPath = IndexPath(row: locations.count - 1, section: 0)
         locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
         let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+        cell.titleTextField.resetColor()
         cell.titleTextField.becomeFirstResponder()
         updateContinueButtonStatus()
         
         // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
     
-    func updateTextFieldList() {
-        textFields = []
-        for (index, _) in locations.enumerated() {
-            let cell = locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! LocationCell
-            textFields.append(cell.titleTextField)
-        }
-    }
-    
     func updateContinueButtonStatus() {
 
-        updateTextFieldList()
-        
         if locations.isEmpty {
             continueButton.grey(title: "Skip")
         } else {
-            if textFieldsFull(textFields: textFields, withDisplay: false) {
-                continueButton.color(title: "Done")
-            } else {
-                continueButton.grey(title: "Done")
+            for location in locations {
+                if location.title == "" {
+                    continueButton.grey(title: "Done")
+                    return
+                }
             }
+            continueButton.color(title: "Done")
         }
     }
     
     @IBAction func continueButtonPressed(_ sender: Any) {
         
-        updateTextFieldList()
-        
-        if textFieldsFull(textFields: textFields, withDisplay: true) {
-            expandAndNextPage()
-        } else {
-            // TODO: Error???
+        for location in locations {
+            if location.title == "" {
+                // TODO: Error???
+                return
+            }
         }
+        expandAndNextPage()
         
     }
     
@@ -172,6 +193,7 @@ class LocationsViewController: StyleViewController {
     @objc func deleteLocation(sender: UIButton) {
         locationsTableView.reloadData()
         let index = sender.tag
+        (locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as? LocationCell)!.titleTextField.resetColor()
         locations.remove(at: index)
         locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         updateContinueButtonStatus()
@@ -189,25 +211,38 @@ class LocationsViewController: StyleViewController {
         }
     }
     
+    /*@objc func titleTextFieldDidBeginEditing(sender: StyleTextField) {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            textFieldExpand = sender
+            MVC.requestPresentationStyle(.expanded)
+        }
+        //sender.addTarget(self, action: #selector(valueChanged), for: .editingChanged)
+    }*/
+    
+    /*@objc func valueChanged(_ sender: StyleTextField){
+        sender.tag
+        
+    }*/
+
+    
     @objc func titleTextFieldDidChange(sender: StyleTextField) {
         if locations.indices.contains(sender.tag) {
             locations[sender.tag].title = sender.text ?? ""
-            sender.getStatus(withDisplay: true)
+            sender.colorStatus()
             updateContinueButtonStatus()
         }
     }
     
     @objc func titleTextFieldDidFinishEditing(sender: StyleTextField) {
         if locations.indices.contains(sender.tag) {
-            //sender.getStatus()
+            sender.colorStatus()
         }
     }
 }
 
 extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        
-        //print(Location(title: locations[addressEditingIndex!].title, place: Location.getPlaceFromID(id: place.placeID!)))
         
         locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place, address: place.formattedAddress!)
         locationsTableView.reloadData()
@@ -225,6 +260,11 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
 }
 
 extension LocationsViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        locationsTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         locations.count
     }
@@ -237,6 +277,7 @@ extension LocationsViewController: UITableViewDataSource {
         
         cell.titleTextField.text = location.title
         cell.titleTextField.tag = indexPath.row
+        //cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidBeginEditing(sender:)), for: .editingDidBegin)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidFinishEditing(sender:)), for: .editingDidEnd)
         cell.deleteButton.tag = indexPath.row
@@ -251,6 +292,8 @@ extension LocationsViewController: UITableViewDataSource {
             cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
             cell.changeAddressButton.isHidden = true
         }
+        
+        cell.titleTextField.colorStatus()
         
         return cell
     }

@@ -156,7 +156,7 @@ enum EventType: CaseIterable {
         case .party:
             type = "party"
         case .allDay:
-            type = "all-Day"
+            type = "all-day"
         case .other:
             type = "other"
         }

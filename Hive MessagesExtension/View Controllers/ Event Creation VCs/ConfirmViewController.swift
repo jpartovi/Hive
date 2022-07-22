@@ -21,7 +21,6 @@ class ConfirmViewController: StyleViewController {
     var pollFlag = false
     var pollMessage: MSMessage!
     
-    var textFields = [StyleTextField]()
     
     var addressEditingIndex: Int? = nil
     
@@ -151,8 +150,8 @@ class ConfirmViewController: StyleViewController {
     func updateTableViewHeights() {
         
         
-        self.locationsTableView.layoutIfNeeded()
         self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+        self.locationsTableView.layoutIfNeeded()
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         self.daysAndTimesTableView.layoutIfNeeded()
         //scrollView.layoutIfNeeded()
@@ -194,15 +193,6 @@ class ConfirmViewController: StyleViewController {
         
         updateDaysAndTimes()
         
-        /*
-        for day in event.days {
-            if daysAndTimes[day]!.isEmpty && !event.times.isEmpty {
-                event.days.remove(at: event.days.firstIndex(of: day)!)//dayIndex)
-                daysAndTimes.removeValue(forKey: day)
-            }
-        }
-         */
-        
         // Remove any times that aren't selected anywhere
         for time in event.times {
             var timeIncluded = false
@@ -219,21 +209,15 @@ class ConfirmViewController: StyleViewController {
         event.daysAndTimes = daysAndTimes
     }
     
-    func updateTextFieldList () {
-        textFields = [eventTitleTextField]
-        for (index, _) in event.locations.enumerated() {
-            let cell = locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! LocationCell
-            textFields.append(cell.titleTextField)
-        }
-    }
-    
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
         // Make sure all text fields are full
-        if !textFieldsFull(textFields: textFields, withDisplay: true) {
-            // ERROR
-            return
+        for location in event.locations {
+            if location.title == "" {
+                // ERROR
+                return
+            }
         }
         
         updateEventObject()
@@ -328,14 +312,14 @@ class ConfirmViewController: StyleViewController {
     }
     
     func updatePostButtonStatus() {
-        
-        updateTextFieldList()
-        
-        if textFieldsFull(textFields: textFields, withDisplay: false) {
-            postButton.color(title: "Post")
-        } else {
-            postButton.grey(title: "Post")
+        for location in event.locations {
+            if location.title == "" {
+                postButton.grey(title: "Post")
+                return
+            }
         }
+        
+        postButton.color(title: "Post")
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
@@ -345,19 +329,19 @@ class ConfirmViewController: StyleViewController {
         
         let lastCellIndexPath = IndexPath(row: event.locations.count - 1, section: 0)
         locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
-        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
-        cell.titleTextField.becomeFirstResponder()
         formatLocations()
+        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+        cell.titleTextField.resetColor()
+        cell.titleTextField.becomeFirstResponder()
         updatePostButtonStatus()
     }
     
     @objc func deleteLocation(sender: UIButton) {
-        locationsTableView.reloadData()
         let index = sender.tag
         event.locations.remove(at: index)
+        (locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as? LocationCell)!.titleTextField.resetColor()
         locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
         formatLocations()
-        updateTableViewHeights()
         updatePostButtonStatus()
     }
     
@@ -378,7 +362,7 @@ class ConfirmViewController: StyleViewController {
         
         if event.locations.indices.contains(sender.tag) {
             event.locations[sender.tag].title = sender.text ?? ""
-            sender.getStatus(withDisplay: true)
+            sender.colorStatus()
             updatePostButtonStatus()
         }
     }
@@ -386,7 +370,7 @@ class ConfirmViewController: StyleViewController {
     @objc func eventTitleTextFieldDidChange(sender: StyleTextField) {
         
         event.title = sender.text ?? ""
-        sender.getStatus(withDisplay: true)
+        sender.colorStatus()
         updatePostButtonStatus()
     }
     
@@ -407,6 +391,14 @@ class ConfirmViewController: StyleViewController {
 }
 
 extension ConfirmViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        locationsTableView.reloadData()
+        updateTableViewHeights()
+        
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
@@ -481,6 +473,7 @@ extension ConfirmViewController: UITableViewDataSource {
                 cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
                 cell.changeAddressButton.isHidden = true
             }
+            cell.titleTextField.colorStatus()
             return cell
         default:
             // TODO: This is not right, there should be some sort of error message here
