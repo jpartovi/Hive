@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Messages
 
 class ErrorLabel: UILabel {
     
@@ -29,6 +30,24 @@ class StyleTextField: UITextField {
     
     var fullColor: UIColor = Style.greyColor
     let emptyColor: UIColor = Style.errorColor
+    
+    func addDoneButton(){
+        let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+        doneToolbar.barStyle = .default
+
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton: UIBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(self.doneButtonAction))
+        
+        let items = [flexSpace, doneButton]
+        doneToolbar.items = items
+        doneToolbar.sizeToFit()
+
+        self.inputAccessoryView = doneToolbar
+    }
+
+    @objc func doneButtonAction(sender: StyleTextField){
+        superview!.endEditing(true)
+    }
     
     func style(placeholderText: String, color: UIColor? = nil, textColor: UIColor = Style.darkTextColor, fontSize: CGFloat = 18) {
         if let color = color {
@@ -77,26 +96,6 @@ class StyleLabel: UILabel {
     }
 }
 
-class StyleButton: UIButton {
-    
-    func style(color: UIColor = Style.primaryColor, filled: Bool, roundedCornerPosition: Int) {
-        self.layer.cornerRadius = min(self.frame.size.height / 2.0, 20)
-        self.layer.maskedCorners = RoundedCornerPosition.initWith(position: roundedCornerPosition).mask
-        if filled {
-            self.layer.backgroundColor = color.cgColor
-            self.tintColor = Style.lightTextColor
-        } else {
-            self.layer.backgroundColor = Style.secondaryColor.cgColor
-            self.layer.borderWidth = 2
-            self.layer.borderColor = color.cgColor
-            self.tintColor = color
-        }
-    }
-    
-    func embolden() {
-        self.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.bold)
-    }
-}
 
 class HexButton: UIButton {
     
@@ -161,31 +160,28 @@ class HexButton: UIButton {
     }
 }
 
-class SelectionButton: StyleButton {
-
-    var color: UIColor = Style.secondaryColor
-    var active: Bool = false
-    var roundedCornerPosition: Int = RoundedCornerPosition.none.number
+class LargeHexButton: HexButton {
+    
+    let sizef: CGFloat = 150
+    let textfSize = CGFloat(25)
     
     override func draw(_ rect: CGRect) {
-        
-        // Update selection status
-        setSelectionAppearance()
+        //style(imageTag: "ColorHex", textColor: Style.lightGreyColor)
     }
+}
+
+class SelectionLargeHexButton: LargeHexButton {
     
-    override func style(color: UIColor, filled: Bool, roundedCornerPosition: Int) {
-        super.style(color: color, filled: filled, roundedCornerPosition: roundedCornerPosition)
-        self.roundedCornerPosition = roundedCornerPosition
-    }
+    var active: Bool = false
     
     // Set the selected properties
     func setSelected() {
-        super.style(color: color, filled: true, roundedCornerPosition: roundedCornerPosition)
+        style(imageTag: "SelectedHex")
     }
     
     // Set the deselcted properties
     func setDeselected() {
-        super.style(color: color, filled: false, roundedCornerPosition: roundedCornerPosition)
+        style(imageTag: "ColorHex")
     }
     
     func changeSelectionStatus() {
@@ -202,6 +198,79 @@ class SelectionButton: StyleButton {
     }
 }
 
+class StyleViewController: MSMessagesAppViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        enableTouchAwayKeyboardDismiss()
+        setBackgroundColor()
+    }
+    
+    func setBackgroundColor() {
+        self.view.backgroundColor = Style.backgroundColor
+    }
+    
+    func addHexFooter() {
+        let frameHeight = self.view.frame.height
+        let frameWidth = self.view.frame.width
+        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth * 0.34)
+        let footerImageView = UIImageView( image: footerImage)
+        footerImageView.frame = CGRect(x: 0, y: frameHeight - footerImageView.frame.height, width: frameWidth, height: footerImageView.frame.height)
+        self.view.addSubview(footerImageView)
+        self.view.sendSubviewToBack(footerImageView)
+    }
+    
+    func enableTouchAwayKeyboardDismiss() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    //Calls this function when the tap is recognized.
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+
+    func textFieldsFull(textFields: [StyleTextField], withDisplay: Bool) -> Bool {
+        var textFieldsFull = true
+        print(textFields)
+        for textField in textFields {
+            if textField.getStatus(withDisplay: withDisplay) == false {
+                textFieldsFull = false
+            }
+        }
+        return textFieldsFull
+    }
+    
+    //func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+      //  textField.resignFirstResponder()
+    //}
+}
+
+/*
+class StyleButton: UIButton {
+    
+    func style(color: UIColor = Style.primaryColor, filled: Bool, roundedCornerPosition: Int) {
+        self.layer.cornerRadius = min(self.frame.size.height / 2.0, 20)
+        self.layer.maskedCorners = RoundedCornerPosition.initWith(position: roundedCornerPosition).mask
+        if filled {
+            self.layer.backgroundColor = color.cgColor
+            self.tintColor = Style.lightTextColor
+        } else {
+            self.layer.backgroundColor = Style.secondaryColor.cgColor
+            self.layer.borderWidth = 2
+            self.layer.borderColor = color.cgColor
+            self.tintColor = color
+        }
+    }
+    
+    func embolden() {
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.bold)
+    }
+}
+
 class PrimaryButton: StyleButton {
     
     var color: UIColor = Style.primaryColor
@@ -212,6 +281,48 @@ class PrimaryButton: StyleButton {
         
     }
 }
+ 
+class SelectionButton: StyleButton {
+
+     var color: UIColor = Style.secondaryColor
+     var active: Bool = false
+     var roundedCornerPosition: Int = RoundedCornerPosition.none.number
+     
+     override func draw(_ rect: CGRect) {
+         
+         // Update selection status
+         setSelectionAppearance()
+     }
+     
+     override func style(color: UIColor, filled: Bool, roundedCornerPosition: Int) {
+         super.style(color: color, filled: filled, roundedCornerPosition: roundedCornerPosition)
+         self.roundedCornerPosition = roundedCornerPosition
+     }
+     
+     // Set the selected properties
+     func setSelected() {
+         super.style(color: color, filled: true, roundedCornerPosition: roundedCornerPosition)
+     }
+     
+     // Set the deselcted properties
+     func setDeselected() {
+         super.style(color: color, filled: false, roundedCornerPosition: roundedCornerPosition)
+     }
+     
+     func changeSelectionStatus() {
+         active = !active
+         setSelectionAppearance()
+     }
+     
+     func setSelectionAppearance() {
+         if active {
+             setSelected()
+         } else {
+             setDeselected()
+         }
+     }
+ }
+
 
 enum RoundedCornerPosition {
      
@@ -358,46 +469,4 @@ enum RoundedCornerPosition {
         }
     }
 }
-
-class LargeHexButton: HexButton {
-    
-    let sizef: CGFloat = 150
-    let textfSize = CGFloat(25)
-    
-    override func draw(_ rect: CGRect) {
-        //style(imageTag: "ColorHex", textColor: Style.lightGreyColor)
-    }
-}
-
-class SelectionLargeHexButton: LargeHexButton {
-    
-    var active: Bool = false
-    
-    override func draw(_ rect: CGRect) {
-        
-    }
-    
-    // Set the selected properties
-    func setSelected() {
-        style(imageTag: "HexGreen")
-    }
-    
-    // Set the deselcted properties
-    func setDeselected() {
-        style(imageTag: "ColorHex")
-    }
-    
-    func changeSelectionStatus() {
-        active = !active
-        setSelectionAppearance()
-    }
-    
-    func setSelectionAppearance() {
-        if active {
-            setSelected()
-        } else {
-            setDeselected()
-        }
-    }
-    
-}
+*/

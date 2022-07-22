@@ -8,78 +8,7 @@
 import Foundation
 import UIKit
 
-extension UIViewController {
-    func showInputDialog(title: String,
-                         subtitle: String? = nil,
-                         actionTitle: String? = "Done",
-                         cancelTitle: String? = "Cancel",
-                         autofillText: String? = nil,
-                         inputPlaceholder: String? = nil,
-                         inputKeyboardType: UIKeyboardType = UIKeyboardType.default,
-                         cancelHandler: ((UIAlertAction) -> Swift.Void)? = nil,
-                         actionHandler: ((_ text: String?) -> Void)? = nil) {
-        
-        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
-        alert.addTextField { (textField:UITextField) in
-            textField.text = autofillText
-            textField.placeholder = inputPlaceholder
-            textField.keyboardType = inputKeyboardType
-        }
-        alert.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (action:UIAlertAction) in
-            guard let textField =  alert.textFields?.first else {
-                actionHandler?(nil)
-                return
-            }
-            actionHandler?(textField.text)
-        }))
-        alert.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: cancelHandler))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func addHexFooter() {
-        let frameHeight = self.view.frame.height
-        let frameWidth = self.view.frame.width
-        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth * 0.34)
-        let footerImageView = UIImageView( image: footerImage)
-        footerImageView.frame = CGRect(x: 0, y: frameHeight - footerImageView.frame.height, width: frameWidth, height: footerImageView.frame.height)
-        self.view.addSubview(footerImageView)
-        self.view.sendSubviewToBack(footerImageView)
-    }
-    
-    func enableTouchAwayKeyboardDismiss() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-    
-    //Calls this function when the tap is recognized.
-    @objc func dismissKeyboard() {
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
-        view.endEditing(true)
-    }
-    
-    func expandView() {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
-        if MVC.presentationStyle == .compact {
-            MVC.requestPresentationStyle(.expanded)
-        }
-    }
-    
-    func textFieldsFull(textFields: [StyleTextField], withDisplay: Bool) -> Bool {
-        var textFieldsFull = true
-        print(textFields)
-        for textField in textFields {
-            if textField.getStatus(withDisplay: withDisplay) == false {
-                textFieldsFull = false
-            }
-        }
-        return textFieldsFull
-    }
-}
-// textfields
-// show empty on did finish editing
-// show full on is editing
+
 
 extension UIScrollView {
     func scrollToBottom(animated: Bool) {

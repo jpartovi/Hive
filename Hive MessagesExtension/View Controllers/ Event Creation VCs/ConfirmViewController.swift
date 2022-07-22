@@ -10,7 +10,7 @@ import UIKit
 import Messages
 import GooglePlaces
 
-class ConfirmViewController: MSMessagesAppViewController {
+class ConfirmViewController: StyleViewController {
     
     static let storyboardID = String(describing: ConfirmViewController.self)
     
@@ -85,6 +85,7 @@ class ConfirmViewController: MSMessagesAppViewController {
             }
         }
     }
+    
     func fillEventDetails() {
         
         eventTitleTextField.text = event.title
@@ -165,9 +166,14 @@ class ConfirmViewController: MSMessagesAppViewController {
         super.updateViewConstraints()
         
         updateTableViewHeights()
+        setUpEventTitleTextField()
+        updatePostButtonStatus()
+    }
+    
+    func setUpEventTitleTextField() {
         eventTitleTextField.style(placeholderText: "Event Title", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
-        updatePostButtonStatus()
+        eventTitleTextField.addDoneButton()
     }
     
     func updateDaysAndTimes() {
@@ -405,7 +411,7 @@ extension ConfirmViewController: UITableViewDataSource {
         
         switch tableView {
         case daysAndTimesTableView:
-            return daysAndTimes.count
+            return event.days.count
         case locationsTableView:
             return event.locations.count
         default:
@@ -544,13 +550,13 @@ extension ConfirmViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == TimeSelectorViewController.self {
-            expandView()
+            self.requestPresentationStyle(.expanded)
             updateEventObject()
             (viewController as! TimeSelectorViewController).event = event
             (viewController as! TimeSelectorViewController).updateSelections()
             (viewController as! TimeSelectorViewController)
         } else if type(of: viewController) == DaySelectorViewController.self {
-            expandView()
+            self.requestPresentationStyle(.expanded)
             updateEventObject()
             (viewController as! DaySelectorViewController).event = event
             (viewController as! DaySelectorViewController).updateSelections()

@@ -10,7 +10,7 @@
 import UIKit
 import Messages
 
-class TimeSelectorViewController: UIViewController {
+class TimeSelectorViewController: StyleViewController {
     
     static let storyboardID = String(describing: TimeSelectorViewController.self)
     
@@ -270,7 +270,7 @@ extension TimeSelectorViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == DaySelectorViewController.self {
-            expandView()
+            self.requestPresentationStyle(.expanded)
             updateEventObject()
             (viewController as! DaySelectorViewController).event = event
             (viewController as! DaySelectorViewController).updateSelections()

@@ -16,7 +16,7 @@ import UIKit
 import GooglePlaces
 import Messages
 
-class LocationsViewController: MSMessagesAppViewController {//UIViewController {
+class LocationsViewController: StyleViewController {
     
     static let storyboardID = String(describing: LocationsViewController.self)
     
@@ -84,6 +84,7 @@ class LocationsViewController: MSMessagesAppViewController {//UIViewController {
         locationsTableView.showsVerticalScrollIndicator = false
         
         updateLocations()
+        updateTextFieldList()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -279,10 +280,12 @@ extension LocationsViewController: UITableViewDelegate {
 extension LocationsViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if type(of: viewController) == StartEventViewController.self {
-            expandView()
+            self.requestPresentationStyle(.expanded)
         }
     }
 }
+
+// TODO: In compact view, the text field doesn't shrink
 
 class LocationCell: UITableViewCell {
     
@@ -293,6 +296,7 @@ class LocationCell: UITableViewCell {
     let titleTextField: StyleTextField = {
         let textField = StyleTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.addDoneButton()
         return textField
     }()
     

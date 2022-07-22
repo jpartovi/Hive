@@ -10,7 +10,7 @@
 import Foundation
 import UIKit
 
-class DaySelectorViewController: UIViewController {
+class DaySelectorViewController: StyleViewController {
     
     static let storyboardID = String(describing: DaySelectorViewController.self)
     
@@ -414,7 +414,7 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == LocationsViewController.self {
-            expandView()
+            self.requestPresentationStyle(.expanded)
             updateEventObject()
             (viewController as! LocationsViewController).event = event
             (viewController as! LocationsViewController).updateLocations()

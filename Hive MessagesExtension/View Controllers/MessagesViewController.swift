@@ -78,17 +78,20 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         for child in children {
-            if let child = child as? VoteViewController {
-                if presentationStyle == .compact {
-                    print("VOTE COMPACT")
-                    //child.willMove(toParent: nil)
-                    //child.view.removeFromSuperview()
-                    //child.removeFromParent()
-                    //child.dismiss(animated: true)
-                    self.view.window!.rootViewController?.dismiss(animated: false)
-                    dismiss()
-                } else if presentationStyle == .expanded {
-                    child.addHexFooter()
+            if let child = child as? VoteNavigationController {
+                let subchild = child.children.last
+                if let subchild = subchild as? VoteViewController {
+                    if presentationStyle == .compact {
+                        print("VOTE COMPACT")
+                        //child.willMove(toParent: nil)
+                        //child.view.removeFromSuperview()
+                        //child.removeFromParent()
+                        //child.dismiss(animated: true)
+                        self.view.window!.rootViewController?.dismiss(animated: false)
+                        dismiss()
+                    } else if presentationStyle == .expanded {
+                        subchild.addHexFooter()
+                    }
                 }
             } else if let child = child as? InviteViewController {
                 if presentationStyle == .compact {

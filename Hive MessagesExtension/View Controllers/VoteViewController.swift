@@ -10,7 +10,7 @@
 import UIKit
 import Messages
 
-class VoteViewController: MSMessagesAppViewController {
+class VoteViewController: StyleViewController {
     
     //var delegate: VoteViewControllerDelegate?
     static let storyboardID = String(describing: VoteViewController.self)
@@ -43,9 +43,12 @@ class VoteViewController: MSMessagesAppViewController {
     var voteGroups: [String] = []
     var voteItems: [[String]] = []
     var voteTallies: [[Int]] = []
+    var initialVoteTallies: [[Int]] = []
     var isOpen: [Bool] = []
     var voteSelections: [[Int]] = []
     var multiSelectable: [Bool] = []
+    
+    var votesChanged = false
     
     
     var daysAndTimesMagicIndexes: [Int] = []
@@ -65,7 +68,8 @@ class VoteViewController: MSMessagesAppViewController {
         voteTable.reloadData()
                 
         submitButton.size(size: 150, textSize: 25)
-        submitButton.style(title: "Submit")
+        //submitButton.style(title: "Submit")
+        submitButton.grey(title: "Submit")
         
         if isHost {
             for constraint in clientConstraints {
@@ -241,15 +245,26 @@ class VoteViewController: MSMessagesAppViewController {
                 voteTallies[indexA].append(0)
             }
         }*/
+        initialVoteTallies = voteTallies
+        }
+    }
+    
+    func updateSubmitButton() {
         
+        if initialVoteTallies == voteTallies {
+            submitButton.grey(title: "Submit")
+            votesChanged = false
+        } else {
+            submitButton.color(title: "Submit")
+            votesChanged = true
         }
     }
     
     @IBAction func submitButtonPressed(_ sender: UIButton) {
-        
-        let url = prepareVoteURL()
-        prepareMessage(url)
-        
+        if votesChanged {
+            let url = prepareVoteURL()
+            prepareMessage(url)
+        }
     }
     
     @IBAction func createEventButtonPressed(_ sender: UIButton) {
@@ -479,6 +494,7 @@ extension VoteViewController: UITableViewDelegate {
             voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
         }
         voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
+        updateSubmitButton()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -584,7 +600,7 @@ class VotingDayAndTimesCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        
+        self.layer.cornerRadius = self.frame.height / 2 
         
         self.backgroundColor = Style.lightGreyColor
         
@@ -691,6 +707,7 @@ extension VotingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
         curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex + indexPath.row] = times[indexPath.row].votes
         
         timesCollectionView.reloadData()
+        curView.updateSubmitButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -783,7 +800,7 @@ class VoteCell: UITableViewCell {
         super.init(coder: aDecoder)
         
         self.backgroundColor = Style.lightGreyColor
-        self.layer.cornerRadius = self.frame.height/2
+        self.layer.cornerRadius = self.frame.height / 2
         //voteCount.frame.size.height = self.frame.height
         
         self.contentView.addSubview(voteCount)

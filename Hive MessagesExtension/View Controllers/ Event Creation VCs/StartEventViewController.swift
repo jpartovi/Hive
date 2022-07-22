@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import Messages
 
-class StartEventViewController: MSMessagesAppViewController {
+class StartEventViewController: StyleViewController {
     
     var delegate: StartEventViewControllerDelegate?
     static let storyboardID = String(describing: StartEventViewController.self)
@@ -82,7 +82,7 @@ class StartEventViewController: MSMessagesAppViewController {
     
     func nextPage(type: EventType) {
         
-        expandView()
+        self.requestPresentationStyle(.expanded)
         let event = Event(title: type.defaultTitle(), type: type)
         let locationsVC = (storyboard?.instantiateViewController(withIdentifier: LocationsViewController.storyboardID) as? LocationsViewController)!
         locationsVC.event = event

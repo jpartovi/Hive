@@ -44,7 +44,8 @@ enum Style {
     static let greyColor = UIColor.lightGray
     static let lightGreyColor = Style.hexStringToUIColor(hex: "E3E3E3")
     //static let lightColor = UIColor.white
-    static let errorColor = UIColor.red
+    static let errorColor = Style.hexStringToUIColor(hex: "CF6048")
+    static let backgroundColor = Style.hexStringToUIColor(hex: "FFFFFF")
     
     // Font
     static func font(size: CGFloat = 18) -> UIFont {

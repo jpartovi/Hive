@@ -9,7 +9,7 @@ import UIKit
 import Messages
 import GooglePlaces
 
-class InviteViewController: MSMessagesAppViewController {
+class InviteViewController: StyleViewController {
     
     var delegate: InviteViewControllerDelegate?
     static let storyboardID = "InviteViewController"
