@@ -102,17 +102,13 @@ class LocationsViewController: StyleViewController {
         if MVC.presentationStyle == .compact {
             MVC.requestPresentationStyle(.expanded)
             
-        }
-        
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        } else if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
             tableBottom.isActive = false
             
             tableBottomKeyboard.constant = keyboardSize.height + 16
             
             tableBottomKeyboard.isActive = true
-            
-            print("new constraints")
         }
     }
 
@@ -137,6 +133,14 @@ class LocationsViewController: StyleViewController {
         navigationController?.delegate = self
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        for cell in locationsTableView.visibleCells {
+            (cell as! LocationCell).titleTextField.colorStatus()
+        }
+    }
+    
     func updateLocations() {
         locations = event.locations
         locationsTableView.reloadData()
@@ -147,14 +151,13 @@ class LocationsViewController: StyleViewController {
         
         locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
-        
-        let lastCellIndexPath = IndexPath(row: locations.count - 1, section: 0)
-        locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
-        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
-        cell.titleTextField.resetColor()
-        cell.titleTextField.becomeFirstResponder()
-        print("becamefirstresponder")
-        updateContinueButtonStatus()
+        DispatchQueue.main.async {
+            let lastCellIndexPath = IndexPath(row: self.locations.count - 1, section: 0)
+            self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
+            let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+            cell.titleTextField.becomeFirstResponder()
+            self.updateContinueButtonStatus()
+        }
         
         // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
@@ -208,22 +211,32 @@ class LocationsViewController: StyleViewController {
     
     
     @objc func deleteLocation(sender: UIButton) {
-        locationsTableView.reloadData()
-        let index = sender.tag
-        (locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as? LocationCell)!.titleTextField.resetColor()
-        locations.remove(at: index)
-        locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
-        updateContinueButtonStatus()
+        let cell = sender.superview?.superview as! LocationCell
+        cell.titleTextField.resetColor()
+        let indexPath =
+        locationsTableView.indexPath(for: cell)!
+        locations.remove(at: indexPath.row)
+        
+        CATransaction.begin()
+        locationsTableView.beginUpdates()
+        CATransaction.setCompletionBlock {
+            self.locationsTableView.reloadData()
+            self.updateContinueButtonStatus()
+        }
+        locationsTableView.deleteRows(at: [indexPath], with: .fade)
+        locationsTableView.endUpdates()
+        CATransaction.commit()
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
         addressEditingIndex = sender.tag
-        if locations[addressEditingIndex!].place == nil {
+        if locations[addressEditingIndex!].address == nil {
             let autocompleteViewController = GMSAutocompleteViewController()
             autocompleteViewController.delegate = self
             navigationController?.present(autocompleteViewController, animated: true)
         } else {
-            locations[addressEditingIndex!].place = nil
+            
+            locations[addressEditingIndex!].address = nil
             locationsTableView.reloadData()
         }
     }
@@ -276,11 +289,9 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
     }
 }
 
+
+
 extension LocationsViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        locationsTableView.reloadData()
-    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         locations.count
@@ -309,7 +320,6 @@ extension LocationsViewController: UITableViewDataSource {
             cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
             cell.changeAddressButton.isHidden = true
         }
-        
         cell.titleTextField.colorStatus()
         
         return cell
@@ -323,12 +333,15 @@ extension LocationsViewController: UITableViewDataSource {
         maskLayer.backgroundColor = UIColor.black.cgColor
         maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
         cell.layer.mask = maskLayer
+        
+        (cell as? LocationCell)?.titleTextField.colorStatus()
+        
     }
 }
 
 extension LocationsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if locations[indexPath.row].place != nil {
+        if locations[indexPath.row].address != nil {
             return 86
         } else {
             return 50
@@ -416,7 +429,7 @@ class LocationCell: UITableViewCell {
             addOrRemoveAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
             addOrRemoveAddressButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             addOrRemoveAddressButton.heightAnchor.constraint(equalToConstant: 26),
-            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: 80),
+            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: "+ address".size(withAttributes: [.font : addOrRemoveAddressButton.titleLabel!.font!]).width),
             
             deleteButton.heightAnchor.constraint(equalToConstant: 26),//min(self.frame.height - (inset * 2), 30)),
             deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor),

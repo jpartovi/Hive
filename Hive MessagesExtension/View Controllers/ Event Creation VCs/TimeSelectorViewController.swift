@@ -274,6 +274,8 @@ extension TimeSelectorViewController: UINavigationControllerDelegate {
             updateEventObject()
             (viewController as! DaySelectorViewController).event = event
             (viewController as! DaySelectorViewController).updateSelections()
+            (viewController as! DaySelectorViewController).expandToNext = false
+            
         }
     }
 }

@@ -157,17 +157,19 @@ class ConfirmViewController: StyleViewController {
         //scrollView.layoutIfNeeded()
         scrollView.contentSize = CGSize(width: /*self.view.frame.width - (2 * 16)*/ scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
         
-        print("SCROLLVIEW WIDTH", scrollView.frame.width)
-        //scrollView.isScrollEnabled = true
     }
     
     override func viewWillLayoutSubviews() {
-        super.updateViewConstraints()
+        super.viewWillLayoutSubviews()
         
-        updateTableViewHeights()
-        setUpEventTitleTextField()
+        locationsTableView.reloadData()
+        DispatchQueue.main.async {
+            self.setUpEventTitleTextField()
+            self.updateTableViewHeights()
+        }
         updatePostButtonStatus()
     }
+    
     
     func setUpEventTitleTextField() {
         eventTitleTextField.style(placeholderText: "Event Title", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
@@ -178,7 +180,6 @@ class ConfirmViewController: StyleViewController {
     func updateDaysAndTimes() {
         // Load DaysAndTimes
         for (index, day) in event.days.enumerated() {
-            print(day)
             let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
             daysAndTimes[day] = []
             for (time, isSelected) in cell.times {
@@ -269,7 +270,6 @@ class ConfirmViewController: StyleViewController {
             imageTitle = ""
             imageSubtitle = ""
             trailingCaption = ""
-            print(event.days)
             
             if event.times.isEmpty {
                 subcaption = event.days[0].formatDate()
@@ -325,24 +325,37 @@ class ConfirmViewController: StyleViewController {
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
-        updateTableViewHeights()
         
-        let lastCellIndexPath = IndexPath(row: event.locations.count - 1, section: 0)
-        locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
-        formatLocations()
-        let cell = locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
-        cell.titleTextField.resetColor()
-        cell.titleTextField.becomeFirstResponder()
-        updatePostButtonStatus()
+        DispatchQueue.main.async {
+            
+            self.updateTableViewHeights()
+            let lastCellIndexPath = IndexPath(row: self.event.locations.count - 1, section: 0)
+            self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
+            self.formatLocations()
+            let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+            cell.titleTextField.becomeFirstResponder()
+            self.updatePostButtonStatus()
+        }
     }
     
     @objc func deleteLocation(sender: UIButton) {
-        let index = sender.tag
-        event.locations.remove(at: index)
-        (locationsTableView.cellForRow(at: IndexPath(item: index, section: 0)) as? LocationCell)!.titleTextField.resetColor()
-        locationsTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
-        formatLocations()
-        updatePostButtonStatus()
+        let cell = sender.superview?.superview as! LocationCell
+        cell.titleTextField.resetColor()
+        let indexPath =
+        locationsTableView.indexPath(for: cell)!
+        event.locations.remove(at: indexPath.row)
+        
+        CATransaction.begin()
+        locationsTableView.beginUpdates()
+        CATransaction.setCompletionBlock {
+            self.locationsTableView.reloadData()
+            self.formatLocations()
+            self.updatePostButtonStatus()
+        }
+        locationsTableView.deleteRows(at: [indexPath], with: .fade)
+        locationsTableView.endUpdates()
+        CATransaction.commit()
+
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
@@ -375,7 +388,6 @@ class ConfirmViewController: StyleViewController {
     }
     
     func updateContentView() {
-        print("scrollView.contentSize.width", scrollView.contentSize.width)
         let width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
         scrollView.contentSize.width = width
     }
@@ -394,8 +406,8 @@ extension ConfirmViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         
-        locationsTableView.reloadData()
-        updateTableViewHeights()
+        //locationsTableView.reloadData()
+        //updateTableViewHeights()
         
     }
     
