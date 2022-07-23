@@ -124,7 +124,7 @@ struct Event {
                 switch name {
                 case "title":
                     title = value!
-                case "type":
+                case "eventType":
                     type = EventType(queryString: value!)
                 case "locationTitle":
                     locations.append(Location(title: value!, place: nil, address: nil))
@@ -163,7 +163,7 @@ struct Event {
         
             var title: String? = nil
             var type: EventType? = nil
-            var location = Location(title: "", place: nil, address: nil)
+            var locations = [Location]()//Location(title: "", place: nil, address: nil)
             var day: Day? = nil
             var time: Time? = nil
             var duration: Duration? = nil
@@ -177,12 +177,12 @@ struct Event {
                 switch name {
                 case "title":
                     title = value!
-                case "type":
+                case "eventType":
                     type = EventType(queryString: value!)
                 case "locationTitle":
-                    location.title = value!
-                case "locationId":
-                    location.place = Location.getPlaceFromID(id: value!)
+                    locations.append(Location(title: value!, place: nil, address: nil))
+                case "locationAddress":
+                    locations.append(Location(title: locations.removeLast().title, place: nil, address: value!))
                 case "day":
                     day = Day(queryString: value!)
                 case "time":
@@ -199,7 +199,7 @@ struct Event {
             }
             self.title = title!
             self.type = type!
-            self.locations = [location]
+            self.locations = locations
             self.days = [day!]
             if time == nil {
                 self.times = [Time]()

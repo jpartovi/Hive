@@ -18,9 +18,11 @@ class InviteViewController: StyleViewController {
     var mURL: URL!
     var RSVP: Bool!
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: StyleLabel!
     //@IBOutlet weak var descriptionLabel: UILabel!
     //@IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var dayAndTimeLabel: StyleLabel!
+    @IBOutlet weak var locationLabel: StyleLabel!
     
     
     @IBOutlet weak var yesButton: SelectionLargeHexButton!
@@ -32,28 +34,19 @@ class InviteViewController: StyleViewController {
     var yesNum: Int!
     var noNum: Int!
     
-    var yesCounts = UILabel()
-    var noCounts = UILabel()
+    var yesCounts = StyleLabel()
+    var noCounts = StyleLabel()
     
-    var informationText = UILabel()
+    //var informationText = UILabel()
     
     var loadedEvent: Event!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadedEvent = Event(url: mURL)
-        //loadedEvent = Event(title: "Lunch", type: .lunch, locations: [Location(title: "Subway", place: nil)], days: [Day(date: Date())], times: [Time(hour: 11, minute: 30, period: .am)], daysAndTimes: [Day(date: Date()) : [Time(hour: 11, minute: 30, period: .am)]], duration: Duration(minutes: 30))
-        
-        decodeEvent(loadedEvent)
-        
-        decodeRSVPs(url: mURL)
-        
-        self.view.addSubview(informationText)
-        
         yesCounts.translatesAutoresizingMaskIntoConstraints = false
         noCounts.translatesAutoresizingMaskIntoConstraints = false
-        informationText.translatesAutoresizingMaskIntoConstraints = false
+        //informationText.translatesAutoresizingMaskIntoConstraints = false
         
         yesBar.layer.cornerRadius = yesBar.frame.width/2
         noBar.layer.cornerRadius = noBar.frame.width/2
@@ -65,19 +58,23 @@ class InviteViewController: StyleViewController {
         noBar.addSubview(noCounts)
         
         yesButton.size(size: 150, textSize: 25)
-        yesButton.style(title: "Yes")
+        yesButton.setDeselected()
         noButton.size(size: 150, textSize: 25)
-        noButton.style(title: "No")
+        noButton.setDeselected()
         
-        yesCounts.text = String(yesNum)
-        noCounts.text = String(noNum)
-        yesCounts.textColor = Style.lightTextColor
-        noCounts.textColor = Style.lightTextColor
+        loadedEvent = Event(url: mURL)
+        
+        decodeEvent(loadedEvent)
+        
+        decodeRSVPs(url: mURL)
+        
+        yesCounts.style(text: String(yesNum), textColor: UIColor.white, fontSize: 25)
+        noCounts.style(text: String(noNum), textColor: UIColor.white, fontSize: 25)
         
         
         NSLayoutConstraint.activate([
-            informationText.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            informationText.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
+            //informationText.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            //informationText.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 16),
             
             yesCounts.topAnchor.constraint(equalTo: yesBar.topAnchor, constant: 20),
             yesCounts.centerXAnchor.constraint(equalTo: yesBar.centerXAnchor),
@@ -91,32 +88,30 @@ class InviteViewController: StyleViewController {
     
     func decodeEvent(_ event: Event) {
         
-        if event.locations.count == 0 {
-            titleLabel.text = event.title
-        } else {
-            titleLabel.text = event.title + " at " + event.locations[0].title
-        }
-        
-        informationText.textColor = Style.greyColor
-        informationText.numberOfLines = 0;
-        
-        var informationTextObject = ""
-        
-        if let address = event.locations[0].address {
-            informationTextObject = informationTextObject + address + "\n"
-        }
+        titleLabel.style(text: "You're invited to " + event.title + "!")
         
         var day = event.days[0]
         
-        informationTextObject = informationTextObject + day.formatDate() + "\n"
-        
+        var dayAndTimeInfo = "When: "
         if !event.times.isEmpty {
-            informationTextObject = informationTextObject + event.times[0].format(duration: event.duration)
+            dayAndTimeInfo += day.formatDate(time: event.times[0], duration: event.duration)
+            //informationTextObject = informationTextObject + event.times[0].format(duration: event.duration)
+        } else {
+            dayAndTimeInfo += day.formatDate()
         }
+        dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Style.darkTextColor, fontSize: 18)
         
-        informationText.text = informationTextObject
-        
-        
+        if event.locations.isEmpty {
+            // Hide location label
+            locationLabel.isHidden = true
+        } else {
+            var locationInfo = "Where: " + event.locations[0].title
+            if let address = event.locations[0].address {
+                locationInfo += ", " + address
+            }
+            locationLabel.isHidden = false
+            locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
+        }
     }
     
     func decodeRSVPs(url: URL) {
@@ -175,10 +170,10 @@ class InviteViewController: StyleViewController {
         if RSVP != true {
             
             yesButton.changeSelectionStatus()
-            yesNum = yesNum + 1
+            yesNum += 1
             if RSVP == false {
                 noButton.changeSelectionStatus()
-                noNum = noNum - 1
+                noNum -= 1
                 
                 for (index, queryItem) in (components!.queryItems!.enumerated()){
                     if (queryItem.name == myID) && (queryItem.value == "No") {

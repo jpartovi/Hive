@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import Messages
-
+/*
 class ErrorLabel: UILabel {
     
     // TODO: This does not work
@@ -25,7 +25,7 @@ class ErrorLabel: UILabel {
         self.alpha = 1
     }
 }
-
+*/
 class StyleTextField: UITextField {
     
     var fullColor: UIColor = Style.greyColor
@@ -93,6 +93,19 @@ class StyleLabel: UILabel {
         self.textColor = textColor
         self.font = Style.font(size: fontSize)
         self.numberOfLines = 0
+        self.textAlignment = .center
+    }
+    
+    func adjustHeight(){
+        
+        let label: UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = self.font
+        label.text = self.text
+
+        label.sizeToFit()
+        self.heightAnchor.constraint(equalToConstant: label.frame.height).isActive = true
     }
 }
 
@@ -116,12 +129,16 @@ class HexButton: UIButton {
     }
     
     func style(title: String? = nil, imageTag: String = "ColorHex", textColor: UIColor = Style.lightTextColor) {
+        let backgroundImage = UIImage(named: imageTag)?.size(width: size, height: size)
+        self.setBackgroundImage(backgroundImage, for: .normal)
+        self.setTitleColor(textColor, for: .normal)
+        self.titleLabel?.font = Style.font(size: textSize)
+        self.titleLabel?.widthAnchor.constraint(equalToConstant: (backgroundImage?.size.width)! - 20).isActive = true
+        self.titleLabel?.textAlignment = .center
+        self.titleLabel?.numberOfLines = 0
         if title != nil {
             self.setTitle(title, for: .normal)
         }
-        self.setBackgroundImage(UIImage(named: imageTag)?.size(width: size, height: size), for: .normal)
-        self.setTitleColor(textColor, for: .normal)
-        self.titleLabel?.font = Style.font(size: textSize)
     }
     
     func getColourFromPoint(point:CGPoint) -> UIColor {
@@ -244,9 +261,16 @@ class StyleViewController: MSMessagesAppViewController {
         return textFieldsFull
     }
     
-    //func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-      //  textField.resignFirstResponder()
-    //}
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+
+        label.sizeToFit()
+        return label.frame.height
+    }
 }
 
 /*

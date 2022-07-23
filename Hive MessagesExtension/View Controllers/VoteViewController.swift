@@ -5,7 +5,7 @@
 //  Created by Jack Albright on 7/13/22.
 //
 
-// TODO: Submit button should be
+// TODO: Make address copyable or open in maps
 
 import UIKit
 import Messages
@@ -15,11 +15,13 @@ class VoteViewController: StyleViewController {
     //var delegate: VoteViewControllerDelegate?
     static let storyboardID = String(describing: VoteViewController.self)
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var promptLabel: StyleLabel!
-    @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var dayAndTimeLabel: UILabel!
+    @IBOutlet weak var locationLabel: StyleLabel!
+    @IBOutlet weak var dayAndTimeLabel: StyleLabel!
     
-    @IBOutlet weak var voteTable: UITableView!
+    @IBOutlet weak var voteTableView: UITableView!
+    @IBOutlet weak var voteTableViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var submitButton: HexButton!
     
@@ -61,15 +63,16 @@ class VoteViewController: StyleViewController {
         decodeEvent(loadedEvent)
         decodeRSVPs(url: mURL)
 
-        voteTable.dataSource = self
-        voteTable.delegate = self
-        voteTable.separatorStyle = .none
-        voteTable.showsVerticalScrollIndicator = false
-        voteTable.reloadData()
+        voteTableView.dataSource = self
+        voteTableView.delegate = self
+        voteTableView.separatorStyle = .none
+        voteTableView.showsVerticalScrollIndicator = false
+        voteTableView.reloadData()
                 
         submitButton.size(size: 150, textSize: 25)
-        //submitButton.style(title: "Submit")
-        submitButton.grey(title: "Submit")
+        submitButton.grey(title: "Add Votes")
+        createEventButton.size(size: 150, textSize: 25)
+        createEventButton.color(title: "Make Invite")
         
         if isHost {
             for constraint in clientConstraints {
@@ -80,29 +83,52 @@ class VoteViewController: StyleViewController {
             }
             createEventButton.isHidden = false
         }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
         
+        updateTableViewHeight()
+    }
+    
+    func updateTableViewHeight() {
+        
+        
+        self.voteTableView.layoutIfNeeded()
+        
+        self.voteTableViewHeightConstraint.constant = self.voteTableView.contentSize.height
+        var height: CGFloat = 0
+        for subview in scrollView.subviews {
+            height += subview.frame.height
+            height += 8
+        }
+        height -= 8
+        scrollView.contentSize = CGSize(width: scrollView.frame.width/*self.view.frame.width - (2 * 16)*/, height: height)
     }
     
     func decodeEvent(_ event: Event) {
         
-        promptLabel.style(text: "Join for " + event.title + "!")
-        locationLabel.isHidden = true
+        promptLabel.style(text: "Poll for " + event.title)
+        promptLabel.adjustHeight()
+        
+        locationLabel.text = ""
         if event.locations.count == 1 {
-            locationLabel.isHidden = false
-            if let address = event.locations[0].address {
-                locationLabel.text = event.locations[0].title + ": " + address
-            } else {
-                locationLabel.text = event.locations[0].title
+            let location = event.locations[0]
+            var locationInfo = "Where: "
+            locationInfo += location.title
+            if let address = location.address {
+                locationInfo += ", " + address
             }
+            locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
         } else if event.locations.count > 1 {
-            voteGroups.append("Location")
+            voteGroups.append("locations")
             var allLoc: [String] = []
             for location in event.locations {
                 allLoc.append(location.title)
             }
             voteItems.append(allLoc)
             voteTallies.append([Int](repeating: 0, count: event.locations.count))
-            isOpen.append(false)
+            isOpen.append(true)
             voteSelections.append([])
             multiSelectable.append(false)
         }
@@ -114,6 +140,8 @@ class VoteViewController: StyleViewController {
          multiple days      *GRID       *string   *string
          1 day              string        label     label
          */
+        
+        dayAndTimeLabel.text = ""
         
         // Multiple days
         if event.days.count > 1 {
@@ -132,11 +160,10 @@ class VoteViewController: StyleViewController {
             if mulDayMulTimeFlag {
                 // GRID LAYOUT
                 daysAndTimesGroupIndex = voteGroups.count
-                // name the voteGroups entry "Days and Times"
-                voteGroups.append("Days and Times")
+                voteGroups.append("daysAndTimes")
                 voteItems.append([String](repeating: "", count: dayTimeCount)) //not needed with grid view
                 voteTallies.append([Int](repeating: 0, count: dayTimeCount))
-                isOpen.append(false)
+                isOpen.append(true)
                 voteSelections.append([])
                 multiSelectable.append(false)
                 return
@@ -153,7 +180,7 @@ class VoteViewController: StyleViewController {
                 }
                 voteItems.append(days)
                 voteTallies.append([Int](repeating: 0, count: event.days.count))
-                isOpen.append(false)
+                isOpen.append(true)
                 voteSelections.append([])
                 multiSelectable.append(true)
                 return
@@ -167,7 +194,7 @@ class VoteViewController: StyleViewController {
                 }
                 voteItems.append(daysAndTime)
                 voteTallies.append([Int](repeating: 0, count: event.days.count))
-                isOpen.append(false)
+                isOpen.append(true)
                 voteSelections.append([])
                 multiSelectable.append(true)
                 return
@@ -179,13 +206,15 @@ class VoteViewController: StyleViewController {
         let times = event.daysAndTimes[day]!
         
         // 1 day 0/1 time
-        dayAndTimeLabel.isHidden = true
-        if times.count == 0 {
-            dayAndTimeLabel.isHidden = false
-            dayAndTimeLabel.text = day.formatDate()
-        } else if times.count == 1 {
-            dayAndTimeLabel.isHidden = false
-            dayAndTimeLabel.text = day.formatDate(time: times[0], duration: event.duration)
+        if times.count <= 1 {
+            
+            var dayAndTimeInfo = "When: "
+            if times.count == 1 {
+                dayAndTimeInfo += day.formatDate(time: times[0], duration: event.duration)
+            } else {
+                dayAndTimeInfo += day.formatDate()
+            }
+            dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Style.darkTextColor, fontSize: 18)
         } else {
             // 1 day multiple times
             voteGroups.append("dayAndTimes")
@@ -195,10 +224,13 @@ class VoteViewController: StyleViewController {
             }
             voteItems.append(dayAndTimes)
             voteTallies.append([Int](repeating: 0, count: times.count))
-            isOpen.append(false)
+            isOpen.append(true)
             voteSelections.append([])
             multiSelectable.append(true)
         }
+        
+        locationLabel.adjustHeight()
+        dayAndTimeLabel.adjustHeight()
     }
     
     
@@ -252,10 +284,10 @@ class VoteViewController: StyleViewController {
     func updateSubmitButton() {
         
         if initialVoteTallies == voteTallies {
-            submitButton.grey(title: "Submit")
+            submitButton.grey(title: "Add Votes")
             votesChanged = false
         } else {
-            submitButton.color(title: "Submit")
+            submitButton.color(title: "Add Votes")
             votesChanged = true
         }
     }
@@ -367,12 +399,6 @@ class VoteViewController: StyleViewController {
         }
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-
-        
-    }
-    
     @objc func sectionHeaderTouchDown(recognizer: UILongPressGestureRecognizer) {
         if recognizer.state == .began {
             
@@ -392,15 +418,10 @@ class VoteViewController: StyleViewController {
                 isOpen[indexPath.section] = !isOpen[indexPath.section]
                 let range = NSMakeRange(indexPath.section, 1)
                 let sectionToReload = NSIndexSet(indexesIn: range)
-                voteTable.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
+                voteTableView.reloadSections(sectionToReload as IndexSet, with:UITableView.RowAnimation.fade)
             }
         }
     }
-    /*
-    @objc func sectionHeaderTapped(recognizer: UITapGestureRecognizer) {
-
-    }
-    */
     override func willResignActive(with conversation: MSConversation) {
         self.view.window!.rootViewController?.dismiss(animated: false)
         super.willResignActive(with: conversation)
@@ -416,7 +437,7 @@ extension VoteViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if isOpen[section] {
-            if voteGroups[section] == "Days and Times" {
+            if voteGroups[section] == "daysAndTimes" {
                 return daysAndTimesMagicIndexes.count
             } else {
                 return voteItems[section].count
@@ -428,8 +449,8 @@ extension VoteViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        if voteGroups[indexPath.section] == "Days and Times" {
-            let cell = voteTable.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
+        if voteGroups[indexPath.section] == "daysAndTimes" {
+            let cell = voteTableView.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
             cell.curView = self
             cell.curIndex = indexPath.row
             var day = loadedEvent.days[indexPath.row]
@@ -442,22 +463,25 @@ extension VoteViewController: UITableViewDataSource {
             cell.duration = loadedEvent.duration
             return cell
         }
-        let cell = voteTable.dequeueReusableCell(withIdentifier: VoteCell.reuseIdentifier, for: indexPath) as! VoteCell
+        let cell = voteTableView.dequeueReusableCell(withIdentifier: VoteCell.reuseIdentifier, for: indexPath) as! VoteCell
         let cellView = UIView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height))
         cellView.backgroundColor = Style.lightGreyColor
         cell.voteCount.backgroundColor = Style.greyColor
+        cell.label.textColor = Style.darkTextColor
         for selection in voteSelections[indexPath.section] {
             if selection == indexPath.row {
                 cellView.backgroundColor = Style.secondaryColor
                 cell.voteCount.backgroundColor = Style.primaryColor
+                cell.label.textColor = Style.lightTextColor
             }
         }
         cell.backgroundView = cellView
         cell.label.text = voteItems[indexPath.section][indexPath.row]
         cell.counter.text = String(voteTallies[indexPath.section][indexPath.row])
         let voteMax = voteTallies.reduce(0, {x, y in max(x, y.max()!)}) + 1
-        cell.voteCount.frame.size.width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * self.view.frame.width * 2/3
-        cell.voteCount.frame.size.height = cell.contentView.frame.height - (cellInsets)
+        let width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * self.view.frame.width * 2/3
+        let height = cell.contentView.frame.height - cellInsets
+        cell.voteCount.frame = CGRect(x: 0, y: cellInsets, width: width, height: height)
         cell.voteCount.layer.cornerRadius = cell.voteCount.frame.height/2
         //cell.voteCount.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         return cell
@@ -469,7 +493,8 @@ extension VoteViewController: UITableViewDataSource {
         let maskLayer = CALayer()
         maskLayer.cornerRadius = cell.layer.cornerRadius
         maskLayer.backgroundColor = UIColor.black.cgColor
-        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+        //maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).insetBy(dx: 0, dy: verticalPadding/2)
+        maskLayer.frame = CGRect(x: cell.bounds.origin.x, y: cell.bounds.origin.y, width: cell.bounds.width, height: cell.bounds.height).inset(by: UIEdgeInsets(top: verticalPadding, left: 0, bottom: 0, right: 0))
         cell.layer.mask = maskLayer
     }
 }
@@ -478,7 +503,7 @@ extension VoteViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        if voteGroups[indexPath.section] == "Days and Times" {
+        if voteGroups[indexPath.section] == "daysAndTimes" {
             // TODO: Maybe make it so that all of the times get selected?
             return
         }
@@ -493,7 +518,7 @@ extension VoteViewController: UITableViewDelegate {
             voteSelections[indexPath.section].append(indexPath.row)
             voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
         }
-        voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
+        voteTableView.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
         updateSubmitButton()
     }
     
@@ -502,7 +527,20 @@ extension VoteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        voteGroups[section]
+        switch voteGroups[section] {
+        case "daysAndTimes":
+            return "Which times work?"
+        case "daysAndTime":
+            return "Which times work?"
+        case "dayAndTimes":
+            return "Which times work?"
+        case "days":
+            return "Which days work?"
+        case "locations":
+            return "Which location do you prefer?"
+        default:
+            return "Vote"
+        }
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -510,46 +548,54 @@ extension VoteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        10
+        5
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 10))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 5))
         return footerView
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
         headerView.layer.cornerRadius = headerView.frame.height/2
-        headerView.backgroundColor = Style.primaryColor
+        headerView.backgroundColor = Style.tertiaryColor
         headerView.tag = section
         
         headerView.layer.borderWidth = 3
-        headerView.layer.borderColor = Style.secondaryColor.cgColor
+        headerView.layer.borderColor = Style.tertiaryColor.cgColor
         
-        let headerString = UILabel(frame: CGRect(x: 13, y: 10, width: tableView.frame.size.width-10, height: 30))
-        headerString.text = voteGroups[section]
-        headerString.textColor = Style.lightTextColor
-        headerView.addSubview(headerString)
+        let headerTitle = UILabel(frame: CGRect(x: 13, y: 10, width: tableView.frame.size.width-10, height: 30))
+        
+        let headerString: String
+        switch voteGroups[section] {
+        case "daysAndTimes":
+            headerString = "Which times work?"
+        case "daysAndTime":
+            headerString = "Which times work?"
+        case "dayAndTimes":
+            headerString = "Which times work?"
+        case "days":
+            headerString = "Which days work?"
+        case "locations":
+            headerString = "Which location do you prefer?"
+        default:
+            headerString = "Vote"
+        }
+        headerTitle.text = headerString
+        headerTitle.textColor = UIColor.white
+        headerView.addSubview(headerTitle)
         
         
         let headerSelection = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-20, height: 30))
         
-        if multiSelectable[section] {
-            var selectedItems = [String]()
-            for (index, voteItem) in voteItems[section].enumerated() {
-                if voteSelections[section].contains(index) {
-                    selectedItems.append(voteItem)
-                }
-            }
-            headerSelection.text = Style.commaList(items: selectedItems)//tempText
-            
-        } else if voteSelections[section] != [] {
+        if voteSelections[section] != [] && !multiSelectable[section] {
             headerSelection.text = voteItems[section][voteSelections[section][0]]
         }
         
         headerSelection.textAlignment = NSTextAlignment.right
-        headerView.addSubview(headerSelection)
+        headerSelection.textColor = Style.lightTextColor
+        //headerView.addSubview(headerSelection)
         
         //let headerTapped = UITapGestureRecognizer(target: self, action: #selector(sectionHeaderTapped))
         //headerView.addGestureRecognizer(headerTapped)
@@ -619,13 +665,13 @@ class VotingDayAndTimesCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
             dayLabel.widthAnchor.constraint(equalToConstant: 45),
             
             timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
-            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),
-            timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
-            timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
+            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
+            timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: 6 + 8),
+            timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -6)
         ])
         
         timesCollectionView.layer.cornerRadius = 5
@@ -801,7 +847,6 @@ class VoteCell: UITableViewCell {
         
         self.backgroundColor = Style.lightGreyColor
         self.layer.cornerRadius = self.frame.height / 2
-        //voteCount.frame.size.height = self.frame.height
         
         self.contentView.addSubview(voteCount)
         self.contentView.addSubview(label)
@@ -813,16 +858,13 @@ class VoteCell: UITableViewCell {
         let inset = CGFloat(20)
 
         NSLayoutConstraint.activate([
-            voteCount.leftAnchor.constraint(equalTo: leftAnchor),
-            voteCount.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
             label.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             label.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
             
             
             counter.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
-            counter.centerYAnchor.constraint(equalTo: centerYAnchor)
+            counter.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4)
         ])
     }
 

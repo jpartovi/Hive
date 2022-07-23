@@ -156,7 +156,7 @@ class ConfirmViewController: StyleViewController {
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         self.daysAndTimesTableView.layoutIfNeeded()
         //scrollView.layoutIfNeeded()
-        scrollView.contentSize = CGSize(width: /*self.view.frame.width - (2 * 16)*/ scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
+        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
         
         print("SCROLLVIEW WIDTH", scrollView.frame.width)
         //scrollView.isScrollEnabled = true
@@ -171,7 +171,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     func setUpEventTitleTextField() {
-        eventTitleTextField.style(placeholderText: "Event Title", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
+        eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
         eventTitleTextField.addDoneButton()
     }
@@ -332,9 +332,9 @@ class ConfirmViewController: StyleViewController {
         updateTextFieldList()
         
         if textFieldsFull(textFields: textFields, withDisplay: false) {
-            postButton.color(title: "Post")
+            postButton.color(title: "Send")
         } else {
-            postButton.grey(title: "Post")
+            postButton.grey(title: "Send")
         }
     }
     
@@ -675,8 +675,6 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
         }
         return cell
     }
-    
-    
 }
 
 extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {

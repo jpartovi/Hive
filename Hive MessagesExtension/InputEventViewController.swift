@@ -51,12 +51,12 @@ class InputEventViewController: StyleViewController {
         voteTable.reloadData()
                 
         submitButton.size(size: 150, textSize: 25)
-        submitButton.style(title: "Submit")
+        submitButton.style(title: "Next")
     }
     
     func decodeEvent(_ event: Event) {
         
-        promptLabel.style(text: "Join for " + event.title + "!")
+        promptLabel.style(text: "Choose from Poll Results")
         
         if event.locations.count == 1 {
             if let address = event.locations[0].address {

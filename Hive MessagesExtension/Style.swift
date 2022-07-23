@@ -40,10 +40,9 @@ enum Style {
     static let secondaryColor = Style.hexStringToUIColor(hex: "EED2A1")
     static let tertiaryColor = Style.hexStringToUIColor(hex: "6798C5")
     static let lightTextColor = Style.hexStringToUIColor(hex: "FFF7E8")
-    static let darkTextColor = UIColor.black //Style.hexStringToUIColor(hex: "8E8E8E")
-    static let greyColor = UIColor.lightGray
+    static let darkTextColor = Style.hexStringToUIColor(hex: "4F4F4F")
+    static let greyColor = Style.hexStringToUIColor(hex: "9C9C9C")
     static let lightGreyColor = Style.hexStringToUIColor(hex: "E3E3E3")
-    //static let lightColor = UIColor.white
     static let errorColor = Style.hexStringToUIColor(hex: "CF6048")
     static let backgroundColor = Style.hexStringToUIColor(hex: "FFFFFF")
     

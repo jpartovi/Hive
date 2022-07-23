@@ -329,9 +329,9 @@ class DaySelectorViewController: StyleViewController {
         }
         
         if anyDaySelected {
-            nextButton.color(title: "Done")
+            nextButton.color(title: "Next")
         } else {
-            nextButton.grey(title: "Done")
+            nextButton.grey(title: "Next")
         }
     }
     

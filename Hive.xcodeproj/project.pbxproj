@@ -149,10 +149,10 @@
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
-				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */,
 				15B5D26928823624004267E2 /* VoteViewController.swift */,
 				1545E01C2889DBB2004DD491 /* InputEventViewController.swift */,
+				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
 			);
 			path = "View Controllers";

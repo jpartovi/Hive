@@ -129,9 +129,9 @@ class LocationsViewController: StyleViewController {
             continueButton.grey(title: "Skip")
         } else {
             if textFieldsFull(textFields: textFields, withDisplay: false) {
-                continueButton.color(title: "Done")
+                continueButton.color(title: "Next")
             } else {
-                continueButton.grey(title: "Done")
+                continueButton.grey(title: "Next")
             }
         }
     }
@@ -365,6 +365,6 @@ class LocationCell: UITableViewCell {
         ])
         
         deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
-        titleTextField.style(placeholderText: "Enter Location Name")
+        titleTextField.style(placeholderText: "Name (eg. My House)")
     }
 }
