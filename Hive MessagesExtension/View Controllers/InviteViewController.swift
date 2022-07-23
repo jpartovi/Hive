@@ -258,9 +258,6 @@ class InviteViewController: StyleViewController {
         print("Send")
         
         conversation.send(message)
-        
-        
-        self.requestPresentationStyle(.compact)
     }
     
     

@@ -30,6 +30,8 @@ class StyleTextField: UITextField {
     
     var fullColor: UIColor = Style.greyColor
     let emptyColor: UIColor = Style.errorColor
+    var bottomLine = CALayer()
+    var doubleStyleDetector = 0
     
     func addDoneButton(){
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -46,6 +48,7 @@ class StyleTextField: UITextField {
     }
 
     @objc func doneButtonAction(sender: StyleTextField){
+        print("donebuttonaction")
         superview!.endEditing(true)
     }
     
@@ -84,6 +87,20 @@ class StyleTextField: UITextField {
         bottomLine.backgroundColor = color.cgColor
         self.borderStyle = UITextField.BorderStyle.none
         self.layer.addSublayer(bottomLine)
+    }
+    
+    func colorStatus() {
+        let color: UIColor
+        if self.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            color = emptyColor
+        } else {
+            color = fullColor
+        }
+        underline(color: color)
+    }
+    
+    func resetColor() {
+        underline(color: fullColor)
     }
 }
 
@@ -246,6 +263,7 @@ class StyleViewController: MSMessagesAppViewController {
     
     //Calls this function when the tap is recognized.
     @objc func dismissKeyboard() {
+        print("dismissed")
         //Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }

@@ -134,9 +134,7 @@ class DaySelectorViewController: StyleViewController {
         }
         updateContentView()
         calendarCollectionView!.reloadData()
-        print("changedConstraints")
-        //print(calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0)))
-        //loadMonthLabel()
+        loadMonthLabel()
     }
     
     func updateContentView() {
