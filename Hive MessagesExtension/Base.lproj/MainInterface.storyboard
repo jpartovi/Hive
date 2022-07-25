@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -148,22 +147,14 @@
                                     <action selector="submitButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="0vR-BS-ANK"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ux-hy-RNE" userLabel="Create Event" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="191" y="418" width="88" height="30"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Create Event"/>
-                                <connections>
-                                    <action selector="createEventButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="gEN-wU-ofj"/>
-                                </connections>
-                            </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
                                 <rect key="frame" x="19" y="88" width="285" height="290"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
-                                        <rect key="frame" x="0.0" y="113" width="285" height="157"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
+                                        <rect key="frame" x="0.0" y="69.5" width="285" height="195"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="175" id="eFF-UC-VhA"/>
+                                            <constraint firstAttribute="height" constant="195" id="eFF-UC-VhA"/>
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="oqD-IW-uP0" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
@@ -185,21 +176,18 @@
                                         </prototypes>
                                     </tableView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1v-xz-QVR" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="285" height="46"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="46" id="fEb-XS-byf"/>
-                                        </constraints>
+                                        <rect key="frame" x="0.0" y="0.0" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="54" width="285" height="29"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28.5" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="83" width="285" height="29"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="49" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -215,8 +203,8 @@
                                     <constraint firstAttribute="bottom" secondItem="49J-CZ-eci" secondAttribute="bottom" id="W3D-Sc-DqL"/>
                                     <constraint firstItem="0EQ-h5-lk3" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="WgZ-sj-0f1"/>
                                     <constraint firstItem="0EQ-h5-lk3" firstAttribute="top" secondItem="1hl-qe-PCn" secondAttribute="bottom" id="WwV-Vd-b3L"/>
+                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="dUh-zk-Msj"/>
                                     <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="fPe-5A-T75"/>
-                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="fgW-qg-lAm"/>
                                     <constraint firstItem="49J-CZ-eci" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="hNq-4l-P9O"/>
                                     <constraint firstItem="1hl-qe-PCn" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="nf3-gf-V9Y"/>
                                 </constraints>
@@ -227,11 +215,9 @@
                         <viewLayoutGuide key="safeArea" id="AUO-3P-b70"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerY" secondItem="Il1-n0-leK" secondAttribute="centerY" id="00D-fu-MjL"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="7lu-wG-L1l"/>
                             <constraint firstItem="FSA-LC-JBs" firstAttribute="leading" secondItem="AUO-3P-b70" secondAttribute="leading" constant="19" id="LuB-Il-Kqv"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="bottom" constant="40" id="SNf-aH-ExK"/>
-                            <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="75" id="Xg0-TM-PVj"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="btT-Ap-Knj"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="-75" id="ipg-Cl-Wmo"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="bottom" secondItem="Il1-n0-leK" secondAttribute="bottom" constant="80" id="joo-Z6-b6s"/>
@@ -246,7 +232,6 @@
                     <navigationItem key="navigationItem" id="aOw-Bi-1Lo"/>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
-                        <outlet property="createEventButton" destination="0Ux-hy-RNE" id="RhZ-Ar-Wv1"/>
                         <outlet property="dayAndTimeLabel" destination="1hl-qe-PCn" id="0Xj-rH-UKi"/>
                         <outlet property="locationLabel" destination="0EQ-h5-lk3" id="osd-5A-rzG"/>
                         <outlet property="promptLabel" destination="C1v-xz-QVR" id="JZi-F8-kKl"/>
@@ -254,13 +239,120 @@
                         <outlet property="submitButton" destination="Il1-n0-leK" id="nKH-GO-S0F"/>
                         <outlet property="voteTableView" destination="49J-CZ-eci" id="tqP-53-Ptm"/>
                         <outlet property="voteTableViewHeightConstraint" destination="eFF-UC-VhA" id="r1e-85-3uA"/>
-                        <outletCollection property="clientConstraints" destination="7lu-wG-L1l" collectionClass="NSMutableArray" id="yLG-D0-GqE"/>
-                        <outletCollection property="hostConstraints" destination="ipg-Cl-Wmo" collectionClass="NSMutableArray" id="RCx-5A-mAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="772-nu-0V6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4873.913043478261" y="-1238.1696428571429"/>
+        </scene>
+        <!--Vote Results View Controller-->
+        <scene sceneID="zwk-Ag-4kO">
+            <objects>
+                <viewController storyboardIdentifier="VoteResultsViewController" id="e7E-X3-E8V" customClass="VoteResultsViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7bh-3p-EUM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="afh-UF-iav" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="133.5" y="418" width="53" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title=" Submit"/>
+                                <connections>
+                                    <action selector="submitButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="Ga4-DP-UWv"/>
+                                    <action selector="submitButtonPressed:" destination="e7E-X3-E8V" eventType="touchUpInside" id="VNb-bq-Qgf"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyM-7Q-3i0">
+                                <rect key="frame" x="18" y="88" width="285" height="290"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="w0n-oq-1Nw">
+                                        <rect key="frame" x="0.0" y="69.5" width="285" height="239"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="239" id="lWY-p9-sVG"/>
+                                        </constraints>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="ByH-ul-86v" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="44.5" width="285" height="43.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ByH-ul-86v" id="G8j-GV-A0A">
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="VoteResultsDayAndTimesCell" id="Ajf-k3-p7g" customClass="VoteResultsDayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="88" width="285" height="43.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ajf-k3-p7g" id="G2p-ew-rOe">
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H9D-Qb-Vzk" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="285" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqh-XZ-sWr" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28.5" width="285" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tvb-5X-YAk" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="49" width="285" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="tqh-XZ-sWr" firstAttribute="width" secondItem="OyM-7Q-3i0" secondAttribute="width" id="4A3-i6-Yzx"/>
+                                    <constraint firstItem="w0n-oq-1Nw" firstAttribute="width" secondItem="OyM-7Q-3i0" secondAttribute="width" id="971-l5-Leo"/>
+                                    <constraint firstItem="H9D-Qb-Vzk" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="top" id="Aba-h3-rM5"/>
+                                    <constraint firstItem="w0n-oq-1Nw" firstAttribute="top" secondItem="Tvb-5X-YAk" secondAttribute="bottom" id="Bms-DR-uaJ"/>
+                                    <constraint firstItem="Tvb-5X-YAk" firstAttribute="top" secondItem="tqh-XZ-sWr" secondAttribute="bottom" id="I4s-1x-9FX"/>
+                                    <constraint firstItem="H9D-Qb-Vzk" firstAttribute="width" secondItem="OyM-7Q-3i0" secondAttribute="width" id="Jjp-Wr-grU"/>
+                                    <constraint firstItem="Tvb-5X-YAk" firstAttribute="width" secondItem="OyM-7Q-3i0" secondAttribute="width" id="KQd-hq-wi6"/>
+                                    <constraint firstItem="tqh-XZ-sWr" firstAttribute="top" secondItem="H9D-Qb-Vzk" secondAttribute="bottom" constant="8" symbolic="YES" id="MPV-w2-etn"/>
+                                    <constraint firstItem="Tvb-5X-YAk" firstAttribute="centerX" secondItem="OyM-7Q-3i0" secondAttribute="centerX" id="Zrk-QY-tle"/>
+                                    <constraint firstItem="H9D-Qb-Vzk" firstAttribute="centerX" secondItem="OyM-7Q-3i0" secondAttribute="centerX" id="cBd-Hw-RzD"/>
+                                    <constraint firstItem="tqh-XZ-sWr" firstAttribute="centerX" secondItem="OyM-7Q-3i0" secondAttribute="centerX" id="juE-eC-uIS"/>
+                                    <constraint firstItem="w0n-oq-1Nw" firstAttribute="centerX" secondItem="OyM-7Q-3i0" secondAttribute="centerX" id="mL0-LI-mve"/>
+                                    <constraint firstAttribute="bottom" secondItem="w0n-oq-1Nw" secondAttribute="bottom" id="rEe-iG-unq"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="1b0-ud-7sC"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Enu-75-cZe"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="cvB-nB-Ag0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="OyM-7Q-3i0" firstAttribute="top" secondItem="cvB-nB-Ag0" secondAttribute="top" id="N4N-QF-MEq"/>
+                            <constraint firstItem="cvB-nB-Ag0" firstAttribute="trailing" secondItem="OyM-7Q-3i0" secondAttribute="trailing" constant="17" id="YGq-kD-v5m"/>
+                            <constraint firstItem="afh-UF-iav" firstAttribute="centerX" secondItem="cvB-nB-Ag0" secondAttribute="centerX" id="exr-6g-Eoc"/>
+                            <constraint firstItem="cvB-nB-Ag0" firstAttribute="bottom" secondItem="afh-UF-iav" secondAttribute="bottom" constant="80" id="gcM-d1-Csv"/>
+                            <constraint firstItem="afh-UF-iav" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="bottom" constant="40" id="kH7-dx-olP"/>
+                            <constraint firstItem="OyM-7Q-3i0" firstAttribute="leading" secondItem="cvB-nB-Ag0" secondAttribute="leading" constant="18" id="mzC-97-Fnx"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="n5A-U6-I0G"/>
+                    <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="dayAndTimeLabel" destination="tqh-XZ-sWr" id="pEN-Hk-OA2"/>
+                        <outlet property="locationLabel" destination="Tvb-5X-YAk" id="Zli-iX-js3"/>
+                        <outlet property="promptLabel" destination="H9D-Qb-Vzk" id="kdV-i1-06C"/>
+                        <outlet property="scrollView" destination="OyM-7Q-3i0" id="7VA-LP-Lg4"/>
+                        <outlet property="submitButton" destination="afh-UF-iav" id="Gnw-cW-fdo"/>
+                        <outlet property="voteTableView" destination="w0n-oq-1Nw" id="rcV-RR-Uws"/>
+                        <outlet property="voteTableViewHeightConstraint" destination="lWY-p9-sVG" id="0oF-xF-wiC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T0Q-XC-0nK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7192.753623188406" y="-1238.1696428571429"/>
         </scene>
         <!--Time Selector View Controller-->
         <scene sceneID="cp4-m4-Iap">
@@ -917,95 +1009,23 @@
             </objects>
             <point key="canvasLocation" x="5405.7971014492759" y="-1927.2321428571427"/>
         </scene>
-        <!--Input Event View Controller-->
-        <scene sceneID="9bw-SH-4t2">
+        <!--Vote Results Navigation Controller-->
+        <scene sceneID="cMV-8m-MvO">
             <objects>
-                <viewController storyboardIdentifier="InputEventViewController" id="w2x-Pn-WCq" customClass="InputEventViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="1FE-XT-Gxz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="9Zb-hR-KnS">
-                                <rect key="frame" x="16" y="212" width="288" height="166"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="D3R-Aj-FaV" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="D3R-Aj-FaV" id="uvN-tO-B8L">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="InputEventDayAndTimesCell" id="2FX-fl-14n" customClass="InputEventDayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88" width="288" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2FX-fl-14n" id="aJF-0j-XUG">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6C-rF-mZK" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="20" y="106" width="280" height="46"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="B2W-OO-JlS"/>
-                                    <constraint firstAttribute="height" constant="46" id="CLC-K8-DK9"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9np-tR-pT0" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="133.5" y="418" width="53" height="30"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title=" Submit"/>
-                                <connections>
-                                    <action selector="submitButtonPressed:" destination="w2x-Pn-WCq" eventType="touchUpInside" id="leF-gE-X8A"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzZ-Gt-Hzk">
-                                <rect key="frame" x="127" y="160" width="66" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKn-4j-6ec">
-                                <rect key="frame" x="123" y="183" width="74" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="28z-wv-62v"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="UKn-4j-6ec" firstAttribute="top" secondItem="wzZ-Gt-Hzk" secondAttribute="bottom" constant="2" id="24j-KV-sDb"/>
-                            <constraint firstItem="E6C-rF-mZK" firstAttribute="top" secondItem="28z-wv-62v" secondAttribute="top" constant="62" id="4mP-fP-ffI"/>
-                            <constraint firstItem="9Zb-hR-KnS" firstAttribute="top" secondItem="UKn-4j-6ec" secondAttribute="bottom" constant="8" symbolic="YES" id="AP7-HJ-xDh"/>
-                            <constraint firstItem="9np-tR-pT0" firstAttribute="top" secondItem="9Zb-hR-KnS" secondAttribute="bottom" constant="40" id="EUV-E1-3SM"/>
-                            <constraint firstItem="UKn-4j-6ec" firstAttribute="centerX" secondItem="28z-wv-62v" secondAttribute="centerX" id="Jp1-Tb-PJW"/>
-                            <constraint firstItem="wzZ-Gt-Hzk" firstAttribute="centerX" secondItem="28z-wv-62v" secondAttribute="centerX" id="fge-GH-4vh"/>
-                            <constraint firstItem="wzZ-Gt-Hzk" firstAttribute="top" secondItem="E6C-rF-mZK" secondAttribute="bottom" constant="8" symbolic="YES" id="g8v-bv-XiI"/>
-                            <constraint firstItem="28z-wv-62v" firstAttribute="trailing" secondItem="9Zb-hR-KnS" secondAttribute="trailing" constant="16" id="hZn-bz-JM5"/>
-                            <constraint firstItem="28z-wv-62v" firstAttribute="bottom" secondItem="9np-tR-pT0" secondAttribute="bottom" constant="80" id="iIx-OF-ebi"/>
-                            <constraint firstItem="9Zb-hR-KnS" firstAttribute="leading" secondItem="28z-wv-62v" secondAttribute="leading" constant="16" id="mKs-QQ-NJM"/>
-                            <constraint firstItem="9np-tR-pT0" firstAttribute="centerX" secondItem="28z-wv-62v" secondAttribute="centerX" id="qdX-Zo-FI6"/>
-                            <constraint firstItem="E6C-rF-mZK" firstAttribute="centerX" secondItem="28z-wv-62v" secondAttribute="centerX" id="zhT-4A-cqq"/>
-                        </constraints>
-                    </view>
-                    <size key="freeformSize" width="320" height="528"/>
+                <navigationController storyboardIdentifier="VoteResultsNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="3IR-Fr-dS8" customClass="VoteResultsNavigationController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="U5x-hH-5T8">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
                     <connections>
-                        <outlet property="dayAndTimeLabel" destination="UKn-4j-6ec" id="JU5-Tl-3Zg"/>
-                        <outlet property="locationLabel" destination="wzZ-Gt-Hzk" id="Sir-6e-75h"/>
-                        <outlet property="promptLabel" destination="E6C-rF-mZK" id="5yG-RS-Dzl"/>
-                        <outlet property="submitButton" destination="9np-tR-pT0" id="W2e-Pe-slQ"/>
-                        <outlet property="voteTable" destination="9Zb-hR-KnS" id="Fhb-ZL-kfJ"/>
+                        <segue destination="e7E-X3-E8V" kind="relationship" relationship="rootViewController" id="RDd-Zg-Cey"/>
                     </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oQa-v2-Sgv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XvU-Vo-EMl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5406" y="-1238"/>
+            <point key="canvasLocation" x="6282.608695652174" y="-1238.1696428571429"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.87450980389999999" green="0.62352941179999999" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>

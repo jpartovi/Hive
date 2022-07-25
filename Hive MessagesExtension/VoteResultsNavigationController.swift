@@ -1,13 +1,13 @@
 //
-//  VoteNavigationController.swift
+//  VoteResultsNavigationController.swift
 //  Hive MessagesExtension
 //
-//  Created by Jack Albright on 7/20/22.
+//  Created by Jude Partovi on 7/25/22.
 //
 
 import UIKit
 
-class VoteNavigationController: UINavigationController {
+class VoteResultsNavigationController: UINavigationController {
     
     var myID: String!
     var mURL: URL!
@@ -15,7 +15,7 @@ class VoteNavigationController: UINavigationController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let vc = self.topViewController as? VoteViewController {
+        if let vc = self.topViewController as? VoteResultsViewController {
             vc.myID = self.myID
             vc.mURL = self.mURL
         }

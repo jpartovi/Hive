@@ -21,10 +21,10 @@ struct Event {
         var queryItems = [URLQueryItem]()
         
         queryItems.append(URLQueryItem(name: "messageType", value: "invite"))
-    
-        queryItems.append(URLQueryItem(name: "title", value: title))
         
         queryItems.append(URLQueryItem(name: "hostID", value: ID))
+    
+        queryItems.append(URLQueryItem(name: "title", value: title))
         
         queryItems.append(type.makeURLQueryItem())
         
@@ -44,24 +44,24 @@ struct Event {
         
         queryItems.append(URLQueryItem(name: "endEvent", value: ""))
         
-        print(queryItems)
-        
         var URLComponents = URLComponents()
         URLComponents.queryItems = queryItems
+        
+        print(queryItems[1])
         
         return URLComponents.url!
     }
     
-    mutating func buildVoteURL(ID: String) -> URL {
+    mutating func buildVoteURL() -> URL {
         //For Voting
         
         var queryItems = [URLQueryItem]()
         
         queryItems.append(URLQueryItem(name: "messageType", value: "vote"))
+        
+        queryItems.append(URLQueryItem(name: "hostID", value: MessagesViewController.userID))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
-        
-        queryItems.append(URLQueryItem(name: "hostID", value: ID))
         
         queryItems.append(type.makeURLQueryItem())
         

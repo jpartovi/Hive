@@ -1,19 +1,17 @@
 //
-//  VoteWithTableViewController.swift
+//  VoteResultsViewController.swift
 //  Hive MessagesExtension
 //
-//  Created by Jack Albright on 7/13/22.
+//  Created by Jack Albright on 7/20/22.
 //
-
-// TODO: Make address copyable or open in maps
 
 import UIKit
 import Messages
 
-class VoteViewController: StyleViewController {
-    
-    //var delegate: VoteViewControllerDelegate?
-    static let storyboardID = String(describing: VoteViewController.self)
+class VoteResultsViewController: StyleViewController {
+
+    static let storyboardID = String(describing: VoteResultsViewController.self)
+    var delegate: VoteResultsViewControllerDelegate?
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var promptLabel: StyleLabel!
@@ -25,25 +23,22 @@ class VoteViewController: StyleViewController {
     
     @IBOutlet weak var submitButton: HexButton!
     
-    @IBOutlet weak var createEventButton: HexButton!
-    
     let cellInsets: CGFloat = 8
     
     var myID: String!
     var mURL: URL!
+    var isHost: Bool = false
     
     var loadedEvent: Event!
     
     var voteGroups: [String] = []
     var voteItems: [[String]] = []
     var voteTallies: [[Int]] = []
-    var initialVoteTallies: [[Int]] = []
     var isOpen: [Bool] = []
-    var voteSelections: [[Int]] = []
+    var voteSelections: [Int?] = []
     var multiSelectable: [Bool] = []
     
     var votesChanged = false
-    
     
     var daysAndTimesMagicIndexes: [Int] = []
     var daysAndTimesGroupIndex: Int!
@@ -62,7 +57,8 @@ class VoteViewController: StyleViewController {
         voteTableView.reloadData()
                 
         submitButton.size(size: 150, textSize: 25)
-        submitButton.grey(title: "Add Votes")
+        submitButton.grey(title: "Done")
+        
     }
     
     override func viewWillLayoutSubviews() {
@@ -89,7 +85,7 @@ class VoteViewController: StyleViewController {
     
     func decodeEvent(_ event: Event) {
         
-        promptLabel.style(text: "Poll for " + event.title)
+        promptLabel.style(text: "Choose from poll results")
         promptLabel.adjustHeight()
         
         locationLabel.text = ""
@@ -110,17 +106,9 @@ class VoteViewController: StyleViewController {
             voteItems.append(allLoc)
             voteTallies.append([Int](repeating: 0, count: event.locations.count))
             isOpen.append(true)
-            voteSelections.append([])
+            //voteSelections.append([])
             multiSelectable.append(false)
         }
-           
-        
-        // EVERY COMBO
-        /*
-                        multiple times | 1 time | no times
-         multiple days      *GRID       *string   *string
-         1 day              string        label     label
-         */
         
         dayAndTimeLabel.text = ""
         
@@ -145,7 +133,7 @@ class VoteViewController: StyleViewController {
                 voteItems.append([String](repeating: "", count: dayTimeCount)) //not needed with grid view
                 voteTallies.append([Int](repeating: 0, count: dayTimeCount))
                 isOpen.append(true)
-                voteSelections.append([])
+                //voteSelections.append([])
                 multiSelectable.append(false)
                 return
             }
@@ -162,7 +150,7 @@ class VoteViewController: StyleViewController {
                 voteItems.append(days)
                 voteTallies.append([Int](repeating: 0, count: event.days.count))
                 isOpen.append(true)
-                voteSelections.append([])
+                //voteSelections.append([])
                 multiSelectable.append(true)
                 return
             } else {
@@ -176,7 +164,7 @@ class VoteViewController: StyleViewController {
                 voteItems.append(daysAndTime)
                 voteTallies.append([Int](repeating: 0, count: event.days.count))
                 isOpen.append(true)
-                voteSelections.append([])
+                //voteSelections.append([])
                 multiSelectable.append(true)
                 return
             }
@@ -199,22 +187,13 @@ class VoteViewController: StyleViewController {
             voteItems.append(dayAndTimes)
             voteTallies.append([Int](repeating: 0, count: times.count))
             isOpen.append(true)
-            voteSelections.append([])
+            //voteSelections.append([])
             multiSelectable.append(true)
         }
         
         locationLabel.adjustHeight()
         dayAndTimeLabel.adjustHeight()
     }
-    
-    
-    /*var voteGroups = ["A", "B", "C", "D (multi-select)"]
-    var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
-    var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
-    var isOpen = [false, false, false, false]
-    var voteSelections = [[], [], [], []] as [[Int]]
-    var multiSelectable = [false, false, false, true]*/
-    
     
     func decodeRSVPs(url: URL) {
         let components = URLComponents(url: url,
@@ -226,7 +205,9 @@ class VoteViewController: StyleViewController {
             let name = queryItem.name
             let value = queryItem.value
             
-            if name == "endEvent" {
+            if name == "hostID" && value == myID {
+                isHost = true
+            } else if name == "endEvent" {
                 endFlag = true
             } else if endFlag {
                 
@@ -235,26 +216,19 @@ class VoteViewController: StyleViewController {
                 } else if name == myID && value == "end" {
                     break
                 } else if meFlag {
-                    voteSelections[Int(name)!].append(Int(value!)!)
+                    //voteSelections[Int(name)!].append(Int(value!)!)
                 }
                 
                 if (value != "start") && (value != "end") {
                     voteTallies[Int(name)!][Int(value!)!] += 1
                 }
             }
-        
-        //Dummy code
-        /*for (indexA, voteList) in voteItems.enumerated(){
-            for _ in voteList {
-                voteTallies[indexA].append(0)
-            }
-        }*/
-        initialVoteTallies = voteTallies
         }
+        voteSelections = [Int?](repeating: nil, count: voteGroups.count)
     }
     
     func updateSubmitButton() {
-        
+        /*
         if initialVoteTallies == voteTallies {
             submitButton.grey(title: "Add Votes")
             votesChanged = false
@@ -262,105 +236,7 @@ class VoteViewController: StyleViewController {
             submitButton.color(title: "Add Votes")
             votesChanged = true
         }
-    }
-    
-    @IBAction func submitButtonPressed(_ sender: UIButton) {
-        if votesChanged {
-            let url = prepareVoteURL()
-            prepareMessage(url)
-        }
-    }
-
-    @IBAction func createEventButtonPressed(_ sender: UIButton) {
-        
-        let url = prepareVoteURL()
-        
-        let inputeventVC = (storyboard?.instantiateViewController(withIdentifier: VoteResultsViewController.storyboardID) as? VoteResultsViewController)!
-        inputeventVC.myID = myID
-        inputeventVC.mURL = url
-        inputeventVC.voteGroups = voteGroups
-        inputeventVC.voteItems = voteItems
-        inputeventVC.voteTallies = voteTallies
-        inputeventVC.isOpen = isOpen
-        inputeventVC.voteSelections = [Int?](repeating: nil, count: voteGroups.count)
-        inputeventVC.daysAndTimesMagicIndexes = daysAndTimesMagicIndexes
-        inputeventVC.daysAndTimesGroupIndex = daysAndTimesGroupIndex
-        self.navigationController?.pushViewController(inputeventVC, animated: true)
-        
-    }
-    
-    
-    
-    func prepareVoteURL() -> URL{
-        
-        var components = URLComponents(url: mURL,
-                resolvingAgainstBaseURL: false)
-        
-        var endFlag = false
-        var meFlag = false
-        var startIndex = 0
-        var endIndex = 0
-        for (index, queryItem) in (components!.queryItems!.enumerated()){
-            let name = queryItem.name
-            let value = queryItem.value
-            
-            if name == "endEvent" {
-                endFlag = true
-            } else if endFlag {
-                
-                if name == myID && value == "start" {
-                    startIndex = index
-                    meFlag = true
-                } else if name == myID && value == "end" {
-                    endIndex = index
-                    break
-                }
-                
-            }
-        }
-        
-        var newItems: [URLQueryItem] = []
-        for (indexA, voteList) in voteSelections.enumerated(){
-            for (_, oneVote) in voteList.enumerated(){
-                newItems.append(URLQueryItem(name: String(indexA), value: String(oneVote)))
-            }
-        }
-        
-        
-        if meFlag {
-            newItems = Array((components?.queryItems!)!.prefix(through: startIndex)) + newItems + Array((components?.queryItems!)!.suffix(from: endIndex))
-            components?.queryItems = newItems
-        } else {
-            components?.queryItems! += [URLQueryItem(name: myID, value: "start")] + newItems + [URLQueryItem(name: myID, value: "end")]
-        }
-        
-        return (components?.url!)!
-    }
-    
-    func prepareMessage(_ url: URL) {
-        
-        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
-
-        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-        
-
-        let messageLayout = MSMessageTemplateLayout()
-        
-        messageLayout.caption = "Poll for " + loadedEvent.title
-        messageLayout.image = UIImage(named: "MessageHeader")
-        messageLayout.imageTitle = ""
-        messageLayout.imageSubtitle = ""
-        messageLayout.trailingCaption = ""
-        messageLayout.subcaption = ""
-        messageLayout.trailingSubcaption = ""
-        
-        message.layout = messageLayout
-        message.url = url
-        message.summaryText = messageSummaryText
-        
-        conversation.insert(message)
-        //conversation.insertText(url.absoluteString)
-        self.requestPresentationStyle(.compact)
+         */
     }
     
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
@@ -404,9 +280,70 @@ class VoteViewController: StyleViewController {
         self.view.window!.rootViewController?.dismiss(animated: false)
         super.willResignActive(with: conversation)
     }
+    
+    func updateSubmitButtonStatus() {
+        if voteSelections.contains(where: {$0 == nil}) {
+            submitButton.grey(title: "Done")
+        } else {
+            submitButton.color(title: "Done")
+        }
+        
+    }
+    
+    @IBAction func submitButtonPressed(_ sender: UIButton) {
+        
+        //TODO: Link to ConfirmViewController
+        
+        var loadedEvent = loadedEvent! //makes all the changes here local
+        
+        if !voteSelections.contains(where: {$0 == nil}) {
+            // TODO: SWITCH
+            var eventForInvite = loadedEvent
+            for (index, voteGroup) in voteGroups.enumerated() {
+                let voteIndex = voteSelections[index]!
+                switch voteGroup {
+                case "locations":
+                    print(loadedEvent.locations.count)
+                    if loadedEvent.locations.count > 1 {
+                        eventForInvite.locations = [loadedEvent.locations[voteIndex]]
+                        print(eventForInvite.locations.count)
+                        print(eventForInvite.locations[0].title)
+                    }
+                case "days":
+                    eventForInvite.days = [loadedEvent.days[voteIndex]]
+                case "daysAndTime":
+                    eventForInvite.days = [loadedEvent.days[voteIndex]]
+                    eventForInvite.times = loadedEvent.daysAndTimes[loadedEvent.days[0]]!
+                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                case "dayAndTimes":
+                    eventForInvite.times = [loadedEvent.daysAndTimes[loadedEvent.days[0]]![voteIndex]]
+                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                case "daysAndTimes":
+                    var dayIndex = daysAndTimesMagicIndexes.count - 1
+                    for (mIndex, mValue) in daysAndTimesMagicIndexes.enumerated() {
+                        if mValue > voteIndex {
+                            dayIndex = mIndex - 1
+                            break
+                        }
+                    }
+                    let timeIndex = voteIndex - daysAndTimesMagicIndexes[dayIndex]
+                    eventForInvite.days = [loadedEvent.days[dayIndex]]
+                    eventForInvite.times = [loadedEvent.daysAndTimes[loadedEvent.days[0]]![timeIndex]]
+                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                default:
+                    continue
+                }
+            }
+            
+            let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
+            confirmVC.event = eventForInvite
+            
+            self.navigationController?.pushViewController(confirmVC, animated: true)
+        }
+    }
 }
 
-extension VoteViewController: UITableViewDataSource {
+extension VoteResultsViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         voteGroups.count
@@ -426,9 +363,8 @@ extension VoteViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
         if voteGroups[indexPath.section] == "daysAndTimes" {
-            let cell = voteTableView.dequeueReusableCell(withIdentifier: VotingDayAndTimesCell.reuseIdentifier, for: indexPath) as! VotingDayAndTimesCell
+            let cell = voteTableView.dequeueReusableCell(withIdentifier: VoteResultsDayAndTimesCell.reuseIdentifier, for: indexPath) as! VoteResultsDayAndTimesCell
             cell.curView = self
             cell.curIndex = indexPath.row
             var day = loadedEvent.days[indexPath.row]
@@ -441,18 +377,17 @@ extension VoteViewController: UITableViewDataSource {
         let cellView = UIView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height))
         cellView.backgroundColor = Style.lightGreyColor
         cell.voteCount.backgroundColor = Style.greyColor
-        cell.label.textColor = Style.darkTextColor
-        for selection in voteSelections[indexPath.section] {
-            if selection == indexPath.row {
-                cellView.backgroundColor = Style.secondaryColor
-                cell.voteCount.backgroundColor = Style.primaryColor
-                cell.label.textColor = Style.lightTextColor
-            }
+        if voteSelections[indexPath.section] == indexPath.row {
+            cellView.backgroundColor = Style.secondaryColor
+            cell.voteCount.backgroundColor = Style.primaryColor
         }
         cell.backgroundView = cellView
         cell.label.text = voteItems[indexPath.section][indexPath.row]
         cell.counter.text = String(voteTallies[indexPath.section][indexPath.row])
         let voteMax = voteTallies.reduce(0, {x, y in max(x, y.max()!)}) + 1
+        //cell.voteCount.frame.size.width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * self.view.frame.width * 2/3
+        //cell.voteCount.frame.size.height = cell.contentView.frame.height - (cellInsets)
+        
         let width = CGFloat(voteTallies[indexPath.section][indexPath.row])/CGFloat(voteMax) * self.view.frame.width * 2/3
         let height = cell.contentView.frame.height - cellInsets
         cell.voteCount.frame = CGRect(x: 0, y: cellInsets, width: width, height: height)
@@ -472,7 +407,7 @@ extension VoteViewController: UITableViewDataSource {
     }
 }
 
-extension VoteViewController: UITableViewDelegate {
+extension VoteResultsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
@@ -480,19 +415,16 @@ extension VoteViewController: UITableViewDelegate {
             // TODO: Maybe make it so that all of the times get selected?
             return
         }
-        if voteSelections[indexPath.section].contains(indexPath.row) {
-            voteSelections[indexPath.section] = voteSelections[indexPath.section].filter {$0 != indexPath.row}
-            voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] - 1
+        if voteSelections[indexPath.section] == indexPath.row {
+            voteSelections[indexPath.section] = nil
         } else {
-            if !multiSelectable[indexPath.section] && voteSelections[indexPath.section] != [] {
-                voteTallies[indexPath.section][voteSelections[indexPath.section][0]] = voteTallies[indexPath.section][voteSelections[indexPath.section][0]] - 1
-                voteSelections[indexPath.section] = []
-            }
-            voteSelections[indexPath.section].append(indexPath.row)
-            voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
+            voteSelections[indexPath.section] = indexPath.row
         }
+        
         voteTableView.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)
-        updateSubmitButton()
+        
+        updateSubmitButtonStatus()
+        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -500,20 +432,7 @@ extension VoteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch voteGroups[section] {
-        case "daysAndTimes":
-            return "Which times work?"
-        case "daysAndTime":
-            return "Which times work?"
-        case "dayAndTimes":
-            return "Which times work?"
-        case "days":
-            return "Which days work?"
-        case "locations":
-            return "Which location do you prefer?"
-        default:
-            return "Vote"
-        }
+        voteGroups[section]
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
@@ -521,15 +440,53 @@ extension VoteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        5
+        10
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 5))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 10))
         return footerView
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        /*
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
+        headerView.layer.cornerRadius = headerView.frame.height/2
+        headerView.backgroundColor = Style.primaryColor
+        headerView.tag = section
+        
+        headerView.layer.borderWidth = 3
+        headerView.layer.borderColor = Style.secondaryColor.cgColor
+        
+        let headerString = UILabel(frame: CGRect(x: 13, y: 10, width: tableView.frame.size.width-10, height: 30))
+        headerString.text = voteGroups[section]
+        headerString.textColor = Style.lightTextColor
+        headerView.addSubview(headerString)
+        
+        
+        let headerSelection = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-20, height: 30))
+        
+        var selectedItems = [String]()
+        for (index, voteItem) in voteItems[section].enumerated() {
+            if voteSelections[section] == index {
+                selectedItems.append(voteItem)
+            }
+        }
+        headerSelection.text = Style.commaList(items: selectedItems)//tempText
+        
+        headerSelection.textAlignment = NSTextAlignment.right
+        headerView.addSubview(headerSelection)
+        
+        //let headerTapped = UITapGestureRecognizer(target: self, action: #selector(sectionHeaderTapped))
+        //headerView.addGestureRecognizer(headerTapped)
+        
+        let headerTouchDown = UILongPressGestureRecognizer(target: self, action: #selector(sectionHeaderTouchDown))
+        headerTouchDown.minimumPressDuration = 0
+        headerView.addGestureRecognizer(headerTouchDown)
+        
+        return headerView
+         */
+        
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
         headerView.layer.cornerRadius = headerView.frame.height/2
         headerView.backgroundColor = Style.tertiaryColor
@@ -561,14 +518,14 @@ extension VoteViewController: UITableViewDelegate {
         
         
         let headerSelection = UILabel(frame: CGRect(x: 10, y: 10, width: tableView.frame.size.width-20, height: 30))
-        
-        if voteSelections[section] != [] && !multiSelectable[section] {
+        /*
+        if voteSelections[section] != [] {
             headerSelection.text = voteItems[section][voteSelections[section][0]]
         }
-        
+        */
         headerSelection.textAlignment = NSTextAlignment.right
         headerSelection.textColor = Style.lightTextColor
-        //headerView.addSubview(headerSelection)
+        headerView.addSubview(headerSelection)
         
         //let headerTapped = UITapGestureRecognizer(target: self, action: #selector(sectionHeaderTapped))
         //headerView.addGestureRecognizer(headerTapped)
@@ -581,12 +538,12 @@ extension VoteViewController: UITableViewDelegate {
     }
 }
 
-class VotingDayAndTimesCell: UITableViewCell {
+class VoteResultsDayAndTimesCell: UITableViewCell {
     
-    var curView: VoteViewController!
+    var curView: VoteResultsViewController!
     var curIndex: Int!
     
-    static let reuseIdentifier = String(describing: VotingDayAndTimesCell.self)
+    static let reuseIdentifier = String(describing: VoteResultsDayAndTimesCell.self)
     
     static let cornerRadius: CGFloat = 20
     
@@ -599,7 +556,7 @@ class VotingDayAndTimesCell: UITableViewCell {
         label.textAlignment = .center
         return label
     }()
-    
+     
     let timesCollectionView: UICollectionView = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -637,6 +594,16 @@ class VotingDayAndTimesCell: UITableViewCell {
         let inset: CGFloat = 10
 
         NSLayoutConstraint.activate([
+            /*
+            dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
+            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dayLabel.widthAnchor.constraint(equalToConstant: 45),
+            
+            timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
+            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),
+            timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
+            timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
+             */
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
             dayLabel.widthAnchor.constraint(equalToConstant: 45),
@@ -651,7 +618,7 @@ class VotingDayAndTimesCell: UITableViewCell {
     }
 }
 
-extension VotingDayAndTimesCell: UICollectionViewDataSource {
+extension VoteResultsDayAndTimesCell: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]!.count
     }
@@ -661,7 +628,7 @@ extension VotingDayAndTimesCell: UICollectionViewDataSource {
         let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: VotingTimeCell.reuseIdentifier, for: indexPath) as! VotingTimeCell
         cell.timeLabel.text = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
         cell.voteCountLabel.text = String(curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex])
-        if curView.voteSelections[curView.daysAndTimesGroupIndex].contains(magicIndex) {
+        if curView.voteSelections[curView.daysAndTimesGroupIndex] == magicIndex {
             cell.backgroundColor = Style.primaryColor
             cell.timeLabel.textColor = Style.lightTextColor
         } else {
@@ -671,58 +638,22 @@ extension VotingDayAndTimesCell: UICollectionViewDataSource {
         return cell
     }
     
-    
 }
 
-/*if voteSelections[indexPath.section].contains(indexPath.row) {
-    
-    voteSelections[indexPath.section] = voteSelections[indexPath.section].filter {$0 != indexPath.row}
-    
-    voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] - 1
-} else {
-    
-    if !multiSelectable[indexPath.section] && voteSelections[indexPath.section] != [] {
-        
-        voteTallies[indexPath.section][voteSelections[indexPath.section][0]] = voteTallies[indexPath.section][voteSelections[indexPath.section][0]] - 1
-        
-        voteSelections[indexPath.section] = []
-        
-        
-    }
-    
-    voteSelections[indexPath.section].append(indexPath.row)
-    voteTallies[indexPath.section][indexPath.row] = voteTallies[indexPath.section][indexPath.row] + 1
-}
 
-voteTable.reloadSections(IndexSet(integersIn: 0..<voteGroups.count), with: .fade)*/
-
-
-
-
-/*var voteGroups = ["A", "B", "C", "D (multi-select)"]
-var voteItems = [["p", "q"], ["r", "s", "t", "u"], ["x", "y", "z"], ["m", "n", "o", "p"]]
-var voteTallies = [[3, 2], [1, 0, 4, 0], [2, 1, 2], [5, 3, 1, 4]]
-var isOpen = [false, false, false, false]
-var voteSelections = [[], [], [], []] as [[Int]]
-var multiSelectable = [false, false, false, true]*/
-
-
-extension VotingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
+extension VoteResultsDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let magicIndex = curView.daysAndTimesMagicIndexes[curIndex] + indexPath.row
-        if curView.voteSelections[curView.daysAndTimesGroupIndex].contains(magicIndex) {
-            curView.voteSelections[curView.daysAndTimesGroupIndex] = curView.voteSelections[curView.daysAndTimesGroupIndex].filter {$0 != magicIndex}
-            curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex] -= 1
+        if curView.voteSelections[curView.daysAndTimesGroupIndex] == magicIndex {
+            curView.voteSelections[curView.daysAndTimesGroupIndex] = nil
         } else {
-            curView.voteSelections[curView.daysAndTimesGroupIndex].append(magicIndex)
-            curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex] += 1
+            curView.voteSelections[curView.daysAndTimesGroupIndex] = magicIndex
         }
         
         for (index, _) in curView.daysAndTimesMagicIndexes.enumerated() {
-            (curView.voteTableView.cellForRow(at: IndexPath(row: index, section: curView.daysAndTimesGroupIndex)) as? VotingDayAndTimesCell)?.timesCollectionView.reloadData()
-
+            (curView.voteTableView.cellForRow(at: IndexPath(row: index, section: curView.daysAndTimesGroupIndex)) as? VoteResultsDayAndTimesCell)?.timesCollectionView.reloadData()
         }
-        curView.updateSubmitButton()
+        curView.updateSubmitButtonStatus()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -731,117 +662,8 @@ extension VotingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     }
 }
 
-class VotingTimeCell: UICollectionViewCell {
-    static let reuseIdentifier = String(describing: VotingTimeCell.self)
+protocol VoteResultsViewControllerDelegate: AnyObject {
     
-    let timeLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Style.font(size: 18)
-        return label
-    }()
-    
-    let voteCountLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Style.lightGreyColor
-        label.textColor = Style.greyColor
-        label.textAlignment = .center
-        label.text = "1"
-        return label
-    }()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        // Apply rounded corners
-        self.layer.cornerRadius = 5
-        
-        
-        contentView.addSubview(timeLabel)
-        contentView.addSubview(voteCountLabel)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        
-        self.contentView.layer.cornerRadius = 5
-        
-        let inset: CGFloat = 5
-
-        NSLayoutConstraint.activate([
-            timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            voteCountLabel.heightAnchor.constraint(equalToConstant: self.frame.height - (inset * 2)),
-            voteCountLabel.widthAnchor.constraint(equalTo: voteCountLabel.heightAnchor),
-            voteCountLabel.leftAnchor.constraint(equalTo: timeLabel.rightAnchor, constant: inset),
-            voteCountLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-        ])
-        
-        voteCountLabel.layer.masksToBounds = true
-        voteCountLabel.layer.cornerRadius = voteCountLabel.frame.height / 2
-    }
-}
-
-class VoteCell: UITableViewCell {
-    
-    static let reuseIdentifier = String(describing: VoteCell.self)
-    
-    let voteCount: UIView = {
-        let count = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        return count
-    }()
-    
-    let label: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = Style.darkTextColor
-        return label
-    }()
-    
-    let counter: UILabel = {
-        let counter = UILabel()
-        counter.translatesAutoresizingMaskIntoConstraints = false
-        counter.textColor = Style.darkTextColor
-        return counter
-    }()
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        
-        self.backgroundColor = Style.lightGreyColor
-        self.layer.cornerRadius = self.frame.height / 2
-        
-        self.contentView.addSubview(voteCount)
-        self.contentView.addSubview(label)
-        self.contentView.addSubview(counter)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let inset = CGFloat(20)
-
-        NSLayoutConstraint.activate([
-            label.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            label.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
-            label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
-            
-            
-            counter.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),
-            counter.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4)
-        ])
-    }
-
-}
-
-protocol VoteViewControllerDelegate: AnyObject {
-    
-  func didFinishTask(sender: VoteViewController)
+  func didFinishTask(sender: VoteResultsViewController)
     
 }

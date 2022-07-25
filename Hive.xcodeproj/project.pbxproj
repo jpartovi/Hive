@@ -14,8 +14,9 @@
 		1545E0172888B07C004DD491 /* Day.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0162888B07C004DD491 /* Day.swift */; };
 		1545E0192888B0B9004DD491 /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E0182888B0B9004DD491 /* Time.swift */; };
 		1545E01B2888B0CD004DD491 /* Duration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E01A2888B0CD004DD491 /* Duration.swift */; };
-		1545E01D2889DBB2004DD491 /* InputEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E01C2889DBB2004DD491 /* InputEventViewController.swift */; };
+		1545E01D2889DBB2004DD491 /* VoteResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E01C2889DBB2004DD491 /* VoteResultsViewController.swift */; };
 		1545E01F2889DBD6004DD491 /* VoteNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */; };
+		1545E021288F5499004DD491 /* VoteResultsNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */; };
 		156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6A287635E600613360 /* LocationsViewController.swift */; };
 		156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6C2876362000613360 /* StartEventViewController.swift */; };
 		156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE6F287637EC00613360 /* DaySelectorViewController.swift */; };
@@ -69,8 +70,9 @@
 		1545E0162888B07C004DD491 /* Day.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day.swift; sourceTree = "<group>"; };
 		1545E0182888B0B9004DD491 /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
 		1545E01A2888B0CD004DD491 /* Duration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Duration.swift; sourceTree = "<group>"; };
-		1545E01C2889DBB2004DD491 /* InputEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InputEventViewController.swift; path = ../InputEventViewController.swift; sourceTree = "<group>"; };
-		1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoteNavigationController.swift; path = ../VoteNavigationController.swift; sourceTree = "<group>"; };
+		1545E01C2889DBB2004DD491 /* VoteResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VoteResultsViewController.swift; path = ../VoteResultsViewController.swift; sourceTree = "<group>"; };
+		1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteNavigationController.swift; sourceTree = "<group>"; };
+		1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteResultsNavigationController.swift; sourceTree = "<group>"; };
 		156DAE6A287635E600613360 /* LocationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
 		156DAE6C2876362000613360 /* StartEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartEventViewController.swift; sourceTree = "<group>"; };
 		156DAE6F287637EC00613360 /* DaySelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySelectorViewController.swift; sourceTree = "<group>"; };
@@ -149,9 +151,8 @@
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
-				1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */,
 				15B5D26928823624004267E2 /* VoteViewController.swift */,
-				1545E01C2889DBB2004DD491 /* InputEventViewController.swift */,
+				1545E01C2889DBB2004DD491 /* VoteResultsViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
 			);
@@ -203,6 +204,8 @@
 				151BC1E42888842000B330DF /* Custom Elements.swift */,
 				156DAE7D287CD02800613360 /* Extensions.swift */,
 				15B44F4D2860E3B10055B51C /* Style.swift */,
+				1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */,
+				1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */,
 				1545E0112888B016004DD491 /* Event Structs */,
 				15B44F4F2860E3DA0055B51C /* View Controllers */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,
@@ -405,7 +408,8 @@
 				1545E0172888B07C004DD491 /* Day.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				1545E01F2889DBD6004DD491 /* VoteNavigationController.swift in Sources */,
-				1545E01D2889DBB2004DD491 /* InputEventViewController.swift in Sources */,
+				1545E01D2889DBB2004DD491 /* VoteResultsViewController.swift in Sources */,
+				1545E021288F5499004DD491 /* VoteResultsNavigationController.swift in Sources */,
 				15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */,
 				15B5D26A28823625004267E2 /* VoteViewController.swift in Sources */,
 				156DAE6D2876362000613360 /* StartEventViewController.swift in Sources */,
