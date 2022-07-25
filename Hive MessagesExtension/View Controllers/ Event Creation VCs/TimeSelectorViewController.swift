@@ -154,7 +154,7 @@ class TimeSelectorViewController: StyleViewController {
         }
         
         if anyStartTimeSelected {
-            nextButton.color(title: "Done")
+            nextButton.color(title: "Next")
         } else {
             nextButton.grey(title: "Skip")
         }

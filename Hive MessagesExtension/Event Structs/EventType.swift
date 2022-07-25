@@ -160,6 +160,6 @@ enum EventType: CaseIterable {
         case .other:
             type = "other"
         }
-        return URLQueryItem(name: "type", value: type)
+        return URLQueryItem(name: "eventType", value: type)
     }
 }

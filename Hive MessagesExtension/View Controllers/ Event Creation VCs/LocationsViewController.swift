@@ -438,6 +438,6 @@ class LocationCell: UITableViewCell {
         ])
         
         deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
-        titleTextField.style(placeholderText: "Enter Location Name")
+        titleTextField.style(placeholderText: "Name (eg. My House)")
     }
 }

@@ -34,7 +34,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="319" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R67-5B-1q2">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R67-5B-1q2" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="119.5" y="60" width="80" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -65,11 +65,25 @@
                                     <action selector="noClick:" destination="Vsx-hT-sud" eventType="touchUpInside" id="eaS-4T-VzP"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k29-v3-ujG" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="16" y="119" width="287" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h85-KD-Ghb" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="16" y="148" width="287" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="5o3-KE-ybH"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="5o3-KE-ybH" firstAttribute="trailing" secondItem="k29-v3-ujG" secondAttribute="trailing" constant="16" id="2LW-d0-DSL"/>
                             <constraint firstItem="SpZ-IT-sO9" firstAttribute="leading" secondItem="5o3-KE-ybH" secondAttribute="leading" constant="50" id="4TV-7d-tsV"/>
+                            <constraint firstItem="h85-KD-Ghb" firstAttribute="top" secondItem="k29-v3-ujG" secondAttribute="bottom" constant="8" symbolic="YES" id="9vY-lh-R1L"/>
                             <constraint firstItem="5y6-73-gMW" firstAttribute="centerX" secondItem="yhe-Pj-0WJ" secondAttribute="centerX" id="ArW-YC-y14"/>
                             <constraint firstItem="FWX-Xp-rDP" firstAttribute="centerX" secondItem="SpZ-IT-sO9" secondAttribute="centerX" id="Ewp-Ni-GUW"/>
                             <constraint firstItem="yhe-Pj-0WJ" firstAttribute="centerY" secondItem="SpZ-IT-sO9" secondAttribute="centerY" id="GLe-Bl-dJ0"/>
@@ -78,13 +92,19 @@
                             <constraint firstItem="5y6-73-gMW" firstAttribute="width" secondItem="yhe-Pj-0WJ" secondAttribute="width" multiplier="0.5" id="Oan-1e-WM0"/>
                             <constraint firstItem="yhe-Pj-0WJ" firstAttribute="top" secondItem="5y6-73-gMW" secondAttribute="bottom" constant="-30" id="URb-gC-uSJ"/>
                             <constraint firstItem="R67-5B-1q2" firstAttribute="top" secondItem="5o3-KE-ybH" secondAttribute="top" constant="16" id="Vyu-sY-S5z"/>
+                            <constraint firstItem="h85-KD-Ghb" firstAttribute="leading" secondItem="5o3-KE-ybH" secondAttribute="leading" constant="16" id="WHe-QV-ULm"/>
+                            <constraint firstItem="k29-v3-ujG" firstAttribute="leading" secondItem="5o3-KE-ybH" secondAttribute="leading" constant="16" id="bDd-MP-pFF"/>
+                            <constraint firstItem="k29-v3-ujG" firstAttribute="top" secondItem="R67-5B-1q2" secondAttribute="bottom" constant="38" id="c8E-Re-oN6"/>
                             <constraint firstItem="5o3-KE-ybH" firstAttribute="trailing" secondItem="yhe-Pj-0WJ" secondAttribute="trailing" constant="50" id="kHK-Cd-gN7"/>
+                            <constraint firstItem="5o3-KE-ybH" firstAttribute="trailing" secondItem="h85-KD-Ghb" secondAttribute="trailing" constant="16" id="kKg-dH-CL8"/>
                             <constraint firstItem="5o3-KE-ybH" firstAttribute="bottom" secondItem="SpZ-IT-sO9" secondAttribute="bottom" constant="150" id="luP-it-Xi4"/>
                             <constraint firstItem="R67-5B-1q2" firstAttribute="centerX" secondItem="5o3-KE-ybH" secondAttribute="centerX" id="ytD-ia-Ne9"/>
                         </constraints>
                     </view>
                     <size key="freeformSize" width="319" height="528"/>
                     <connections>
+                        <outlet property="dayAndTimeLabel" destination="k29-v3-ujG" id="JuX-vt-bDo"/>
+                        <outlet property="locationLabel" destination="h85-KD-Ghb" id="yLL-ny-i4c"/>
                         <outlet property="noBar" destination="5y6-73-gMW" id="m2C-LA-lzC"/>
                         <outlet property="noButton" destination="yhe-Pj-0WJ" id="bcd-YX-M48"/>
                         <outlet property="titleLabel" destination="R67-5B-1q2" id="6kW-8j-ric"/>
@@ -94,7 +114,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aB4-O5-aQv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3160" y="-1102"/>
+            <point key="canvasLocation" x="3158.6956521739135" y="-1102.9017857142856"/>
         </scene>
         <!--Vote Navigation Controller-->
         <scene sceneID="jqP-cL-ffC">
@@ -120,37 +140,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
-                                <rect key="frame" x="16" y="256" width="288" height="122"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="oqD-IW-uP0" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oqD-IW-uP0" id="T1m-MG-0i5">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="VotingDayAndTimesCell" id="h8r-mZ-Zdy" customClass="VotingDayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="88" width="288" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h8r-mZ-Zdy" id="QDe-H3-fwC">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1v-xz-QVR" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="20" y="150" width="280" height="46"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="Cf8-ex-e2c"/>
-                                    <constraint firstAttribute="height" constant="46" id="fEb-XS-byf"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Il1-n0-leK" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="133.5" y="418" width="53" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -159,18 +148,6 @@
                                     <action selector="submitButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="0vR-BS-ANK"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3">
-                                <rect key="frame" x="127" y="204" width="66" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn">
-                                <rect key="frame" x="123" y="227" width="74" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ux-hy-RNE" userLabel="Create Event" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="191" y="418" width="88" height="30"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -179,25 +156,86 @@
                                     <action selector="createEventButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="gEN-wU-ofj"/>
                                 </connections>
                             </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
+                                <rect key="frame" x="19" y="88" width="285" height="290"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
+                                        <rect key="frame" x="0.0" y="113" width="285" height="157"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="175" id="eFF-UC-VhA"/>
+                                        </constraints>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="oqD-IW-uP0" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="44.5" width="285" height="43.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oqD-IW-uP0" id="T1m-MG-0i5">
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="VotingDayAndTimesCell" id="h8r-mZ-Zdy" customClass="VotingDayAndTimesCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="88" width="285" height="43.5"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h8r-mZ-Zdy" id="QDe-H3-fwC">
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1v-xz-QVR" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="285" height="46"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="46" id="fEb-XS-byf"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="54" width="285" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="83" width="285" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="1GN-HN-4WK"/>
+                                    <constraint firstItem="49J-CZ-eci" firstAttribute="top" secondItem="0EQ-h5-lk3" secondAttribute="bottom" id="9Ry-tg-Yij"/>
+                                    <constraint firstItem="1hl-qe-PCn" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="bottom" constant="8" symbolic="YES" id="9Tz-Ol-CWz"/>
+                                    <constraint firstItem="49J-CZ-eci" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="Bvr-tH-uXO"/>
+                                    <constraint firstItem="1hl-qe-PCn" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="Emy-60-dvI"/>
+                                    <constraint firstItem="0EQ-h5-lk3" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="I3Z-Y1-wev"/>
+                                    <constraint firstAttribute="bottom" secondItem="49J-CZ-eci" secondAttribute="bottom" id="W3D-Sc-DqL"/>
+                                    <constraint firstItem="0EQ-h5-lk3" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="WgZ-sj-0f1"/>
+                                    <constraint firstItem="0EQ-h5-lk3" firstAttribute="top" secondItem="1hl-qe-PCn" secondAttribute="bottom" id="WwV-Vd-b3L"/>
+                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="fPe-5A-T75"/>
+                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="fgW-qg-lAm"/>
+                                    <constraint firstItem="49J-CZ-eci" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="hNq-4l-P9O"/>
+                                    <constraint firstItem="1hl-qe-PCn" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="nf3-gf-V9Y"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="UYE-5m-qbj"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="S6X-38-HtZ"/>
+                            </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AUO-3P-b70"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerY" secondItem="Il1-n0-leK" secondAttribute="centerY" id="00D-fu-MjL"/>
-                            <constraint firstItem="0EQ-h5-lk3" firstAttribute="top" secondItem="C1v-xz-QVR" secondAttribute="bottom" constant="8" symbolic="YES" id="4Mb-71-HkM"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="7lu-wG-L1l"/>
-                            <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="Hx6-O8-szG"/>
-                            <constraint firstItem="1hl-qe-PCn" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="LhB-uX-a5N"/>
-                            <constraint firstItem="49J-CZ-eci" firstAttribute="leading" secondItem="AUO-3P-b70" secondAttribute="leading" constant="16" id="MVf-Yp-NWe"/>
-                            <constraint firstItem="1hl-qe-PCn" firstAttribute="top" secondItem="0EQ-h5-lk3" secondAttribute="bottom" constant="2" id="NQ7-mf-LDX"/>
+                            <constraint firstItem="FSA-LC-JBs" firstAttribute="leading" secondItem="AUO-3P-b70" secondAttribute="leading" constant="19" id="LuB-Il-Kqv"/>
+                            <constraint firstItem="Il1-n0-leK" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="bottom" constant="40" id="SNf-aH-ExK"/>
                             <constraint firstItem="0Ux-hy-RNE" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="75" id="Xg0-TM-PVj"/>
-                            <constraint firstItem="49J-CZ-eci" firstAttribute="top" secondItem="1hl-qe-PCn" secondAttribute="bottom" constant="8" symbolic="YES" id="iD6-T2-1oO"/>
+                            <constraint firstItem="AUO-3P-b70" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="btT-Ap-Knj"/>
                             <constraint firstItem="Il1-n0-leK" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" constant="-75" id="ipg-Cl-Wmo"/>
                             <constraint firstItem="AUO-3P-b70" firstAttribute="bottom" secondItem="Il1-n0-leK" secondAttribute="bottom" constant="80" id="joo-Z6-b6s"/>
-                            <constraint firstItem="Il1-n0-leK" firstAttribute="top" secondItem="49J-CZ-eci" secondAttribute="bottom" constant="40" id="kc4-xu-w9d"/>
-                            <constraint firstItem="0EQ-h5-lk3" firstAttribute="centerX" secondItem="AUO-3P-b70" secondAttribute="centerX" id="qcS-bp-3Gc"/>
-                            <constraint firstItem="C1v-xz-QVR" firstAttribute="top" secondItem="AUO-3P-b70" secondAttribute="top" constant="62" id="s1r-wq-CKy"/>
-                            <constraint firstItem="AUO-3P-b70" firstAttribute="trailing" secondItem="49J-CZ-eci" secondAttribute="trailing" constant="16" id="yaN-ip-H3i"/>
+                            <constraint firstItem="AUO-3P-b70" firstAttribute="trailing" secondItem="FSA-LC-JBs" secondAttribute="trailing" constant="16" id="z35-Zl-sMs"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -212,15 +250,17 @@
                         <outlet property="dayAndTimeLabel" destination="1hl-qe-PCn" id="0Xj-rH-UKi"/>
                         <outlet property="locationLabel" destination="0EQ-h5-lk3" id="osd-5A-rzG"/>
                         <outlet property="promptLabel" destination="C1v-xz-QVR" id="JZi-F8-kKl"/>
+                        <outlet property="scrollView" destination="FSA-LC-JBs" id="dVU-L2-NSw"/>
                         <outlet property="submitButton" destination="Il1-n0-leK" id="nKH-GO-S0F"/>
-                        <outlet property="voteTable" destination="49J-CZ-eci" id="tqP-53-Ptm"/>
+                        <outlet property="voteTableView" destination="49J-CZ-eci" id="tqP-53-Ptm"/>
+                        <outlet property="voteTableViewHeightConstraint" destination="eFF-UC-VhA" id="r1e-85-3uA"/>
                         <outletCollection property="clientConstraints" destination="7lu-wG-L1l" collectionClass="NSMutableArray" id="yLG-D0-GqE"/>
                         <outletCollection property="hostConstraints" destination="ipg-Cl-Wmo" collectionClass="NSMutableArray" id="RCx-5A-mAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="772-nu-0V6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4875" y="-1238"/>
+            <point key="canvasLocation" x="4873.913043478261" y="-1238.1696428571429"/>
         </scene>
         <!--Time Selector View Controller-->
         <scene sceneID="cp4-m4-Iap">
