@@ -26,7 +26,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     override func willBecomeActive(with conversation: MSConversation) {
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
-        
+        print("ABCABCABC")
         MessagesViewController.conversation = conversation
         
         presentViewController(for: conversation, with: presentationStyle)
@@ -101,6 +101,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             } else if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
+                    print("subchild = subchild as? ConfirmViewController")
+                    print(presentationStyle.rawValue)
                     if presentationStyle == .compact {
                         subchild.scrollViewTrailingConstraint.constant = 160
                         for constraint in subchild.expandConstraints {

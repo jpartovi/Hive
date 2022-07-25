@@ -96,7 +96,6 @@ class DaySelectorViewController: StyleViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("viewDidLayoutSubviews")
         loadMonthLabel()
     }
     
@@ -114,6 +113,7 @@ class DaySelectorViewController: StyleViewController {
             for constraint in compactConstraints {
                 constraint.isActive = true
             }
+            
             line.isHidden = true
             weekDayLabels.isHidden = true
             monthLabel.isHidden = false
@@ -139,7 +139,6 @@ class DaySelectorViewController: StyleViewController {
     
     func updateContentView() {
         scrollView.contentSize.width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
-        print(calendarCollectionView!.frame.size)
     }
     
     func updateEventObject() {
@@ -357,6 +356,15 @@ extension DaySelectorViewController: UICollectionViewDataSource {
         
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if (calendarCollectionView?.delegate as? DaySelectorViewController)!.compactView {
+            if let cellWidth = calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width {
+                let belowIndex = Calendar.current.dateComponents([.day], from: calendarDays[0].day.date, to: today).day!
+                scrollView.contentOffset.x = (CGFloat(belowIndex) - 2.1) * cellWidth
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
@@ -416,6 +424,7 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
             updateEventObject()
             (viewController as! LocationsViewController).event = event
             (viewController as! LocationsViewController).updateLocations()
+            (viewController as! LocationsViewController).expandToNext = false
             
         }
     }
@@ -429,6 +438,7 @@ extension DaySelectorViewController: UIScrollViewDelegate {
             scrollView.contentOffset.y = 0
         }
     }
+    
 }
 
 struct CalendarDay {
