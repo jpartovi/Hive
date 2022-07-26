@@ -234,6 +234,18 @@ class SelectionLargeHexButton: LargeHexButton {
     }
 }
 
+extension UITableView {
+    func setBackgroundColor() {
+        //self.backgroundColor = Style.backgroundColor
+    }
+}
+
+extension UICollectionView {
+    func setBackgroundColor() {
+        self.backgroundColor = Style.backgroundColor
+    }
+}
+
 class StyleViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
@@ -250,11 +262,19 @@ class StyleViewController: MSMessagesAppViewController {
     func addHexFooter() {
         let frameHeight = self.view.frame.height
         let frameWidth = self.view.frame.width
-        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth * 0.34)
+        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth)
         let footerImageView = UIImageView( image: footerImage)
         footerImageView.frame = CGRect(x: 0, y: frameHeight - footerImageView.frame.height, width: frameWidth, height: footerImageView.frame.height)
         self.view.addSubview(footerImageView)
         self.view.sendSubviewToBack(footerImageView)
+        /*
+        NSLayoutConstraint.activate([
+            footerImageView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            footerImageView.rightAnchor.constraint(equalTo: self.view.leftAnchor),
+            footerImageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            footerImageView.heightAnchor.constraint(equalToConstant: (footerImage?.size.height)!)
+        ])
+         */
     }
     
     func enableTouchAwayKeyboardDismiss() {

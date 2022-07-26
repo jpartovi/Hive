@@ -23,7 +23,7 @@ class DaySelectorViewController: StyleViewController {
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var weekDayLabels: UIStackView!
     
-    @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var monthLabel: StyleLabel!
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
@@ -48,7 +48,7 @@ class DaySelectorViewController: StyleViewController {
         return dateFormatter
     }()
     
-    @IBOutlet var calendarCollectionView: UICollectionView?
+    @IBOutlet var calendarCollectionView: UICollectionView!
     @IBOutlet weak var nextButton: HexButton!
     
     var calendarDays = [CalendarDay]()
@@ -64,20 +64,23 @@ class DaySelectorViewController: StyleViewController {
         
         underlineWeekDayLabels()
     
+        
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(calendarCollectionView!)
+        scrollView.delegate = self
+        updateContentView()
+        
         calendarCollectionView?.translatesAutoresizingMaskIntoConstraints = false
         calendarCollectionView!.contentInsetAdjustmentBehavior = .always
         calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
         
         calendarCollectionView!.dataSource = self
         calendarCollectionView!.delegate = self
+        calendarCollectionView.setBackgroundColor()
         
         updateSelections()
         calendarCollectionView!.reloadData()
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(calendarCollectionView!)
-        scrollView.delegate = self
-        updateContentView()
     }
     
     func updateSelections() {
@@ -181,6 +184,8 @@ class DaySelectorViewController: StyleViewController {
     func loadMonthLabel() {
         let calendar = Calendar.current
         
+        let text: String
+        
         if compactView {
             
             var belowIndex: Int
@@ -204,17 +209,19 @@ class DaySelectorViewController: StyleViewController {
             let month = calendar.component(.month, from: belowDate.date)
             //let components = calendar.dateComponents([.day,.month,.year], from: belowDate.date)
             //let month = components.month!
-            monthLabel.text = DateFormatter().monthSymbols[month - 1]
+            text = DateFormatter().monthSymbols[month - 1]
         } else {
             let month1 = calendar.component(.month, from: (calendarDays.first?.day.date)!)
             let month2 = calendar.component(.month, from: (calendarDays.last?.day.date)!)
             
             if month1 == month2 {
-                monthLabel.text = DateFormatter().monthSymbols[month1 - 1]
+                text = DateFormatter().monthSymbols[month1 - 1]
             } else {
-                monthLabel.text = DateFormatter().monthSymbols[month1 - 1] + "/" + DateFormatter().monthSymbols[month2 - 1]
+                text = DateFormatter().monthSymbols[month1 - 1] + "/" + DateFormatter().monthSymbols[month2 - 1]
             }
         }
+        
+        monthLabel.style(text: text, textColor: Style.darkTextColor, fontSize: 18)
     }
     
     func underlineWeekDayLabels() {

@@ -68,6 +68,10 @@ class VoteResultsViewController: StyleViewController {
         //addHexFooter()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        //addHexFooter()
+    }
+    
     func updateTableViewHeight() {
         
         
@@ -248,6 +252,9 @@ class VoteResultsViewController: StyleViewController {
     }
     
     @objc func sectionHeaderTouchDown(recognizer: UILongPressGestureRecognizer) {
+        // This disables the opening and closing of vote groups
+        return
+        
         if recognizer.state == .began {
             
             let shadeView = UIView(frame: CGRect(x: 0, y: 0, width: recognizer.view!.frame.width, height: recognizer.view!.frame.height))

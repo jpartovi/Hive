@@ -58,7 +58,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         //self.view.window!.rootViewController?.dismiss(animated: false)
                         //dismiss()
                     } else if presentationStyle == .expanded {
-                        //subchild.addHexFooter()
+                        subchild.addHexFooter()
                     }
                 }
             } else if let child = child as? VoteResultsNavigationController {
@@ -74,7 +74,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         //self.view.window!.rootViewController?.dismiss(animated: false)
                         //dismiss()
                     } else if presentationStyle == .expanded {
-                        //subchild.addHexFooter()
+                        subchild.addHexFooter()
                     }
                 }
             } else if let child = child as? InviteViewController {

@@ -91,6 +91,7 @@ class StartEventViewController: StyleViewController {
     }
  
     func setUpHexCollection() {
+        
         typesCollectionView.dataSource = self
         typesCollectionView.delegate = self
         
