@@ -18,7 +18,7 @@ enum Colors {
     static let darkTextColor = Colors.hexStringToUIColor(hex: "4F4F4F")
     static let greyColor = Colors.hexStringToUIColor(hex: "9C9C9C")
     static let lightGreyColor = Colors.hexStringToUIColor(hex: "E3E3E3")
-    static let errorColor = Colors.hexStringToUIColor(hex: "CF6048")
+    static let errorColor = Colors.hexStringToUIColor(hex: "D24223")
     static let backgroundColor = Colors.hexStringToUIColor(hex: "FFFFFF")
     
     // Color palletes: https://coolors.co/palettes/popular/yellow
@@ -44,26 +44,5 @@ enum Colors {
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
             alpha: CGFloat(1.0)
         )
-    }
-}
-
-enum Format {
-    
-    // Font
-    static func font(size: CGFloat = 18) -> UIFont {
-        let font = UIFont(name: "Helvetica", size: size)!
-        return font
-    }
-    
-    // Comma separated list
-    static func commaList(items: [String]) -> String {
-        var commaList = ""
-        for (index, item) in items.enumerated() {
-            commaList += item
-            if index != items.count - 1 {
-                commaList += ", "
-            }
-        }
-        return commaList
     }
 }

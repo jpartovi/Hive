@@ -168,7 +168,6 @@ class ConfirmViewController: StyleViewController {
         updatePostButtonStatus()
     }
     
-    
     func setUpEventTitleTextField() {
         eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Colors.tertiaryColor, textColor: Colors.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
@@ -210,7 +209,7 @@ class ConfirmViewController: StyleViewController {
         outEvent.daysAndTimes = daysAndTimes
         
         // Remove blank locations
-        outEvent.locations.removeAll(where: { $0.address == nil && $0.title == "" })
+        outEvent.locations.removeAll(where: { $0.address == nil && $0.title.isBlank() })
         
         return outEvent
     }
@@ -223,11 +222,16 @@ class ConfirmViewController: StyleViewController {
         
         // Make sure all text fields are full
         for location in event.locations {
-            if location.title == "" {
+            if location.title.isBlank() {
                 // ERROR
                 return
             }
         }
+        if !eventTitleTextField.getStatus(withDisplay: true) {
+            // ERROR
+            return
+        }
+        
         
         var postEvent = updateEventObject(inEvent: event)
         
@@ -322,7 +326,11 @@ class ConfirmViewController: StyleViewController {
     }
     
     func updatePostButtonStatus() {
-        
+        let text = eventTitleTextField.text ?? ""
+        if text.isBlank() {
+            postButton.grey(title: "Post")
+            return
+        }
         for location in event.locations {
             if location.title == "" {
                 postButton.grey(title: "Post")
@@ -406,6 +414,7 @@ class ConfirmViewController: StyleViewController {
     @objc func eventTitleTextFieldDidChange(sender: StyleTextField) {
         
         event.title = sender.text ?? ""
+        sender.isNew = false
         sender.colorStatus()
         updatePostButtonStatus()
     }

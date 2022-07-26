@@ -23,7 +23,7 @@ class TimeSelectorViewController: StyleViewController {
     lazy var selectedDuration: Duration? = event.duration
     
     @IBOutlet weak var promptLabel: StyleLabel!
-    @IBOutlet weak var durationLabel: UILabel!
+    @IBOutlet weak var durationLabel: StyleLabel!
     @IBOutlet weak var durationPicker: UIPickerView!
     @IBOutlet weak var durationView: UIStackView!
     @IBOutlet weak var includeDurationButton: UIButton!
@@ -50,6 +50,8 @@ class TimeSelectorViewController: StyleViewController {
         super.viewDidLoad()
         
         addHexFooter()
+        
+        durationLabel.style(text: "Duration:", textColor: Colors.darkTextColor, fontSize: 20)
                 
         promptLabel.style(text: "What time(s) might this event start?")
         
@@ -237,21 +239,23 @@ extension TimeSelectorViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
-        var label = UILabel()
+        var label = StyleLabel()
         if let v = view {
-            label = v as! UILabel
+            label = v as! StyleLabel
         }
+        let fontSize: CGFloat
         if compactView {
-            label.font = label.font.withSize(15)
+            fontSize = 15
+            
         } else {
-            label.font = label.font.withSize(20)
+            fontSize = 20
         }
         if let duration: Duration = durations[row] {
-            label.text = duration.format()
+            
+            label.style(text: duration.format(), textColor: Colors.darkTextColor, fontSize: fontSize)
         } else {
-            label.text = "None"
+            label.style(text: "None", textColor: Colors.darkTextColor, fontSize: fontSize)
         }
-        label.textAlignment = .center
         return label
     }
     

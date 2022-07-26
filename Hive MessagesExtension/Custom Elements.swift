@@ -57,7 +57,11 @@ class StyleTextField: UITextField {
             self.fullColor = color
         }
         //underline(color: fullColor)
-        self.placeholder = placeholderText
+        //self.placeholder = placeholderText
+        self.attributedPlaceholder = NSAttributedString(
+            string: placeholderText,
+            attributes: [NSAttributedString.Key.foregroundColor: Colors.greyColor]
+        )
         self.textColor = textColor
         self.adjustsFontSizeToFitWidth = false
         self.font = Format.font(size: fontSize)
@@ -70,7 +74,8 @@ class StyleTextField: UITextField {
     func getStatus(withDisplay: Bool) -> Bool {
         let color: UIColor
         let isFull: Bool
-        if self.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        let text = self.text ?? ""
+        if text.isBlank() {
             isFull = false
             color = emptyColor
         } else {

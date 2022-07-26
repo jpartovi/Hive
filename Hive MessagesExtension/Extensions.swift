@@ -44,6 +44,10 @@ extension String {
         let endIndex = index(from: r.upperBound)
         return String(self[startIndex..<endIndex])
     }
+    
+    func isBlank() -> Bool {
+        return self.trimmingCharacters(in: .whitespacesAndNewlines) == ""
+    }
 }
 
 let fadePercentage: Double = 0.2
@@ -101,7 +105,6 @@ extension UIImage {
         return scaledImage
     }
 }
-
 
 extension UITableView {
     func setBackgroundColor(color: UIColor = Colors.backgroundColor) {

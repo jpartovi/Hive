@@ -25,6 +25,15 @@ class DaySelectorViewController: StyleViewController {
     
     @IBOutlet weak var monthLabel: StyleLabel!
     
+    @IBOutlet weak var sunLabel: StyleLabel!
+    @IBOutlet weak var monLabel: StyleLabel!
+    @IBOutlet weak var tueLabel: StyleLabel!
+    @IBOutlet weak var wedLabel: StyleLabel!
+    @IBOutlet weak var thuLabel: StyleLabel!
+    @IBOutlet weak var friLabel: StyleLabel!
+    @IBOutlet weak var satLabel: StyleLabel!
+    
+    
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     
@@ -79,6 +88,18 @@ class DaySelectorViewController: StyleViewController {
         scrollView.addSubview(calendarCollectionView!)
         scrollView.delegate = self
         updateContentView()
+        
+        formatDayOfWeekLabels()
+    }
+    
+    func formatDayOfWeekLabels() {
+        sunLabel.style(text: "S", textColor: Colors.darkTextColor, fontSize: 18)
+        monLabel.style(text: "M", textColor: Colors.darkTextColor, fontSize: 18)
+        tueLabel.style(text: "T", textColor: Colors.darkTextColor, fontSize: 18)
+        wedLabel.style(text: "W", textColor: Colors.darkTextColor, fontSize: 18)
+        thuLabel.style(text: "T", textColor: Colors.darkTextColor, fontSize: 18)
+        friLabel.style(text: "F", textColor: Colors.darkTextColor, fontSize: 18)
+        satLabel.style(text: "S", textColor: Colors.darkTextColor, fontSize: 18)
     }
     
     func updateSelections() {

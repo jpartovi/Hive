@@ -23,7 +23,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6j-bj-qp4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3161" y="-1577"/>
+            <point key="canvasLocation" x="2896" y="-926"/>
         </scene>
         <!--Invite View Controller-->
         <scene sceneID="DQ2-O4-Cay">
@@ -114,7 +114,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aB4-O5-aQv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3158.6956521739135" y="-1102.9017857142856"/>
+            <point key="canvasLocation" x="4873" y="157"/>
         </scene>
         <!--Vote Navigation Controller-->
         <scene sceneID="jqP-cL-ffC">
@@ -353,7 +353,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0Q-XC-0nK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7192.753623188406" y="-1238.1696428571429"/>
+            <point key="canvasLocation" x="4875" y="-529"/>
         </scene>
         <!--Time Selector View Controller-->
         <scene sceneID="cp4-m4-Iap">
@@ -374,7 +374,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-4s-y8L">
                                 <rect key="frame" x="40" y="255" width="240.5" height="93"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="90.5" height="93"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <nil key="textColor"/>
@@ -684,43 +684,43 @@
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" distribution="fillEqually" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="MNm-8v-H7s">
                                 <rect key="frame" x="28" y="166.5" width="264" height="20.5"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlJ-Du-8bv">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlJ-Du-8bv" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="16.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="M" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXq-O8-JY9">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="M" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXq-O8-JY9" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="41.5" y="0.0" width="16" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yL-gz-IpC">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9yL-gz-IpC" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="82.5" y="0.0" width="16.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E34-Bo-GSk">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="W" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E34-Bo-GSk" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="124" y="0.0" width="16" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="drx-BB-0WL">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="T" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="drx-BB-0WL" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="165" y="0.0" width="16.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="F" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtB-XE-ghv">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="F" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PtB-XE-ghv" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="206.5" y="0.0" width="16" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="20" translatesAutoresizingMaskIntoConstraints="NO" id="ceO-Pp-cOf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="20" translatesAutoresizingMaskIntoConstraints="NO" id="ceO-Pp-cOf" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="247.5" y="0.0" width="16.5" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -821,10 +821,17 @@
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
                         <outlet property="calendarCollectionView" destination="Rwn-M5-KIh" id="haL-4H-qLZ"/>
+                        <outlet property="friLabel" destination="PtB-XE-ghv" id="qWu-lZ-MQa"/>
+                        <outlet property="monLabel" destination="yXq-O8-JY9" id="czK-a5-f0G"/>
                         <outlet property="monthLabel" destination="cqz-Gm-hQJ" id="IWA-Q2-IJt"/>
                         <outlet property="nextButton" destination="Bdz-n3-PIX" id="SDb-hV-57c"/>
                         <outlet property="promptLabel" destination="ajv-TN-q44" id="dgb-Rz-Ade"/>
+                        <outlet property="satLabel" destination="ceO-Pp-cOf" id="7u9-sA-Ew2"/>
                         <outlet property="scrollView" destination="4rO-ad-lsh" id="GiE-sn-bqB"/>
+                        <outlet property="sunLabel" destination="RlJ-Du-8bv" id="BdN-L6-E8a"/>
+                        <outlet property="thuLabel" destination="drx-BB-0WL" id="C8E-av-vas"/>
+                        <outlet property="tueLabel" destination="9yL-gz-IpC" id="Nan-Kr-21a"/>
+                        <outlet property="wedLabel" destination="E34-Bo-GSk" id="dli-ZG-lMY"/>
                         <outlet property="weekDayLabels" destination="MNm-8v-H7s" id="uJ1-IF-pT5"/>
                         <outletCollection property="compactConstraints" destination="Lay-pq-kI0" collectionClass="NSMutableArray" id="CrB-Cs-5CR"/>
                         <outletCollection property="compactConstraints" destination="BhH-nX-rob" collectionClass="NSMutableArray" id="lLa-w1-egO"/>
@@ -1074,7 +1081,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XvU-Vo-EMl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6282.608695652174" y="-1238.1696428571429"/>
+            <point key="canvasLocation" x="4135" y="-529"/>
         </scene>
     </scenes>
     <color key="tintColor" red="0.87450980389999999" green="0.62352941179999999" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>

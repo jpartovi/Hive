@@ -32,6 +32,7 @@
 		15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */; };
 		15BA66D2284E8C6F00C185CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */; };
 		15BA66D4284E8C7100C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D3284E8C7100C185CA /* Assets.xcassets */; };
+		15D5DE662890A3570054A564 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D5DE652890A3570054A564 /* Format.swift */; };
 		15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEE7AA287E3E1500FDAE2B /* Event.swift */; };
 		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 		CA4E9AA3F3F2E9B70FB1B59D /* libPods-Hive MessagesExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7BBB53B72CCD26BADD5DC /* libPods-Hive MessagesExtension.a */; };
@@ -90,6 +91,7 @@
 		15BA66D1284E8C6F00C185CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		15BA66D3284E8C7100C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66D5284E8C7100C185CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		15D5DE652890A3570054A564 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
 		15EEE7AA287E3E1500FDAE2B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3FC8F2BD88B64705CDC5E6B1 /* Pods-Hive MessagesExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.release.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.release.xcconfig"; sourceTree = "<group>"; };
 		56C20084B43A4E48868174A9 /* Pods-Hive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.release.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.release.xcconfig"; sourceTree = "<group>"; };
@@ -200,10 +202,10 @@
 		15BA66CD284E8C6F00C185CA /* Hive MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
+				15D5DE672890A3710054A564 /* Style */,
 				151BC1E2288882E800B330DF /* Global Variables.swift */,
 				151BC1E42888842000B330DF /* Custom Elements.swift */,
 				156DAE7D287CD02800613360 /* Extensions.swift */,
-				15B44F4D2860E3B10055B51C /* Colors.swift */,
 				1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */,
 				1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */,
 				1545E0112888B016004DD491 /* Event Structs */,
@@ -213,6 +215,15 @@
 				15BA66D5284E8C7100C185CA /* Info.plist */,
 			);
 			path = "Hive MessagesExtension";
+			sourceTree = "<group>";
+		};
+		15D5DE672890A3710054A564 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				15D5DE652890A3570054A564 /* Format.swift */,
+				15B44F4D2860E3B10055B51C /* Colors.swift */,
+			);
+			path = Style;
 			sourceTree = "<group>";
 		};
 		17301F5548E8D10EDB94D524 /* Pods */ = {
@@ -397,6 +408,7 @@
 				1545E0132888B031004DD491 /* EventType.swift in Sources */,
 				1545E0152888B056004DD491 /* Location.swift in Sources */,
 				151BC1E3288882E800B330DF /* Global Variables.swift in Sources */,
+				15D5DE662890A3570054A564 /* Format.swift in Sources */,
 				15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */,
 				156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */,
 				1545E0192888B0B9004DD491 /* Time.swift in Sources */,
