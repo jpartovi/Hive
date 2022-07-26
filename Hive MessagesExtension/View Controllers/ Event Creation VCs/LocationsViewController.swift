@@ -98,11 +98,15 @@ class LocationsViewController: StyleViewController {
     @IBOutlet weak var tableBottomKeyboard: NSLayoutConstraint!
     
     @objc func keyboardWillShow(notification: NSNotification) {
+        /*
         let MVC = (self.parent?.parent as? MessagesViewController)!
         if MVC.presentationStyle == .compact {
             MVC.requestPresentationStyle(.expanded)
-            
-        } else if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+        }
+         */
+        self.requestPresentationStyle(.expanded)
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
             tableBottom.isActive = false
             
@@ -151,6 +155,7 @@ class LocationsViewController: StyleViewController {
         
         locations.append(Location(title: "", place: nil, address: nil))
         locationsTableView.reloadData()
+        
         DispatchQueue.main.async {
             let lastCellIndexPath = IndexPath(row: self.locations.count - 1, section: 0)
             self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
@@ -158,7 +163,7 @@ class LocationsViewController: StyleViewController {
             cell.titleTextField.becomeFirstResponder()
             self.updateContinueButtonStatus()
         }
-        
+
         // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
     
@@ -190,10 +195,9 @@ class LocationsViewController: StyleViewController {
     }
     
     func expandAndNextPage() {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
-        if MVC.presentationStyle == .compact {
+        if presentationStyle == .compact {
             expandToNext = true
-            MVC.requestPresentationStyle(.expanded)
+            self.requestPresentationStyle(.expanded)
             //triggers code in MessagesViewController that calls nextPage after completion
         } else {
             nextPage()
@@ -271,26 +275,6 @@ class LocationsViewController: StyleViewController {
     }
 }
 
-extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        
-        locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place, address: place.formattedAddress!)
-        locationsTableView.reloadData()
-        navigationController?.dismiss(animated: true)
-        
-    }
-    
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
-        navigationController?.dismiss(animated: true)
-    }
-    
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        navigationController?.dismiss(animated: true)
-    }
-}
-
-
-
 extension LocationsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -320,8 +304,9 @@ extension LocationsViewController: UITableViewDataSource {
             cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
             cell.changeAddressButton.isHidden = true
         }
-        cell.titleTextField.colorStatus()
         
+        cell.titleTextField.colorStatus()
+
         return cell
     }
     
@@ -354,7 +339,26 @@ extension LocationsViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if type(of: viewController) == StartEventViewController.self {
             self.requestPresentationStyle(.expanded)
+            (viewController as! StartEventViewController).expandToNext = false
         }
+    }
+}
+
+extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        
+        locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place)
+        locationsTableView.reloadData()
+        navigationController?.dismiss(animated: true)
+        
+    }
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        navigationController?.dismiss(animated: true)
+    }
+    
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        navigationController?.dismiss(animated: true)
     }
 }
 

@@ -93,37 +93,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     func setUpDayTimePairsTableView() {
-        /*
-        // Multiple days
-        if event.days.count > 1 {
-            for day in event.days {
-                if event.daysAndTimes[day]!.count > 1 {
-                    // Multiple days multiple times
-                    return
-                }
-            }
-            
-            
-            if event.daysAndTimes[event.days[0]]!.isEmpty {
-                // Multiple days no time
-                return
-            } else {
-                // Multiple days 1 time
-                return
-            }
-        }
-        
-        var day = event.days[0]
-        
-        if event.daysAndTimes[day]!.count <= 1 {
-            // 1 day 0/1 time - Put day/day+time in a label
-            return
-        } else {
-            // 1 day multiple times
-            return
-        }
-        
-        */
+    
         daysAndTimesTableView.dataSource = self
         daysAndTimesTableView.delegate = self
     }
@@ -252,7 +222,7 @@ class ConfirmViewController: StyleViewController {
             trailingSubcaption = ""
             //summaryText = "Poll for " + event.title
             
-            messageURL = event.buildVoteURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
+            messageURL = event.buildVoteURL()
             
             /*conversation.insert(pollMessage) {error in
                 // empty for now
@@ -312,20 +282,20 @@ class ConfirmViewController: StyleViewController {
     }
     
     func updatePostButtonStatus() {
+        
         for location in event.locations {
             if location.title == "" {
                 postButton.grey(title: "Post")
                 return
             }
         }
-        
         postButton.color(title: "Post")
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
-        event.locations.append(Location(title: "", place: nil, address: nil))
+        event.locations.append(Location(title: ""))
         locationsTableView.reloadData()
-        
+
         DispatchQueue.main.async {
             
             self.updateTableViewHeights()
@@ -355,7 +325,6 @@ class ConfirmViewController: StyleViewController {
         locationsTableView.deleteRows(at: [indexPath], with: .fade)
         locationsTableView.endUpdates()
         CATransaction.commit()
-
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
@@ -405,10 +374,9 @@ class ConfirmViewController: StyleViewController {
 extension ConfirmViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        //locationsTableView.reloadData()
-        //updateTableViewHeights()
-        
+
+        locationsTableView.reloadData()
+        updateTableViewHeights()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -441,21 +409,26 @@ extension ConfirmViewController: UITableViewDataSource {
             
             cell.times = []
             for time in event.times {
-                var isSelected = false
-                for selectedTime in daysAndTimes[day]! {
-                    if time.sameAs(time: selectedTime) {
-                        isSelected = true
-                    }
+                let isSelected: Bool
+                if daysAndTimes[day]!.contains(where: {$0.sameAs(time: time)}) {
+                    isSelected = true
+                } else {
+                    isSelected = false
                 }
                 cell.times.append((time, isSelected))
             }
             
-            if event.times.count == 1 {
+            if event.times.count <= 1 {
                 
                 cell.dayLabel.isHidden = true
                 cell.timesCollectionView.isHidden = true
                 cell.dayAndTimeLabel.isHidden = false
-                cell.dayAndTimeLabel.text = day.formatDate(time: event.times[0], duration: event.duration)
+                if event.times.count == 1 {
+                    
+                    cell.dayAndTimeLabel.text = day.formatDate(time: event.times[0], duration: event.duration)
+                } else {
+                    cell.dayAndTimeLabel.text = day.formatDate()
+                }
                 
             } else {
                 
@@ -513,7 +486,6 @@ extension ConfirmViewController: UITableViewDataSource {
         default:
             break
         }
-        
     }
 }
 
@@ -521,7 +493,7 @@ extension ConfirmViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch tableView {
         case locationsTableView:
-            if event.locations[indexPath.row].place != nil {
+            if event.locations[indexPath.row].address != nil {
                 return 86
             } else {
                 return 50
@@ -537,7 +509,7 @@ extension ConfirmViewController: UITableViewDelegate {
 extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         
-        event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place, address: place.formattedAddress!)
+        event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place)
         locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
     }
@@ -641,7 +613,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            dayLabel.widthAnchor.constraint(equalToConstant: 45),
+            dayLabel.widthAnchor.constraint(equalToConstant: 90),
             
             dayAndTimeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayAndTimeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
