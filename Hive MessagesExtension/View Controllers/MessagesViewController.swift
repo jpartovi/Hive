@@ -26,8 +26,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     override func willBecomeActive(with conversation: MSConversation) {
         
         MessagesViewController.conversation = conversation
-        presentViewController(for: conversation, with: presentationStyle)
-
+        presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
     }
     
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
@@ -51,20 +50,39 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 if let subchild = subchild as? VoteViewController {
                     if presentationStyle == .compact {
                         print("VOTE COMPACT")
+                        presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
                         //child.willMove(toParent: nil)
                         //child.view.removeFromSuperview()
                         //child.removeFromParent()
                         //child.dismiss(animated: true)
-                        self.view.window!.rootViewController?.dismiss(animated: false)
-                        dismiss()
+                        //self.view.window!.rootViewController?.dismiss(animated: false)
+                        //dismiss()
+                    } else if presentationStyle == .expanded {
+                        //subchild.addHexFooter()
+                    }
+                }
+            } else if let child = child as? VoteResultsNavigationController {
+                let subchild = child.children.last
+                if let subchild = subchild as? VoteResultsViewController {
+                    if presentationStyle == .compact {
+                        print("VOTE RESULTS COMPACT")
+                        presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
+                        //child.willMove(toParent: nil)
+                        //child.view.removeFromSuperview()
+                        //child.removeFromParent()
+                        //child.dismiss(animated: true)
+                        //self.view.window!.rootViewController?.dismiss(animated: false)
+                        //dismiss()
                     } else if presentationStyle == .expanded {
                         //subchild.addHexFooter()
                     }
                 }
             } else if let child = child as? InviteViewController {
                 if presentationStyle == .compact {
-                    dismiss()
-                    self.view.window!.rootViewController?.dismiss(animated: false)
+                    
+                    presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
+                    //dismiss()
+                    //self.view.window!.rootViewController?.dismiss(animated: false)
                 }
             } else if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
@@ -142,15 +160,14 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     override func didSelect(_ message: MSMessage, conversation: MSConversation) {
-        presentViewController(for: conversation, with: presentationStyle)
+        presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
     }
     
-    private func presentViewController(for conversation: MSConversation, with presentationStyle: MSMessagesAppPresentationStyle) {
-        
+    func findIntendedViewController(conversation: MSConversation) -> UIViewController? {
         let controller: UIViewController
         
         if conversation.selectedMessage == nil {
-            controller = instantiateStartEventViewController()
+            return instantiateStartEventViewController()
             
             //controller = (storyboard?.instantiateViewController(withIdentifier: "InviteViewController") as? InviteViewController)!
             
@@ -159,8 +176,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             //controller.mURL = conversation.selectedMessage?.url
             
         } else {
-            guard let messageURL = conversation.selectedMessage?.url else {return}
-            guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
+            guard let messageURL = conversation.selectedMessage?.url else {return nil}
+            guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return nil}
             
             /*
             for queryItem in queryItems {
@@ -175,20 +192,23 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             print("Type: " + value)
             
             if value == "invite" {
-                controller = instantiateInviteViewController(conversation: conversation)
+                return instantiateInviteViewController(conversation: conversation)
             } else if value == "vote" {
                 if queryItems[1].value! == MessagesViewController.userID {
-                    controller = instantiateVoteResultsViewController(conversation: conversation)
+                    return instantiateVoteResultsViewController(conversation: conversation)
                 } else {
-                    controller = instantiateVoteViewController(conversation: conversation)
+                    return instantiateVoteViewController(conversation: conversation)
                 }
             } else {
-                controller = instantiateStartEventViewController()
                 print("Invalid view type")
+                return instantiateStartEventViewController()
             }
             
             // BUG: Shows Create Event VC when app is already open and message is clicked
         }
+    }
+    
+    private func presentViewController(controller: UIViewController, presentationStyle: MSMessagesAppPresentationStyle) {
         
         // Remove any existing child controllers.
         for child in children {

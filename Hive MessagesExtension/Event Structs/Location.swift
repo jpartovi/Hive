@@ -31,9 +31,11 @@ struct Location {
         if let place = place {
             var address = ""
             if let addressComponents = place.addressComponents {
+                /*
                 for comp in addressComponents {
                     print("Type: " + Style.commaList(items: comp.types) + ", Name: " + comp.name)
                 }
+                 */
                 if let locality = addressComponents.first(where: { $0.types.contains("locality") })?.name {
                     address = locality
                     if let route = addressComponents.first(where: { $0.types.contains("route") })?.name {

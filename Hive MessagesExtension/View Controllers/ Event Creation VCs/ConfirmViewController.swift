@@ -76,11 +76,10 @@ class ConfirmViewController: StyleViewController {
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
         if textBoxFlag {
             textBoxFlag = false
-            if MVC.presentationStyle == .compact {
-                MVC.requestPresentationStyle(.expanded)
+            if presentationStyle == .compact {
+                requestPresentationStyle(.expanded)
             }
         }
     }
