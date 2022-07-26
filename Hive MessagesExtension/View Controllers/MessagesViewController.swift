@@ -27,6 +27,15 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         
         MessagesViewController.conversation = conversation
         presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
+        
+        if self.view.frame.size.width > self.view.frame.size.height  {
+            (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = false
+            (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = false
+        } else {
+            (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = true
+            (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = true
+        }
+        
     }
     
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
@@ -156,6 +165,17 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         // Called after the extension transitions to a new presentation style.
     
         // Use this method to finalize any behaviors associated with the change in presentation style.
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        if size.width > self.view.frame.size.width {
+            (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = false
+            (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = false
+        } else {
+            (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = true
+            (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = true
+        }
     }
     
     override func didSelect(_ message: MSMessage, conversation: MSConversation) {
