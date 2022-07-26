@@ -31,6 +31,7 @@ class StyleTextField: UITextField {
     var fullColor: UIColor = Style.greyColor
     let emptyColor: UIColor = Style.errorColor
     var bottomLine = CALayer()
+    var isNew = true
     
     func addDoneButton(){
         let doneToolbar: UIToolbar = UIToolbar(frame: CGRect.init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
@@ -90,7 +91,9 @@ class StyleTextField: UITextField {
     
     func colorStatus() {
         let color: UIColor
-        if self.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        if isNew {
+            color = fullColor
+        } else if self.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             color = emptyColor
         } else {
             color = fullColor

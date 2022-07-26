@@ -23,6 +23,7 @@ class TimeSelectorViewController: StyleViewController {
     lazy var selectedDuration: Duration? = event.duration
     
     @IBOutlet weak var promptLabel: StyleLabel!
+    @IBOutlet weak var durationLabel: UILabel!
     @IBOutlet weak var durationPicker: UIPickerView!
     @IBOutlet weak var durationView: UIStackView!
     @IBOutlet weak var includeDurationButton: UIButton!
@@ -32,12 +33,18 @@ class TimeSelectorViewController: StyleViewController {
         showDurationPicker()
     }
     @IBOutlet weak var startTimesCollectionView: UICollectionView!
-    let cellsPerRow = 2
-    let rows = 3
+    var cellsPerRow = 2
+    var rows = 3
     let inset: CGFloat = 10
     let minimumLineSpacing: CGFloat = 10
     let minimumInteritemSpacing: CGFloat = 10
     @IBOutlet weak var nextButton: HexButton!
+    
+    var compactView: Bool = false
+    var expandToNext: Bool = false
+    
+    @IBOutlet var expandConstraints: [NSLayoutConstraint]!
+    @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +70,42 @@ class TimeSelectorViewController: StyleViewController {
         loadStartTimeSelectionKey()
         startTimesCollectionView.reloadData()
         updateNextButtonStatus()
+    }
+    
+    func changedConstraints(compact: Bool){
+        
+        compactView = compact
+        
+        if compact {
+            
+            promptLabel.font = Style.font(size: 20)
+            durationLabel.font = Style.font(size: 15)
+            cellsPerRow = 1
+            rows = 6
+            for constraint in expandConstraints {
+                constraint.isActive = false
+            }
+            for constraint in compactConstraints {
+                constraint.isActive = true
+            }
+            durationView.axis = .vertical
+        } else {
+            promptLabel.font = Style.font(size: 30)
+            durationLabel.font = Style.font(size: 23)
+            cellsPerRow = 2
+            rows = 3
+            for constraint in compactConstraints {
+                constraint.isActive = false
+            }
+            for constraint in expandConstraints {
+                constraint.isActive = true
+            }
+            durationView.axis = .horizontal
+        }
+        startTimesCollectionView.reloadData()
+        startTimesCollectionView.setNeedsLayout()
+        startTimesCollectionView.layoutIfNeeded()
+        startTimesCollectionView.layoutSubviews()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -119,7 +162,7 @@ class TimeSelectorViewController: StyleViewController {
         
         updateEventObject()
         
-        nextPage()
+        expandAndNextPage()
     }
     
     func updateEventObject() {
@@ -133,7 +176,17 @@ class TimeSelectorViewController: StyleViewController {
         event.times = selectedTimes
         event.duration = selectedDuration
     }
-
+    
+    func expandAndNextPage() {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if MVC.presentationStyle == .compact {
+            expandToNext = true
+            MVC.requestPresentationStyle(.expanded)
+            //triggers code in MessagesViewController that calls nextPage after completion
+        } else {
+            nextPage()
+        }
+    }
     
     func nextPage() {
         
@@ -181,6 +234,26 @@ extension TimeSelectorViewController: UIPickerViewDataSource {
         }
         return label
     }
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        var label = UILabel()
+        if let v = view {
+            label = v as! UILabel
+        }
+        if compactView {
+            label.font = label.font.withSize(15)
+        } else {
+            label.font = label.font.withSize(20)
+        }
+        if let duration: Duration = durations[row] {
+            label.text = duration.format()
+        } else {
+            label.text = "None"
+        }
+        label.textAlignment = .center
+        return label
+    }
+    
 }
 
 extension TimeSelectorViewController: UIPickerViewDelegate {
@@ -216,6 +289,9 @@ extension TimeSelectorViewController: UICollectionViewDataSource {
         } else {
             cell.showUnselected()
         }
+        
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
         return cell
     }
@@ -323,25 +399,29 @@ class StartTimeCell: UICollectionViewCell {
 
     override func layoutSubviews() {
         super.layoutSubviews()
+        self.layoutIfNeeded()
 
         NSLayoutConstraint.activate([
             timeLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            imageView.widthAnchor.constraint(equalTo: widthAnchor),
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1.2)
         ])
     }
     
     func showSelected() {
         // TODO: Show selected
-        imageView.image = UIImage(named: "SelectedLongHex")?.size(width: self.frame.width, height: self.frame.width)
+        //imageView.image = UIImage(named: "SelectedLongHex")?.size(width: self.frame.width, height: self.frame.width)
+        imageView.image = UIImage(named: "SelectedLongHex")
     }
     
     func showUnselected() {
         // TODO: Show unselected
-        imageView.image = UIImage(named: "LongHex")?.size(width: self.frame.width, height: self.frame.width)
-
+        //imageView.image = UIImage(named: "LongHex")?.size(width: self.frame.width, height: self.frame.width)
+        imageView.image = UIImage(named: "LongHex")
     }
 }
 
