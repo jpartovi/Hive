@@ -94,7 +94,7 @@ class VoteResultsViewController: StyleViewController {
             var locationInfo = "Where: "
             locationInfo += location.title
             if let address = location.address {
-                locationInfo += ", " + address
+                locationInfo += " (" + address + ")"
             }
             locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
         } else if event.locations.count > 1 {
@@ -303,21 +303,18 @@ class VoteResultsViewController: StyleViewController {
                 let voteIndex = voteSelections[index]!
                 switch voteGroup {
                 case "locations":
-                    print(loadedEvent.locations.count)
                     if loadedEvent.locations.count > 1 {
                         eventForInvite.locations = [loadedEvent.locations[voteIndex]]
-                        print(eventForInvite.locations.count)
-                        print(eventForInvite.locations[0].title)
                     }
                 case "days":
                     eventForInvite.days = [loadedEvent.days[voteIndex]]
                 case "daysAndTime":
                     eventForInvite.days = [loadedEvent.days[voteIndex]]
-                    eventForInvite.times = loadedEvent.daysAndTimes[loadedEvent.days[0]]!
-                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                    eventForInvite.times = loadedEvent.daysAndTimes[eventForInvite.days[0]]!
+                    eventForInvite.daysAndTimes = [eventForInvite.days[0] : eventForInvite.times]
                 case "dayAndTimes":
-                    eventForInvite.times = [loadedEvent.daysAndTimes[loadedEvent.days[0]]![voteIndex]]
-                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                    eventForInvite.times = [loadedEvent.daysAndTimes[eventForInvite.days[0]]![voteIndex]]
+                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : eventForInvite.times]
                 case "daysAndTimes":
                     var dayIndex = daysAndTimesMagicIndexes.count - 1
                     for (mIndex, mValue) in daysAndTimesMagicIndexes.enumerated() {
@@ -328,8 +325,8 @@ class VoteResultsViewController: StyleViewController {
                     }
                     let timeIndex = voteIndex - daysAndTimesMagicIndexes[dayIndex]
                     eventForInvite.days = [loadedEvent.days[dayIndex]]
-                    eventForInvite.times = [loadedEvent.daysAndTimes[loadedEvent.days[0]]![timeIndex]]
-                    eventForInvite.daysAndTimes = [loadedEvent.days[0] : loadedEvent.times]
+                    eventForInvite.times = [loadedEvent.daysAndTimes[eventForInvite.days[0]]![timeIndex]]
+                    eventForInvite.daysAndTimes = [eventForInvite.days[0] : eventForInvite.times]
                 default:
                     continue
                 }
@@ -594,19 +591,10 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
         let inset: CGFloat = 10
 
         NSLayoutConstraint.activate([
-            /*
-            dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            dayLabel.widthAnchor.constraint(equalToConstant: 45),
-            
-            timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
-            timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -5),
-            timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
-            timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
-             */
+
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
-            dayLabel.widthAnchor.constraint(equalToConstant: 45),
+            dayLabel.widthAnchor.constraint(equalToConstant: 90),
             
             timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
             timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),

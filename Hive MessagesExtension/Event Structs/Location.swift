@@ -22,10 +22,32 @@ struct Location {
         return queryItems
     }
     
-    init(title: String, place: GMSPlace?, address: String?) {
+        
+    init(title: String, place: GMSPlace? = nil, address: String? = nil) {
+        
         self.title = title
         self.place = place
         self.address = address
+        if let place = place {
+            var address = ""
+            if let addressComponents = place.addressComponents {
+                for comp in addressComponents {
+                    print("Type: " + Style.commaList(items: comp.types) + ", Name: " + comp.name)
+                }
+                if let locality = addressComponents.first(where: { $0.types.contains("locality") })?.name {
+                    address = locality
+                    if let route = addressComponents.first(where: { $0.types.contains("route") })?.name {
+                        address = route + ", " + address
+                        if let streetNumber = addressComponents.first(where: { $0.types.contains("street_number") })?.name {
+                            address = streetNumber + " " + address
+                        }
+                    }
+                } else {
+                    address = place.formattedAddress!
+                }
+                self.address = address
+            }
+        }
     }
     
     // TODO: This does NOT work - WHYYYYYY??

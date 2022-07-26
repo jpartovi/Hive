@@ -12,13 +12,13 @@ import GooglePlaces
 class InviteViewController: StyleViewController {
     
     var delegate: InviteViewControllerDelegate?
-    static let storyboardID = "InviteViewController"
+    static let storyboardID = String(describing: InviteViewController.self)
     
     var myID: String!
     var mURL: URL!
     var RSVP: Bool!
     
-    @IBOutlet weak var titleLabel: StyleLabel!
+    @IBOutlet weak var promptLabel: StyleLabel!
     //@IBOutlet weak var descriptionLabel: UILabel!
     //@IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dayAndTimeLabel: StyleLabel!
@@ -88,30 +88,32 @@ class InviteViewController: StyleViewController {
     
     func decodeEvent(_ event: Event) {
         
-        titleLabel.style(text: "You're invited to " + event.title + "!")
+        promptLabel.style(text: "You're invited to " + event.title + "!")
+        promptLabel.adjustHeight()
         
-        var day = event.days[0]
-        
-        var dayAndTimeInfo = "When: "
-        if !event.times.isEmpty {
-            dayAndTimeInfo += day.formatDate(time: event.times[0], duration: event.duration)
-            //informationTextObject = informationTextObject + event.times[0].format(duration: event.duration)
-        } else {
-            dayAndTimeInfo += day.formatDate()
-        }
-        dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Style.darkTextColor, fontSize: 18)
-        
-        if event.locations.isEmpty {
-            // Hide location label
-            locationLabel.isHidden = true
-        } else {
-            var locationInfo = "Where: " + event.locations[0].title
-            if let address = event.locations[0].address {
-                locationInfo += ", " + address
+        locationLabel.text = ""
+        if event.locations.count == 1 {
+            let location = event.locations[0]
+            var locationInfo = "Where: "
+            locationInfo += location.title
+            if let address = location.address {
+                locationInfo += " (" + address + ")"
             }
-            locationLabel.isHidden = false
             locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
         }
+        locationLabel.adjustHeight()
+        
+        var day = event.days[0]
+        let times = event.times
+        
+        var dayAndTimeInfo = "When: "
+        if times.isEmpty {
+            dayAndTimeInfo += day.formatDate()
+        } else {
+            dayAndTimeInfo += day.formatDate(time: times[0], duration: event.duration)
+        }
+        dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Style.darkTextColor, fontSize: 18)
+        dayAndTimeLabel.adjustHeight()
     }
     
     func decodeRSVPs(url: URL) {

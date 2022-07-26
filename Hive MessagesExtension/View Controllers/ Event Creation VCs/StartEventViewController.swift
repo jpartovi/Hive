@@ -16,16 +16,27 @@ class StartEventViewController: StyleViewController {
     
     let types = EventType.allCases
     
+    var expandToNext = false
+    var selectedType: EventType!
+    
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var typesCollectionView: UICollectionView!
+    @IBOutlet weak var typesCollectionViewWidthConstraint: NSLayoutConstraint!
     
-    let hexBordersCollectionView: UICollectionView = {
+    @IBOutlet var compactConstraints: [NSLayoutConstraint]!
+    
+    @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
+    
+    
+    lazy var hexLayout: HexLayout = {
         let layout = HexLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = -30
-        layout.minimumLineSpacing = 10
+        layout.scrollDirection = .horizontal
         layout.itemSize = CGSize(width: 130, height: 150)
-        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: layout)
+        return layout
+    }()
+    
+    lazy var hexBordersCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: hexLayout)
         collectionView.register(HexBorderCell.self, forCellWithReuseIdentifier: HexBorderCell.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -33,28 +44,58 @@ class StartEventViewController: StyleViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
-        DispatchQueue.main.async {
-            var frame = self.typesCollectionView.frame
-            frame.size.height = self.typesCollectionView.contentSize.height
-            self.typesCollectionView.frame = frame
-        }
-        */
-        promptLabel.style(text: "What kind of event are you hosting?")
+        
+        promptLabel.style(text: "What are you hosting?")
+        promptLabel.adjustHeight()
         
         setUpHexCollection()
+        conformToPresentationStyle(presentationStyle: self.presentationStyle)
+    }
+    
+    func conformToPresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
+        print("Conform")
+        switch presentationStyle {
+        case .compact:
+            print("compact")
+            hexLayout.scrollDirection = .horizontal
+            
+            hexLayout.numberOfRows = 1
+            hexLayout.numberOfColumns = types.count
+            for constraint in compactConstraints {
+                constraint.isActive = true
+            }
+            for constraint in expandedConstraints {
+                constraint.isActive = false
+            }
+        case .expanded:
+            print("expanded")
+            hexLayout.scrollDirection = .vertical
+            hexLayout.numberOfColumns = 2
+            hexLayout.numberOfRows = Int((CGFloat(types.count) / CGFloat(hexLayout.numberOfColumns)).rounded(.up))
+            for constraint in expandedConstraints {
+                constraint.isActive = true
+            }
+            for constraint in compactConstraints {
+                constraint.isActive = false
+            }
+        default:
+            break
+        }
+        
+        hexLayout.prepare()
+        typesCollectionViewWidthConstraint.constant = min(hexLayout.contentWidth, view.frame.width - (16 * 2))
+        typesCollectionView.collectionViewLayout = hexLayout
+        hexBordersCollectionView.collectionViewLayout = hexLayout
+        typesCollectionView.reloadData()
+        typesCollectionView.layoutIfNeeded()
     }
  
     func setUpHexCollection() {
         typesCollectionView.dataSource = self
         typesCollectionView.delegate = self
         
-        let layout = HexLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = -30
-        layout.minimumLineSpacing = 10
-        layout.itemSize = CGSize(width: 130, height: 150)
-        typesCollectionView.collectionViewLayout = layout
+        
+        typesCollectionView.collectionViewLayout = hexLayout
         typesCollectionView.backgroundColor = UIColor.clear.withAlphaComponent(0)
         typesCollectionView.reloadData()
         
@@ -78,20 +119,29 @@ class StartEventViewController: StyleViewController {
             
         ])
     }
-
     
-    func nextPage(type: EventType) {
+    func expandAndNextPage() {
+        if presentationStyle == .compact {
+            expandToNext = true
+            self.requestPresentationStyle(.expanded)
+            //triggers code in MessagesViewController that calls nextPage after completion
+        } else {
+            nextPage()
+        }
+    }
+
+    func nextPage() {
         
         self.requestPresentationStyle(.expanded)
-        let event = Event(title: type.defaultTitle(), type: type)
+        let event = Event(title: selectedType.defaultTitle(), type: selectedType)
         let locationsVC = (storyboard?.instantiateViewController(withIdentifier: LocationsViewController.storyboardID) as? LocationsViewController)!
         locationsVC.event = event
         self.navigationController?.pushViewController(locationsVC, animated: true)
     }
     
     @objc func hexTapped(sender: UIButton) {
-        
-        nextPage(type: types[sender.tag])
+        selectedType = types[sender.tag]
+        expandAndNextPage()
     }
 }
 
@@ -151,15 +201,46 @@ extension StartEventViewController: UICollectionViewDelegateFlowLayout {
 
         var slaveTable: UIScrollView? = nil
             
-        if typesCollectionView == scrollView {
-            slaveTable = hexBordersCollectionView;
-        } else if hexBordersCollectionView == scrollView {
-            slaveTable = self.typesCollectionView;
+        if scrollView == typesCollectionView {
+            slaveTable = hexBordersCollectionView
+        } else {
+            return
         }
         
-        let offset: CGPoint = CGPoint(x: slaveTable!.contentOffset.x, y: scrollView.contentOffset.y)
+        let offset: CGPoint
+        
+        if hexLayout.scrollDirection == .vertical {
+            if scrollView.contentOffset.x != 0 {
+                scrollView.contentOffset.x = 0
+            }
+            offset = CGPoint(x: slaveTable!.contentOffset.x, y: scrollView.contentOffset.y)
+        } else {
+            if scrollView.contentOffset.y != 0 {
+                scrollView.contentOffset.y = 0
+            }
+            offset = CGPoint(x: scrollView.contentOffset.x, y: slaveTable!.contentOffset.y)
+        }
+        
         
         slaveTable?.setContentOffset(offset, animated: false)
+        /*
+        var slaveTable: UIScrollView? = nil
+            
+        if typesCollectionView == scrollView {
+            slaveTable = hexBordersCollectionView
+        } else if hexBordersCollectionView == scrollView {
+            slaveTable = self.typesCollectionView
+        }
+        let offset: CGPoint
+        if false {
+            offset = CGPoint(x: slaveTable!.contentOffset.x, y: scrollView.contentOffset.y)
+        } else {
+            offset = CGPoint(x: scrollView.contentOffset.x, y: slaveTable!.contentOffset.y)
+        }
+        
+        
+        slaveTable?.setContentOffset(offset, animated: false)
+         */
     }
 }
 
@@ -170,30 +251,35 @@ class HexLayout: UICollectionViewFlowLayout {
     let xOverlap = CGFloat(14)
     let yOverlap = CGFloat(53)
     let insets = CGFloat(14)
+    var numberOfColumns = 2
+    var numberOfRows = 3
     
     lazy var cellPadding = insets
     
-    lazy var offset: CGFloat = (cellWidth - xOverlap) / 2 //+ insets
+    lazy var offset: CGFloat = (cellWidth - xOverlap) / 2
 
     var cache = [UICollectionViewLayoutAttributes]()
-
-    var contentHeight: CGFloat = 400
-    var contentWidth: CGFloat {
-        guard let collectionView = collectionView else {
-            return 0
-        }
-        let insets = collectionView.contentInset
-        return collectionView.bounds.width - (insets.left + insets.right)
-    }
+    
+    var contentWidth: CGFloat!
+    var contentHeight: CGFloat!
     
     override func prepare() {
-        // If cache is empty and the collection view exists – calculate the layout attributes
-        guard cache.isEmpty == true, let collectionView = collectionView else {
+
+        cache = []
+        guard let collectionView = collectionView else {
             return
         }
         
-        let numberOfColumns = 2
-        let numberOfRows = Int((CGFloat(collectionView.numberOfItems(inSection: 0)) / CGFloat(numberOfColumns)).rounded(.up))
+        contentHeight = (cellHeight * CGFloat(numberOfRows)) - (yOverlap * CGFloat(numberOfRows - 1))
+        contentWidth = {
+                var width = (cellWidth * CGFloat(numberOfColumns)) - (xOverlap * CGFloat(numberOfColumns - 1))
+                if numberOfRows > 1 {
+                    width += offset
+                }
+                return width
+        }()
+        
+        //let numberOfRows = Int((CGFloat(collectionView.numberOfItems(inSection: 0)) / CGFloat(numberOfColumns)).rounded(.up))
         
         var xOffset = [CGFloat]()
         var yOffset = [CGFloat]()
@@ -203,14 +289,14 @@ class HexLayout: UICollectionViewFlowLayout {
         }
         
         for rowIndex in 0 ..< numberOfRows {
-            xOffset.append((rowIndex % 2 == 0) ? 0 : offset)
+            xOffset.append((rowIndex % numberOfColumns == 0) ? 0 : offset)
         }
 
         for item in 0 ..< collectionView.numberOfItems(inSection: 0) {
             
-            let indexInRow = item % 2
+            let indexInRow = item % numberOfColumns
             let columnOffest = CGFloat(indexInRow) * (cellWidth - xOverlap)
-            let row = Int((CGFloat(item) / 2).rounded(.down))
+            let row = Int((CGFloat(item) / CGFloat(numberOfColumns)).rounded(.down))
 
             let indexPath = IndexPath(item: item, section: 0)
 

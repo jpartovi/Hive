@@ -262,8 +262,7 @@ class StyleViewController: MSMessagesAppViewController {
     
     //Calls this function when the tap is recognized.
     @objc func dismissKeyboard() {
-        print("dismissed")
-        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        // Causes the view (or one of its embedded text fields) to resign the first responder status.
         view.endEditing(true)
     }
 

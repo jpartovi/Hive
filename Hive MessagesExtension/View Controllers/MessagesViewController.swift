@@ -54,6 +54,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             } else if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
+                    
                     print("subchild = subchild as? ConfirmViewController")
                     print(presentationStyle.rawValue)
                     if presentationStyle == .compact {
@@ -88,6 +89,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         subchild.changedConstraints(compact: true)
                     } else if presentationStyle == .expanded {
                         subchild.changedConstraints(compact: false)
+                        print(subchild.expandToNext)
                         if subchild.expandToNext {
                             subchild.nextPage()
                         }
@@ -97,6 +99,15 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         subchild.changedConstraints(compact: true)
                     } else if presentationStyle == .expanded {
                         subchild.changedConstraints(compact: false)
+                        
+                        if subchild.expandToNext {
+                            subchild.nextPage()
+                        }
+                    }
+                } else if let subchild = subchild as? StartEventViewController {
+                    subchild.conformToPresentationStyle(presentationStyle: presentationStyle)
+                    if presentationStyle == .expanded {
+                        print(subchild.expandToNext)
                         if subchild.expandToNext {
                             subchild.nextPage()
                         }

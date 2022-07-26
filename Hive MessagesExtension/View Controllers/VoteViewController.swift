@@ -98,7 +98,7 @@ class VoteViewController: StyleViewController {
             var locationInfo = "Where: "
             locationInfo += location.title
             if let address = location.address {
-                locationInfo += ", " + address
+                locationInfo += " (" + address + ")"
             }
             locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
         } else if event.locations.count > 1 {
@@ -639,7 +639,7 @@ class VotingDayAndTimesCell: UITableViewCell {
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
             dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 4),
-            dayLabel.widthAnchor.constraint(equalToConstant: 45),
+            dayLabel.widthAnchor.constraint(equalToConstant: 90),
             
             timesCollectionView.leftAnchor.constraint(equalTo: dayLabel.rightAnchor, constant: 5),
             timesCollectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: -inset),

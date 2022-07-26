@@ -23,7 +23,7 @@ struct Day: Hashable {
         return dateFormatter
     }()
     
-    lazy var stringFormatter: DateFormatter = {
+    lazy var queryStringFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter
@@ -35,8 +35,14 @@ struct Day: Hashable {
         return dateFormatter
     }()
     
+    lazy var stringFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE, M/d"
+        return dateFormatter
+    }()
+    
     mutating func formatDate(time: Time? = nil, duration: Duration? = nil) -> String {
-        var formattedDate = monthFormatter.string(from: date) + "/" + dateFormatter.string(from: date)
+        var formattedDate = stringFormatter.string(from: date)
         if time != nil {
             formattedDate += " @ " + (time?.format(duration: duration))!
         }
@@ -51,7 +57,7 @@ struct Day: Hashable {
     
     mutating func makeURLQueryItem() -> URLQueryItem {
 
-        let dateString = stringFormatter.string(from: date)
+        let dateString = queryStringFormatter.string(from: date)
         print(dateString)
         
         return URLQueryItem(name: "day", value: dateString)

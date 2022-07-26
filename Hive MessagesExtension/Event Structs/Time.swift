@@ -59,13 +59,18 @@ struct Time {
         
     func format(duration: Duration?) -> String{
         
-        let formattedTime: String
+        var formattedTime: String
         if duration == nil {
-            formattedTime = String(hour) + ":" + String(format: "%02d", minute) + period.format()
+            formattedTime = String(hour)
+            if minute != 0 {
+                formattedTime += ":" + String(format: "%02d", minute)
+            }
+            formattedTime += period.format()
+            
         } else {
             let endTime = Time(referenceTime: self, minutesLater: duration!.minutes)
             
-            formattedTime = String(self.hour) + ":" + String(format: "%02d", self.minute) + self.period.format() + "-" + String(endTime.hour) + ":" + String(format: "%02d", endTime.minute) + endTime.period.format()
+            formattedTime = self.format(duration: nil) + "-" + endTime.format(duration: nil)
         }
         
         return formattedTime
