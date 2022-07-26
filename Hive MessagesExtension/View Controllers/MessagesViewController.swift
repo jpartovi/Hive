@@ -104,12 +104,11 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                             constraint.isActive = true
                         }
                     }
-                    subchild.locationsTableView.reloadData()
-                    subchild.daysAndTimesTableView.reloadData()
-                    
                     subchild.formatLocations()
                     subchild.updateTableViewHeights()
                     subchild.updateContentView()
+                    subchild.locationsTableView.reloadData()
+                    subchild.daysAndTimesTableView.reloadData()
                     //subchild.styleEventTitleTextField()
                     //subchild.updateTableViewHeights()
                     

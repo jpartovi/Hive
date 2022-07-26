@@ -22,6 +22,7 @@ class ConfirmViewController: StyleViewController {
     var pollMessage: MSMessage!
     var textBoxFlag = false
     
+    var isNewArray: [Bool] = []
     
     var addressEditingIndex: Int? = nil
     
@@ -128,6 +129,7 @@ class ConfirmViewController: StyleViewController {
         locationsTableView.delegate = self
         locationsTableView.setBackgroundColor()
         formatLocations()
+        isNewArray = [Bool](repeating: true, count: event.locations.count)
     }
     
     func formatLocations() {
@@ -158,7 +160,7 @@ class ConfirmViewController: StyleViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        locationsTableView.reloadData()
+        //locationsTableView.reloadData()
         DispatchQueue.main.async {
             self.setUpEventTitleTextField()
             self.updateTableViewHeights()
@@ -207,23 +209,29 @@ class ConfirmViewController: StyleViewController {
         }
         outEvent.daysAndTimes = daysAndTimes
         
+        // Remove blank locations
+        outEvent.locations.removeAll(where: { $0.address == nil && $0.title == "" })
+        
         return outEvent
     }
     
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
-        var postEvent = updateEventObject(inEvent: event)
-        
-        textBoxFlag = false
+        isNewArray = [Bool](repeating: false, count: event.locations.count)
+        locationsTableView.reloadData()
         
         // Make sure all text fields are full
-        for location in postEvent.locations {
+        for location in event.locations {
             if location.title == "" {
                 // ERROR
                 return
             }
         }
+        
+        var postEvent = updateEventObject(inEvent: event)
+        
+        textBoxFlag = false
         
         // Load current conversation
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
@@ -326,6 +334,7 @@ class ConfirmViewController: StyleViewController {
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil, address: nil))
+        isNewArray = [Bool](repeating: false, count: event.locations.count-1) + [true]
         self.formatLocations()
         self.updatePostButtonStatus()
         locationsTableView.reloadData()
@@ -346,6 +355,7 @@ class ConfirmViewController: StyleViewController {
         let indexPath =
         locationsTableView.indexPath(for: cell)!
         event.locations.remove(at: indexPath.row)
+        isNewArray.remove(at: indexPath.row)
         
         CATransaction.begin()
         locationsTableView.beginUpdates()
@@ -361,12 +371,12 @@ class ConfirmViewController: StyleViewController {
     
     @objc func addOrRemoveAddress(sender: UIButton) {
         addressEditingIndex = sender.tag
-        if event.locations[addressEditingIndex!].place == nil {
+        if event.locations[addressEditingIndex!].address == nil {
             let autocompleteViewController = GMSAutocompleteViewController()
             autocompleteViewController.delegate = self
             navigationController?.present(autocompleteViewController, animated: true)
         } else {
-            event.locations[addressEditingIndex!].place = nil
+            event.locations[addressEditingIndex!].address = nil
             locationsTableView.reloadData()
         }
         updateTableViewHeights()
@@ -384,6 +394,10 @@ class ConfirmViewController: StyleViewController {
         
         if event.locations.indices.contains(sender.tag) {
             event.locations[sender.tag].title = sender.text ?? ""
+            sender.isNew = false
+            let indexPath =
+            locationsTableView.indexPath(for: sender.superview?.superview as! LocationCell)!
+            isNewArray[indexPath.row] = false
             sender.colorStatus()
             updatePostButtonStatus()
         }
@@ -402,12 +416,20 @@ class ConfirmViewController: StyleViewController {
     }
     
     @objc func deleteDay(sender: UIButton) {
-        let index = sender.tag
-        daysAndTimesTableView.reloadData()
-        updateDaysAndTimes()
-        let day = event.days.remove(at: index)
+        let cell = sender.superview?.superview as! EditingDayAndTimesCell
+        let indexPath = daysAndTimesTableView.indexPath(for: cell)!
+        let day = event.days.remove(at: indexPath.row)
         daysAndTimes.removeValue(forKey: day)
-        daysAndTimesTableView.deleteRows(at: [IndexPath(item: index, section: 0)], with: .fade)
+        
+        CATransaction.begin()
+        daysAndTimesTableView.beginUpdates()
+        CATransaction.setCompletionBlock {
+            self.daysAndTimesTableView.reloadData()
+            self.updateDaysAndTimes()
+        }
+        daysAndTimesTableView.deleteRows(at: [indexPath], with: .fade)
+        daysAndTimesTableView.endUpdates()
+        CATransaction.commit()
     }
 }
 
@@ -501,6 +523,7 @@ extension ConfirmViewController: UITableViewDataSource {
                 cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
                 cell.changeAddressButton.isHidden = true
             }
+            cell.titleTextField.isNew = isNewArray[indexPath.row]
             cell.titleTextField.colorStatus()
             return cell
         default:
@@ -555,6 +578,8 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
         event.locations[addressEditingIndex!] = Location(title: event.locations[addressEditingIndex!].title, place: place)
         locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
+        locationsTableView.layoutSubviews()
+        updateTableViewHeights()
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {

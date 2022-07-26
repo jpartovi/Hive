@@ -607,12 +607,12 @@ class VotingDayAndTimesCell: UITableViewCell {
     let timesCollectionView: UICollectionView = {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 105, height: 30)
+        //layout.itemSize = CGSize(width: 105, height: 30)
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isPagingEnabled = true
+        //collectionView.isPagingEnabled = true
         collectionView.register(VotingTimeCell.self, forCellWithReuseIdentifier: VotingTimeCell.reuseIdentifier)
         collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView

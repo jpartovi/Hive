@@ -64,13 +64,6 @@ class DaySelectorViewController: StyleViewController {
         
         underlineWeekDayLabels()
     
-        
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(calendarCollectionView!)
-        scrollView.delegate = self
-        updateContentView()
-        
         calendarCollectionView?.translatesAutoresizingMaskIntoConstraints = false
         calendarCollectionView!.contentInsetAdjustmentBehavior = .always
         calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
@@ -81,6 +74,11 @@ class DaySelectorViewController: StyleViewController {
         
         updateSelections()
         calendarCollectionView!.reloadData()
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(calendarCollectionView!)
+        scrollView.delegate = self
+        updateContentView()
     }
     
     func updateSelections() {
@@ -434,6 +432,7 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
             (viewController as! LocationsViewController).event = event
             (viewController as! LocationsViewController).updateLocations()
             (viewController as! LocationsViewController).expandToNext = false
+            (viewController as! LocationsViewController).isNewArray = [Bool](repeating: false, count: event.locations.count)
             
         }
     }

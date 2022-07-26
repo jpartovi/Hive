@@ -188,6 +188,9 @@ class LocationsViewController: StyleViewController {
     
     @IBAction func continueButtonPressed(_ sender: Any) {
         
+        isNewArray = [Bool](repeating: false, count: locations.count)
+        locationsTableView.reloadData()
+        
         for location in locations {
             if location.title == "" {
                 // TODO: Error???
@@ -446,7 +449,7 @@ class LocationCell: UITableViewCell {
             addOrRemoveAddressButton.rightAnchor.constraint(equalTo: deleteButton.leftAnchor, constant: -inset),
             addOrRemoveAddressButton.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             addOrRemoveAddressButton.heightAnchor.constraint(equalToConstant: 26),
-            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: "+ address".size(withAttributes: [.font : addOrRemoveAddressButton.titleLabel!.font!]).width),
+            addOrRemoveAddressButton.widthAnchor.constraint(equalToConstant: "+ address".size(withAttributes: [.font : addOrRemoveAddressButton.titleLabel!.font!]).width + 2),
             
             deleteButton.heightAnchor.constraint(equalToConstant: 26),//min(self.frame.height - (inset * 2), 30)),
             deleteButton.widthAnchor.constraint(equalTo: deleteButton.heightAnchor),
