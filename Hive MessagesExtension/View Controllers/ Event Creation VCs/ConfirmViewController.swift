@@ -20,6 +20,7 @@ class ConfirmViewController: StyleViewController {
     
     var pollFlag = false
     var pollMessage: MSMessage!
+    var textBoxFlag = false
     
     
     var addressEditingIndex: Int? = nil
@@ -61,6 +62,27 @@ class ConfirmViewController: StyleViewController {
         fillEventDetails()
         
         postButton.size(size: 150, textSize: 25)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.keyboardExpandViewApprover))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+        
+    }
+    
+    @objc func keyboardExpandViewApprover() {
+        textBoxFlag = true
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        let MVC = (self.parent?.parent as? MessagesViewController)!
+        if textBoxFlag {
+            textBoxFlag = false
+            if MVC.presentationStyle == .compact {
+                MVC.requestPresentationStyle(.expanded)
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -190,38 +212,44 @@ class ConfirmViewController: StyleViewController {
         }
     }
     
-    func updateEventObject() {
+    func updateEventObject(inEvent: Event) -> Event {
+        
+        var outEvent = inEvent
         
         updateDaysAndTimes()
         
         // Remove any times that aren't selected anywhere
-        for time in event.times {
+        for time in outEvent.times {
             var timeIncluded = false
-            for day in event.days {
+            for day in outEvent.days {
                 if daysAndTimes[day]!.contains(where: { $0.sameAs(time: time) }) {
                     timeIncluded = true
                     continue
                 }
             }
             if !timeIncluded {
-                event.times.remove(at: event.times.firstIndex(where: { $0.sameAs(time: time) })!)
+                outEvent.times.remove(at: outEvent.times.firstIndex(where: { $0.sameAs(time: time) })!)
             }
         }
-        event.daysAndTimes = daysAndTimes
+        outEvent.daysAndTimes = daysAndTimes
+        
+        return outEvent
     }
     
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
+        var postEvent = updateEventObject(inEvent: event)
+        
+        textBoxFlag = false
+        
         // Make sure all text fields are full
-        for location in event.locations {
+        for location in postEvent.locations {
             if location.title == "" {
                 // ERROR
                 return
             }
         }
-        
-        updateEventObject()
         
         // Load current conversation
         guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
@@ -240,10 +268,10 @@ class ConfirmViewController: StyleViewController {
         let messageURL: URL
         
         
-        if event.locations.count > 1 || event.days.count > 1 || event.times.count > 1 {
+        if postEvent.locations.count > 1 || postEvent.days.count > 1 || postEvent.times.count > 1 {
             // TODO: POLL
             
-            caption = "Poll for " + event.title
+            caption = "Poll for " + postEvent.title
             image = UIImage(named: "MessageHeader")!
             imageTitle = ""
             imageSubtitle = ""
@@ -252,7 +280,7 @@ class ConfirmViewController: StyleViewController {
             trailingSubcaption = ""
             //summaryText = "Poll for " + event.title
             
-            messageURL = event.buildVoteURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
+            messageURL = postEvent.buildVoteURL()
             
             /*conversation.insert(pollMessage) {error in
                 // empty for now
@@ -260,21 +288,21 @@ class ConfirmViewController: StyleViewController {
         } else {
             // RSVP invite
             
-            caption = "Come to " + event.title
-            if event.locations.isEmpty {
+            caption = "Come to " + postEvent.title
+            if postEvent.locations.isEmpty {
                 caption += "!"
             } else {
-                caption += " at " + event.locations[0].title + "!"
+                caption += " at " + postEvent.locations[0].title + "!"
             }
             image = UIImage(named: "MessageHeader")!
             imageTitle = ""
             imageSubtitle = ""
             trailingCaption = ""
             
-            if event.times.isEmpty {
-                subcaption = event.days[0].formatDate()
+            if postEvent.times.isEmpty {
+                subcaption = postEvent.days[0].formatDate()
             } else {
-                subcaption = event.days[0].formatDate(time: event.times[0], duration: event.duration)
+                subcaption = postEvent.days[0].formatDate(time: postEvent.times[0], duration: postEvent.duration)
             }
             
             trailingSubcaption = ""
@@ -282,7 +310,7 @@ class ConfirmViewController: StyleViewController {
             // TODO: Doesn't work for some reason
             //summaryText = "Invite to " + event.title
             
-            messageURL = event.buildRSVPURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
+            messageURL = postEvent.buildRSVPURL(ID: (MessagesViewController.conversation?.localParticipantIdentifier.uuidString)!)
         }
         
         // Construct message layout
@@ -324,6 +352,8 @@ class ConfirmViewController: StyleViewController {
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         event.locations.append(Location(title: "", place: nil, address: nil))
+        self.formatLocations()
+        self.updatePostButtonStatus()
         locationsTableView.reloadData()
         
         DispatchQueue.main.async {
@@ -331,10 +361,8 @@ class ConfirmViewController: StyleViewController {
             self.updateTableViewHeights()
             let lastCellIndexPath = IndexPath(row: self.event.locations.count - 1, section: 0)
             self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
-            self.formatLocations()
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
             cell.titleTextField.becomeFirstResponder()
-            self.updatePostButtonStatus()
         }
     }
     
@@ -369,6 +397,14 @@ class ConfirmViewController: StyleViewController {
             locationsTableView.reloadData()
         }
         updateTableViewHeights()
+    }
+    
+    @objc func locationTitleTextFieldDidBeginEditing(sender: StyleTextField) {
+        sender.perform(
+            #selector(becomeFirstResponder),
+            with: nil,
+            afterDelay: 0.1
+        )
     }
     
     @objc func locationTitleTextFieldDidChange(sender: StyleTextField) {
@@ -429,6 +465,7 @@ extension ConfirmViewController: UITableViewDataSource {
         case daysAndTimesTableView:
             
             let cell = daysAndTimesTableView.dequeueReusableCell(withIdentifier: EditingDayAndTimesCell.reuseIdentifier, for: indexPath) as! EditingDayAndTimesCell
+            cell.CVC = self
             var day = event.days[indexPath.row]
             if daysAndTimes.count == 1 {
                 cell.deleteButton.isHidden = true
@@ -472,6 +509,7 @@ extension ConfirmViewController: UITableViewDataSource {
             let location = event.locations[indexPath.row]
             cell.titleTextField.text = location.title
             cell.titleTextField.tag = indexPath.row
+            cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidBeginEditing(sender:)), for: .editingDidBegin)
             cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidChange(sender:)), for: .editingChanged)
             cell.deleteButton.tag = indexPath.row
             cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
@@ -555,17 +593,19 @@ extension ConfirmViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == TimeSelectorViewController.self {
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
             self.requestPresentationStyle(.expanded)
-            updateEventObject()
+            event = updateEventObject(inEvent: event)
             (viewController as! TimeSelectorViewController).event = event
             (viewController as! TimeSelectorViewController).updateSelections()
-            (viewController as! TimeSelectorViewController)
+            //(viewController as! TimeSelectorViewController)
         } else if type(of: viewController) == DaySelectorViewController.self {
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
             self.requestPresentationStyle(.expanded)
-            updateEventObject()
+            event = updateEventObject(inEvent: event)
             (viewController as! DaySelectorViewController).event = event
             (viewController as! DaySelectorViewController).updateSelections()
-            (viewController as! DaySelectorViewController)
+            (viewController as! DaySelectorViewController).expandToNext = false
         }
     }
 }
@@ -578,6 +618,7 @@ class EditingDayAndTimesCell: UITableViewCell {
     
     var times = [(time: Time, isSelected: Bool)]()
     var duration: Duration? = nil
+    var CVC: ConfirmViewController!
     
     let dayAndTimeLabel: UILabel = {
         let label = UILabel()
@@ -597,12 +638,12 @@ class EditingDayAndTimesCell: UITableViewCell {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         //layout.itemSize = CGSize(width: 105, height: 30)
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.isPagingEnabled = true
+        //collectionView.isPagingEnabled = true
         collectionView.register(EditingTimeCell.self, forCellWithReuseIdentifier: EditingTimeCell.reuseIdentifier)
         collectionView.backgroundColor = Style.lightGreyColor
         return collectionView
@@ -678,6 +719,7 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
             cell.backgroundColor = Style.greyColor
             cell.timeLabel.textColor = UIColor.white
         }
+
         return cell
     }
 }
@@ -687,7 +729,9 @@ extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
         for (index, (time, isSelected)) in times.enumerated() {
             if isSelected && index != indexPath.row {
                 times[indexPath.row].isSelected = !times[indexPath.row].isSelected
-                timesCollectionView.reloadData()
+                //timesCollectionView.reloadData()
+                collectionView.reloadData()
+                CVC.updateDaysAndTimes()
                 return
             }
         }

@@ -151,7 +151,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
                                 <rect key="frame" x="19" y="88" width="285" height="290"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
                                         <rect key="frame" x="0.0" y="69.5" width="285" height="195"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
@@ -176,18 +176,18 @@
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1v-xz-QVR" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Join for this event!" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1v-xz-QVR" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Date/time" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hl-qe-PCn" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28.5" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0EQ-h5-lk3" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="49" width="285" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -204,7 +204,6 @@
                                     <constraint firstAttribute="bottom" secondItem="49J-CZ-eci" secondAttribute="bottom" id="W3D-Sc-DqL"/>
                                     <constraint firstItem="0EQ-h5-lk3" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="WgZ-sj-0f1"/>
                                     <constraint firstItem="0EQ-h5-lk3" firstAttribute="top" secondItem="1hl-qe-PCn" secondAttribute="bottom" id="WwV-Vd-b3L"/>
-                                    <constraint firstItem="C1v-xz-QVR" firstAttribute="top" secondItem="FSA-LC-JBs" secondAttribute="top" id="dUh-zk-Msj"/>
                                     <constraint firstItem="C1v-xz-QVR" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="fPe-5A-T75"/>
                                     <constraint firstItem="49J-CZ-eci" firstAttribute="centerX" secondItem="FSA-LC-JBs" secondAttribute="centerX" id="hNq-4l-P9O"/>
                                     <constraint firstItem="1hl-qe-PCn" firstAttribute="width" secondItem="FSA-LC-JBs" secondAttribute="width" id="nf3-gf-V9Y"/>
@@ -374,7 +373,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-4s-y8L">
                                 <rect key="frame" x="40" y="255" width="240.5" height="93"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf">
                                         <rect key="frame" x="0.0" y="0.0" width="90.5" height="93"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <nil key="textColor"/>
@@ -384,15 +383,23 @@
                                         <rect key="frame" x="90.5" y="0.0" width="150" height="93"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="150" id="E6z-RW-IhM"/>
+                                            <constraint firstAttribute="height" constant="75" id="RHr-h9-dcg"/>
                                             <constraint firstAttribute="height" constant="93" id="lya-8h-SUj"/>
+                                            <constraint firstAttribute="width" constant="120" id="rOj-rQ-uJV"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="RHr-h9-dcg"/>
+                                                <exclude reference="rOj-rQ-uJV"/>
+                                            </mask>
+                                        </variation>
                                     </pickerView>
                                 </subviews>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Kqe-cM-BgW">
                                 <rect key="frame" x="16" y="104" width="288" height="143"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UFQ-6M-vty">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UFQ-6M-vty">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -434,26 +441,60 @@
                         <constraints>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="50" id="2Wb-MG-PDF"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="3Ef-e3-W3f"/>
-                            <constraint firstItem="Kqe-cM-BgW" firstAttribute="top" secondItem="rQq-6r-Vpm" secondAttribute="bottom" constant="6" id="BKj-nU-F8S"/>
+                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="centerX" secondItem="Kqe-cM-BgW" secondAttribute="centerX" identifier="Both" id="49R-ae-ECx"/>
+                            <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" secondItem="Kqe-cM-BgW" secondAttribute="bottom" constant="16" id="4sL-Mb-ac3"/>
+                            <constraint firstItem="gDN-kl-iQF" firstAttribute="centerX" secondItem="IOY-4s-y8L" secondAttribute="centerX" id="8YH-b2-cxV"/>
+                            <constraint firstItem="Kqe-cM-BgW" firstAttribute="top" secondItem="rQq-6r-Vpm" secondAttribute="bottom" constant="6" identifier="Both" id="BKj-nU-F8S"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="top" secondItem="Kqe-cM-BgW" secondAttribute="bottom" constant="8" symbolic="YES" id="CV0-sC-4Vd"/>
+                            <constraint firstItem="IOY-4s-y8L" firstAttribute="leading" secondItem="Kqe-cM-BgW" secondAttribute="trailing" constant="30" id="I66-Ho-F7a"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" secondItem="gDN-kl-iQF" secondAttribute="bottom" constant="100" id="MzA-VG-nKh"/>
-                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="top" secondItem="IUU-AQ-BpU" secondAttribute="top" constant="30" id="Udz-fl-dn9"/>
+                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="top" secondItem="IUU-AQ-BpU" secondAttribute="top" constant="30" identifier="Both" id="Udz-fl-dn9"/>
+                            <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="IUU-AQ-BpU" secondAttribute="centerY" constant="-35" id="WWk-IV-uCt"/>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="YMf-eV-dHz"/>
-                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="gmQ-ne-Yfe"/>
-                            <constraint firstItem="Kqe-cM-BgW" firstAttribute="leading" secondItem="IUU-AQ-BpU" secondAttribute="leading" constant="16" id="hY5-yi-gzq"/>
+                            <constraint firstItem="Kqe-cM-BgW" firstAttribute="leading" secondItem="IUU-AQ-BpU" secondAttribute="leading" constant="16" identifier="Both" id="hY5-yi-gzq"/>
+                            <constraint firstItem="gDN-kl-iQF" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="8" id="m8j-ix-P0P"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="Kqe-cM-BgW" secondAttribute="trailing" constant="16" id="nr7-Dj-gob"/>
-                            <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="hJz-tV-2Nb" secondAttribute="centerX" id="sLw-rs-DMM"/>
-                            <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="hJz-tV-2Nb" secondAttribute="centerY" id="uJn-AP-P5n"/>
+                            <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="hJz-tV-2Nb" secondAttribute="centerX" identifier="Both" id="sLw-rs-DMM"/>
+                            <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="hJz-tV-2Nb" secondAttribute="centerY" identifier="Both" id="uJn-AP-P5n"/>
+                            <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="IOY-4s-y8L" secondAttribute="trailing" constant="32" id="vGP-kV-gHJ"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="4sL-Mb-ac3"/>
+                                <exclude reference="vGP-kV-gHJ"/>
+                                <exclude reference="I66-Ho-F7a"/>
+                                <exclude reference="WWk-IV-uCt"/>
+                                <exclude reference="8YH-b2-cxV"/>
+                                <exclude reference="m8j-ix-P0P"/>
+                            </mask>
+                        </variation>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
+                        <outlet property="durationLabel" destination="c5K-9U-aRf" id="GnA-xV-Gkn"/>
                         <outlet property="durationPicker" destination="TqA-wb-TJt" id="g97-U7-aMc"/>
                         <outlet property="durationView" destination="IOY-4s-y8L" id="y6Y-aQ-5ke"/>
                         <outlet property="includeDurationButton" destination="hJz-tV-2Nb" id="pUc-hp-HCn"/>
                         <outlet property="nextButton" destination="gDN-kl-iQF" id="QUU-T9-Azl"/>
                         <outlet property="promptLabel" destination="rQq-6r-Vpm" id="qDw-ha-fwX"/>
                         <outlet property="startTimesCollectionView" destination="Kqe-cM-BgW" id="IIh-MJ-PEC"/>
+                        <outletCollection property="expandConstraints" destination="YMf-eV-dHz" collectionClass="NSMutableArray" id="eKl-kp-5TP"/>
+                        <outletCollection property="compactConstraints" destination="vGP-kV-gHJ" collectionClass="NSMutableArray" id="quT-fi-VYr"/>
+                        <outletCollection property="compactConstraints" destination="4sL-Mb-ac3" collectionClass="NSMutableArray" id="YwJ-Qm-uk2"/>
+                        <outletCollection property="compactConstraints" destination="I66-Ho-F7a" collectionClass="NSMutableArray" id="asH-9P-yQN"/>
+                        <outletCollection property="compactConstraints" destination="WWk-IV-uCt" collectionClass="NSMutableArray" id="cC5-4s-3EB"/>
+                        <outletCollection property="compactConstraints" destination="8YH-b2-cxV" collectionClass="NSMutableArray" id="78H-Rh-YVF"/>
+                        <outletCollection property="compactConstraints" destination="m8j-ix-P0P" collectionClass="NSMutableArray" id="zqp-lK-bMq"/>
+                        <outletCollection property="expandConstraints" destination="MzA-VG-nKh" collectionClass="NSMutableArray" id="84q-e7-GEb"/>
+                        <outletCollection property="expandConstraints" destination="nr7-Dj-gob" collectionClass="NSMutableArray" id="2Zx-GM-cxn"/>
+                        <outletCollection property="expandConstraints" destination="3Ef-e3-W3f" collectionClass="NSMutableArray" id="WO3-Op-Vs8"/>
+                        <outletCollection property="expandConstraints" destination="CV0-sC-4Vd" collectionClass="NSMutableArray" id="3Hc-Ud-box"/>
+                        <outletCollection property="expandConstraints" destination="2Wb-MG-PDF" collectionClass="NSMutableArray" id="DOW-tm-3OC"/>
+                        <outletCollection property="expandConstraints" destination="YMf-eV-dHz" collectionClass="NSMutableArray" id="Upu-2v-DqT"/>
+                        <outletCollection property="expandConstraints" destination="E6z-RW-IhM" collectionClass="NSMutableArray" id="U8J-OK-EB8"/>
+                        <outletCollection property="expandConstraints" destination="lya-8h-SUj" collectionClass="NSMutableArray" id="kh6-69-N7e"/>
+                        <outletCollection property="compactConstraints" destination="rOj-rQ-uJV" collectionClass="NSMutableArray" id="TkG-Lp-tzQ"/>
+                        <outletCollection property="compactConstraints" destination="RHr-h9-dcg" collectionClass="NSMutableArray" id="i8D-fU-yjO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBW-qy-8cm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -479,14 +520,14 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ydz-YF-ior">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ydz-YF-ior">
                                         <rect key="frame" x="0.0" y="70.5" width="288" height="142"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="142" id="3M1-nG-PDF"/>
                                         </constraints>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LocationCell" id="ceV-Ul-SlL" customClass="LocationCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationCell" id="ceV-Ul-SlL" customClass="LocationCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ceV-Ul-SlL" id="6Wb-AS-4lM">

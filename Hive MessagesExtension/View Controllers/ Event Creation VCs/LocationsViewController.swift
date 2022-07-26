@@ -27,6 +27,8 @@ class LocationsViewController: StyleViewController {
     
     var expandToNext: Bool = false
     
+    var isNewArray: [Bool] = []
+    
     //var textFieldExpand: StyleTextField? = nil
     
     @IBOutlet weak var promptLabel: StyleLabel!
@@ -150,6 +152,7 @@ class LocationsViewController: StyleViewController {
     @IBAction func addLocationButtonPressed(_ sender: Any) {
         
         locations.append(Location(title: "", place: nil, address: nil))
+        isNewArray = [Bool](repeating: false, count: locations.count-1) + [true]
         locationsTableView.reloadData()
         DispatchQueue.main.async {
             let lastCellIndexPath = IndexPath(row: self.locations.count - 1, section: 0)
@@ -202,6 +205,9 @@ class LocationsViewController: StyleViewController {
     
     func nextPage() {
         
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        
         event?.locations = locations
         let dateSelectorVC = (storyboard?.instantiateViewController(withIdentifier: DaySelectorViewController.storyboardID) as? DaySelectorViewController)!
         dateSelectorVC.event = event
@@ -216,7 +222,7 @@ class LocationsViewController: StyleViewController {
         let indexPath =
         locationsTableView.indexPath(for: cell)!
         locations.remove(at: indexPath.row)
-        
+        isNewArray.remove(at: indexPath.row)
         CATransaction.begin()
         locationsTableView.beginUpdates()
         CATransaction.setCompletionBlock {
@@ -259,6 +265,10 @@ class LocationsViewController: StyleViewController {
     @objc func titleTextFieldDidChange(sender: StyleTextField) {
         if locations.indices.contains(sender.tag) {
             locations[sender.tag].title = sender.text ?? ""
+            sender.isNew = false
+            let indexPath =
+            locationsTableView.indexPath(for: sender.superview?.superview as! LocationCell)!
+            isNewArray[indexPath.row] = false
             sender.colorStatus()
             updateContinueButtonStatus()
         }
@@ -320,6 +330,7 @@ extension LocationsViewController: UITableViewDataSource {
             cell.addOrRemoveAddressButton.setTitle("+ address", for: .normal)
             cell.changeAddressButton.isHidden = true
         }
+        cell.titleTextField.isNew = isNewArray[indexPath.row]
         cell.titleTextField.colorStatus()
         
         return cell
@@ -353,6 +364,8 @@ extension LocationsViewController: UITableViewDelegate {
 extension LocationsViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         if type(of: viewController) == StartEventViewController.self {
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
             self.requestPresentationStyle(.expanded)
         }
     }

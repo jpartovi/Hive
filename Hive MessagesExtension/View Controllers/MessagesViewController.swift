@@ -27,6 +27,21 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         
         MessagesViewController.conversation = conversation
         presentViewController(for: conversation, with: presentationStyle)
+
+    }
+    
+    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
+        // Called when the user taps the send button.
+        for child in children {
+            if let child = child as? UINavigationController {
+                let subchild = child.children.last //the view controller being presented
+                if let subchild = subchild as? ConfirmViewController {
+                    subchild.textBoxFlag = true
+                    return
+                }
+            }
+        }
+        
     }
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
@@ -54,9 +69,6 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
             } else if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
-                    
-                    print("subchild = subchild as? ConfirmViewController")
-                    print(presentationStyle.rawValue)
                     if presentationStyle == .compact {
                         subchild.scrollViewTrailingConstraint.constant = 160
                         for constraint in subchild.expandConstraints {
@@ -89,7 +101,6 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                         subchild.changedConstraints(compact: true)
                     } else if presentationStyle == .expanded {
                         subchild.changedConstraints(compact: false)
-                        print(subchild.expandToNext)
                         if subchild.expandToNext {
                             subchild.nextPage()
                         }
@@ -108,6 +119,15 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                     subchild.conformToPresentationStyle(presentationStyle: presentationStyle)
                     if presentationStyle == .expanded {
                         print(subchild.expandToNext)
+                        if subchild.expandToNext {
+                            subchild.nextPage()
+                        }
+                    }
+                } else if let subchild = subchild as? TimeSelectorViewController {
+                    if presentationStyle == .compact {
+                        subchild.changedConstraints(compact: true)
+                    } else if presentationStyle == .expanded {
+                        subchild.changedConstraints(compact: false)
                         if subchild.expandToNext {
                             subchild.nextPage()
                         }

@@ -420,6 +420,8 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
         
         if type(of: viewController) == LocationsViewController.self {
+            NotificationCenter.default.addObserver(viewController, selector: #selector((viewController as! LocationsViewController).keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(viewController, selector: #selector((viewController as! LocationsViewController).keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
             self.requestPresentationStyle(.expanded)
             updateEventObject()
             (viewController as! LocationsViewController).event = event
