@@ -107,7 +107,7 @@ class DaySelectorViewController: StyleViewController {
         compactView = compact
         
         if compact {
-            promptLabel.font = Style.font(size: 20)
+            promptLabel.font = Format.font(size: 20)
             cellsPerRow = 21
             rows = 1
             for constraint in expandedConstraints {
@@ -122,7 +122,7 @@ class DaySelectorViewController: StyleViewController {
             monthLabel.isHidden = false
             line.removeFromSuperlayer()
         } else {
-            promptLabel.font = Style.font(size: 30)
+            promptLabel.font = Format.font(size: 30)
             cellsPerRow = 7
             rows = 3
             line.isHidden = false
@@ -221,13 +221,13 @@ class DaySelectorViewController: StyleViewController {
             }
         }
         
-        monthLabel.style(text: text, textColor: Style.darkTextColor, fontSize: 18)
+        monthLabel.style(text: text, textColor: Colors.darkTextColor, fontSize: 18)
     }
     
     func underlineWeekDayLabels() {
         let lineThickness = CGFloat(2)
         line.frame = CGRect(x: 0.0, y: 0.0, width: view.frame.width - 32, height: lineThickness)
-        line.backgroundColor = Style.greyColor.cgColor
+        line.backgroundColor = Colors.greyColor.cgColor
         calendarCollectionView!.layer.addSublayer(line)
     }
     
@@ -474,7 +474,7 @@ class CalendarDayCell: UICollectionViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
-        view.backgroundColor = Style.primaryColor
+        view.backgroundColor = Colors.primaryColor
         return view
     }()
     /*
@@ -493,7 +493,7 @@ class CalendarDayCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = Style.darkTextColor
+        label.textColor = Colors.darkTextColor
         return label
     }()
 
@@ -560,25 +560,25 @@ class CalendarDayCell: UICollectionViewCell {
 
         if day.isSelected {
             selectionBackgroundView.isHidden = false
-            numberLabel.textColor = Style.lightTextColor
+            numberLabel.textColor = Colors.lightTextColor
         } else {
             selectionBackgroundView.isHidden = true
             if !inFuture {
-                numberLabel.textColor = Style.greyColor
+                numberLabel.textColor = Colors.greyColor
                 //monthBackgroundView.backgroundColor = Style.lightTextColor
                 //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
             } else if inNextMonth {
                 //monthBackgroundView.backgroundColor = Style.tertiaryColor
                 //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
-                numberLabel.textColor = Style.darkTextColor
+                numberLabel.textColor = Colors.darkTextColor
             } else {
                 //monthBackgroundView.backgroundColor = Style.secondaryColor
                 if isToday {
                     //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
-                    numberLabel.textColor = Style.primaryColor
+                    numberLabel.textColor = Colors.primaryColor
                 } else {
                     //monthBackgroundView.layer.borderColor = Style.darkTextColor.withAlphaComponent(0).cgColor
-                    numberLabel.textColor = Style.darkTextColor
+                    numberLabel.textColor = Colors.darkTextColor
                 }
             }
         }

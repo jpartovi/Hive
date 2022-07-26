@@ -39,6 +39,7 @@ class StartEventViewController: StyleViewController {
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 200, height: 200), collectionViewLayout: hexLayout)
         collectionView.register(HexBorderCell.self, forCellWithReuseIdentifier: HexBorderCell.reuseIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.setBackgroundColor()
         return collectionView
     }()
     
@@ -97,7 +98,7 @@ class StartEventViewController: StyleViewController {
         
         
         typesCollectionView.collectionViewLayout = hexLayout
-        typesCollectionView.backgroundColor = UIColor.clear.withAlphaComponent(0)
+        typesCollectionView.setBackgroundColor(color: Colors.backgroundColor.withAlphaComponent(0))
         typesCollectionView.reloadData()
         
         view.addSubview(hexBordersCollectionView)

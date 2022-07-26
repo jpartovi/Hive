@@ -46,7 +46,7 @@ class LocationsViewController: StyleViewController {
     func changedConstraints(compact: Bool){
         
         if compact {
-            promptLabel.font = Style.font(size: 20)
+            promptLabel.font = Format.font(size: 20)
             for constraint in expandedConstraints {
                 constraint.isActive = false
             }
@@ -54,7 +54,7 @@ class LocationsViewController: StyleViewController {
                 constraint.isActive = true
             }
         } else {
-            promptLabel.font = Style.font(size: 30)
+            promptLabel.font = Format.font(size: 30)
             for constraint in compactConstraints {
                 constraint.isActive = false
             }
@@ -80,12 +80,13 @@ class LocationsViewController: StyleViewController {
         
         //addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         addLocationButton.size(size: 150, textSize: 18)
-        addLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Style.lightTextColor)
+        addLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Colors.lightTextColor)
         
         locationsTableView.dataSource = self
         locationsTableView.delegate = self
         locationsTableView.separatorStyle = .none
         locationsTableView.showsVerticalScrollIndicator = false
+        locationsTableView.setBackgroundColor()
         
         updateLocations()
         
@@ -392,7 +393,7 @@ class LocationCell: UITableViewCell {
     let changeAddressButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(Style.greyColor, for: .normal)
+        button.setTitleColor(Colors.greyColor, for: .normal)
         button.contentHorizontalAlignment = .left
         button.titleLabel?.lineBreakMode = .byTruncatingTail
         return button
@@ -401,7 +402,7 @@ class LocationCell: UITableViewCell {
     let addOrRemoveAddressButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(Style.primaryColor, for: .normal)
+        button.setTitleColor(Colors.primaryColor, for: .normal)
         return button
     }()
     
@@ -410,7 +411,7 @@ class LocationCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("X", for: .normal)
         
-        button.backgroundColor = Style.greyColor
+        button.backgroundColor = Colors.greyColor
         button.setTitleColor(.white, for: .normal)
         return button
     }()
@@ -418,7 +419,7 @@ class LocationCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.backgroundColor = Style.lightGreyColor
+        self.backgroundColor = Colors.lightGreyColor
         
         self.contentView.addSubview(titleTextField)
         self.contentView.addSubview(changeAddressButton)

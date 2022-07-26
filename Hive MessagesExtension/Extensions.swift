@@ -101,3 +101,16 @@ extension UIImage {
         return scaledImage
     }
 }
+
+
+extension UITableView {
+    func setBackgroundColor(color: UIColor = Colors.backgroundColor) {
+        self.backgroundColor = Colors.backgroundColor
+    }
+}
+
+extension UICollectionView {
+    func setBackgroundColor(color: UIColor = Colors.backgroundColor) {
+        self.backgroundColor = color
+    }
+}

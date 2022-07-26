@@ -28,8 +28,8 @@ class ErrorLabel: UILabel {
 */
 class StyleTextField: UITextField {
     
-    var fullColor: UIColor = Style.greyColor
-    let emptyColor: UIColor = Style.errorColor
+    var fullColor: UIColor = Colors.greyColor
+    let emptyColor: UIColor = Colors.errorColor
     var bottomLine = CALayer()
     var isNew = true
     
@@ -52,7 +52,7 @@ class StyleTextField: UITextField {
         superview!.endEditing(true)
     }
     
-    func style(placeholderText: String, color: UIColor? = nil, textColor: UIColor = Style.darkTextColor, fontSize: CGFloat = 18) {
+    func style(placeholderText: String, color: UIColor? = nil, textColor: UIColor = Colors.darkTextColor, fontSize: CGFloat = 18) {
         if let color = color {
             self.fullColor = color
         }
@@ -60,7 +60,7 @@ class StyleTextField: UITextField {
         self.placeholder = placeholderText
         self.textColor = textColor
         self.adjustsFontSizeToFitWidth = false
-        self.font = Style.font(size: fontSize)
+        self.font = Format.font(size: fontSize)
         self.borderStyle = .none
         self.layer.addSublayer(bottomLine)
         colorStatus()
@@ -107,10 +107,10 @@ class StyleTextField: UITextField {
 }
 
 class StyleLabel: UILabel {
-    func style(text: String, textColor: UIColor = Style.tertiaryColor, fontSize: CGFloat = 30) {
+    func style(text: String, textColor: UIColor = Colors.tertiaryColor, fontSize: CGFloat = 30) {
         self.text = text
         self.textColor = textColor
-        self.font = Style.font(size: fontSize)
+        self.font = Format.font(size: fontSize)
         self.numberOfLines = 0
         self.textAlignment = .center
     }
@@ -147,11 +147,11 @@ class HexButton: UIButton {
         style(title: title, imageTag: "GreyHex", textColor: UIColor.white)
     }
     
-    func style(title: String? = nil, imageTag: String = "ColorHex", textColor: UIColor = Style.lightTextColor) {
+    func style(title: String? = nil, imageTag: String = "ColorHex", textColor: UIColor = Colors.lightTextColor) {
         let backgroundImage = UIImage(named: imageTag)?.size(width: size, height: size)
         self.setBackgroundImage(backgroundImage, for: .normal)
         self.setTitleColor(textColor, for: .normal)
-        self.titleLabel?.font = Style.font(size: textSize)
+        self.titleLabel?.font = Format.font(size: textSize)
         self.titleLabel?.widthAnchor.constraint(equalToConstant: (backgroundImage?.size.width)! - 20).isActive = true
         self.titleLabel?.textAlignment = .center
         self.titleLabel?.numberOfLines = 0
@@ -234,18 +234,6 @@ class SelectionLargeHexButton: LargeHexButton {
     }
 }
 
-extension UITableView {
-    func setBackgroundColor() {
-        //self.backgroundColor = Style.backgroundColor
-    }
-}
-
-extension UICollectionView {
-    func setBackgroundColor() {
-        self.backgroundColor = Style.backgroundColor
-    }
-}
-
 class StyleViewController: MSMessagesAppViewController {
     
     override func viewDidLoad() {
@@ -256,7 +244,7 @@ class StyleViewController: MSMessagesAppViewController {
     }
     
     func setBackgroundColor() {
-        self.view.backgroundColor = Style.backgroundColor
+        self.view.backgroundColor = Colors.backgroundColor
     }
     
     func addHexFooter() {

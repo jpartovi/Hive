@@ -61,6 +61,7 @@ class TimeSelectorViewController: StyleViewController {
         startTimesCollectionView.register(StartTimeCell.self, forCellWithReuseIdentifier: StartTimeCell.reuseIdentifier)
         startTimesCollectionView.dataSource = self
         startTimesCollectionView.delegate = self
+        startTimesCollectionView.setBackgroundColor()
         
         updateSelections()
     }
@@ -78,8 +79,8 @@ class TimeSelectorViewController: StyleViewController {
         
         if compact {
             
-            promptLabel.font = Style.font(size: 20)
-            durationLabel.font = Style.font(size: 15)
+            promptLabel.font = Format.font(size: 20)
+            durationLabel.font = Format.font(size: 15)
             cellsPerRow = 1
             rows = 6
             for constraint in expandConstraints {
@@ -90,8 +91,8 @@ class TimeSelectorViewController: StyleViewController {
             }
             durationView.axis = .vertical
         } else {
-            promptLabel.font = Style.font(size: 30)
-            durationLabel.font = Style.font(size: 23)
+            promptLabel.font = Format.font(size: 30)
+            durationLabel.font = Format.font(size: 23)
             cellsPerRow = 2
             rows = 3
             for constraint in compactConstraints {
@@ -365,7 +366,7 @@ class StartTimeCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = Style.lightTextColor
+        label.textColor = Colors.lightTextColor
         return label
     }()
     

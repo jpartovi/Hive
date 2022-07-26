@@ -27,12 +27,12 @@ class ConfirmViewController: StyleViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var eventTitleTextField: StyleTextField!
-    @IBOutlet weak var locationsLabel: UILabel!
+    @IBOutlet weak var locationsLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: UIButton!
     @IBOutlet weak var firstLocationButton: HexButton!
     @IBOutlet weak var locationsTableView: UITableView!
     @IBOutlet weak var locationsTableViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var dayTimePairsLabel: UILabel!
+    @IBOutlet weak var dayTimePairsLabel: StyleLabel!
     @IBOutlet weak var daysAndTimesTableView: UITableView!
     @IBOutlet weak var daysAndTimesTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var postButton: HexButton!
@@ -46,18 +46,21 @@ class ConfirmViewController: StyleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        locationsLabel.style(text: "Location Options:", textColor: Colors.darkTextColor, fontSize: 18)
+        dayTimePairsLabel.style(text: "Day/Time Options:", textColor: Colors.darkTextColor, fontSize: 18)
+        
         enableTouchAwayKeyboardDismiss()
         
         addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
-        addLocationButton.backgroundColor = Style.primaryColor
+        addLocationButton.backgroundColor = Colors.primaryColor
         addLocationButton.setTitle("+ Add", for: .normal)
-        addLocationButton.setTitleColor(Style.lightTextColor, for: .normal)
+        addLocationButton.setTitleColor(Colors.lightTextColor, for: .normal)
         
         addHexFooter()
         
         //firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         firstLocationButton.size(size: 150, textSize: 18)
-        firstLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Style.lightTextColor)
+        firstLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Colors.lightTextColor)
         loadDaysAndTimes()
         fillEventDetails()
         
@@ -117,11 +120,13 @@ class ConfirmViewController: StyleViewController {
     
         daysAndTimesTableView.dataSource = self
         daysAndTimesTableView.delegate = self
+        daysAndTimesTableView.setBackgroundColor()
     }
     
     func setUpLocationsTableView() {
         locationsTableView.dataSource = self
         locationsTableView.delegate = self
+        locationsTableView.setBackgroundColor()
         formatLocations()
     }
     
@@ -163,7 +168,7 @@ class ConfirmViewController: StyleViewController {
     
     
     func setUpEventTitleTextField() {
-        eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Style.tertiaryColor, textColor: Style.tertiaryColor, fontSize: 30)
+        eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Colors.tertiaryColor, textColor: Colors.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
         eventTitleTextField.addDoneButton()
     }
@@ -460,19 +465,19 @@ extension ConfirmViewController: UITableViewDataSource {
                 cell.dayLabel.isHidden = true
                 cell.timesCollectionView.isHidden = true
                 cell.dayAndTimeLabel.isHidden = false
+                let text: String
                 if event.times.count == 1 {
-                    
-                    cell.dayAndTimeLabel.text = day.formatDate(time: event.times[0], duration: event.duration)
+                    text = day.formatDate(time: event.times[0], duration: event.duration)
                 } else {
-                    cell.dayAndTimeLabel.text = day.formatDate()
+                    text = day.formatDate()
                 }
-                
+                cell.dayAndTimeLabel.style(text: text, textColor: Colors.darkTextColor, fontSize: 18)
             } else {
                 
                 cell.dayLabel.isHidden = false
                 cell.timesCollectionView.isHidden = false
                 cell.dayAndTimeLabel.isHidden = true
-                cell.dayLabel.text = day.formatDate()
+                cell.dayLabel.style(text: day.formatDate(), textColor: Colors.darkTextColor, fontSize: 18)
                 cell.duration = event.duration
                 cell.timesCollectionView.reloadData()
             }
@@ -592,15 +597,15 @@ class EditingDayAndTimesCell: UITableViewCell {
     var duration: Duration? = nil
     var CVC: ConfirmViewController!
     
-    let dayAndTimeLabel: UILabel = {
-        let label = UILabel()
+    let dayAndTimeLabel: StyleLabel = {
+        let label = StyleLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .left
         return label
     }()
     
-    let dayLabel: UILabel = {
-        let label = UILabel()
+    let dayLabel: StyleLabel = {
+        let label = StyleLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
@@ -617,7 +622,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         //collectionView.isPagingEnabled = true
         collectionView.register(EditingTimeCell.self, forCellWithReuseIdentifier: EditingTimeCell.reuseIdentifier)
-        collectionView.backgroundColor = Style.lightGreyColor
+        collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView
     }()
     
@@ -626,7 +631,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("X", for: .normal)
         
-        button.backgroundColor = Style.greyColor
+        button.backgroundColor = Colors.greyColor
         button.setTitleColor(.white, for: .normal)
         return button
     }()
@@ -634,7 +639,7 @@ class EditingDayAndTimesCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.backgroundColor = Style.lightGreyColor
+        self.backgroundColor = Colors.lightGreyColor
         
         contentView.addSubview(timesCollectionView)
         contentView.addSubview(dayLabel)
@@ -685,10 +690,10 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
         cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)//duration)
         cell.deleteIcon.tag = indexPath.row
         if times[indexPath.row].isSelected {
-            cell.backgroundColor = Style.primaryColor
-            cell.timeLabel.textColor = Style.lightTextColor
+            cell.backgroundColor = Colors.primaryColor
+            cell.timeLabel.textColor = Colors.lightTextColor
         } else {
-            cell.backgroundColor = Style.greyColor
+            cell.backgroundColor = Colors.greyColor
             cell.timeLabel.textColor = UIColor.white
         }
 
@@ -711,7 +716,7 @@ extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let timeString = times[indexPath.row].time.format(duration: nil)
-        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Style.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
     }
 }
 
@@ -721,15 +726,15 @@ class EditingTimeCell: UICollectionViewCell {
     let timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Style.font(size: 18)
+        label.font = Format.font(size: 18)
         return label
     }()
     
     let deleteIcon: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = Style.lightGreyColor
-        label.textColor = Style.greyColor
+        label.backgroundColor = Colors.lightGreyColor
+        label.textColor = Colors.greyColor
         label.textAlignment = .center
         label.text = "X"
         

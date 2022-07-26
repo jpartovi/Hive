@@ -24,7 +24,7 @@
 		156DAE7E287CD02900613360 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156DAE7D287CD02800613360 /* Extensions.swift */; };
 		15B44F44285CEC1C0055B51C /* TimeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */; };
 		15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F45285CF98E0055B51C /* InviteViewController.swift */; };
-		15B44F4E2860E3B20055B51C /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4D2860E3B10055B51C /* Style.swift */; };
+		15B44F4E2860E3B20055B51C /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B44F4D2860E3B10055B51C /* Colors.swift */; };
 		15B5D26A28823625004267E2 /* VoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B5D26928823624004267E2 /* VoteViewController.swift */; };
 		15BA66C1284E8C6E00C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66C0284E8C6E00C185CA /* Assets.xcassets */; };
 		15BA66C7284E8C6F00C185CA /* Hive MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -80,7 +80,7 @@
 		156DAE7D287CD02800613360 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeSelectorViewController.swift; sourceTree = "<group>"; };
 		15B44F45285CF98E0055B51C /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
-		15B44F4D2860E3B10055B51C /* Style.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
+		15B44F4D2860E3B10055B51C /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		15B5D26928823624004267E2 /* VoteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VoteViewController.swift; path = "Hive MessagesExtension/View Controllers/VoteViewController.swift"; sourceTree = SOURCE_ROOT; };
 		15BA66BD284E8C6800C185CA /* Hive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66C0284E8C6E00C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 				151BC1E2288882E800B330DF /* Global Variables.swift */,
 				151BC1E42888842000B330DF /* Custom Elements.swift */,
 				156DAE7D287CD02800613360 /* Extensions.swift */,
-				15B44F4D2860E3B10055B51C /* Style.swift */,
+				15B44F4D2860E3B10055B51C /* Colors.swift */,
 				1545E01E2889DBD6004DD491 /* VoteNavigationController.swift */,
 				1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */,
 				1545E0112888B016004DD491 /* Event Structs */,
@@ -400,7 +400,7 @@
 				15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */,
 				156DAE722876382C00613360 /* ConfirmViewController.swift in Sources */,
 				1545E0192888B0B9004DD491 /* Time.swift in Sources */,
-				15B44F4E2860E3B20055B51C /* Style.swift in Sources */,
+				15B44F4E2860E3B20055B51C /* Colors.swift in Sources */,
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
 				151BC1E52888842000B330DF /* Custom Elements.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,

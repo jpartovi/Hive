@@ -8,13 +8,24 @@
 import Foundation
 import UIKit
 
-enum Style {
+enum Colors {
+    
+    // Colors
+    static let primaryColor = Colors.hexStringToUIColor(hex: "DF9F28")
+    static let secondaryColor = Colors.hexStringToUIColor(hex: "EED2A1")
+    static let tertiaryColor = Colors.hexStringToUIColor(hex: "6798C5")
+    static let lightTextColor = Colors.hexStringToUIColor(hex: "FFF7E8")
+    static let darkTextColor = Colors.hexStringToUIColor(hex: "4F4F4F")
+    static let greyColor = Colors.hexStringToUIColor(hex: "9C9C9C")
+    static let lightGreyColor = Colors.hexStringToUIColor(hex: "E3E3E3")
+    static let errorColor = Colors.hexStringToUIColor(hex: "CF6048")
+    static let backgroundColor = Colors.hexStringToUIColor(hex: "FFFFFF")
     
     // Color palletes: https://coolors.co/palettes/popular/yellow
     
     static func hexStringToUIColor(hex: String) -> UIColor {
         
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
@@ -24,7 +35,7 @@ enum Style {
             return UIColor.gray
         }
 
-        var rgbValue:UInt64 = 0
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
 
         return UIColor(
@@ -34,17 +45,9 @@ enum Style {
             alpha: CGFloat(1.0)
         )
     }
-    
-    // Colors
-    static let primaryColor = Style.hexStringToUIColor(hex: "DF9F28")
-    static let secondaryColor = Style.hexStringToUIColor(hex: "EED2A1")
-    static let tertiaryColor = Style.hexStringToUIColor(hex: "6798C5")
-    static let lightTextColor = Style.hexStringToUIColor(hex: "FFF7E8")
-    static let darkTextColor = Style.hexStringToUIColor(hex: "4F4F4F")
-    static let greyColor = Style.hexStringToUIColor(hex: "9C9C9C")
-    static let lightGreyColor = Style.hexStringToUIColor(hex: "E3E3E3")
-    static let errorColor = Style.hexStringToUIColor(hex: "CF6048")
-    static let backgroundColor = Style.hexStringToUIColor(hex: "FFFFFF")
+}
+
+enum Format {
     
     // Font
     static func font(size: CGFloat = 18) -> UIFont {

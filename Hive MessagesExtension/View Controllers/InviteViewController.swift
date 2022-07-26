@@ -51,8 +51,8 @@ class InviteViewController: StyleViewController {
         yesBar.layer.cornerRadius = yesBar.frame.width/2
         noBar.layer.cornerRadius = noBar.frame.width/2
         
-        yesBar.backgroundColor = Style.greyColor
-        noBar.backgroundColor = Style.greyColor
+        yesBar.backgroundColor = Colors.greyColor
+        noBar.backgroundColor = Colors.greyColor
         
         yesBar.addSubview(yesCounts)
         noBar.addSubview(noCounts)
@@ -99,7 +99,7 @@ class InviteViewController: StyleViewController {
             if let address = location.address {
                 locationInfo += " (" + address + ")"
             }
-            locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
+            locationLabel.style(text: locationInfo, textColor: Colors.darkTextColor, fontSize: 18)
         }
         locationLabel.adjustHeight()
         
@@ -112,7 +112,7 @@ class InviteViewController: StyleViewController {
         } else {
             dayAndTimeInfo += day.formatDate(time: times[0], duration: event.duration)
         }
-        dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Style.darkTextColor, fontSize: 18)
+        dayAndTimeLabel.style(text: dayAndTimeInfo, textColor: Colors.darkTextColor, fontSize: 18)
         dayAndTimeLabel.adjustHeight()
     }
     

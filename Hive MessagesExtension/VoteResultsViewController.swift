@@ -55,6 +55,7 @@ class VoteResultsViewController: StyleViewController {
         voteTableView.separatorStyle = .none
         voteTableView.showsVerticalScrollIndicator = false
         voteTableView.reloadData()
+        voteTableView.setBackgroundColor()
                 
         submitButton.size(size: 150, textSize: 25)
         submitButton.grey(title: "Done")
@@ -100,7 +101,7 @@ class VoteResultsViewController: StyleViewController {
             if let address = location.address {
                 locationInfo += " (" + address + ")"
             }
-            locationLabel.style(text: locationInfo, textColor: Style.darkTextColor, fontSize: 18)
+            locationLabel.style(text: locationInfo, textColor: Colors.darkTextColor, fontSize: 18)
         } else if event.locations.count > 1 {
             voteGroups.append("locations")
             var allLoc: [String] = []
@@ -259,9 +260,9 @@ class VoteResultsViewController: StyleViewController {
             
             let shadeView = UIView(frame: CGRect(x: 0, y: 0, width: recognizer.view!.frame.width, height: recognizer.view!.frame.height))
             shadeView.layer.cornerRadius = shadeView.frame.height/2
-            shadeView.backgroundColor = Style.greyColor
+            shadeView.backgroundColor = Colors.greyColor
             shadeView.layer.borderWidth = 3
-            shadeView.layer.borderColor = Style.greyColor.cgColor
+            shadeView.layer.borderColor = Colors.greyColor.cgColor
             shadeView.alpha = 0.5
             recognizer.view!.addSubview(shadeView)
             
@@ -379,11 +380,11 @@ extension VoteResultsViewController: UITableViewDataSource {
         }
         let cell = voteTableView.dequeueReusableCell(withIdentifier: VoteCell.reuseIdentifier, for: indexPath) as! VoteCell
         let cellView = UIView(frame: CGRect(x: 0, y: 0, width: cell.contentView.frame.width, height: cell.contentView.frame.height))
-        cellView.backgroundColor = Style.lightGreyColor
-        cell.voteCount.backgroundColor = Style.greyColor
+        cellView.backgroundColor = Colors.lightGreyColor
+        cell.voteCount.backgroundColor = Colors.greyColor
         if voteSelections[indexPath.section] == indexPath.row {
-            cellView.backgroundColor = Style.secondaryColor
-            cell.voteCount.backgroundColor = Style.primaryColor
+            cellView.backgroundColor = Colors.secondaryColor
+            cell.voteCount.backgroundColor = Colors.primaryColor
         }
         cell.backgroundView = cellView
         cell.label.text = voteItems[indexPath.section][indexPath.row]
@@ -493,11 +494,11 @@ extension VoteResultsViewController: UITableViewDelegate {
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 40))
         headerView.layer.cornerRadius = headerView.frame.height/2
-        headerView.backgroundColor = Style.tertiaryColor
+        headerView.backgroundColor = Colors.tertiaryColor
         headerView.tag = section
         
         headerView.layer.borderWidth = 3
-        headerView.layer.borderColor = Style.tertiaryColor.cgColor
+        headerView.layer.borderColor = Colors.tertiaryColor.cgColor
         
         let headerTitle = UILabel(frame: CGRect(x: 13, y: 10, width: tableView.frame.size.width-10, height: 30))
         
@@ -528,7 +529,7 @@ extension VoteResultsViewController: UITableViewDelegate {
         }
         */
         headerSelection.textAlignment = NSTextAlignment.right
-        headerSelection.textColor = Style.lightTextColor
+        headerSelection.textColor = Colors.lightTextColor
         headerView.addSubview(headerSelection)
         
         //let headerTapped = UITapGestureRecognizer(target: self, action: #selector(sectionHeaderTapped))
@@ -571,7 +572,7 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isPagingEnabled = true
         collectionView.register(VotingTimeCell.self, forCellWithReuseIdentifier: VotingTimeCell.reuseIdentifier)
-        collectionView.backgroundColor = Style.lightGreyColor
+        collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView
     }()
     
@@ -582,7 +583,7 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
         
         self.layer.cornerRadius = self.frame.height / 2
         
-        self.backgroundColor = Style.lightGreyColor
+        self.backgroundColor = Colors.lightGreyColor
         
         contentView.addSubview(timesCollectionView)
         contentView.addSubview(dayLabel)
@@ -624,10 +625,10 @@ extension VoteResultsDayAndTimesCell: UICollectionViewDataSource {
         cell.timeLabel.text = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
         cell.voteCountLabel.text = String(curView.voteTallies[curView.daysAndTimesGroupIndex][magicIndex])
         if curView.voteSelections[curView.daysAndTimesGroupIndex] == magicIndex {
-            cell.backgroundColor = Style.primaryColor
-            cell.timeLabel.textColor = Style.lightTextColor
+            cell.backgroundColor = Colors.primaryColor
+            cell.timeLabel.textColor = Colors.lightTextColor
         } else {
-            cell.backgroundColor = Style.greyColor
+            cell.backgroundColor = Colors.greyColor
             cell.timeLabel.textColor = UIColor.white
         }
         return cell
@@ -653,7 +654,7 @@ extension VoteResultsDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let timeString = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
-        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Style.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
     }
 }
 
