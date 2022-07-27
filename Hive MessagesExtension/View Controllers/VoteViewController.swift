@@ -437,6 +437,7 @@ extension VoteViewController: UITableViewDataSource {
             cell.curIndex = indexPath.row
             var day = loadedEvent.days[indexPath.row]
             cell.dayLabel.text = day.formatDate()
+            cell.dayLabel.style(text: day.formatDate(), textColor: Colors.darkTextColor, fontSize: 18)
             cell.duration = loadedEvent.duration
             cell.timesCollectionView.reloadData()
             return cell
@@ -597,10 +598,9 @@ class VotingDayAndTimesCell: UITableViewCell {
     //var times = [(time: Time, isVoted: Bool, votes: Int)]()
     var duration: Duration? = nil
     
-    let dayLabel: UILabel = {
-        let label = UILabel()
+    let dayLabel: StyleLabel = {
+        let label = StyleLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
         return label
     }()
     
