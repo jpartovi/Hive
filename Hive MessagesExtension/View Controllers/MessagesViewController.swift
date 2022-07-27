@@ -13,7 +13,8 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     
     static var conversation: MSConversation? = nil
     static var userID: String = (conversation?.localParticipantIdentifier.uuidString)!
-    
+    var curSession: MSSession? = nil
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,12 +29,9 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         MessagesViewController.conversation = conversation
         presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
         
-        if self.view.frame.size.width > self.view.frame.size.height  {
+        if UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height  {
             (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = false
             (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = false
-        } else {
-            (self.children.first as! UINavigationController).navigationBar.isUserInteractionEnabled = true
-            (self.children.first as! UINavigationController).children.last!.view.isUserInteractionEnabled = true
         }
         
     }
@@ -41,6 +39,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
         // Called when the user taps the send button.
         for child in children {
+            print(child)
             if let child = child as? UINavigationController {
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
@@ -56,7 +55,13 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
         for child in children {
             if let child = child as? VoteNavigationController {
                 let subchild = child.children.last
-                if let subchild = subchild as? VoteViewController {
+                if let subchild = subchild as? ConfirmViewController {
+                    if presentationStyle == .compact {
+                        subchild.changedConstraints(compact: true)
+                    } else if presentationStyle == .expanded {
+                        subchild.changedConstraints(compact: false)
+                    }
+                } else if let subchild = subchild as? VoteViewController {
                     if presentationStyle == .compact {
                         print("VOTE COMPACT")
                         presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
@@ -72,7 +77,13 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 }
             } else if let child = child as? VoteResultsNavigationController {
                 let subchild = child.children.last
-                if let subchild = subchild as? VoteResultsViewController {
+                if let subchild = subchild as? ConfirmViewController {
+                    if presentationStyle == .compact {
+                        subchild.changedConstraints(compact: true)
+                    } else if presentationStyle == .expanded {
+                        subchild.changedConstraints(compact: false)
+                    }
+                } else if let subchild = subchild as? VoteResultsViewController {
                     if presentationStyle == .compact {
                         print("VOTE RESULTS COMPACT")
                         presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
@@ -97,31 +108,10 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
                     if presentationStyle == .compact {
-                        subchild.scrollViewTrailingConstraint.constant = 160
-                        for constraint in subchild.expandConstraints {
-                            constraint.isActive = false
-                        }
-                        for constraint in subchild.compactConstraints {
-                            constraint.isActive = true
-                        }
+                        subchild.changedConstraints(compact: true)
                     } else if presentationStyle == .expanded {
-                        subchild.scrollViewTrailingConstraint.constant = 16
-                        for constraint in subchild.compactConstraints {
-                            constraint.isActive = false
-                        }
-                        for constraint in subchild.expandConstraints {
-                            constraint.isActive = true
-                        }
+                        subchild.changedConstraints(compact: false)
                     }
-                    subchild.formatLocations()
-                    subchild.updateTableViewHeights()
-                    subchild.updateContentView()
-                    subchild.locationsTableView.reloadData()
-                    subchild.daysAndTimesTableView.reloadData()
-                    //subchild.styleEventTitleTextField()
-                    //subchild.updateTableViewHeights()
-                    
-                    //print(subchild.eventTitleTextField.layer.sublayers?[0].frame.width)
                 } else if let subchild = subchild as? LocationsViewController {
                     if presentationStyle == .compact {
                         subchild.changedConstraints(compact: true)
@@ -179,7 +169,13 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     }
     
     override func didSelect(_ message: MSMessage, conversation: MSConversation) {
-        presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
+        if curSession != message.session {
+            curSession = message.session
+            presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
+        } else {
+            self.dismiss()
+            //Never runs due to message double selection bug, figure out what to put here later
+        }
     }
     
     func findIntendedViewController(conversation: MSConversation) -> UIViewController? {

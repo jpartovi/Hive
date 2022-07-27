@@ -75,6 +75,31 @@ class ConfirmViewController: StyleViewController {
         
     }
     
+    func changedConstraints(compact: Bool) {
+        if compact {
+            scrollViewTrailingConstraint.constant = 160
+            for constraint in expandConstraints {
+                constraint.isActive = false
+            }
+            for constraint in compactConstraints {
+                constraint.isActive = true
+            }
+        } else {
+            scrollViewTrailingConstraint.constant = 16
+            for constraint in compactConstraints {
+                constraint.isActive = false
+            }
+            for constraint in expandConstraints {
+                constraint.isActive = true
+            }
+        }
+        formatLocations()
+        updateTableViewHeights()
+        updateContentView()
+        locationsTableView.reloadData()
+        daysAndTimesTableView.reloadData()
+    }
+    
     @objc func keyboardExpandViewApprover() {
         textBoxFlag = true
     }
