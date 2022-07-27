@@ -27,6 +27,7 @@ class MessagesViewController: MSMessagesAppViewController, InviteViewControllerD
     override func willBecomeActive(with conversation: MSConversation) {
         
         MessagesViewController.conversation = conversation
+        curSession = conversation.selectedMessage?.session
         presentViewController(controller: findIntendedViewController(conversation: conversation)!, presentationStyle: presentationStyle)
         
         if UIScreen.main.bounds.size.width > UIScreen.main.bounds.size.height  {
