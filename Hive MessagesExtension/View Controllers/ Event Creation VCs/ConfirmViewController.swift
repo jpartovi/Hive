@@ -73,6 +73,8 @@ class ConfirmViewController: StyleViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
+        daysAndTimesTableView.rowHeight = UITableView.automaticDimension
+        
     }
     
     func changedConstraints(compact: Bool) {
@@ -175,9 +177,11 @@ class ConfirmViewController: StyleViewController {
         
         self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
         self.locationsTableView.layoutIfNeeded()
+        self.daysAndTimesTableViewHeightConstraint.constant = 0
+        (self.daysAndTimesTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! EditingDayAndTimesCell).layoutSubviews()
+        self.daysAndTimesTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
+        self.daysAndTimesTableView.layoutSubviews()
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-        self.daysAndTimesTableView.layoutIfNeeded()
-        //scrollView.layoutIfNeeded()
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
         
     }
@@ -185,7 +189,6 @@ class ConfirmViewController: StyleViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        //locationsTableView.reloadData()
         DispatchQueue.main.async {
             self.setUpEventTitleTextField()
             self.updateTableViewHeights()
@@ -469,13 +472,6 @@ class ConfirmViewController: StyleViewController {
 
 extension ConfirmViewController: UITableViewDataSource {
     
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        
-        //locationsTableView.reloadData()
-        //updateTableViewHeights()
-        
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch tableView {
@@ -599,7 +595,7 @@ extension ConfirmViewController: UITableViewDelegate {
                 return 50
             }
         case daysAndTimesTableView:
-            return 50
+            return tableView.rowHeight
         default:
             return 0
         }
@@ -634,7 +630,6 @@ extension ConfirmViewController: UINavigationControllerDelegate {
             event = updateEventObject(inEvent: event)
             (viewController as! TimeSelectorViewController).event = event
             (viewController as! TimeSelectorViewController).updateSelections()
-            //(viewController as! TimeSelectorViewController)
         } else if type(of: viewController) == DaySelectorViewController.self {
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
             self.requestPresentationStyle(.expanded)
@@ -643,6 +638,35 @@ extension ConfirmViewController: UINavigationControllerDelegate {
             (viewController as! DaySelectorViewController).updateSelections()
             (viewController as! DaySelectorViewController).expandToNext = false
         }
+    }
+}
+
+class TimesCollectionViewLayout: UICollectionViewFlowLayout {
+    
+    required override init() {super.init(); common()}
+    required init?(coder aDecoder: NSCoder) {super.init(coder: aDecoder); common()}
+    
+    private func common() {
+        minimumLineSpacing = 10
+        minimumInteritemSpacing = 10
+    }
+    
+    override func layoutAttributesForElements(
+                    in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        
+        guard let att = super.layoutAttributesForElements(in:rect) else {return []}
+        var x: CGFloat = sectionInset.left
+        var y: CGFloat = -1.0
+        
+        for a in att {
+            if a.representedElementCategory != .cell { continue }
+            
+            if a.frame.origin.y >= y { x = sectionInset.left }
+            a.frame.origin.x = x
+            x += a.frame.width + minimumInteritemSpacing
+            y = a.frame.maxY
+        }
+        return att
     }
 }
 
@@ -655,6 +679,7 @@ class EditingDayAndTimesCell: UITableViewCell {
     var times = [(time: Time, isSelected: Bool)]()
     var duration: Duration? = nil
     var CVC: ConfirmViewController!
+    var goodHeight: CGFloat!
     
     let dayAndTimeLabel: StyleLabel = {
         let label = StyleLabel()
@@ -671,15 +696,12 @@ class EditingDayAndTimesCell: UITableViewCell {
     }()
     
     let timesCollectionView: UICollectionView = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        //layout.itemSize = CGSize(width: 105, height: 30)
-        //layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        let layout = TimesCollectionViewLayout()
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
         collectionView.showsHorizontalScrollIndicator = false
-        //collectionView.isPagingEnabled = true
+        
         collectionView.register(EditingTimeCell.self, forCellWithReuseIdentifier: EditingTimeCell.reuseIdentifier)
         collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView
@@ -708,11 +730,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         timesCollectionView.dataSource = self
         timesCollectionView.delegate = self
         timesCollectionView.reloadData()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
+
         let inset: CGFloat = 10
 
         NSLayoutConstraint.activate([
@@ -733,9 +751,25 @@ class EditingDayAndTimesCell: UITableViewCell {
             timesCollectionView.topAnchor.constraint(equalTo: topAnchor, constant: inset),
             timesCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -inset)
         ])
-        
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
         timesCollectionView.layer.cornerRadius = 5
         deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
+        
+    }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        
+        self.contentView.frame = self.bounds
+        self.contentView.layoutIfNeeded()
+        
+        var tCVcontentSize = self.timesCollectionView.contentSize
+        tCVcontentSize.height += 20
+        goodHeight = tCVcontentSize.height
+        return tCVcontentSize
     }
 }
 
@@ -746,7 +780,7 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = timesCollectionView.dequeueReusableCell(withReuseIdentifier: EditingTimeCell.reuseIdentifier, for: indexPath) as! EditingTimeCell
-        cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)//duration)
+        cell.timeLabel.text = times[indexPath.row].time.format(duration: nil)
         cell.deleteIcon.tag = indexPath.row
         if times[indexPath.row].isSelected {
             cell.backgroundColor = Colors.primaryColor
@@ -765,8 +799,8 @@ extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
         for (index, (time, isSelected)) in times.enumerated() {
             if isSelected && index != indexPath.row {
                 times[indexPath.row].isSelected = !times[indexPath.row].isSelected
-                //timesCollectionView.reloadData()
                 collectionView.reloadData()
+                collectionView.layoutSubviews()
                 CVC.updateDaysAndTimes()
                 return
             }
@@ -775,7 +809,7 @@ extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let timeString = times[indexPath.row].time.format(duration: nil)
-        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + 35, height: 30)
     }
 }
 
@@ -817,8 +851,11 @@ class EditingTimeCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        
-        //self.contentView.layer.cornerRadius = 5
+        if (superview?.superview?.superview as! EditingDayAndTimesCell).times[deleteIcon.tag].isSelected {
+            deleteIcon.text = "X"
+        } else {
+            deleteIcon.text = "+"
+        }
         
         let inset: CGFloat = 5
 
