@@ -5,6 +5,9 @@
 //  Created by Jude Partovi on 6/17/22.
 //
 
+// TODO: "Maybe" button?
+// TODO: disable host RSVPing?
+
 import UIKit
 import Messages
 import GooglePlaces
@@ -196,6 +199,12 @@ class InviteViewController: StyleViewController {
 
         }
         
+        for (index, queryItem) in (components!.queryItems!.enumerated()){
+            if (queryItem.name == "displayType") {
+                components!.queryItems![index].value = "yesRSVP"
+            }
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.prepareMessage(components!.url!, summaryText: "I can come to " + self.loadedEvent.title + "!")
             self.dismiss()
@@ -236,6 +245,12 @@ class InviteViewController: StyleViewController {
 
         }
         
+        for (index, queryItem) in (components!.queryItems!.enumerated()){
+            if (queryItem.name == "displayType") {
+                components!.queryItems![index].value = "noRSVP"
+            }
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.prepareMessage(components!.url!, summaryText: "I can't come to " + self.loadedEvent.title)
             self.dismiss()
@@ -244,22 +259,38 @@ class InviteViewController: StyleViewController {
     }
     
     func prepareMessage(_ url: URL, summaryText: String) {
+        print("prepare message")
         
-        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
+        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
+        
+        
+        
+        let alternateMessageLayout = MSMessageTemplateLayout()
+        
+        alternateMessageLayout.caption = ""
+        alternateMessageLayout.image = UIImage(named: "MessageHeader")
+        alternateMessageLayout.imageTitle = ""
+        alternateMessageLayout.imageSubtitle = ""
+        alternateMessageLayout.trailingCaption = ""
+        alternateMessageLayout.subcaption = ""
+        alternateMessageLayout.trailingSubcaption = ""
 
+        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
+        
+        
+
+        // Construct message
         let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-
-        let layout = conversation.selectedMessage?.layout as! MSMessageTemplateLayout
-        
-        layout.image = UIImage(named: "MessageHeader")
-        
-        message.layout = layout
-        message.url = url
+        message.layout = liveMessageLayout
         message.summaryText = messageSummaryText
+        message.url = url
+
+
+        //let message = MSMessage(session: (conversation.selectedMessage?.session)!)
+
+        //let layout = conversation.selectedMessage?.layout as! MSMessageTemplateLayout
         
-        print("Send")
-        
-        conversation.send(message)
+        conversation.insert(message)
     }
     
     

@@ -52,7 +52,7 @@ struct Location {
         }
     }
     
-    // TODO: This does NOT work - WHYYYYYY??
+    // This does NOT work - WHYYYYYY??
     static func getPlaceFromID (id: String) -> GMSPlace {
         
         let fields = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) | UInt(GMSPlaceField.addressComponents.rawValue) | UInt(GMSPlaceField.placeID.rawValue))

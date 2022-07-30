@@ -5,7 +5,7 @@
 //  Created by Jude Partovi on 6/17/22.
 //
 
-// TODO: Custom Time
+// TODO: Custom time option
 
 import UIKit
 import Messages
@@ -181,7 +181,7 @@ class TimeSelectorViewController: StyleViewController {
     }
     
     func expandAndNextPage() {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
+        let MVC = (self.parent?.parent as? MessagesAppViewController)!
         if MVC.presentationStyle == .compact {
             expandToNext = true
             MVC.requestPresentationStyle(.expanded)
@@ -418,14 +418,10 @@ class StartTimeCell: UICollectionViewCell {
     }
     
     func showSelected() {
-        // TODO: Show selected
-        //imageView.image = UIImage(named: "SelectedLongHex")?.size(width: self.frame.width, height: self.frame.width)
         imageView.image = UIImage(named: "SelectedLongHex")
     }
     
     func showUnselected() {
-        // TODO: Show unselected
-        //imageView.image = UIImage(named: "LongHex")?.size(width: self.frame.width, height: self.frame.width)
         imageView.image = UIImage(named: "LongHex")
     }
 }

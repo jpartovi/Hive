@@ -23,6 +23,8 @@ struct Event {
         queryItems.append(URLQueryItem(name: "messageType", value: "invite"))
         
         queryItems.append(URLQueryItem(name: "hostID", value: ID))
+        
+        queryItems.append(URLQueryItem(name: "displayType", value: "initial"))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
         
@@ -59,7 +61,9 @@ struct Event {
         
         queryItems.append(URLQueryItem(name: "messageType", value: "vote"))
         
-        queryItems.append(URLQueryItem(name: "hostID", value: MessagesViewController.userID))
+        queryItems.append(URLQueryItem(name: "hostID", value: MessagesAppViewController.userID))
+        
+        queryItems.append(URLQueryItem(name: "displayType", value: "initial"))
     
         queryItems.append(URLQueryItem(name: "title", value: title))
         

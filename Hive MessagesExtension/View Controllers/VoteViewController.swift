@@ -335,32 +335,38 @@ class VoteViewController: StyleViewController {
             components?.queryItems! += [URLQueryItem(name: myID, value: "start")] + newItems + [URLQueryItem(name: myID, value: "end")]
         }
         
+        for (index, queryItem) in (components!.queryItems!.enumerated()){
+            if (queryItem.name == "displayType") {
+                components!.queryItems![index].value = "iVoted"
+            }
+        }
+        
         return (components?.url!)!
     }
     
     func prepareMessage(_ url: URL) {
         
-        guard let conversation = MessagesViewController.conversation else { fatalError("Received nil conversation") }
+        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
+        
+        let alternateMessageLayout = MSMessageTemplateLayout()
+        
+        alternateMessageLayout.caption = ""
+        alternateMessageLayout.image = UIImage(named: "MessageHeader")
+        alternateMessageLayout.imageTitle = ""
+        alternateMessageLayout.imageSubtitle = ""
+        alternateMessageLayout.trailingCaption = ""
+        alternateMessageLayout.subcaption = ""
+        alternateMessageLayout.trailingSubcaption = ""
 
+        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
+
+        // Construct message
         let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-        
-
-        let messageLayout = MSMessageTemplateLayout()
-        
-        messageLayout.caption = "Poll for " + loadedEvent.title
-        messageLayout.image = UIImage(named: "MessageHeader")
-        messageLayout.imageTitle = ""
-        messageLayout.imageSubtitle = ""
-        messageLayout.trailingCaption = ""
-        messageLayout.subcaption = ""
-        messageLayout.trailingSubcaption = ""
-        
-        message.layout = messageLayout
-        message.url = url
+        message.layout = liveMessageLayout
         message.summaryText = messageSummaryText
-        
+        message.url = url
+
         conversation.insert(message)
-        //conversation.insertText(url.absoluteString)
         self.requestPresentationStyle(.compact)
     }
     
@@ -617,8 +623,6 @@ class VotingDayAndTimesCell: UITableViewCell {
         collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView
     }()
-    
-    // TODO: Add a delete button??
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

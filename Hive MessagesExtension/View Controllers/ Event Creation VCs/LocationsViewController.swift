@@ -5,11 +5,8 @@
 //  Created by Jude Partovi on 7/6/22.
 //
 
-// TODO: List
-/*
- - Allow users to easily select previously used locations
- - Don't allow nil titles
- */
+// TODO: Allow users to easily select previously used locations
+
 
 import Foundation
 import UIKit
@@ -167,8 +164,6 @@ class LocationsViewController: StyleViewController {
             cell.titleTextField.becomeFirstResponder()
             self.updateContinueButtonStatus()
         }
-
-        // TODO: make it so that the users cursor gets automatically put into the newest text field and keyboard opens
     }
     
     func updateContinueButtonStatus() {
@@ -193,7 +188,6 @@ class LocationsViewController: StyleViewController {
         
         for location in locations {
             if location.title == "" {
-                // TODO: Error???
                 return
             }
         }
@@ -377,8 +371,6 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
         navigationController?.dismiss(animated: true)
     }
 }
-
-// TODO: In compact view, the text field doesn't shrink
 
 class LocationCell: UITableViewCell {
     

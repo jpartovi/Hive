@@ -5,7 +5,7 @@
 //  Created by Jude Partovi on 6/21/22.
 //
 
-// TODO: Design questions: Should the calendar start on monday and end on sunday? or stay how it is? Benefit of this is that there are no cutoff weekends. Also, should the weekends be highlighted?
+// TODO: Highlight weekends?
 
 import Foundation
 import UIKit
@@ -103,7 +103,7 @@ class DaySelectorViewController: StyleViewController {
     }
     
     func updateSelections() {
-        // TODO: Day selections show late because this block is in this function
+
         selectedDays = event.days
         calendarDays = generateDays(for: today)
         calendarCollectionView?.reloadData()
@@ -176,7 +176,7 @@ class DaySelectorViewController: StyleViewController {
     }
     
     func expandAndNextPage() {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
+        let MVC = (self.parent?.parent as? MessagesAppViewController)!
         if MVC.presentationStyle == .compact {
             expandToNext = true
             MVC.requestPresentationStyle(.expanded)
@@ -321,10 +321,6 @@ class DaySelectorViewController: StyleViewController {
         return CalendarDay(
             day: Day(date: date),
             number: dateFormatter.string(from: date),
-          
-          // TODO: Make the already selected days be already selected
-          //isSelected: calendar.isDate(date, inSameDayAs: selectedDate),
-          
             isSelected: isSelected,
             inFuture: inFuture,
             inNextMonth: inNextMonth,

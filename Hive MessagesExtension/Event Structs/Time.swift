@@ -14,7 +14,7 @@ struct Time {
     let period: Period
     
     init(referenceTime: Time, minutesLater: Int) {
-        // TODO: This function creates a TimeFrame object from a start time and a duration
+        // This function creates a Time object from a reference time and a delay
         
         let hoursLater = Int((Float(minutesLater) / 60.0).rounded(.down))
         

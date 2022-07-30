@@ -80,7 +80,7 @@ class PollViewController: UIViewController {
         message.url = url
         
         
-        // TODO: Integrate with new system
+        // TODO : Integrate with new system
         /*
         if let createEventVC = navigationController?.viewControllers.first as? CreateEventViewController {
             

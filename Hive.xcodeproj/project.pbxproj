@@ -28,10 +28,11 @@
 		15B5D26A28823625004267E2 /* VoteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B5D26928823624004267E2 /* VoteViewController.swift */; };
 		15BA66C7284E8C6F00C185CA /* Hive MessagesExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		15BA66CC284E8C6F00C185CA /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15BA66CB284E8C6F00C185CA /* Messages.framework */; };
-		15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */; };
+		15BA66CF284E8C6F00C185CA /* MessagesAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BA66CE284E8C6F00C185CA /* MessagesAppViewController.swift */; };
 		15BA66D2284E8C6F00C185CA /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */; };
 		15BA66D4284E8C7100C185CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 15BA66D3284E8C7100C185CA /* Assets.xcassets */; };
 		15D5DE662890A3570054A564 /* Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D5DE652890A3570054A564 /* Format.swift */; };
+		15D5DE69289455610054A564 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D5DE68289455610054A564 /* MessageViewController.swift */; };
 		15EEE7AB287E3E1500FDAE2B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15EEE7AA287E3E1500FDAE2B /* Event.swift */; };
 		8793627E286CFEE400C05180 /* PollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8793627C286CFEE400C05180 /* PollViewController.swift */; };
 		CA4E9AA3F3F2E9B70FB1B59D /* libPods-Hive MessagesExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A7BBB53B72CCD26BADD5DC /* libPods-Hive MessagesExtension.a */; };
@@ -85,11 +86,12 @@
 		15BA66BD284E8C6800C185CA /* Hive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66C6284E8C6F00C185CA /* Hive MessagesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Hive MessagesExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15BA66CB284E8C6F00C185CA /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
-		15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		15BA66CE284E8C6F00C185CA /* MessagesAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesAppViewController.swift; sourceTree = "<group>"; };
 		15BA66D1284E8C6F00C185CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		15BA66D3284E8C7100C185CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		15BA66D5284E8C7100C185CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		15D5DE652890A3570054A564 /* Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Format.swift; sourceTree = "<group>"; };
+		15D5DE68289455610054A564 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		15EEE7AA287E3E1500FDAE2B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		3FC8F2BD88B64705CDC5E6B1 /* Pods-Hive MessagesExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive MessagesExtension.release.xcconfig"; path = "Target Support Files/Pods-Hive MessagesExtension/Pods-Hive MessagesExtension.release.xcconfig"; sourceTree = "<group>"; };
 		56C20084B43A4E48868174A9 /* Pods-Hive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hive.release.xcconfig"; path = "Target Support Files/Pods-Hive/Pods-Hive.release.xcconfig"; sourceTree = "<group>"; };
@@ -141,7 +143,6 @@
 				156DAE6A287635E600613360 /* LocationsViewController.swift */,
 				156DAE6F287637EC00613360 /* DaySelectorViewController.swift */,
 				15B44F43285CEC1B0055B51C /* TimeSelectorViewController.swift */,
-				156DAE712876382C00613360 /* ConfirmViewController.swift */,
 			);
 			path = " Event Creation VCs";
 			sourceTree = "<group>";
@@ -149,12 +150,14 @@
 		15B44F4F2860E3DA0055B51C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				15BA66CE284E8C6F00C185CA /* MessagesViewController.swift */,
+				15BA66CE284E8C6F00C185CA /* MessagesAppViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
+				156DAE712876382C00613360 /* ConfirmViewController.swift */,
 				15B5D26928823624004267E2 /* VoteViewController.swift */,
 				1545E01C2889DBB2004DD491 /* VoteResultsViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
+				15D5DE68289455610054A564 /* MessageViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -410,9 +413,10 @@
 				1545E0192888B0B9004DD491 /* Time.swift in Sources */,
 				15B44F4E2860E3B20055B51C /* Colors.swift in Sources */,
 				156DAE6B287635E600613360 /* LocationsViewController.swift in Sources */,
+				15D5DE69289455610054A564 /* MessageViewController.swift in Sources */,
 				151BC1E52888842000B330DF /* Custom Elements.swift in Sources */,
 				15B44F46285CF98E0055B51C /* InviteViewController.swift in Sources */,
-				15BA66CF284E8C6F00C185CA /* MessagesViewController.swift in Sources */,
+				15BA66CF284E8C6F00C185CA /* MessagesAppViewController.swift in Sources */,
 				1545E0172888B07C004DD491 /* Day.swift in Sources */,
 				156DAE70287637EC00613360 /* DaySelectorViewController.swift in Sources */,
 				1545E01F2889DBD6004DD491 /* VoteNavigationController.swift in Sources */,

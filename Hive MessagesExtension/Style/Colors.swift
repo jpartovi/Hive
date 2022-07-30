@@ -13,7 +13,7 @@ enum Colors {
     // Colors
     static let primaryColor = Colors.hexStringToUIColor(hex: "DF9F28")
     static let secondaryColor = Colors.hexStringToUIColor(hex: "EED2A1")
-    static let tertiaryColor = Colors.hexStringToUIColor(hex: "6798C5")
+    static let tertiaryColor = Colors.hexStringToUIColor(hex: "5A88B1")
     static let lightTextColor = Colors.hexStringToUIColor(hex: "FFF7E8")
     static let darkTextColor = Colors.hexStringToUIColor(hex: "4F4F4F")
     static let greyColor = Colors.hexStringToUIColor(hex: "9C9C9C")

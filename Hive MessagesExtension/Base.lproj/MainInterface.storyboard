@@ -9,17 +9,34 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Messages View Controller-->
+        <!--Messages App View Controller-->
         <scene sceneID="X4D-cZ-cZ1">
             <objects>
-                <viewController id="DiG-JC-074" customClass="MessagesViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="DiG-JC-074" customClass="MessagesAppViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uqQ-dm-cNM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28B-K5-1Jw" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="141.5" y="271" width="37" height="30"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Invite"/>
+                                <connections>
+                                    <action selector="messageButtonTapped:" destination="DiG-JC-074" eventType="touchUpInside" id="hMS-wJ-y2D"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="a8I-5t-OJc"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="28B-K5-1Jw" firstAttribute="centerX" secondItem="a8I-5t-OJc" secondAttribute="centerX" id="bls-HR-OFr"/>
+                            <constraint firstItem="28B-K5-1Jw" firstAttribute="centerY" secondItem="a8I-5t-OJc" secondAttribute="centerY" id="h9q-Va-QZf"/>
+                        </constraints>
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
+                    <connections>
+                        <outlet property="messageButton" destination="28B-K5-1Jw" id="pyW-Ja-vDo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m6j-bj-qp4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1063,6 +1080,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTr-ck-qI8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5405.7971014492759" y="-1927.2321428571427"/>
+        </scene>
+        <!--Message View Controller-->
+        <scene sceneID="Awp-NA-o2I">
+            <objects>
+                <viewController storyboardIdentifier="MessageViewController" id="TbV-jo-qqh" customClass="MessageViewController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jEz-xM-S3M">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="VcM-As-2Rl"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <size key="freeformSize" width="320" height="528"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kn3-1P-ahJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2897" y="-331"/>
         </scene>
         <!--Vote Results Navigation Controller-->
         <scene sceneID="cMV-8m-MvO">

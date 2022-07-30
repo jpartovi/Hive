@@ -300,12 +300,9 @@ class VoteResultsViewController: StyleViewController {
     
     @IBAction func submitButtonPressed(_ sender: UIButton) {
         
-        //TODO: Link to ConfirmViewController
-        
         var loadedEvent = loadedEvent! //makes all the changes here local
         
         if !voteSelections.contains(where: {$0 == nil}) {
-            // TODO: SWITCH
             var eventForInvite = loadedEvent
             for (index, voteGroup) in voteGroups.enumerated() {
                 let voteIndex = voteSelections[index]!
@@ -417,7 +414,6 @@ extension VoteResultsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         if voteGroups[indexPath.section] == "daysAndTimes" {
-            // TODO: Maybe make it so that all of the times get selected?
             return
         }
         if voteSelections[indexPath.section] == indexPath.row {
@@ -574,8 +570,6 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
         collectionView.backgroundColor = Colors.lightGreyColor
         return collectionView
     }()
-    
-    // TODO: Add a delete button??
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

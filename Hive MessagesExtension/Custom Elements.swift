@@ -11,7 +11,7 @@ import Messages
 /*
 class ErrorLabel: UILabel {
     
-    // TODO: This does not work
+    // This does not work
     override func drawText(in rect: CGRect) {
         super.drawText(in: rect)
         
