@@ -75,6 +75,8 @@ class ConfirmViewController: StyleViewController {
         
         daysAndTimesTableView.rowHeight = UITableView.automaticDimension
         
+        scrollView.delegate = self
+        
     }
     
     func changedConstraints(compact: Bool) {
@@ -96,10 +98,6 @@ class ConfirmViewController: StyleViewController {
             }
         }
         formatLocations()
-        updateTableViewHeights()
-        updateContentView()
-        locationsTableView.reloadData()
-        daysAndTimesTableView.reloadData()
     }
     
     @objc func keyboardExpandViewApprover() {
@@ -118,14 +116,18 @@ class ConfirmViewController: StyleViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        updateContentView()
-        
         navigationController?.delegate = self
     }
     
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        if scrollView.contentOffset.x>0 {
+    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
+        if scrollView.contentOffset.x > 0 {
             scrollView.contentOffset.x = 0
+        }
+        
+        if scrollView.panGestureRecognizer.state == .began {
+        
+            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
+            
         }
     }
     
@@ -172,28 +174,37 @@ class ConfirmViewController: StyleViewController {
         }
     }
     
-    func updateTableViewHeights() {
+    override func viewDidLayoutSubviews() {
         
+        super.viewDidLayoutSubviews()
+        
+        self.locationsTableView.setNeedsLayout()
+        self.locationsTableView.layoutIfNeeded()
+        locationsTableView.reloadData()
         
         self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
-        self.locationsTableView.layoutIfNeeded()
-        self.daysAndTimesTableViewHeightConstraint.constant = 0
-        (self.daysAndTimesTableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! EditingDayAndTimesCell).layoutSubviews()
-        self.daysAndTimesTableView.reloadRows(at: [IndexPath(row: 0, section: 0)], with: .none)
-        self.daysAndTimesTableView.layoutSubviews()
         self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-        scrollView.contentSize = CGSize(width: scrollView.frame.width, height: eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8)))
-        
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+        updatePostButtonStatus()
         
         DispatchQueue.main.async {
             self.setUpEventTitleTextField()
-            self.updateTableViewHeights()
+            
+            self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+            self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+            for cell in self.daysAndTimesTableView.visibleCells {
+                (cell as! EditingDayAndTimesCell).layoutSubviews()
+            }
+            self.daysAndTimesTableView.reloadRows(at: self.daysAndTimesTableView.indexPathsForVisibleRows!, with: .none)
+            
+            DispatchQueue.main.async {
+                
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+                self.daysAndTimesTableView.layoutSubviews()
+                
+            }
+            
         }
-        updatePostButtonStatus()
+        
     }
     
     func setUpEventTitleTextField() {
@@ -376,7 +387,10 @@ class ConfirmViewController: StyleViewController {
 
         DispatchQueue.main.async {
             
-            self.updateTableViewHeights()
+            self.locationsTableView.setNeedsLayout()
+            self.locationsTableView.layoutIfNeeded()
+            self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+            
             let lastCellIndexPath = IndexPath(row: self.event.locations.count - 1, section: 0)
             self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
@@ -414,7 +428,16 @@ class ConfirmViewController: StyleViewController {
             event.locations[addressEditingIndex!].address = nil
             locationsTableView.reloadData()
         }
-        updateTableViewHeights()
+        
+        self.locationsTableView.setNeedsLayout()
+        self.locationsTableView.layoutIfNeeded()
+        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+        
+        DispatchQueue.main.async {
+            self.daysAndTimesTableView.layoutSubviews()
+            self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+        }
     }
     
     @objc func locationTitleTextFieldDidBeginEditing(sender: StyleTextField) {
@@ -446,11 +469,6 @@ class ConfirmViewController: StyleViewController {
         updatePostButtonStatus()
     }
     
-    func updateContentView() {
-        let width = scrollView.subviews.sorted(by: { $0.frame.maxX < $1.frame.maxX }).last?.frame.maxX ?? scrollView.contentSize.width
-        scrollView.contentSize.width = width
-    }
-    
     @objc func deleteDay(sender: UIButton) {
         let cell = sender.superview?.superview as! EditingDayAndTimesCell
         let indexPath = daysAndTimesTableView.indexPath(for: cell)!
@@ -462,6 +480,12 @@ class ConfirmViewController: StyleViewController {
         CATransaction.setCompletionBlock {
             self.daysAndTimesTableView.reloadData()
             self.updateDaysAndTimes()
+            
+            self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+            DispatchQueue.main.async {
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+            }
+            
         }
         daysAndTimesTableView.deleteRows(at: [indexPath], with: .fade)
         daysAndTimesTableView.endUpdates()
@@ -607,7 +631,16 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
         locationsTableView.reloadData()
         navigationController?.dismiss(animated: true)
         locationsTableView.layoutSubviews()
-        updateTableViewHeights()
+        
+        self.locationsTableView.setNeedsLayout()
+        self.locationsTableView.layoutIfNeeded()
+        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+        
+        DispatchQueue.main.async {
+            self.daysAndTimesTableView.layoutSubviews()
+            self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+        }
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {

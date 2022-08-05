@@ -30,6 +30,21 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
         
         messageButton.isHidden = true
     }
+
+    
+    /*override func viewWillDisappear(_ animated: Bool) {
+        print("Will Disappear")
+        messageButton.isUserInteractionEnabled = false
+        super.viewWillDisappear(animated)
+        
+        if self.children != [] {
+            self.children[0].dismiss(animated: true, completion: {self.messageButton.isUserInteractionEnabled = true})
+            
+        }
+        
+        //self.dismiss(animated: true, completion: {self.messageButton.isEnabled = true})
+    }*/
+    
     override func contentSizeThatFits(_ size: CGSize) -> CGSize {
         return CGSize(width: 150, height: 150)
     }
