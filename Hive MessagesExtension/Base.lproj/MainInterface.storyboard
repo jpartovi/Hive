@@ -977,21 +977,6 @@
                                     <action selector="continueButtonPressed:" destination="ivv-ee-pSI" eventType="touchUpInside" id="XLB-Fn-jWV"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1kZ-FP-u3U">
-                                <rect key="frame" x="16" y="159" width="288" height="216"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationCell" id="Mhd-XL-KUQ" customClass="LocationCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mhd-XL-KUQ" id="DCA-qa-eTs">
-                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                            </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Do you know where you want to host?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaJ-SC-CJy" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="20" y="74" width="280" height="46"/>
                                 <constraints>
@@ -1006,8 +991,29 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1kZ-FP-u3U">
+                                <rect key="frame" x="16" y="128" width="288" height="216"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="216" id="h3o-Jx-PIo"/>
+                                </constraints>
+                                <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LocationCell" id="Mhd-XL-KUQ" customClass="LocationCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="288" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mhd-XL-KUQ" id="DCA-qa-eTs">
+                                            <rect key="frame" x="0.0" y="0.0" width="288" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sum-f7-dbF" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="115" y="128" width="90" height="30"/>
+                                <rect key="frame" x="115" y="352" width="90" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="b6b-gb-Go0"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Add Location"/>
                                 <connections>
@@ -1020,23 +1026,24 @@
                         <constraints>
                             <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="0kM-SX-lRh"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="2ag-gs-OqD"/>
-                            <constraint firstItem="Sum-f7-dbF" firstAttribute="top" secondItem="jaJ-SC-CJy" secondAttribute="bottom" constant="8" symbolic="YES" id="7BI-gd-6FI"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="16" id="BCQ-C8-mh5"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="Bmb-fe-PUa"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="136" id="C7U-n1-vxh"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="L0P-wK-uBH" secondAttribute="bottom" constant="100" id="DSj-fJ-3uA"/>
+                            <constraint firstItem="Sum-f7-dbF" firstAttribute="top" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="8" symbolic="YES" id="JM4-Y4-Otj"/>
+                            <constraint firstItem="1kZ-FP-u3U" firstAttribute="top" secondItem="jaJ-SC-CJy" secondAttribute="bottom" constant="8" symbolic="YES" id="Joh-y7-wqp"/>
+                            <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="Sum-f7-dbF" secondAttribute="bottom" id="LAv-uK-Hme"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="MQz-fg-Uqw"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="30" id="RBs-aP-fgE"/>
-                            <constraint firstItem="L0P-wK-uBH" firstAttribute="top" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="16" id="SFH-FW-UqY"/>
                             <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="T76-2C-qF3"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="leading" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="16" id="ZGR-Br-Mwr"/>
-                            <constraint firstItem="1kZ-FP-u3U" firstAttribute="top" secondItem="Sum-f7-dbF" secondAttribute="bottom" constant="1" id="adU-pT-irt"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="16" id="amZ-8H-3J1"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="e8e-Bc-8fh"/>
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="leading" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="fKk-V9-oiU"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="trailing" secondItem="L0P-wK-uBH" secondAttribute="trailing" constant="16" id="lwz-Gi-6dK"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="16" id="m3Z-Om-2GP"/>
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="153" id="p8f-ka-9PO"/>
+                            <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="1kZ-FP-u3U" secondAttribute="centerX" id="vFe-Ob-Qtv"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="centerY" secondItem="ZWX-YA-dv7" secondAttribute="centerY" constant="30" id="zbx-Ch-Ko8"/>
                         </constraints>
                         <variation key="default">
@@ -1058,9 +1065,9 @@
                         <outlet property="addLocationButton" destination="Sum-f7-dbF" id="a0f-JY-3ZW"/>
                         <outlet property="continueButton" destination="L0P-wK-uBH" id="9Ui-9k-BcJ"/>
                         <outlet property="locationsTableView" destination="1kZ-FP-u3U" id="QCU-gF-8ah"/>
+                        <outlet property="locationsTableViewHeightConstraint" destination="h3o-Jx-PIo" id="Nd2-se-Y3K"/>
                         <outlet property="nextBottom" destination="DSj-fJ-3uA" id="kdm-rp-x5k"/>
                         <outlet property="promptLabel" destination="jaJ-SC-CJy" id="cww-ot-VLf"/>
-                        <outlet property="tableBottom" destination="SFH-FW-UqY" id="1gs-nY-hN6"/>
                         <outlet property="tableBottomKeyboard" destination="p8f-ka-9PO" id="Olh-il-HcC"/>
                         <outletCollection property="expandedConstraints" destination="BCQ-C8-mh5" collectionClass="NSMutableArray" id="dG9-1Q-OzE"/>
                         <outletCollection property="compactConstraints" destination="C7U-n1-vxh" collectionClass="NSMutableArray" id="ch3-hp-xbl"/>
@@ -1072,9 +1079,9 @@
                         <outletCollection property="compactConstraints" destination="T76-2C-qF3" collectionClass="NSMutableArray" id="oZg-Ki-fH9"/>
                         <outletCollection property="compactConstraints" destination="lwz-Gi-6dK" collectionClass="NSMutableArray" id="nOD-Bk-tfq"/>
                         <outletCollection property="compactConstraints" destination="ZGR-Br-Mwr" collectionClass="NSMutableArray" id="kZf-Rd-EYn"/>
-                        <outletCollection property="compactConstraints" destination="m3Z-Om-2GP" collectionClass="NSMutableArray" id="Qdc-9m-ECG"/>
                         <outletCollection property="expandedConstraints" destination="0kM-SX-lRh" collectionClass="NSMutableArray" id="ev2-cu-lKE"/>
-                        <outletCollection property="expandedConstraints" destination="SFH-FW-UqY" collectionClass="NSMutableArray" id="Qz1-mn-cRN"/>
+                        <outletCollection property="compactConstraints" destination="LAv-uK-Hme" collectionClass="NSMutableArray" id="zHb-c1-t9D"/>
+                        <outletCollection property="expandedConstraints" destination="h3o-Jx-PIo" collectionClass="NSMutableArray" id="NFR-Kn-lYW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTr-ck-qI8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

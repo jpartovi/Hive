@@ -35,10 +35,11 @@ class LocationsViewController: StyleViewController {
     
     @IBOutlet weak var continueButton: HexButton!
     
-    
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
+    
+    @IBOutlet weak var locationsTableViewHeightConstraint: NSLayoutConstraint!
     
     func changedConstraints(compact: Bool){
         
@@ -59,7 +60,7 @@ class LocationsViewController: StyleViewController {
                 constraint.isActive = true
             }
         }
-
+        promptLabel.adjustHeight()
         locationsTableView.reloadData()
         
         /*if textFieldExpand != nil {
@@ -72,8 +73,10 @@ class LocationsViewController: StyleViewController {
         super.viewDidLoad()
         
         addHexFooter()
+        changedConstraints(compact: presentationStyle == .compact)
         
         promptLabel.style(text: "Do you know where you want to host?")
+        promptLabel.adjustHeight()
         
         //addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         addLocationButton.size(size: 150, textSize: 18)
@@ -108,7 +111,7 @@ class LocationsViewController: StyleViewController {
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            tableBottom.isActive = false
+            //tableBottom.isActive = false
             
             tableBottomKeyboard.constant = keyboardSize.height + 16
             
@@ -120,7 +123,7 @@ class LocationsViewController: StyleViewController {
         
         tableBottomKeyboard.isActive = false
         
-        tableBottom.isActive = true
+        //tableBottom.isActive = true
         
         /*if self.view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
@@ -140,9 +143,25 @@ class LocationsViewController: StyleViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        print(locationsTableViewHeightConstraint.isActive)
+        
+        updateTableViewHeight()
+        
         for cell in locationsTableView.visibleCells {
             (cell as! LocationCell).titleTextField.colorStatus()
         }
+    }
+    
+    func updateTableViewHeight() {
+        self.locationsTableView.layoutIfNeeded()
+        locationsTableView.reloadData()
+        if presentationStyle == .expanded {
+            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), 300)
+        } else {
+            self.locationsTableViewHeightConstraint.constant = 150
+        }
+        
+        
     }
     
     func updateLocations() {
@@ -359,6 +378,7 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
         
         locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place)
         locationsTableView.reloadData()
+        updateTableViewHeight()
         navigationController?.dismiss(animated: true)
         
     }

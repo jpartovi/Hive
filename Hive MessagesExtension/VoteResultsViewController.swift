@@ -501,17 +501,17 @@ extension VoteResultsViewController: UITableViewDelegate {
         let headerString: String
         switch voteGroups[section] {
         case "daysAndTimes":
-            headerString = "Which times work?"
+            headerString = "Choose the final time"
         case "daysAndTime":
-            headerString = "Which times work?"
+            headerString = "Choose the final time"
         case "dayAndTimes":
-            headerString = "Which times work?"
+            headerString = "Choose the final time"
         case "days":
-            headerString = "Which days work?"
+            headerString = "Choose the final day"
         case "locations":
-            headerString = "Which location do you prefer?"
+            headerString = "Choose the final location"
         default:
-            headerString = "Vote"
+            headerString = "Choose the winner"
         }
         headerTitle.text = headerString
         headerTitle.textColor = UIColor.white

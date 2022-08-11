@@ -89,7 +89,7 @@ enum EventType: CaseIterable {
             lastTime = Time(hour: 7, minute: 30, period: .pm)
         case .party:
             firstTime = Time(hour: 6, minute: 0, period: .pm)
-            lastTime = Time(hour: 9, minute: 30, period: .pm)
+            lastTime = Time(hour: 10, minute: 30, period: .pm)
         case .allDay:
             return []
         case .other:
