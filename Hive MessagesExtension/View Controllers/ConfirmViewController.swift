@@ -26,6 +26,9 @@ class ConfirmViewController: StyleViewController {
     
     var addressEditingIndex: Int? = nil
     
+    var needLayoutSubviews1 = true
+    var needLayoutSubviews2 = true
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var eventTitleTextField: StyleTextField!
     @IBOutlet weak var locationsLabel: StyleLabel!
@@ -46,6 +49,8 @@ class ConfirmViewController: StyleViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.needLayoutSubviews2 = true
         
         locationsLabel.style(text: "Location Options:", textColor: Colors.darkTextColor, fontSize: 18)
         dayTimePairsLabel.style(text: "Day/Time Options:", textColor: Colors.darkTextColor, fontSize: 18)
@@ -80,6 +85,9 @@ class ConfirmViewController: StyleViewController {
     }
     
     func changedConstraints(compact: Bool) {
+        
+        self.needLayoutSubviews2 = true
+        
         if compact {
             scrollViewTrailingConstraint.constant = 160
             for constraint in expandConstraints {
@@ -117,18 +125,6 @@ class ConfirmViewController: StyleViewController {
         super.viewDidAppear(animated)
         
         navigationController?.delegate = self
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
-        if scrollView.contentOffset.x > 0 {
-            scrollView.contentOffset.x = 0
-        }
-        
-        if scrollView.panGestureRecognizer.state == .began {
-        
-            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + dayTimePairsLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
-            
-        }
     }
     
     func loadDaysAndTimes() {
@@ -176,33 +172,53 @@ class ConfirmViewController: StyleViewController {
     
     override func viewDidLayoutSubviews() {
         
+        
+        
+        if !(self.needLayoutSubviews1 && self.needLayoutSubviews2) {
+            return
+        }
+        
         super.viewDidLayoutSubviews()
         
         self.locationsTableView.setNeedsLayout()
         self.locationsTableView.layoutIfNeeded()
         locationsTableView.reloadData()
         
-        self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
-        self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-        updatePostButtonStatus()
+        print("STEP 1")
         
         DispatchQueue.main.async {
-            self.setUpEventTitleTextField()
-            
             self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
             self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-            for cell in self.daysAndTimesTableView.visibleCells {
-                (cell as! EditingDayAndTimesCell).layoutSubviews()
-            }
-            self.daysAndTimesTableView.reloadRows(at: self.daysAndTimesTableView.indexPathsForVisibleRows!, with: .none)
+            
+            self.needLayoutSubviews1 = false
+            self.updatePostButtonStatus()
+            
+            print("STEP 2")
             
             DispatchQueue.main.async {
+                self.needLayoutSubviews1 = true
                 
-                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
-                self.daysAndTimesTableView.layoutSubviews()
+                self.setUpEventTitleTextField()
+                
+                self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
+                self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+                for cell in self.daysAndTimesTableView.visibleCells {
+                    (cell as! EditingDayAndTimesCell).layoutSubviews()
+                }
+                self.needLayoutSubviews2 = false
+                self.daysAndTimesTableView.reloadRows(at: self.daysAndTimesTableView.indexPathsForVisibleRows!, with: .none)
+                
+                print("STEP 3")
+                
+                DispatchQueue.main.async {
+                    self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+                    self.daysAndTimesTableView.layoutSubviews()
+                        
+                    print("STEP 4")
+                    
+                }
                 
             }
-            
         }
         
     }
@@ -379,6 +395,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
+        self.needLayoutSubviews2 = true
         event.locations.append(Location(title: "", place: nil, address: nil))
         isNewArray = [Bool](repeating: false, count: event.locations.count-1) + [true]
         self.formatLocations()
@@ -399,6 +416,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     @objc func deleteLocation(sender: UIButton) {
+        self.needLayoutSubviews2 = true
         let cell = sender.superview?.superview as! LocationCell
         cell.titleTextField.resetColor()
         let indexPath =
@@ -419,6 +437,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
+        self.needLayoutSubviews2 = true
         addressEditingIndex = sender.tag
         if event.locations[addressEditingIndex!].address == nil {
             let autocompleteViewController = GMSAutocompleteViewController()
@@ -490,6 +509,8 @@ class ConfirmViewController: StyleViewController {
         daysAndTimesTableView.deleteRows(at: [indexPath], with: .fade)
         daysAndTimesTableView.endUpdates()
         CATransaction.commit()
+        
+        needLayoutSubviews1 = true
     }
 }
 
