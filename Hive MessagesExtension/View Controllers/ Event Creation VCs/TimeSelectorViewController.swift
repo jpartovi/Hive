@@ -5,8 +5,6 @@
 //  Created by Jude Partovi on 6/17/22.
 //
 
-// TODO: Custom time option
-
 import UIKit
 import Messages
 
@@ -27,6 +25,7 @@ class TimeSelectorViewController: StyleViewController {
     @IBOutlet weak var durationPicker: UIPickerView!
     @IBOutlet weak var durationView: UIStackView!
     @IBOutlet weak var includeDurationButton: UIButton!
+    @IBOutlet weak var instructionsLabel: StyleLabel!
     
     @IBAction func includeDurationButtonPressed(_ sender: Any) {
         
@@ -53,7 +52,10 @@ class TimeSelectorViewController: StyleViewController {
         
         durationLabel.style(text: "Duration:", textColor: Colors.darkTextColor, fontSize: 20)
                 
-        promptLabel.style(text: "What time(s) might this event start?")
+        promptLabel.style(text: "What time are you hosting?")
+        promptLabel.adjustHeight()
+        instructionsLabel.style(text: "Add multiple times to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
+        instructionsLabel.adjustHeight()
         
         durationPicker.dataSource = self
         durationPicker.delegate = self
@@ -80,8 +82,8 @@ class TimeSelectorViewController: StyleViewController {
         compactView = compact
         
         if compact {
-            
-            promptLabel.font = Format.font(size: 20)
+            //promptLabel.font = Format.font(size: 20)
+            instructionsLabel.isHidden = true
             durationLabel.font = Format.font(size: 15)
             cellsPerRow = 1
             rows = 6
@@ -93,7 +95,8 @@ class TimeSelectorViewController: StyleViewController {
             }
             durationView.axis = .vertical
         } else {
-            promptLabel.font = Format.font(size: 30)
+            //promptLabel.font = Format.font(size: 30)
+            instructionsLabel.isHidden = false
             durationLabel.font = Format.font(size: 23)
             cellsPerRow = 2
             rows = 3

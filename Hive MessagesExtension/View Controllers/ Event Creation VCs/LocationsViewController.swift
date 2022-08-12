@@ -5,9 +5,6 @@
 //  Created by Jude Partovi on 7/6/22.
 //
 
-// TODO: Allow users to easily select previously used locations
-
-
 import Foundation
 import UIKit
 import GooglePlaces
@@ -30,6 +27,7 @@ class LocationsViewController: StyleViewController {
     
     @IBOutlet weak var promptLabel: StyleLabel!
     @IBOutlet weak var addLocationButton: HexButton!
+    @IBOutlet weak var instructionsLabel: StyleLabel!
     
     @IBOutlet weak var locationsTableView: UITableView!
     
@@ -44,7 +42,8 @@ class LocationsViewController: StyleViewController {
     func changedConstraints(compact: Bool){
         
         if compact {
-            promptLabel.font = Format.font(size: 20)
+            //promptLabel.font = Format.font(size: 20)
+            instructionsLabel.isHidden = true
             for constraint in expandedConstraints {
                 constraint.isActive = false
             }
@@ -52,7 +51,8 @@ class LocationsViewController: StyleViewController {
                 constraint.isActive = true
             }
         } else {
-            promptLabel.font = Format.font(size: 30)
+            //promptLabel.font = Format.font(size: 30)
+            instructionsLabel.isHidden = false
             for constraint in compactConstraints {
                 constraint.isActive = false
             }
@@ -75,8 +75,10 @@ class LocationsViewController: StyleViewController {
         addHexFooter()
         changedConstraints(compact: presentationStyle == .compact)
         
-        promptLabel.style(text: "Do you know where you want to host?")
+        promptLabel.style(text: "Where are you hosting?")
         promptLabel.adjustHeight()
+        instructionsLabel.style(text: "Add multiple locations to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
+        instructionsLabel.adjustHeight()
         
         //addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
         addLocationButton.size(size: 150, textSize: 18)
@@ -319,6 +321,7 @@ extension LocationsViewController: UITableViewDataSource {
         //cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidBeginEditing(sender:)), for: .editingDidBegin)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidFinishEditing(sender:)), for: .editingDidEnd)
+        cell.titleTextField.delegate = self
         cell.deleteButton.tag = indexPath.row
         cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
         cell.addOrRemoveAddressButton.tag = indexPath.row

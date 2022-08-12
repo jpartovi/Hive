@@ -32,6 +32,8 @@ class VoteViewController: StyleViewController {
     var myID: String!
     var mURL: URL!
     
+    var submitButtonText = "Submit\nVotes"
+    
     var loadedEvent: Event!
     
     var voteGroups: [String] = []
@@ -63,7 +65,7 @@ class VoteViewController: StyleViewController {
         voteTableView.setBackgroundColor()
                 
         submitButton.size(size: 150, textSize: 25)
-        submitButton.grey(title: "Add Votes")
+        submitButton.grey(title: submitButtonText)
     }
     
     override func viewWillLayoutSubviews() {
@@ -231,10 +233,13 @@ class VoteViewController: StyleViewController {
                 endFlag = true
             } else if endFlag {
                 
-                if name == myID && value == "start" {
-                    meFlag = true
-                } else if name == myID && value == "end" {
-                    break
+                if name == myID {
+                    submitButtonText = "Edit\nVotes"
+                    if value == "start" {
+                        meFlag = true
+                    } else if value == "end"{
+                        break
+                    }
                 } else if meFlag {
                     voteSelections[Int(name)!].append(Int(value!)!)
                 }
@@ -257,10 +262,10 @@ class VoteViewController: StyleViewController {
     func updateSubmitButton() {
         
         if initialVoteTallies == voteTallies {
-            submitButton.grey(title: "Add Votes")
+            submitButton.grey(title: submitButtonText)
             votesChanged = false
         } else {
-            submitButton.color(title: "Add Votes")
+            submitButton.color(title: submitButtonText)
             votesChanged = true
         }
     }

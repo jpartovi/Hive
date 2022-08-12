@@ -90,7 +90,7 @@ class VoteResultsViewController: StyleViewController {
     
     func decodeEvent(_ event: Event) {
         
-        promptLabel.style(text: "Choose from poll results")
+        promptLabel.style(text: "Choose poll winners")
         promptLabel.adjustHeight()
         
         locationLabel.text = ""
@@ -339,6 +339,7 @@ class VoteResultsViewController: StyleViewController {
             
             let confirmVC = (storyboard?.instantiateViewController(withIdentifier: ConfirmViewController.storyboardID) as? ConfirmViewController)!
             confirmVC.event = eventForInvite
+            confirmVC.fromVoteResults = true
             
             self.navigationController?.pushViewController(confirmVC, animated: true)
         }

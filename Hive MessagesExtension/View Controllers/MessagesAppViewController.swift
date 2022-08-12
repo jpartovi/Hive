@@ -67,11 +67,11 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 controller = instantiateInviteViewController(conversation: conversation)
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "Invite"
+                    title = "You're\nInvite"
                 case "yesRSVP":
-                    title = "Coming"
+                    title = "I Can\nCome!"
                 case "noRSVP":
-                    title = "Can't come"
+                    title = "Can't\nCome"
                 default:
                     print("Uncaught message display type")
                 }
@@ -84,17 +84,15 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 }
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "Vote!"
+                    title = "Vote\nNow!"
                 case "iVoted":
                     title = "I Voted!"
                 default:
                     print("Uncaught message display type")
                 }
-                print(title)
             } else {
                 fatalError("Unrecognized message type")
             }
-            
         }
         
         if presentationStyle == .transcript {

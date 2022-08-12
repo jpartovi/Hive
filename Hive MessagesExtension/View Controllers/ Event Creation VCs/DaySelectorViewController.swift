@@ -32,6 +32,7 @@ class DaySelectorViewController: StyleViewController {
     @IBOutlet weak var thuLabel: StyleLabel!
     @IBOutlet weak var friLabel: StyleLabel!
     @IBOutlet weak var satLabel: StyleLabel!
+    @IBOutlet weak var instructionsLabel: StyleLabel!
     
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
@@ -69,7 +70,10 @@ class DaySelectorViewController: StyleViewController {
         
         addHexFooter()
         
-        promptLabel.style(text: "Which day(s) might work?")
+        promptLabel.style(text: "What day are you hosting?")
+        promptLabel.adjustHeight()
+        instructionsLabel.style(text: "Add multiple days to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
+        instructionsLabel.adjustHeight()
         
         underlineWeekDayLabels()
     
@@ -126,7 +130,8 @@ class DaySelectorViewController: StyleViewController {
         compactView = compact
         
         if compact {
-            promptLabel.font = Format.font(size: 20)
+            //promptLabel.font = Format.font(size: 20)
+            instructionsLabel.isHidden = true
             cellsPerRow = 21
             rows = 1
             for constraint in expandedConstraints {
@@ -141,7 +146,8 @@ class DaySelectorViewController: StyleViewController {
             monthLabel.isHidden = false
             line.removeFromSuperlayer()
         } else {
-            promptLabel.font = Format.font(size: 30)
+            //promptLabel.font = Format.font(size: 30)
+            instructionsLabel.isHidden = false
             cellsPerRow = 7
             rows = 3
             line.isHidden = false
