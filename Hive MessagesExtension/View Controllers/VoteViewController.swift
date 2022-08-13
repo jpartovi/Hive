@@ -12,7 +12,7 @@ import Messages
 
 class VoteViewController: StyleViewController {
     
-    //var delegate: VoteViewControllerDelegate?
+    var delegate: VoteViewControllerDelegate?
     static let storyboardID = String(describing: VoteViewController.self)
     
     @IBOutlet weak var scrollView: UIScrollView!

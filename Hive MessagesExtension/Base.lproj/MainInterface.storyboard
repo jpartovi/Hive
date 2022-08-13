@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -133,22 +134,6 @@
             </objects>
             <point key="canvasLocation" x="4873" y="157"/>
         </scene>
-        <!--Vote Navigation Controller-->
-        <scene sceneID="jqP-cL-ffC">
-            <objects>
-                <navigationController storyboardIdentifier="VoteNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="d04-V2-WGe" customClass="VoteNavigationController" customModule="Hive_MessagesExtension" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vaU-HQ-Y0x">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="Zrr-ae-tQ8" kind="relationship" relationship="rootViewController" id="Qxj-kg-g9e"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Vw-ES-8Ns" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4135" y="-1238"/>
-        </scene>
         <!--Vote View Controller-->
         <scene sceneID="ECc-qU-EYE">
             <objects>
@@ -166,7 +151,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
-                                <rect key="frame" x="19" y="88" width="285" height="290"/>
+                                <rect key="frame" x="19" y="44" width="285" height="334"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
                                         <rect key="frame" x="0.0" y="69.5" width="285" height="195"/>

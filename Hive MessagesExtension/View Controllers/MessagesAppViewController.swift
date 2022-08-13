@@ -9,7 +9,7 @@ import UIKit
 import Messages
 import GooglePlaces
 
-class MessagesAppViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, MessageViewControllerDelegate, UINavigationControllerDelegate {
+class MessagesAppViewController: MSMessagesAppViewController, InviteViewControllerDelegate, StartEventViewControllerDelegate, MessageViewControllerDelegate, VoteViewControllerDelegate, UINavigationControllerDelegate {
     
     static var conversation: MSConversation? = nil
     static var userID: String = (conversation?.localParticipantIdentifier.uuidString)!
@@ -141,27 +141,11 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                     child.removeFromParent()
                 }
             }
-            if let child = child as? VoteNavigationController {
-                let subchild = child.children.last
-                if let subchild = subchild as? ConfirmViewController {
-                    if presentationStyle == .compact {
-                        subchild.changedConstraints(compact: true)
-                    } else if presentationStyle == .expanded {
-                        subchild.changedConstraints(compact: false)
-                    }
-                } else if let subchild = subchild as? VoteViewController {
-                    if presentationStyle == .compact {
-                        print("VOTE COMPACT")
-                        presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
-                        //child.willMove(toParent: nil)
-                        //child.view.removeFromSuperview()
-                        //child.removeFromParent()
-                        //child.dismiss(animated: true)
-                        //self.view.window!.rootViewController?.dismiss(animated: false)
-                        //dismiss()
-                    } else if presentationStyle == .expanded {
-                        subchild.addHexFooter()
-                    }
+            if let child = child as? VoteViewController {
+                if presentationStyle == .compact {
+                    presentViewController(controller: instantiateStartEventViewController(), presentationStyle: presentationStyle)
+                } else if presentationStyle == .expanded {
+                    child.addHexFooter()
                 }
             } else if let child = child as? VoteResultsNavigationController {
                 let subchild = child.children.last
@@ -356,7 +340,7 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
 
     func instantiateVoteViewController(conversation: MSConversation) -> UIViewController {
         
-        guard let controller = storyboard?.instantiateViewController(withIdentifier: "VoteNavigationController") as? VoteNavigationController else { fatalError("Unable to instantiate an VoteNavigationController from the storyboard") }
+        guard let controller = storyboard?.instantiateViewController(withIdentifier: "VoteViewController") as? VoteViewController else { fatalError("Unable to instantiate an VoteViewController from the storyboard") }
         
         controller.delegate = self
         controller.myID = MessagesAppViewController.userID
