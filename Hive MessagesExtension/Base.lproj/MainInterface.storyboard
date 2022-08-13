@@ -281,10 +281,10 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyM-7Q-3i0">
-                                <rect key="frame" x="18" y="88" width="285" height="290"/>
+                                <rect key="frame" x="18" y="88" width="285" height="249"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="w0n-oq-1Nw">
-                                        <rect key="frame" x="0.0" y="69.5" width="285" height="239"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="w0n-oq-1Nw">
+                                        <rect key="frame" x="0.0" y="70" width="285" height="179"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="239" id="lWY-p9-sVG"/>
@@ -344,22 +344,32 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="1b0-ud-7sC"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="Enu-75-cZe"/>
                             </scrollView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1E-65-pIp" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="16" y="377" width="288" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="cvB-nB-Ag0"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="k1E-65-pIp" firstAttribute="leading" secondItem="cvB-nB-Ag0" secondAttribute="leading" constant="16" id="LJF-WP-YbG"/>
                             <constraint firstItem="OyM-7Q-3i0" firstAttribute="top" secondItem="cvB-nB-Ag0" secondAttribute="top" id="N4N-QF-MEq"/>
                             <constraint firstItem="cvB-nB-Ag0" firstAttribute="trailing" secondItem="OyM-7Q-3i0" secondAttribute="trailing" constant="17" id="YGq-kD-v5m"/>
+                            <constraint firstItem="cvB-nB-Ag0" firstAttribute="trailing" secondItem="k1E-65-pIp" secondAttribute="trailing" constant="16" id="egB-ik-Wi1"/>
                             <constraint firstItem="afh-UF-iav" firstAttribute="centerX" secondItem="cvB-nB-Ag0" secondAttribute="centerX" id="exr-6g-Eoc"/>
                             <constraint firstItem="cvB-nB-Ag0" firstAttribute="bottom" secondItem="afh-UF-iav" secondAttribute="bottom" constant="80" id="gcM-d1-Csv"/>
-                            <constraint firstItem="afh-UF-iav" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="bottom" constant="40" id="kH7-dx-olP"/>
                             <constraint firstItem="OyM-7Q-3i0" firstAttribute="leading" secondItem="cvB-nB-Ag0" secondAttribute="leading" constant="18" id="mzC-97-Fnx"/>
+                            <constraint firstItem="k1E-65-pIp" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="bottom" constant="40" id="u1d-Kf-Sc4"/>
+                            <constraint firstItem="afh-UF-iav" firstAttribute="top" secondItem="k1E-65-pIp" secondAttribute="bottom" constant="20" id="w0f-fO-pq9"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="n5A-U6-I0G"/>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
                         <outlet property="dayAndTimeLabel" destination="tqh-XZ-sWr" id="pEN-Hk-OA2"/>
+                        <outlet property="instructionsLabel" destination="k1E-65-pIp" id="LAB-Ka-gI7"/>
                         <outlet property="locationLabel" destination="Tvb-5X-YAk" id="Zli-iX-js3"/>
                         <outlet property="promptLabel" destination="H9D-Qb-Vzk" id="kdV-i1-06C"/>
                         <outlet property="scrollView" destination="OyM-7Q-3i0" id="7VA-LP-Lg4"/>
@@ -370,7 +380,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T0Q-XC-0nK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4875" y="-529"/>
+            <point key="canvasLocation" x="4873.913043478261" y="-529.01785714285711"/>
         </scene>
         <!--Time Selector View Controller-->
         <scene sceneID="cp4-m4-Iap">
@@ -1159,7 +1169,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kn3-1P-ahJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2894.202898550725" y="-334.82142857142856"/>
+            <point key="canvasLocation" x="3426" y="-926"/>
         </scene>
         <!--Vote Results Navigation Controller-->
         <scene sceneID="cMV-8m-MvO">

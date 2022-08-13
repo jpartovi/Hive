@@ -21,6 +21,7 @@ class VoteResultsViewController: StyleViewController {
     @IBOutlet weak var voteTableView: UITableView!
     @IBOutlet weak var voteTableViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var instructionsLabel: StyleLabel!
     @IBOutlet weak var submitButton: HexButton!
     
     let cellInsets: CGFloat = 8
@@ -46,6 +47,9 @@ class VoteResultsViewController: StyleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        instructionsLabel.style(text: "Create your invite from poll results", textColor: Colors.darkTextColor, fontSize: 18)
+        instructionsLabel.adjustHeight()
+        
         loadedEvent = Event(url: mURL)
         decodeEvent(loadedEvent)
         decodeRSVPs(url: mURL)
@@ -58,7 +62,7 @@ class VoteResultsViewController: StyleViewController {
         voteTableView.setBackgroundColor()
                 
         submitButton.size(height: 150, textSize: 25)
-        submitButton.grey(title: "Done")
+        submitButton.grey(title: "Create\nInvite")
         
     }
     
@@ -90,7 +94,7 @@ class VoteResultsViewController: StyleViewController {
     
     func decodeEvent(_ event: Event) {
         
-        promptLabel.style(text: "Choose poll winners")
+        promptLabel.style(text: "Finalize Event")
         promptLabel.adjustHeight()
         
         locationLabel.text = ""

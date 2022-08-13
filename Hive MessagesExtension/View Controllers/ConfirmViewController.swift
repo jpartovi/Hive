@@ -29,6 +29,8 @@ class ConfirmViewController: StyleViewController {
     var needLayoutSubviews1 = true
     var needLayoutSubviews2 = true
     
+    var fromVoteResults = false
+    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var eventTitleTextField: StyleTextField!
     @IBOutlet weak var locationsLabel: StyleLabel!
@@ -51,9 +53,27 @@ class ConfirmViewController: StyleViewController {
         super.viewDidLoad()
         
         self.needLayoutSubviews2 = true
+
+        let locationLabelText: String
+        let daysAndTimesLabelText: String
+        if fromVoteResults {
+            locationLabelText = "Location:"
+            if event.times.isEmpty {
+                daysAndTimesLabelText = "Day:"
+            } else {
+                daysAndTimesLabelText = "Day/Time:"
+            }
+        } else {
+            locationLabelText = "Location Options:"
+            if event.times.isEmpty {
+                daysAndTimesLabelText = "Day Options:"
+            } else {
+                daysAndTimesLabelText = "Day/Time Options:"
+            }
+        }
         
-        locationsLabel.style(text: "Location Options:", textColor: Colors.darkTextColor, fontSize: 18)
-        daysAndTimesLabel.style(text: "Day/Time Options:", textColor: Colors.darkTextColor, fontSize: 18)
+        locationsLabel.style(text: locationLabelText, textColor: Colors.darkTextColor, fontSize: 18)
+        daysAndTimesLabel.style(text: daysAndTimesLabelText, textColor: Colors.darkTextColor, fontSize: 18)
         
         enableTouchAwayKeyboardDismiss()
         
@@ -65,11 +85,12 @@ class ConfirmViewController: StyleViewController {
         addHexFooter()
         
         //firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
-        firstLocationButton.size(height: 150, textSize: 18)
+
+        firstLocationButton.size(width: 150, textSize: 18)
         firstLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Colors.lightTextColor)
         loadDaysAndTimes()
         fillEventDetails()
-        
+      
         postButton.size(height: 150, textSize: 25)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -78,10 +99,20 @@ class ConfirmViewController: StyleViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        daysAndTimesTableView.rowHeight = UITableView.automaticDimension
-        
         scrollView.delegate = self
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("viewWillAppear")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.delegate = self
     }
     
     func changedConstraints(compact: Bool) {
@@ -121,10 +152,13 @@ class ConfirmViewController: StyleViewController {
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        navigationController?.delegate = self
+    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
+        if scrollView.contentOffset.x > 0 {
+            scrollView.contentOffset.x = 0
+        }
+        if scrollView.panGestureRecognizer.state == .began {
+            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
+        }
     }
     
     func loadDaysAndTimes() {
@@ -146,6 +180,7 @@ class ConfirmViewController: StyleViewController {
     
         daysAndTimesTableView.dataSource = self
         daysAndTimesTableView.delegate = self
+        daysAndTimesTableView.rowHeight = UITableView.automaticDimension
         daysAndTimesTableView.setBackgroundColor()
     }
     
@@ -166,13 +201,11 @@ class ConfirmViewController: StyleViewController {
         } else {
             //locationsLabel.isHidden = false
             firstLocationButton.isHidden = true
-            addLocationButton.isHidden = false
+            addLocationButton.isHidden = fromVoteResults //false
         }
     }
     
     override func viewDidLayoutSubviews() {
-        
-        
         
         if !(self.needLayoutSubviews1 && self.needLayoutSubviews2) {
             return
@@ -183,17 +216,13 @@ class ConfirmViewController: StyleViewController {
         self.locationsTableView.setNeedsLayout()
         self.locationsTableView.layoutIfNeeded()
         locationsTableView.reloadData()
-        
-        print("STEP 1")
-        
+                
         DispatchQueue.main.async {
             self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
             self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
             
             self.needLayoutSubviews1 = false
             self.updatePostButtonStatus()
-            
-            print("STEP 2")
             
             DispatchQueue.main.async {
                 self.needLayoutSubviews1 = true
@@ -208,19 +237,12 @@ class ConfirmViewController: StyleViewController {
                 self.needLayoutSubviews2 = false
                 self.daysAndTimesTableView.reloadRows(at: self.daysAndTimesTableView.indexPathsForVisibleRows!, with: .none)
                 
-                print("STEP 3")
-                
                 DispatchQueue.main.async {
                     self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
                     self.daysAndTimesTableView.layoutSubviews()
-                        
-                    print("STEP 4")
-                    
                 }
-                
             }
         }
-        
     }
     
     
@@ -228,6 +250,7 @@ class ConfirmViewController: StyleViewController {
         eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Colors.tertiaryColor, textColor: Colors.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
         eventTitleTextField.addDoneButton()
+        eventTitleTextField.delegate = self
     }
     
     func updateDaysAndTimes() {
@@ -248,20 +271,7 @@ class ConfirmViewController: StyleViewController {
             }
         }
     }
-    
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
-        if scrollView.contentOffset.x > 0 {
-            scrollView.contentOffset.x = 0
-        }
-
-        if scrollView.panGestureRecognizer.state == .began {
-
-            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
-
-        }
-    }
-    
+        
     func updateEventObject(inEvent: Event) -> Event {
         
         var outEvent = inEvent
@@ -400,18 +410,29 @@ class ConfirmViewController: StyleViewController {
     }
     
     func updatePostButtonStatus() {
+        
+        let buttonTitle: String
+        
+        let testEvent = updateEventObject(inEvent: event)
+        
+        if testEvent.locations.count > 1 || testEvent.days.count > 1 || testEvent.times.count > 1 {
+            buttonTitle = "Send\nPoll"
+        } else {
+            buttonTitle = "Send\nInvite"
+        }
+        
+        postButton.color(title: buttonTitle)
+        
         let text = eventTitleTextField.text ?? ""
         if text.isBlank() {
-            postButton.grey(title: "Post")
-            return
-        }
-        for location in event.locations {
-            if location.title == "" {
-                postButton.grey(title: "Post")
-                return
+            postButton.grey(title: buttonTitle)
+        } else {
+            for location in event.locations {
+                if location.title == "" {
+                    postButton.grey(title: buttonTitle)
+                }
             }
         }
-        postButton.color(title: "Post")
     }
     
     @IBAction func addLocationButtonPressed(_ sender: Any) {
@@ -531,6 +552,7 @@ class ConfirmViewController: StyleViewController {
         CATransaction.commit()
         
         needLayoutSubviews1 = true
+        updatePostButtonStatus()
     }
 }
 
@@ -605,6 +627,7 @@ extension ConfirmViewController: UITableViewDataSource {
             cell.titleTextField.tag = indexPath.row
             cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidBeginEditing(sender:)), for: .editingDidBegin)
             cell.titleTextField.addTarget(self, action: #selector(locationTitleTextFieldDidChange(sender:)), for: .editingChanged)
+            cell.titleTextField.delegate = self
             cell.deleteButton.tag = indexPath.row
             cell.deleteButton.addTarget(nil, action: #selector(deleteLocation(sender:)), for: .touchUpInside)
             cell.addOrRemoveAddressButton.tag = indexPath.row
@@ -830,7 +853,6 @@ class EditingDayAndTimesCell: UITableViewCell {
 
         timesCollectionView.layer.cornerRadius = 5
         deleteButton.layer.cornerRadius = deleteButton.frame.height / 2
-        
     }
     
     override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
@@ -840,6 +862,7 @@ class EditingDayAndTimesCell: UITableViewCell {
         
         var tCVcontentSize = self.timesCollectionView.contentSize
         tCVcontentSize.height += 20
+        tCVcontentSize.height = max(tCVcontentSize.height, 50)
         goodHeight = tCVcontentSize.height
         return tCVcontentSize
     }
@@ -857,10 +880,13 @@ extension EditingDayAndTimesCell: UICollectionViewDataSource {
         if times[indexPath.row].isSelected {
             cell.backgroundColor = Colors.primaryColor
             cell.timeLabel.textColor = Colors.lightTextColor
+            cell.deleteIcon.text = "X"
         } else {
             cell.backgroundColor = Colors.greyColor
             cell.timeLabel.textColor = UIColor.white
+            cell.deleteIcon.text = "+"
         }
+        cell.deleteIcon.adjustHeight()
 
         return cell
     }
@@ -874,6 +900,7 @@ extension EditingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
                 collectionView.reloadData()
                 collectionView.layoutSubviews()
                 CVC.updateDaysAndTimes()
+                CVC.updatePostButtonStatus()
                 return
             }
         }
@@ -895,13 +922,14 @@ class EditingTimeCell: UICollectionViewCell {
         return label
     }()
     
-    let deleteIcon: UILabel = {
-        let label = UILabel()
+    let deleteIcon: StyleLabel = {
+        let label = StyleLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = Colors.lightGreyColor
         label.textColor = Colors.greyColor
         label.textAlignment = .center
         label.text = "X"
+        label.adjustHeight()
         
         return label
     }()
@@ -922,13 +950,15 @@ class EditingTimeCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
+        /*
         if (superview?.superview?.superview as! EditingDayAndTimesCell).times[deleteIcon.tag].isSelected {
             deleteIcon.text = "X"
+            
         } else {
             deleteIcon.text = "+"
         }
-        
+        deleteIcon.adjustHeight()
+        */
         let inset: CGFloat = 5
 
         NSLayoutConstraint.activate([
