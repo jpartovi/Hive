@@ -156,9 +156,8 @@ class ConfirmViewController: StyleViewController {
         if scrollView.contentOffset.x > 0 {
             scrollView.contentOffset.x = 0
         }
-        if scrollView.panGestureRecognizer.state == .began {
-            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
-        }
+        self.needLayoutSubviews2 = true
+        scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
     }
     
     func loadDaysAndTimes() {
