@@ -123,6 +123,8 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 let subchild = child.children.last //the view controller being presented
                 if let subchild = subchild as? ConfirmViewController {
                     subchild.textBoxFlag = true
+                    self.view.window!.rootViewController?.dismiss(animated: false)
+                    self.dismiss()
                     return
                 }
             }

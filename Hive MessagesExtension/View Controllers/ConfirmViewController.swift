@@ -36,7 +36,7 @@ class ConfirmViewController: StyleViewController {
     @IBOutlet weak var firstLocationButton: HexButton!
     @IBOutlet weak var locationsTableView: UITableView!
     @IBOutlet weak var locationsTableViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var dayTimePairsLabel: StyleLabel!
+    @IBOutlet weak var daysAndTimesLabel: StyleLabel!
     @IBOutlet weak var daysAndTimesTableView: UITableView!
     @IBOutlet weak var daysAndTimesTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var postButton: HexButton!
@@ -53,7 +53,7 @@ class ConfirmViewController: StyleViewController {
         self.needLayoutSubviews2 = true
         
         locationsLabel.style(text: "Location Options:", textColor: Colors.darkTextColor, fontSize: 18)
-        dayTimePairsLabel.style(text: "Day/Time Options:", textColor: Colors.darkTextColor, fontSize: 18)
+        daysAndTimesLabel.style(text: "Day/Time Options:", textColor: Colors.darkTextColor, fontSize: 18)
         
         enableTouchAwayKeyboardDismiss()
         
@@ -65,12 +65,12 @@ class ConfirmViewController: StyleViewController {
         addHexFooter()
         
         //firstLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
-        firstLocationButton.size(size: 150, textSize: 18)
+        firstLocationButton.size(height: 150, textSize: 18)
         firstLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Colors.lightTextColor)
         loadDaysAndTimes()
         fillEventDetails()
         
-        postButton.size(size: 150, textSize: 25)
+        postButton.size(height: 150, textSize: 25)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
@@ -211,7 +211,7 @@ class ConfirmViewController: StyleViewController {
                 print("STEP 3")
                 
                 DispatchQueue.main.async {
-                    self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+                    self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
                     self.daysAndTimesTableView.layoutSubviews()
                         
                     print("STEP 4")
@@ -223,6 +223,7 @@ class ConfirmViewController: StyleViewController {
         
     }
     
+    
     func setUpEventTitleTextField() {
         eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Colors.tertiaryColor, textColor: Colors.tertiaryColor, fontSize: 30)
         eventTitleTextField.addTarget(self, action: #selector(eventTitleTextFieldDidChange(sender:)), for: .editingChanged)
@@ -231,14 +232,33 @@ class ConfirmViewController: StyleViewController {
     
     func updateDaysAndTimes() {
         // Load DaysAndTimes
-        for (index, day) in event.days.enumerated() {
-            let cell = daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
-            daysAndTimes[day] = []
-            for (time, isSelected) in cell.times {
-                if isSelected {
-                    daysAndTimes[day]!.append(time)
+        print("FLAG", scrollView.contentSize)
+        print("FLAG", daysAndTimesTableView.visibleCells.count)
+        print("FLAG", self.event.days.count)
+        
+        DispatchQueue.main.async {
+            for (index, day) in self.event.days.enumerated() {
+                let cell = self.daysAndTimesTableView.cellForRow(at: IndexPath(item: index, section: 0)) as! EditingDayAndTimesCell
+                self.daysAndTimes[day] = []
+                for (time, isSelected) in cell.times {
+                    if isSelected {
+                        self.daysAndTimes[day]!.append(time)
+                    }
                 }
             }
+        }
+    }
+    
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
+        if scrollView.contentOffset.x > 0 {
+            scrollView.contentOffset.x = 0
+        }
+
+        if scrollView.panGestureRecognizer.state == .began {
+
+            scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
+
         }
     }
     
@@ -246,7 +266,7 @@ class ConfirmViewController: StyleViewController {
         
         var outEvent = inEvent
         
-        updateDaysAndTimes()
+        //updateDaysAndTimes()
         
         // Remove any times that aren't selected anywhere
         for time in outEvent.times {
@@ -455,7 +475,7 @@ class ConfirmViewController: StyleViewController {
         DispatchQueue.main.async {
             self.daysAndTimesTableView.layoutSubviews()
             self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
         }
     }
     
@@ -502,7 +522,7 @@ class ConfirmViewController: StyleViewController {
             
             self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
             DispatchQueue.main.async {
-                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+                self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
             }
             
         }
@@ -660,7 +680,7 @@ extension ConfirmViewController: GMSAutocompleteViewControllerDelegate {
         DispatchQueue.main.async {
             self.daysAndTimesTableView.layoutSubviews()
             self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
-            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.dayTimePairsLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
+            self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
         }
     }
     
