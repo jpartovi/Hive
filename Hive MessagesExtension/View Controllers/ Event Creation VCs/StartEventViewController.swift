@@ -69,7 +69,6 @@ class StartEventViewController: StyleViewController {
                 constraint.isActive = false
             }
         case .expanded:
-            print("expanded")
             hexLayout.scrollDirection = .vertical
             hexLayout.numberOfColumns = 2
             hexLayout.numberOfRows = Int((CGFloat(types.count) / CGFloat(hexLayout.numberOfColumns)).rounded(.up))
@@ -84,7 +83,7 @@ class StartEventViewController: StyleViewController {
         }
         
         hexLayout.prepare()
-        typesCollectionViewWidthConstraint.constant = min(hexLayout.contentWidth, view.frame.width - (16 * 2))
+        typesCollectionViewWidthConstraint.constant = min(hexLayout.contentWidth, view.frame.width)// - (16 * 2))
         typesCollectionView.collectionViewLayout = hexLayout
         hexBordersCollectionView.collectionViewLayout = hexLayout
         typesCollectionView.reloadData()
@@ -252,11 +251,10 @@ class HexLayout: UICollectionViewFlowLayout {
     lazy var cellHeight = self.itemSize.height
     let xOverlap = CGFloat(14)
     let yOverlap = CGFloat(53)
-    let insets = CGFloat(14)
     var numberOfColumns = 2
     var numberOfRows = 3
     
-    lazy var cellPadding = insets
+    lazy var cellPadding = CGFloat(14)
     
     lazy var offset: CGFloat = (cellWidth - xOverlap) / 2
 
@@ -274,11 +272,12 @@ class HexLayout: UICollectionViewFlowLayout {
         
         contentHeight = (cellHeight * CGFloat(numberOfRows)) - (yOverlap * CGFloat(numberOfRows - 1))
         contentWidth = {
-                var width = (cellWidth * CGFloat(numberOfColumns)) - (xOverlap * CGFloat(numberOfColumns - 1))
-                if numberOfRows > 1 {
-                    width += offset
-                }
-                return width
+            var width = (cellWidth * CGFloat(numberOfColumns)) - (xOverlap * CGFloat(numberOfColumns - 1))
+            if numberOfRows > 1 {
+                width += offset
+            }
+            width += 32
+            return width
         }()
         
         //let numberOfRows = Int((CGFloat(collectionView.numberOfItems(inSection: 0)) / CGFloat(numberOfColumns)).rounded(.up))
@@ -303,7 +302,7 @@ class HexLayout: UICollectionViewFlowLayout {
             let indexPath = IndexPath(item: item, section: 0)
 
             // Calculate insetFrame that can be set to the attribute
-            let frame = CGRect(x: xOffset[row] + columnOffest, y: yOffset[row], width: cellWidth, height: cellHeight)
+            let frame = CGRect(x: xOffset[row] + columnOffest + 16, y: yOffset[row], width: cellWidth, height: cellHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
             // Create an instance of UICollectionViewLayoutAttribute, sets its frame using insetFrame and appends the attributes to cache.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
@@ -346,7 +345,7 @@ class EventTypeHexCell: UICollectionViewCell {
     let hexButton: HexButton = {
         let button = HexButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.size(size: 116, textSize: 20)
+        button.size(height: 116, textSize: 20)
         return button
     }()
     

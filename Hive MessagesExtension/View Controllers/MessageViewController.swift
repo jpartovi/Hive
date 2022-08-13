@@ -16,13 +16,28 @@ class MessageViewController: StyleViewController {
     var myID: String!
     var mURL: URL!
     
-    @IBOutlet weak var button: HexButton!
+    var titleText: String!
+    var subtitleText: String!
+    
+    @IBOutlet weak var messageButton: HexButton!
+    @IBOutlet weak var subtitleLabel: StyleLabel!
+    
+    @IBAction func messageButtonTapped(_ sender: Any) {
+        requestPresentationStyle(.expanded)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        button.size(size: 150, textSize: 25)
-        button.style(imageTag: "ColorHex")
+        self.view.backgroundColor = UIColor.systemBackground
+        let textColor: UIColor = UIColor(named: "LabelColor")!
+        
+        
+        messageButton.size(width: 130, textSize: 25)
+        messageButton.style(title: title, imageTag: "ColorHex")
+        
+        subtitleLabel.style(text: subtitleText, textColor: textColor, fontSize: 18)
+        subtitleLabel.adjustHeight()
     }
 }
 

@@ -60,9 +60,9 @@ class InviteViewController: StyleViewController {
         yesBar.addSubview(yesCounts)
         noBar.addSubview(noCounts)
         
-        yesButton.size(size: 150, textSize: 25)
+        yesButton.size(height: 150, textSize: 25)
         yesButton.setDeselected()
-        noButton.size(size: 150, textSize: 25)
+        noButton.size(height: 150, textSize: 25)
         noButton.setDeselected()
         
         loadedEvent = Event(url: mURL)

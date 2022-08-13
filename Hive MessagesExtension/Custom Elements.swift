@@ -136,11 +136,13 @@ class StyleLabel: UILabel {
 
 class HexButton: UIButton {
     
-    var size: CGFloat = 100
+    var width: CGFloat! = 100
+    var height: CGFloat! = 100
     var textSize: CGFloat = 20
     
-    func size(size: CGFloat, textSize: CGFloat) {
-        self.size = size
+    func size(width: CGFloat! = nil, height: CGFloat! = nil, textSize: CGFloat) {
+        self.width = width
+        self.height = height
         self.textSize = textSize
     }
     
@@ -153,7 +155,7 @@ class HexButton: UIButton {
     }
     
     func style(title: String? = nil, imageTag: String = "ColorHex", textColor: UIColor = Colors.lightTextColor) {
-        let backgroundImage = UIImage(named: imageTag)?.size(width: size, height: size)
+        let backgroundImage = UIImage(named: imageTag)?.size(width: width, height: height)
         self.setBackgroundImage(backgroundImage, for: .normal)
         self.setTitleColor(textColor, for: .normal)
         self.titleLabel?.font = Format.font(size: textSize)
@@ -255,7 +257,7 @@ class StyleViewController: MSMessagesAppViewController, UITextFieldDelegate {
     func addHexFooter() {
         let frameHeight = self.view.frame.height
         let frameWidth = self.view.frame.width
-        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth, height: frameWidth)
+        let footerImage = UIImage(named: "HexFooter")?.size(width: frameWidth)
         let footerImageView = UIImageView( image: footerImage)
         footerImageView.frame = CGRect(x: 0, y: frameHeight - footerImageView.frame.height, width: frameWidth, height: footerImageView.frame.height)
         self.view.addSubview(footerImageView)

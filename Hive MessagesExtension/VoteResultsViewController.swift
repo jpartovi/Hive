@@ -57,7 +57,7 @@ class VoteResultsViewController: StyleViewController {
         voteTableView.reloadData()
         voteTableView.setBackgroundColor()
                 
-        submitButton.size(size: 150, textSize: 25)
+        submitButton.size(height: 150, textSize: 25)
         submitButton.grey(title: "Done")
         
     }

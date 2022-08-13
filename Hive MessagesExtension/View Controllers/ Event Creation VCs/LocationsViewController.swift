@@ -81,7 +81,7 @@ class LocationsViewController: StyleViewController {
         instructionsLabel.adjustHeight()
         
         //addLocationButton.style(imageTag: "LongHex", width: 150, height: 70, textColor: Style.lightTextColor, fontSize: 18)
-        addLocationButton.size(size: 150, textSize: 18)
+        addLocationButton.size(width: 150, textSize: 18)
         addLocationButton.style(title: "Add Location", imageTag: "LongHex", textColor: Colors.lightTextColor)
         
         locationsTableView.dataSource = self

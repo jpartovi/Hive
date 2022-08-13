@@ -46,7 +46,7 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
     }*/
     
     override func contentSizeThatFits(_ size: CGSize) -> CGSize {
-        return CGSize(width: 150, height: 150)
+        return CGSize(width: 150, height: 205)
     }
     
     // MARK: - Conversation Handling
@@ -56,6 +56,7 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
         
         let controller: UIViewController
         var title = ""
+        var subtitle = ""
         if conversation.selectedMessage == nil {
             controller = instantiateStartEventViewController()
         } else {
@@ -63,15 +64,16 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
             guard let messageURL = conversation.selectedMessage?.url else {return}
             guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else {return}
             let value = queryItems[0].value!
+            subtitle = (queryItems.first(where: { $0.name == "title" })?.value)!
             if value == "invite" {
                 controller = instantiateInviteViewController(conversation: conversation)
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "You're\nInvite"
+                    title = "You're\ninvited!"
                 case "yesRSVP":
-                    title = "I Can\nCome!"
+                    title = "I can\ncome!"
                 case "noRSVP":
-                    title = "Can't\nCome"
+                    title = "Can't\ncome"
                 default:
                     print("Uncaught message display type")
                 }
@@ -84,9 +86,9 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 }
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "Vote\nNow!"
+                    title = "Vote on\ndetails!"
                 case "iVoted":
-                    title = "I Voted!"
+                    title = "I voted!"
                 default:
                     print("Uncaught message display type")
                 }
@@ -96,9 +98,12 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
         }
         
         if presentationStyle == .transcript {
+            /*
             messageButton.isHidden = false
-            messageButton.size(size: 150, textSize: 25)
+            messageButton.size(height: 150, textSize: 25)
             messageButton.style(title: title, imageTag: "ColorHex")
+             */
+            presentViewController(controller: instantiateMessageViewController(conversation: MessagesAppViewController.conversation!, title: title, subtitle: subtitle), presentationStyle: .transcript)
         } else {
             presentViewController(controller: controller, presentationStyle: presentationStyle)
         }
@@ -377,12 +382,14 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
     
     }
     
-    func instantiateMessageViewController(conversation: MSConversation) -> UIViewController {
+    func instantiateMessageViewController(conversation: MSConversation, title: String, subtitle: String) -> UIViewController {
         guard let controller = storyboard?.instantiateViewController(withIdentifier: MessageViewController.storyboardID) as? MessageViewController else { fatalError("Unable to instantiate an MessageViewController from the storyboard") }
             
         controller.delegate = self
         controller.myID = MessagesAppViewController.userID
         controller.mURL = conversation.selectedMessage?.url
+        controller.title = title
+        controller.subtitleText = subtitle
         
         return controller
     }

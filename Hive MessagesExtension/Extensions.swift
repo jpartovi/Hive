@@ -80,16 +80,28 @@ extension UIScrollView {
 }
 
 extension UIImage {
-    func size(width: CGFloat, height: CGFloat) -> UIImage {
-        let targetSize = CGSize(width: width, height: height)
+    func size(width: CGFloat! = nil, height: CGFloat! = nil) -> UIImage {
+        
+        let scaleFactor: CGFloat
+        
+        if width != nil && height != nil {
+            let targetSize = CGSize(width: width, height: height)
 
-        // Compute the scaling ratio for the width and height separately
-        let widthScaleRatio = targetSize.width / self.size.width
-        let heightScaleRatio = targetSize.height / self.size.height
+            // Compute the scaling ratio for the width and height separately
+            let widthScaleRatio = targetSize.width / self.size.width
+            let heightScaleRatio = targetSize.height / self.size.height
 
-        // To keep the aspect ratio, scale by the smaller scaling ratio
-        let scaleFactor = min(widthScaleRatio, heightScaleRatio)
-
+            // To keep the aspect ratio, scale by the smaller scaling ratio
+            scaleFactor = min(widthScaleRatio, heightScaleRatio)
+        } else if width != nil {
+            scaleFactor = width / self.size.width
+        } else if height != nil {
+            scaleFactor = height / self.size.height
+        } else {
+            fatalError("Either width or height parameters must be filled.")
+        }
+        
+        
         // Multiply the original image’s dimensions by the scale factor
         // to determine the scaled image size that preserves aspect ratio
         let scaledImageSize = CGSize(
