@@ -70,7 +70,7 @@ class DaySelectorViewController: StyleViewController {
         
         addHexFooter()
         
-        promptLabel.style(text: "What day are you hosting?")
+        promptLabel.style(text: "When are you hosting?")
         promptLabel.adjustHeight()
         instructionsLabel.style(text: "Add multiple days to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
         instructionsLabel.adjustHeight()

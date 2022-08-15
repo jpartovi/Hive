@@ -35,7 +35,7 @@ class TimeSelectorViewController: StyleViewController {
     var cellsPerRow = 2
     var rows = 3
     let inset: CGFloat = 10
-    let minimumLineSpacing: CGFloat = 10
+    let minimumLineSpacing: CGFloat = 5
     let minimumInteritemSpacing: CGFloat = 10
     @IBOutlet weak var nextButton: HexButton!
     
@@ -52,9 +52,10 @@ class TimeSelectorViewController: StyleViewController {
         
         durationLabel.style(text: "Duration:", textColor: Colors.darkTextColor, fontSize: 20)
                 
-        promptLabel.style(text: "What time are you hosting?")
+        promptLabel.style(text: "When are you hosting?")
         promptLabel.adjustHeight()
-        instructionsLabel.style(text: "Add multiple times to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
+        
+        instructionsLabel.style(text: "Add multiple start times to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
         instructionsLabel.adjustHeight()
         
         durationPicker.dataSource = self
@@ -302,7 +303,7 @@ extension TimeSelectorViewController: UICollectionViewDataSource {
         let newSize = min(CGFloat(Int(collectionView.frame.width - marginsAndInsets)*18 / (cellsPerRow*250)), 28.8)
         
         
-        cell.timeLabel.font = cell.timeLabel.font.withSize(newSize)
+        //cell.timeLabel.font = cell.timeLabel.font.withSize(newSize)
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
@@ -373,12 +374,10 @@ class StartTimeCell: UICollectionViewCell {
     
     static let reuseIdentifier = String(describing: StartTimeCell.self)
     
-    var timeLabel: UILabel = {
-        let label = UILabel()
+    var timeLabel: StyleLabel = {
+        let label = StyleLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.textColor = Colors.lightTextColor
+        label.style(text: "", textColor: Colors.lightTextColor, fontSize: 18)
         return label
     }()
     

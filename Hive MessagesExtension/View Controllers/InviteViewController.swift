@@ -21,6 +21,8 @@ class InviteViewController: StyleViewController {
     var mURL: URL!
     var RSVP: Bool!
     
+    var maxBarHeight: CGFloat!
+    
     @IBOutlet weak var promptLabel: StyleLabel!
     //@IBOutlet weak var descriptionLabel: UILabel!
     //@IBOutlet weak var addressLabel: UILabel!
@@ -74,6 +76,7 @@ class InviteViewController: StyleViewController {
         yesCounts.style(text: String(yesNum), textColor: UIColor.white, fontSize: 25)
         noCounts.style(text: String(noNum), textColor: UIColor.white, fontSize: 25)
         
+        updateMaxBarHeight()
         
         NSLayoutConstraint.activate([
             //informationText.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
@@ -83,9 +86,16 @@ class InviteViewController: StyleViewController {
             yesCounts.centerXAnchor.constraint(equalTo: yesBar.centerXAnchor),
             noCounts.topAnchor.constraint(equalTo: noBar.topAnchor, constant: 20),
             noCounts.centerXAnchor.constraint(equalTo: noBar.centerXAnchor),
-            yesBar.heightAnchor.constraint(equalToConstant: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50),
-            noBar.heightAnchor.constraint(equalToConstant: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50)
+            yesBar.heightAnchor.constraint(equalToConstant: maxBarHeight * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50),
+            noBar.heightAnchor.constraint(equalToConstant: maxBarHeight * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50)
         ])
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        print("viewDidLayoutSubviews")
+        
         
     }
     
@@ -192,10 +202,7 @@ class InviteViewController: StyleViewController {
                 components!.queryItems!.append(URLQueryItem(name: myID, value: "Yes"))
             }
             
-            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
-            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
-            yesCounts.text = String(yesNum)
-            noCounts.text = String(noNum)
+            updateBars()
             
             RSVP = true
 
@@ -212,6 +219,21 @@ class InviteViewController: StyleViewController {
             self.dismiss()
         }
         
+    }
+    
+    func updateMaxBarHeight() {
+        maxBarHeight = yesButton.frame.minY - locationLabel.frame.maxY - 16 //250
+        print("Max Height")
+        print(maxBarHeight)
+    }
+    
+    func updateBars() {
+        //updateMaxHeight()
+        
+        setHeight(yesBar, h: maxBarHeight * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
+        setHeight(noBar, h: maxBarHeight * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
+        yesCounts.text = String(yesNum)
+        noCounts.text = String(noNum)
     }
     
     
@@ -240,10 +262,7 @@ class InviteViewController: StyleViewController {
                 components!.queryItems!.append(URLQueryItem(name: myID, value: "No"))
             }
             
-            setHeight(yesBar, h: 250 * CGFloat(yesNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
-            setHeight(noBar, h: 250 * CGFloat(noNum) / CGFloat(yesNum + noNum + 1) + 50, animateTime: 0.5)
-            yesCounts.text = String(yesNum)
-            noCounts.text = String(noNum)
+            updateBars()
             
             RSVP = false
 

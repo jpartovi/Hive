@@ -63,27 +63,27 @@ class StartEventViewController: StyleViewController {
             hexLayout.numberOfRows = 1
             hexLayout.numberOfColumns = types.count
             hexLayout.edgeInset = self.view.frame.width/2 - 65 //50
-            /*
+            
             for constraint in compactConstraints {
                 constraint.isActive = true
             }
             for constraint in expandedConstraints {
                 constraint.isActive = false
             }
-             */
+            
         case .expanded:
             hexLayout.scrollDirection = .vertical
             hexLayout.numberOfColumns = 2
             hexLayout.numberOfRows = Int((CGFloat(types.count) / CGFloat(hexLayout.numberOfColumns)).rounded(.up))
             hexLayout.edgeInset = 0
-            /*
+            
             for constraint in expandedConstraints {
                 constraint.isActive = true
             }
             for constraint in compactConstraints {
                 constraint.isActive = false
             }
-             */
+            
         default:
             break
         }
