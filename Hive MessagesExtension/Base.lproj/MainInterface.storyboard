@@ -431,7 +431,7 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What time(s) might this event start?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rQq-6r-Vpm" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="16" y="74" width="288" height="24"/>
+                                <rect key="frame" x="4" y="74" width="312.5" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -458,17 +458,17 @@
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="3Ef-e3-W3f"/>
                             <constraint firstItem="rQq-6r-Vpm" firstAttribute="centerX" secondItem="Kqe-cM-BgW" secondAttribute="centerX" identifier="Both" id="49R-ae-ECx"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" secondItem="Kqe-cM-BgW" secondAttribute="bottom" constant="16" id="4sL-Mb-ac3"/>
-                            <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="rQq-6r-Vpm" secondAttribute="trailing" constant="16" id="4xO-Fc-G1o"/>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="centerX" secondItem="IOY-4s-y8L" secondAttribute="centerX" id="8YH-b2-cxV"/>
                             <constraint firstItem="Kqe-cM-BgW" firstAttribute="top" secondItem="rQq-6r-Vpm" secondAttribute="bottom" constant="6" identifier="Both" id="BKj-nU-F8S"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="top" secondItem="Kqe-cM-BgW" secondAttribute="bottom" constant="8" symbolic="YES" id="CV0-sC-4Vd"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="leading" secondItem="Kqe-cM-BgW" secondAttribute="trailing" constant="30" id="I66-Ho-F7a"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" secondItem="gDN-kl-iQF" secondAttribute="bottom" constant="100" id="MzA-VG-nKh"/>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="top" secondItem="UZ4-aP-MwM" secondAttribute="bottom" constant="20" id="S4h-sX-umP"/>
-                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="top" secondItem="IUU-AQ-BpU" secondAttribute="top" constant="30" identifier="Both" id="Udz-fl-dn9"/>
+                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="top" secondItem="IUU-AQ-BpU" secondAttribute="top" constant="30" id="Udz-fl-dn9"/>
                             <constraint firstItem="UZ4-aP-MwM" firstAttribute="leading" secondItem="IUU-AQ-BpU" secondAttribute="leading" constant="16" id="Ul2-Ro-Bls"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="IUU-AQ-BpU" secondAttribute="centerY" constant="-35" id="WWk-IV-uCt"/>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="YMf-eV-dHz"/>
+                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="top" secondItem="IUU-AQ-BpU" secondAttribute="top" constant="16" id="hOw-s7-9o6"/>
                             <constraint firstItem="Kqe-cM-BgW" firstAttribute="leading" secondItem="IUU-AQ-BpU" secondAttribute="leading" constant="16" identifier="Both" id="hY5-yi-gzq"/>
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="8" id="m8j-ix-P0P"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="Kqe-cM-BgW" secondAttribute="trailing" constant="16" id="nr7-Dj-gob"/>
@@ -476,12 +476,12 @@
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="hJz-tV-2Nb" secondAttribute="centerX" identifier="Both" id="sLw-rs-DMM"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="hJz-tV-2Nb" secondAttribute="centerY" identifier="Both" id="uJn-AP-P5n"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="IOY-4s-y8L" secondAttribute="trailing" constant="32" id="vGP-kV-gHJ"/>
-                            <constraint firstItem="rQq-6r-Vpm" firstAttribute="leading" secondItem="IUU-AQ-BpU" secondAttribute="leading" constant="16" id="wt9-JD-fv1"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="4sL-Mb-ac3"/>
                                 <exclude reference="vGP-kV-gHJ"/>
+                                <exclude reference="hOw-s7-9o6"/>
                                 <exclude reference="I66-Ho-F7a"/>
                                 <exclude reference="WWk-IV-uCt"/>
                                 <exclude reference="8YH-b2-cxV"/>
@@ -510,11 +510,15 @@
                         <outletCollection property="expandConstraints" destination="nr7-Dj-gob" collectionClass="NSMutableArray" id="2Zx-GM-cxn"/>
                         <outletCollection property="expandConstraints" destination="3Ef-e3-W3f" collectionClass="NSMutableArray" id="WO3-Op-Vs8"/>
                         <outletCollection property="expandConstraints" destination="CV0-sC-4Vd" collectionClass="NSMutableArray" id="3Hc-Ud-box"/>
-                        <outletCollection property="expandConstraints" destination="YMf-eV-dHz" collectionClass="NSMutableArray" id="Upu-2v-DqT"/>
                         <outletCollection property="expandConstraints" destination="E6z-RW-IhM" collectionClass="NSMutableArray" id="U8J-OK-EB8"/>
                         <outletCollection property="expandConstraints" destination="lya-8h-SUj" collectionClass="NSMutableArray" id="kh6-69-N7e"/>
                         <outletCollection property="compactConstraints" destination="rOj-rQ-uJV" collectionClass="NSMutableArray" id="TkG-Lp-tzQ"/>
                         <outletCollection property="compactConstraints" destination="RHr-h9-dcg" collectionClass="NSMutableArray" id="i8D-fU-yjO"/>
+                        <outletCollection property="expandConstraints" destination="S4h-sX-umP" collectionClass="NSMutableArray" id="XcH-Vs-C1i"/>
+                        <outletCollection property="expandConstraints" destination="Ul2-Ro-Bls" collectionClass="NSMutableArray" id="h4k-gQ-K4a"/>
+                        <outletCollection property="expandConstraints" destination="1Qc-bv-BWv" collectionClass="NSMutableArray" id="ZqQ-eu-Gp7"/>
+                        <outletCollection property="expandConstraints" destination="Udz-fl-dn9" collectionClass="NSMutableArray" id="QGZ-S3-2pC"/>
+                        <outletCollection property="compactConstraints" destination="hOw-s7-9o6" collectionClass="NSMutableArray" id="Meg-fs-Hl1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBW-qy-8cm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -749,6 +753,12 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="16" y="74" width="288" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="4rO-ad-lsh">
                                 <rect key="frame" x="16" y="197" width="288" height="168"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -790,7 +800,7 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="lbD-dg-TcL"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="HX4-Fz-xVF"/>
                             </scrollView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Gm-hQJ" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Gm-hQJ" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="135.5" y="130" width="49" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -799,12 +809,6 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="San-2N-cqu" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                 <rect key="frame" x="16" y="424" width="288" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="16" y="44" width="288" height="24"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -832,7 +836,7 @@
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="ajv-TN-q44" secondAttribute="trailing" constant="16" id="bws-f3-UhR"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="top" secondItem="San-2N-cqu" secondAttribute="bottom" constant="20" id="dAh-05-kkB"/>
                             <constraint firstItem="Rwn-M5-KIh" firstAttribute="width" secondItem="Cra-WU-BAc" secondAttribute="width" multiplier="2.7" id="gjr-XP-0Ej"/>
-                            <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" id="hoc-KV-ndB"/>
+                            <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" constant="30" id="hoc-KV-ndB"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="Bdz-n3-PIX" secondAttribute="trailing" constant="16" identifier="Compact" id="kwQ-nB-Y1y"/>
                             <constraint firstItem="ajv-TN-q44" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="oc5-NG-A2U"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="4rO-ad-lsh" secondAttribute="trailing" constant="16" id="wrz-K1-WVM"/>
@@ -880,6 +884,7 @@
                         <outletCollection property="expandedConstraints" destination="Vl3-33-Ie1" collectionClass="NSMutableArray" id="f2A-YX-Pic"/>
                         <outletCollection property="compactConstraints" destination="GVD-Ud-9Ji" collectionClass="NSMutableArray" id="Z3n-8B-ceZ"/>
                         <outletCollection property="expandedConstraints" destination="ADn-Gf-btw" collectionClass="NSMutableArray" id="ntB-jB-noY"/>
+                        <outletCollection property="expandedConstraints" destination="RbM-tP-CfV" collectionClass="NSMutableArray" id="glf-sf-LC8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rFe-Ae-sRf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -912,8 +917,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6rA-lg-Dqj">
-                                <rect key="frame" x="8" y="23" width="304" height="500"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6rA-lg-Dqj">
+                                <rect key="frame" x="8" y="93" width="304" height="415"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="304" id="AEI-6N-xrV"/>
@@ -935,9 +940,9 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yAY-SU-Ez5" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="16" y="-6" width="288" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="What kind of event are you hosting?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HQR-cL-LWJ" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="8" y="52" width="304" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -945,21 +950,28 @@
                         <viewLayoutGuide key="safeArea" id="oTB-gH-7qM"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="oTB-gH-7qM" firstAttribute="bottom" secondItem="6rA-lg-Dqj" secondAttribute="bottom" constant="5" id="0Dr-Ht-lAF"/>
-                            <constraint firstItem="oTB-gH-7qM" firstAttribute="trailing" secondItem="yAY-SU-Ez5" secondAttribute="trailing" constant="16" id="AcH-8G-MUb"/>
-                            <constraint firstItem="yAY-SU-Ez5" firstAttribute="leading" secondItem="oTB-gH-7qM" secondAttribute="leading" constant="16" id="G6B-55-6Fu"/>
+                            <constraint firstItem="oTB-gH-7qM" firstAttribute="bottom" secondItem="6rA-lg-Dqj" secondAttribute="bottom" constant="20" id="0Dr-Ht-lAF"/>
+                            <constraint firstItem="HQR-cL-LWJ" firstAttribute="leading" secondItem="oTB-gH-7qM" secondAttribute="leading" constant="8" id="FP5-xT-RCU"/>
+                            <constraint firstItem="6rA-lg-Dqj" firstAttribute="top" secondItem="HQR-cL-LWJ" secondAttribute="bottom" constant="40" id="FVk-Zx-U9G"/>
+                            <constraint firstItem="6rA-lg-Dqj" firstAttribute="top" secondItem="HQR-cL-LWJ" secondAttribute="bottom" constant="16" id="PRE-fA-kLq"/>
                             <constraint firstItem="6rA-lg-Dqj" firstAttribute="centerX" secondItem="oTB-gH-7qM" secondAttribute="centerX" id="WWs-VS-r3P"/>
-                            <constraint firstItem="6rA-lg-Dqj" firstAttribute="top" secondItem="yAY-SU-Ez5" secondAttribute="bottom" constant="8" symbolic="YES" id="YZp-EW-hLv"/>
-                            <constraint firstItem="oTB-gH-7qM" firstAttribute="top" secondItem="yAY-SU-Ez5" secondAttribute="top" constant="50" id="fdF-rz-2X0"/>
+                            <constraint firstItem="HQR-cL-LWJ" firstAttribute="centerX" secondItem="oTB-gH-7qM" secondAttribute="centerX" id="WiN-aR-eYg"/>
+                            <constraint firstItem="HQR-cL-LWJ" firstAttribute="top" secondItem="oTB-gH-7qM" secondAttribute="top" id="lGo-p7-rVE"/>
+                            <constraint firstItem="oTB-gH-7qM" firstAttribute="trailing" secondItem="HQR-cL-LWJ" secondAttribute="trailing" constant="8" id="pjK-Hq-YZH"/>
+                            <constraint firstItem="oTB-gH-7qM" firstAttribute="top" secondItem="HQR-cL-LWJ" secondAttribute="top" constant="32" id="zQe-7y-cni"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="mQ1-Bv-iUe"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
-                        <outlet property="promptLabel" destination="yAY-SU-Ez5" id="9Ke-Ce-flm"/>
+                        <outlet property="promptLabel" destination="HQR-cL-LWJ" id="5Cy-EB-zpg"/>
                         <outlet property="typesCollectionView" destination="6rA-lg-Dqj" id="a1n-xz-SFr"/>
                         <outlet property="typesCollectionViewWidthConstraint" destination="AEI-6N-xrV" id="jng-wp-6HC"/>
+                        <outletCollection property="compactConstraints" destination="zQe-7y-cni" collectionClass="NSMutableArray" id="eGF-ZH-0yl"/>
+                        <outletCollection property="compactConstraints" destination="PRE-fA-kLq" collectionClass="NSMutableArray" id="oe5-sj-MGT"/>
+                        <outletCollection property="expandedConstraints" destination="lGo-p7-rVE" collectionClass="NSMutableArray" id="Ncx-h8-RRD"/>
+                        <outletCollection property="expandedConstraints" destination="FVk-Zx-U9G" collectionClass="NSMutableArray" id="yq5-Q1-DAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hO9-gM-xXF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -985,8 +997,22 @@
                                     <action selector="continueButtonPressed:" destination="ivv-ee-pSI" eventType="touchUpInside" id="XLB-Fn-jWV"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Do you know where you want to host?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaJ-SC-CJy" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="20" y="74" width="280" height="46"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="mHp-3y-CdP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="mHp-3y-CdP"/>
+                                    </mask>
+                                </variation>
+                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1kZ-FP-u3U">
-                                <rect key="frame" x="16" y="76" width="288" height="149"/>
+                                <rect key="frame" x="16" y="128" width="288" height="119"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="119" id="h3o-Jx-PIo"/>
@@ -1020,20 +1046,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Do you know where you want to host?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaJ-SC-CJy" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="20" y="44" width="280" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="mHp-3y-CdP"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="mHp-3y-CdP"/>
-                                    </mask>
-                                </variation>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZWX-YA-dv7"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1047,11 +1059,12 @@
                             <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="L0P-wK-uBH" secondAttribute="bottom" constant="100" id="DSj-fJ-3uA"/>
                             <constraint firstItem="Sum-f7-dbF" firstAttribute="top" secondItem="1kZ-FP-u3U" secondAttribute="bottom" constant="8" symbolic="YES" id="JM4-Y4-Otj"/>
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="top" secondItem="jaJ-SC-CJy" secondAttribute="bottom" constant="8" symbolic="YES" id="Joh-y7-wqp"/>
+                            <constraint firstItem="ZWX-YA-dv7" firstAttribute="bottom" secondItem="Sum-f7-dbF" secondAttribute="bottom" id="LAv-uK-Hme"/>
                             <constraint firstItem="jaJ-SC-CJy" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="MQz-fg-Uqw"/>
-                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" id="RBs-aP-fgE"/>
+                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="30" id="RBs-aP-fgE"/>
                             <constraint firstItem="Sum-f7-dbF" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" constant="-60" id="T76-2C-qF3"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="leading" secondItem="1kZ-FP-u3U" secondAttribute="trailing" constant="16" id="ZGR-Br-Mwr"/>
-                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" id="amZ-8H-3J1"/>
+                            <constraint firstItem="jaJ-SC-CJy" firstAttribute="top" secondItem="ZWX-YA-dv7" secondAttribute="top" constant="16" id="amZ-8H-3J1"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="centerX" secondItem="ZWX-YA-dv7" secondAttribute="centerX" id="e8e-Bc-8fh"/>
                             <constraint firstItem="1kZ-FP-u3U" firstAttribute="leading" secondItem="ZWX-YA-dv7" secondAttribute="leading" constant="16" id="fKk-V9-oiU"/>
                             <constraint firstItem="L0P-wK-uBH" firstAttribute="top" secondItem="72r-FE-H6h" secondAttribute="bottom" constant="20" id="ioN-77-SSf"/>
@@ -1089,6 +1102,7 @@
                         <outletCollection property="expandedConstraints" destination="BCQ-C8-mh5" collectionClass="NSMutableArray" id="dG9-1Q-OzE"/>
                         <outletCollection property="compactConstraints" destination="C7U-n1-vxh" collectionClass="NSMutableArray" id="ch3-hp-xbl"/>
                         <outletCollection property="expandedConstraints" destination="DSj-fJ-3uA" collectionClass="NSMutableArray" id="cdl-M5-cWb"/>
+                        <outletCollection property="expandedConstraints" destination="RBs-aP-fgE" collectionClass="NSMutableArray" id="3mi-p8-ejg"/>
                         <outletCollection property="expandedConstraints" destination="e8e-Bc-8fh" collectionClass="NSMutableArray" id="9kV-Rq-Ni6"/>
                         <outletCollection property="compactConstraints" destination="zbx-Ch-Ko8" collectionClass="NSMutableArray" id="8sz-yp-NPb"/>
                         <outletCollection property="compactConstraints" destination="amZ-8H-3J1" collectionClass="NSMutableArray" id="JW3-XE-8c5"/>
@@ -1096,6 +1110,8 @@
                         <outletCollection property="compactConstraints" destination="lwz-Gi-6dK" collectionClass="NSMutableArray" id="nOD-Bk-tfq"/>
                         <outletCollection property="compactConstraints" destination="ZGR-Br-Mwr" collectionClass="NSMutableArray" id="kZf-Rd-EYn"/>
                         <outletCollection property="expandedConstraints" destination="0kM-SX-lRh" collectionClass="NSMutableArray" id="ev2-cu-lKE"/>
+                        <outletCollection property="compactConstraints" destination="LAv-uK-Hme" collectionClass="NSMutableArray" id="zHb-c1-t9D"/>
+                        <outletCollection property="expandedConstraints" destination="h3o-Jx-PIo" collectionClass="NSMutableArray" id="NFR-Kn-lYW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lTr-ck-qI8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

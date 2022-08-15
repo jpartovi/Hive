@@ -52,7 +52,7 @@ class TimeSelectorViewController: StyleViewController {
         
         durationLabel.style(text: "Duration:", textColor: Colors.darkTextColor, fontSize: 20)
                 
-        promptLabel.style(text: "When are you hosting?")
+        promptLabel.style(text: "What time are you hosting?")
         promptLabel.adjustHeight()
         instructionsLabel.style(text: "Add multiple times to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
         instructionsLabel.adjustHeight()
@@ -82,7 +82,7 @@ class TimeSelectorViewController: StyleViewController {
         compactView = compact
         
         if compact {
-            //promptLabel.font = Format.font(size: 20)
+            promptLabel.font = Format.font(size: 20)
             instructionsLabel.isHidden = true
             durationLabel.font = Format.font(size: 15)
             cellsPerRow = 1
@@ -95,7 +95,7 @@ class TimeSelectorViewController: StyleViewController {
             }
             durationView.axis = .vertical
         } else {
-            //promptLabel.font = Format.font(size: 30)
+            promptLabel.font = Format.font(size: 30)
             instructionsLabel.isHidden = false
             durationLabel.font = Format.font(size: 23)
             cellsPerRow = 2
@@ -298,6 +298,11 @@ extension TimeSelectorViewController: UICollectionViewDataSource {
             cell.showUnselected()
         }
         
+        let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
+        let newSize = min(CGFloat(Int(collectionView.frame.width - marginsAndInsets)*18 / (cellsPerRow*250)), 28.8)
+        
+        
+        cell.timeLabel.font = cell.timeLabel.font.withSize(newSize)
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
@@ -343,8 +348,8 @@ extension TimeSelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
-        let width = Int(collectionView.frame.width - marginsAndInsets) / cellsPerRow
-        let height = 50
+        let width = min(Int(collectionView.frame.width - marginsAndInsets) / cellsPerRow, 400)
+        let height = min(Int(collectionView.frame.width - marginsAndInsets) / (cellsPerRow*4), 100) //50
         
         return CGSize(width: width, height: height)
     }
