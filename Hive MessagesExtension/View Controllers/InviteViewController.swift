@@ -169,6 +169,8 @@ class InviteViewController: StyleViewController {
     
     @IBAction func yesClick(_ sender: SelectionLargeHexButton) {
         
+        if yesButton.active {return}
+        
         var components = URLComponents(url: mURL,
                 resolvingAgainstBaseURL: false)
         
@@ -214,6 +216,8 @@ class InviteViewController: StyleViewController {
     
     
     @IBAction func noClick(_ sender: SelectionLargeHexButton) {
+        
+        if noButton.active {return}
         
         var components = URLComponents(url: mURL,
                 resolvingAgainstBaseURL: false)

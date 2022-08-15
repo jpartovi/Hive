@@ -54,26 +54,7 @@ class ConfirmViewController: StyleViewController {
         
         self.needLayoutSubviews2 = true
 
-        let locationLabelText: String
-        let daysAndTimesLabelText: String
-        if fromVoteResults {
-            locationLabelText = "Location:"
-            if event.times.isEmpty {
-                daysAndTimesLabelText = "Day:"
-            } else {
-                daysAndTimesLabelText = "Day/Time:"
-            }
-        } else {
-            locationLabelText = "Location Options:"
-            if event.times.isEmpty {
-                daysAndTimesLabelText = "Day Options:"
-            } else {
-                daysAndTimesLabelText = "Day/Time Options:"
-            }
-        }
-        
-        locationsLabel.style(text: locationLabelText, textColor: Colors.darkTextColor, fontSize: 18)
-        daysAndTimesLabel.style(text: daysAndTimesLabelText, textColor: Colors.darkTextColor, fontSize: 18)
+        updateTableLabels()
         
         enableTouchAwayKeyboardDismiss()
         
@@ -101,6 +82,34 @@ class ConfirmViewController: StyleViewController {
         
         scrollView.delegate = self
         
+    }
+    
+    func updateTableLabels() {
+        let locationLabelText: String
+        let daysAndTimesLabelText: String
+        if event.locations.count <= 1 {
+            locationLabelText = "Location:"
+        } else {
+            locationLabelText = "Location Options:"
+        }
+        if event.days.count == 1 {
+            if event.times.isEmpty {
+                daysAndTimesLabelText = "Day:"
+            } else if event.times.count == 1 {
+                daysAndTimesLabelText = "Day/Time:"
+            } else {
+                daysAndTimesLabelText = "Day/Time Options:"
+            }
+        } else {
+            if event.times.isEmpty {
+                daysAndTimesLabelText = "Day Options:"
+            } else {
+                daysAndTimesLabelText = "Day/Time Options:"
+            }
+        }
+        
+        locationsLabel.style(text: locationLabelText, textColor: Colors.darkTextColor, fontSize: 18)
+        daysAndTimesLabel.style(text: daysAndTimesLabelText, textColor: Colors.darkTextColor, fontSize: 18)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -453,6 +462,8 @@ class ConfirmViewController: StyleViewController {
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
             cell.titleTextField.becomeFirstResponder()
         }
+        
+        updateTableLabels()
     }
     
     @objc func deleteLocation(sender: UIButton) {
@@ -474,6 +485,8 @@ class ConfirmViewController: StyleViewController {
         locationsTableView.deleteRows(at: [indexPath], with: .fade)
         locationsTableView.endUpdates()
         CATransaction.commit()
+        
+        updateTableLabels()
     }
     
     @objc func addOrRemoveAddress(sender: UIButton) {
@@ -552,6 +565,8 @@ class ConfirmViewController: StyleViewController {
         
         needLayoutSubviews1 = true
         updatePostButtonStatus()
+        
+        updateTableLabels()
     }
 }
 

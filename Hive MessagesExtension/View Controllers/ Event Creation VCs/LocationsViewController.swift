@@ -157,10 +157,13 @@ class LocationsViewController: StyleViewController {
     func updateTableViewHeight() {
         self.locationsTableView.layoutIfNeeded()
         locationsTableView.reloadData()
+        
+        let x = instructionsLabel.frame.minY - locationsTableView.frame.minY - addLocationButton.frame.height - 8
+        //self.view.frame.height - (promptLabel.frame.height + 16 + instructionsLabel.frame.height + continueButton.frame.height + 128)
         if presentationStyle == .expanded {
-            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), 300)
+            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), x)
         } else {
-            self.locationsTableViewHeightConstraint.constant = 150
+            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), self.view.frame.maxY - locationsTableView.frame.minY - addLocationButton.frame.height - 72)
         }
         
         

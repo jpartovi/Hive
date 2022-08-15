@@ -52,7 +52,7 @@ class TimeSelectorViewController: StyleViewController {
         
         durationLabel.style(text: "Duration:", textColor: Colors.darkTextColor, fontSize: 20)
                 
-        promptLabel.style(text: "What time are you hosting?")
+        promptLabel.style(text: "When are you hosting?")
         promptLabel.adjustHeight()
         instructionsLabel.style(text: "Add multiple times to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
         instructionsLabel.adjustHeight()

@@ -69,7 +69,7 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 controller = instantiateInviteViewController(conversation: conversation)
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "You're\ninvited!"
+                    title = "Are you\nbzzy?"
                 case "yesRSVP":
                     title = "I can\ncome!"
                 case "noRSVP":
@@ -86,7 +86,7 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
                 }
                 switch queryItems[2].value! {
                 case "initial":
-                    title = "Vote on\ndetails!"
+                    title = "Are you\nbzzy?"
                 case "iVoted":
                     title = "I voted!"
                 default:

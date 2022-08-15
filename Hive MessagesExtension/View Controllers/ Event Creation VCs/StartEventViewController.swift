@@ -62,22 +62,28 @@ class StartEventViewController: StyleViewController {
             
             hexLayout.numberOfRows = 1
             hexLayout.numberOfColumns = types.count
+            hexLayout.edgeInset = self.view.frame.width/2 - 65 //50
+            /*
             for constraint in compactConstraints {
                 constraint.isActive = true
             }
             for constraint in expandedConstraints {
                 constraint.isActive = false
             }
+             */
         case .expanded:
             hexLayout.scrollDirection = .vertical
             hexLayout.numberOfColumns = 2
             hexLayout.numberOfRows = Int((CGFloat(types.count) / CGFloat(hexLayout.numberOfColumns)).rounded(.up))
+            hexLayout.edgeInset = 0
+            /*
             for constraint in expandedConstraints {
                 constraint.isActive = true
             }
             for constraint in compactConstraints {
                 constraint.isActive = false
             }
+             */
         default:
             break
         }
@@ -249,10 +255,11 @@ class HexLayout: UICollectionViewFlowLayout {
     
     lazy var cellWidth = self.itemSize.width
     lazy var cellHeight = self.itemSize.height
-    let xOverlap = CGFloat(14)
-    let yOverlap = CGFloat(53)
+    let xOverlap: CGFloat = 14
+    let yOverlap: CGFloat = 53
     var numberOfColumns = 2
     var numberOfRows = 3
+    var edgeInset: CGFloat = 16
     
     lazy var cellPadding = CGFloat(14)
     
@@ -276,7 +283,7 @@ class HexLayout: UICollectionViewFlowLayout {
             if numberOfRows > 1 {
                 width += offset
             }
-            width += 32
+            width += edgeInset * 2
             return width
         }()
         
@@ -302,7 +309,7 @@ class HexLayout: UICollectionViewFlowLayout {
             let indexPath = IndexPath(item: item, section: 0)
 
             // Calculate insetFrame that can be set to the attribute
-            let frame = CGRect(x: xOffset[row] + columnOffest + 16, y: yOffset[row], width: cellWidth, height: cellHeight)
+            let frame = CGRect(x: xOffset[row] + columnOffest + edgeInset, y: yOffset[row], width: cellWidth, height: cellHeight)
             let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
             // Create an instance of UICollectionViewLayoutAttribute, sets its frame using insetFrame and appends the attributes to cache.
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
