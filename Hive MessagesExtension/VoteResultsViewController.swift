@@ -72,9 +72,17 @@ class VoteResultsViewController: StyleViewController {
         updateTableViewHeight()
         //addHexFooter()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
-        //addHexFooter()
+        super.viewDidAppear(animated)
+        
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        scrollView.scrollToBottom(animated: false)
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     func updateTableViewHeight() {

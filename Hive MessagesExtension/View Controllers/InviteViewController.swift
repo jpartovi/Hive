@@ -215,7 +215,7 @@ class InviteViewController: StyleViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.prepareMessage(components!.url!, summaryText: "I can come to " + self.loadedEvent.title + "!")
+            self.loadedEvent.createMessage(type: .canCome, url: components!.url!)
             self.dismiss()
         }
         
@@ -223,8 +223,7 @@ class InviteViewController: StyleViewController {
     
     func updateMaxBarHeight() {
         maxBarHeight = yesButton.frame.minY - locationLabel.frame.maxY - 16 //250
-        print("Max Height")
-        print(maxBarHeight)
+        
     }
     
     func updateBars() {
@@ -275,48 +274,11 @@ class InviteViewController: StyleViewController {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.prepareMessage(components!.url!, summaryText: "I can't come to " + self.loadedEvent.title)
+            self.loadedEvent.createMessage(type: .cantCome, url: components!.url!)
             self.dismiss()
         }
         
     }
-    
-    func prepareMessage(_ url: URL, summaryText: String) {
-        print("prepare message")
-        
-        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
-        
-        
-        
-        let alternateMessageLayout = MSMessageTemplateLayout()
-        
-        alternateMessageLayout.caption = ""
-        alternateMessageLayout.image = UIImage(named: "MessageHeader")
-        alternateMessageLayout.imageTitle = ""
-        alternateMessageLayout.imageSubtitle = ""
-        alternateMessageLayout.trailingCaption = ""
-        alternateMessageLayout.subcaption = ""
-        alternateMessageLayout.trailingSubcaption = ""
-
-        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
-        
-        
-
-        // Construct message
-        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-        message.layout = liveMessageLayout
-        message.summaryText = messageSummaryText
-        message.url = url
-
-
-        //let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-
-        //let layout = conversation.selectedMessage?.layout as! MSMessageTemplateLayout
-        
-        conversation.insert(message)
-    }
-    
-    
 }
 
 

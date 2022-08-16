@@ -140,12 +140,18 @@ class LocationsViewController: StyleViewController {
         super.viewDidAppear(animated)
         
         navigationController?.delegate = self
+        
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        locationsTableView.scrollToBottom(animated: false)
+        locationsTableView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        print(locationsTableViewHeightConstraint.isActive)
         
         updateTableViewHeight()
         

@@ -75,6 +75,18 @@ class VoteViewController: StyleViewController {
         //addHexFooter()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        scrollView.scrollToBottom(animated: false)
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
     func updateTableViewHeight() {
         
         
@@ -272,31 +284,10 @@ class VoteViewController: StyleViewController {
     
     @IBAction func submitButtonPressed(_ sender: UIButton) {
         if votesChanged {
-            let url = prepareVoteURL()
-            prepareMessage(url)
+            loadedEvent.createMessage(type: .voted, url: prepareVoteURL())
+            self.requestPresentationStyle(.compact)
         }
     }
-
-    @IBAction func createEventButtonPressed(_ sender: UIButton) {
-        
-        let url = prepareVoteURL()
-        
-        let inputeventVC = (storyboard?.instantiateViewController(withIdentifier: VoteResultsViewController.storyboardID) as? VoteResultsViewController)!
-        inputeventVC.myID = myID
-        inputeventVC.mURL = url
-        inputeventVC.voteGroups = voteGroups
-        inputeventVC.voteItems = voteItems
-        inputeventVC.voteTallies = voteTallies
-        inputeventVC.isOpen = isOpen
-        inputeventVC.voteSelections = [Int?](repeating: nil, count: voteGroups.count)
-        inputeventVC.daysAndTimesMagicIndexes = daysAndTimesMagicIndexes
-        inputeventVC.daysAndTimesGroupIndex = daysAndTimesGroupIndex
-        self.navigationController?.pushViewController(inputeventVC, animated: true)
-        
-    }
-    
-    
-    
     func prepareVoteURL() -> URL{
         
         var components = URLComponents(url: mURL,
@@ -347,32 +338,6 @@ class VoteViewController: StyleViewController {
         }
         
         return (components?.url!)!
-    }
-    
-    func prepareMessage(_ url: URL) {
-        
-        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
-        
-        let alternateMessageLayout = MSMessageTemplateLayout()
-        
-        alternateMessageLayout.caption = ""
-        alternateMessageLayout.image = UIImage(named: "MessageHeader")
-        alternateMessageLayout.imageTitle = ""
-        alternateMessageLayout.imageSubtitle = ""
-        alternateMessageLayout.trailingCaption = ""
-        alternateMessageLayout.subcaption = ""
-        alternateMessageLayout.trailingSubcaption = ""
-
-        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
-
-        // Construct message
-        let message = MSMessage(session: (conversation.selectedMessage?.session)!)
-        message.layout = liveMessageLayout
-        message.summaryText = messageSummaryText
-        message.url = url
-
-        conversation.insert(message)
-        self.requestPresentationStyle(.compact)
     }
     
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {

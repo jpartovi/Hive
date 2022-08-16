@@ -149,7 +149,7 @@
                                     <action selector="submitButtonPressed:" destination="Zrr-ae-tQ8" eventType="touchUpInside" id="0vR-BS-ANK"/>
                                 </connections>
                             </button>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSA-LC-JBs">
                                 <rect key="frame" x="19" y="44" width="285" height="334"/>
                                 <subviews>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="49J-CZ-eci">
@@ -264,14 +264,14 @@
                                     <action selector="submitButtonPressed:" destination="e7E-X3-E8V" eventType="touchUpInside" id="VNb-bq-Qgf"/>
                                 </connections>
                             </button>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyM-7Q-3i0">
-                                <rect key="frame" x="18" y="88" width="285" height="249"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OyM-7Q-3i0">
+                                <rect key="frame" x="18" y="56" width="285" height="301"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="w0n-oq-1Nw">
-                                        <rect key="frame" x="0.0" y="70" width="285" height="179"/>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="w0n-oq-1Nw">
+                                        <rect key="frame" x="0.0" y="69.5" width="285" height="231"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="239" id="lWY-p9-sVG"/>
+                                            <constraint firstAttribute="height" constant="231" id="lWY-p9-sVG"/>
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VoteCell" id="ByH-ul-86v" customClass="VoteCell" customModule="Hive_MessagesExtension" customModuleProvider="target">
@@ -339,13 +339,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="k1E-65-pIp" firstAttribute="leading" secondItem="cvB-nB-Ag0" secondAttribute="leading" constant="16" id="LJF-WP-YbG"/>
-                            <constraint firstItem="OyM-7Q-3i0" firstAttribute="top" secondItem="cvB-nB-Ag0" secondAttribute="top" id="N4N-QF-MEq"/>
                             <constraint firstItem="cvB-nB-Ag0" firstAttribute="trailing" secondItem="OyM-7Q-3i0" secondAttribute="trailing" constant="17" id="YGq-kD-v5m"/>
                             <constraint firstItem="cvB-nB-Ag0" firstAttribute="trailing" secondItem="k1E-65-pIp" secondAttribute="trailing" constant="16" id="egB-ik-Wi1"/>
                             <constraint firstItem="afh-UF-iav" firstAttribute="centerX" secondItem="cvB-nB-Ag0" secondAttribute="centerX" id="exr-6g-Eoc"/>
                             <constraint firstItem="cvB-nB-Ag0" firstAttribute="bottom" secondItem="afh-UF-iav" secondAttribute="bottom" constant="80" id="gcM-d1-Csv"/>
+                            <constraint firstItem="cvB-nB-Ag0" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="top" constant="32" id="m70-As-Bid"/>
                             <constraint firstItem="OyM-7Q-3i0" firstAttribute="leading" secondItem="cvB-nB-Ag0" secondAttribute="leading" constant="18" id="mzC-97-Fnx"/>
-                            <constraint firstItem="k1E-65-pIp" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="bottom" constant="40" id="u1d-Kf-Sc4"/>
+                            <constraint firstItem="k1E-65-pIp" firstAttribute="top" secondItem="OyM-7Q-3i0" secondAttribute="bottom" constant="20" id="u1d-Kf-Sc4"/>
                             <constraint firstItem="afh-UF-iav" firstAttribute="top" secondItem="k1E-65-pIp" secondAttribute="bottom" constant="20" id="w0f-fO-pq9"/>
                         </constraints>
                     </view>
@@ -383,7 +383,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-4s-y8L">
-                                <rect key="frame" x="40" y="255" width="240.5" height="93"/>
+                                <rect key="frame" x="40" y="256.5" width="240.5" height="93"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="90.5" height="93"/>
@@ -409,7 +409,7 @@
                                 </subviews>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Kqe-cM-BgW">
-                                <rect key="frame" x="16" y="79" width="288" height="168"/>
+                                <rect key="frame" x="16" y="79" width="288" height="169.5"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UFQ-6M-vty">
                                     <size key="itemSize" width="128" height="128"/>
@@ -437,7 +437,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJz-tV-2Nb">
-                                <rect key="frame" x="92.5" y="286" width="135.5" height="31"/>
+                                <rect key="frame" x="92.5" y="287.5" width="135.5" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Include duration?"/>
                                 <connections>
@@ -454,7 +454,7 @@
                         <viewLayoutGuide key="safeArea" id="IUU-AQ-BpU"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="UZ4-aP-MwM" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="9.5" id="1Qc-bv-BWv"/>
+                            <constraint firstItem="UZ4-aP-MwM" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="8" id="1Qc-bv-BWv"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="IUU-AQ-BpU" secondAttribute="centerX" id="3Ef-e3-W3f"/>
                             <constraint firstItem="rQq-6r-Vpm" firstAttribute="centerX" secondItem="Kqe-cM-BgW" secondAttribute="centerX" identifier="Both" id="49R-ae-ECx"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" secondItem="Kqe-cM-BgW" secondAttribute="bottom" constant="16" id="4sL-Mb-ac3"/>
@@ -533,8 +533,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="585"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mdp-qL-vwd">
-                                <rect key="frame" x="16" y="44" width="288" height="390"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mdp-qL-vwd">
+                                <rect key="frame" x="16" y="44" width="288" height="410"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7yb-JN-KFm" customClass="StyleTextField" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="34"/>
@@ -647,7 +647,7 @@
                             <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="16" id="DaU-yI-o7t"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="top" secondItem="miL-ws-szC" secondAttribute="top" id="EnW-OI-c1h"/>
                             <constraint firstItem="miL-ws-szC" firstAttribute="bottom" secondItem="B0A-mE-Isj" secondAttribute="bottom" constant="80" id="I7d-j9-wmt"/>
-                            <constraint firstItem="B0A-mE-Isj" firstAttribute="top" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="40" id="Txm-UW-y0m"/>
+                            <constraint firstItem="B0A-mE-Isj" firstAttribute="top" secondItem="Mdp-qL-vwd" secondAttribute="bottom" constant="20" id="Txm-UW-y0m"/>
                             <constraint firstItem="miL-ws-szC" firstAttribute="trailing" secondItem="B0A-mE-Isj" secondAttribute="trailing" constant="16" id="cyC-RQ-ZNv"/>
                             <constraint firstItem="Mdp-qL-vwd" firstAttribute="leading" secondItem="miL-ws-szC" secondAttribute="leading" constant="16" id="eh5-cc-off"/>
                             <constraint firstItem="B0A-mE-Isj" firstAttribute="centerY" secondItem="miL-ws-szC" secondAttribute="centerY" id="qvf-6k-Oo5"/>

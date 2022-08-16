@@ -53,6 +53,18 @@ class StartEventViewController: StyleViewController {
         conformToPresentationStyle(presentationStyle: self.presentationStyle)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        typesCollectionView.scrollToItem(at: IndexPath(item: self.types.count - 1, section: 0), at: .right, animated: false)
+        typesCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
     func conformToPresentationStyle(presentationStyle: MSMessagesAppPresentationStyle) {
         print("Conform")
         switch presentationStyle {
@@ -62,7 +74,7 @@ class StartEventViewController: StyleViewController {
             
             hexLayout.numberOfRows = 1
             hexLayout.numberOfColumns = types.count
-            hexLayout.edgeInset = self.view.frame.width/2 - 65 //50
+            hexLayout.edgeInset = 16// self.view.frame.width/2 - 65 //50
             
             for constraint in compactConstraints {
                 constraint.isActive = true

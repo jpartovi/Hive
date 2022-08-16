@@ -71,6 +71,20 @@ class TimeSelectorViewController: StyleViewController {
         updateSelections()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationController?.delegate = self
+        
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        startTimesCollectionView.scrollToBottom(animated: false)
+        startTimesCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
+    
     func updateSelections() {
         selectedTimes = event.times
         loadStartTimeSelectionKey()
@@ -113,12 +127,6 @@ class TimeSelectorViewController: StyleViewController {
         startTimesCollectionView.setNeedsLayout()
         startTimesCollectionView.layoutIfNeeded()
         startTimesCollectionView.layoutSubviews()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        navigationController?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {

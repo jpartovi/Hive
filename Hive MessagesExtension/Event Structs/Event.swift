@@ -5,6 +5,7 @@
 //  Created by Jude Partovi on 7/3/22.
 //
 import Foundation
+import Messages
 
 struct Event {
     var title: String
@@ -214,4 +215,102 @@ struct Event {
             self.duration = duration
         }
     }
+    
+    mutating func createMessage(type: MessageType, url: URL) {
+        
+        // Load current conversation
+        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
+        
+        // Load current session or create new session
+        let session = conversation.selectedMessage?.session ?? MSSession()
+        
+        let image: UIImage
+        var imageTitle: String = ""
+        var imageSubtitle: String = ""
+        var caption: String = ""
+        var subcaption: String = ""
+        var trailingCaption: String = ""
+        var trailingSubcaption: String = ""
+        let summaryText: String = "Message sent with Hive"
+        
+        switch type {
+        case .invite:
+            image = UIImage(named: "BzzyMessageHeader")!
+            caption = "Invite to " + self.title
+            if self.times.isEmpty {
+                subcaption = self.days[0].formatDate()
+            } else {
+                subcaption = self.days[0].formatDate(time: self.times[0], duration: self.duration)
+            }
+        case .poll:
+            image = UIImage(named: "BzzyMessageHeader")!
+            caption = "Poll for " + self.title
+            if self.days.count == 1 {
+                if self.times.isEmpty {
+                    subcaption = self.days[0].formatDate()
+                } else if self.times.count == 1{
+                    subcaption = self.days[0].formatDate(time: self.times[0], duration: self.duration)
+                }
+            }
+        case .voted:
+            image = UIImage(named: "VotedMessageHeader")!
+            caption = "Poll for " + self.title
+            if self.days.count == 1 {
+                if self.times.isEmpty {
+                    subcaption = self.days[0].formatDate()
+                } else if self.times.count == 1{
+                    subcaption = self.days[0].formatDate(time: self.times[0], duration: self.duration)
+                }
+            }
+        case .canCome:
+            image = UIImage(named: "CanMessageHeader")!
+            caption = "Invite to " + self.title
+            if self.times.isEmpty {
+                subcaption = self.days[0].formatDate()
+            } else {
+                subcaption = self.days[0].formatDate(time: self.times[0], duration: self.duration)
+            }
+        case .cantCome:
+            image = UIImage(named: "CantMessageHeader")!
+            caption = "Invite to " + self.title
+            if self.times.isEmpty {
+                subcaption = self.days[0].formatDate()
+            } else {
+                subcaption = self.days[0].formatDate(time: self.times[0], duration: self.duration)
+            }
+        }
+        
+        let alternateMessageLayout = MSMessageTemplateLayout()
+        
+        alternateMessageLayout.caption = caption
+        alternateMessageLayout.image = image
+        alternateMessageLayout.imageTitle = imageTitle
+        alternateMessageLayout.imageSubtitle = imageSubtitle
+        alternateMessageLayout.trailingCaption = trailingCaption
+        alternateMessageLayout.subcaption = subcaption
+        alternateMessageLayout.trailingSubcaption = trailingSubcaption
+
+        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
+        
+        
+
+        // Construct message
+        let message = MSMessage(session: session)
+        message.layout = liveMessageLayout
+        message.summaryText = summaryText
+        message.url = url
+        
+        // Add message to conversation
+        conversation.insert(message) {error in
+            // empty for now
+        }
+    }
+}
+
+enum MessageType {
+    case invite
+    case poll
+    case voted
+    case canCome
+    case cantCome
 }

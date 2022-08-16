@@ -98,7 +98,7 @@ class ConfirmViewController: StyleViewController {
             } else if event.times.count == 1 {
                 daysAndTimesLabelText = "Day/Time:"
             } else {
-                daysAndTimesLabelText = "Day/Time Options:"
+                daysAndTimesLabelText = "Time Options:"
             }
         } else {
             if event.times.isEmpty {
@@ -122,6 +122,14 @@ class ConfirmViewController: StyleViewController {
         super.viewDidAppear(animated)
         
         navigationController?.delegate = self
+    
+        // sometimes glitchy and doesn't fully show
+        scrollAnimation()
+    }
+    
+    func scrollAnimation() {
+        scrollView.scrollToBottom(animated: false)
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     func changedConstraints(compact: Bool) {
@@ -325,94 +333,16 @@ class ConfirmViewController: StyleViewController {
             return
         }
         
-        
         var postEvent = updateEventObject(inEvent: event)
         
         textBoxFlag = false
-        
-        // Load current conversation
-        guard let conversation = MessagesAppViewController.conversation else { fatalError("Received nil conversation") }
-        
-        // Load current session or create new session
-        let session = conversation.selectedMessage?.session ?? MSSession()
-        
-        var caption: String
-        let image: UIImage
-        let imageTitle: String
-        let imageSubtitle: String
-        let trailingCaption: String
-        var subcaption: String
-        let trailingSubcaption: String
-        let summaryText: String = messageSummaryText
-        let messageURL: URL
-        
-        
+    
         if postEvent.locations.count > 1 || postEvent.days.count > 1 || postEvent.times.count > 1 {
-            
-            caption = "Poll for " + postEvent.title
-            image = UIImage(named: "MessageHeader")!
-            imageTitle = ""
-            imageSubtitle = ""
-            trailingCaption = ""
-            subcaption = ""
-            trailingSubcaption = ""
-            //summaryText = "Poll for " + event.title
-            
-            messageURL = postEvent.buildVoteURL()
-            
-            /*conversation.insert(pollMessage) {error in
-                // empty for now
-            }*/
+            postEvent.createMessage(type: .poll, url: postEvent.buildVoteURL())
         } else {
-            // RSVP invite
-            
-            caption = "Come to " + postEvent.title
-            if postEvent.locations.isEmpty {
-                caption += "!"
-            } else {
-                caption += " at " + postEvent.locations[0].title + "!"
-            }
-            image = UIImage(named: "MessageHeader")!
-            imageTitle = ""
-            imageSubtitle = ""
-            trailingCaption = ""
-            
-            if postEvent.times.isEmpty {
-                subcaption = postEvent.days[0].formatDate()
-            } else {
-                subcaption = postEvent.days[0].formatDate(time: postEvent.times[0], duration: postEvent.duration)
-            }
-            
-            trailingSubcaption = ""
-        
-            messageURL = postEvent.buildRSVPURL(ID: (MessagesAppViewController.conversation?.localParticipantIdentifier.uuidString)!)
+            postEvent.createMessage(type: .invite, url: postEvent.buildRSVPURL(ID: (MessagesAppViewController.conversation?.localParticipantIdentifier.uuidString)!))
         }
-        
-        let alternateMessageLayout = MSMessageTemplateLayout()
-        
-        alternateMessageLayout.caption = caption
-        alternateMessageLayout.image = image
-        alternateMessageLayout.imageTitle = imageTitle
-        alternateMessageLayout.imageSubtitle = imageSubtitle
-        alternateMessageLayout.trailingCaption = trailingCaption
-        alternateMessageLayout.subcaption = subcaption
-        alternateMessageLayout.trailingSubcaption = trailingSubcaption
 
-        let liveMessageLayout = MSMessageLiveLayout(alternateLayout: alternateMessageLayout)
-        
-        
-
-        // Construct message
-        let message = MSMessage(session: session)
-        message.layout = liveMessageLayout
-        message.summaryText = summaryText
-        message.url = messageURL
-
-        // Add message to conversation
-        conversation.insert(message) {error in
-            // empty for now
-        }
-        
         // Shrink app window
         self.requestPresentationStyle(.compact)
     }
@@ -844,7 +774,8 @@ class EditingDayAndTimesCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
             dayLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),
-            dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            //dayLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            dayLabel.centerYAnchor.constraint(equalTo: topAnchor, constant: inset + 15),
             dayLabel.widthAnchor.constraint(equalToConstant: 90),
             
             dayAndTimeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: inset),

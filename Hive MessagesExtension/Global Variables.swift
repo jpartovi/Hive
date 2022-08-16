@@ -9,9 +9,7 @@ import Foundation
 
 // Global variables
 
-//#error ("Insert Google Places API Key below, then delete this line")
-let googlePlacesAPIKey = "AIzaSyD6fV1PsiOQm7tCdhzweWSquOLFpk6HPt4"
+#error ("Insert Google Places API Key below, then delete this line")
+let googlePlacesAPIKey = ""
 
 let calendar = Calendar(identifier: .gregorian)
-
-let messageSummaryText = "Message sent with Hive"
