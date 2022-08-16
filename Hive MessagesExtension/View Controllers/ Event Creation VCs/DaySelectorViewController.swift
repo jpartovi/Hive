@@ -58,6 +58,7 @@ class DaySelectorViewController: StyleViewController {
         return dateFormatter
     }()
     
+    @IBOutlet weak var calendarOuterView: UIView!
     @IBOutlet var calendarCollectionView: UICollectionView!
     @IBOutlet weak var nextButton: HexButton!
     
@@ -77,6 +78,8 @@ class DaySelectorViewController: StyleViewController {
         
         underlineWeekDayLabels()
     
+        calendarOuterView.translatesAutoresizingMaskIntoConstraints = false
+        
         calendarCollectionView?.translatesAutoresizingMaskIntoConstraints = false
         calendarCollectionView!.contentInsetAdjustmentBehavior = .always
         calendarCollectionView!.register(CalendarDayCell.self, forCellWithReuseIdentifier: CalendarDayCell.reuseIdentifier)
@@ -89,7 +92,6 @@ class DaySelectorViewController: StyleViewController {
         calendarCollectionView!.reloadData()
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(calendarCollectionView!)
         scrollView.delegate = self
         updateContentView()
         
@@ -125,6 +127,9 @@ class DaySelectorViewController: StyleViewController {
         loadMonthLabel()
     }
     
+    @IBOutlet weak var calendarWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var outerWidthConstraint: NSLayoutConstraint!
+    
     func changedConstraints(compact: Bool){
         
         compactView = compact
@@ -140,7 +145,9 @@ class DaySelectorViewController: StyleViewController {
             for constraint in compactConstraints {
                 constraint.isActive = true
             }
-            
+            let cellWidth = calendarCollectionView.visibleCells[0].frame.width
+            calendarWidthConstraint.constant = 4.7*cellWidth
+            outerWidthConstraint.constant = 4.7*cellWidth
             line.isHidden = true
             weekDayLabels.isHidden = true
             monthLabel.isHidden = false
@@ -153,6 +160,8 @@ class DaySelectorViewController: StyleViewController {
             line.isHidden = false
             weekDayLabels.isHidden = false
             calendarCollectionView!.layer.addSublayer(line)
+            calendarWidthConstraint.constant = 0
+            outerWidthConstraint.constant = 0
             for constraint in compactConstraints {
                 constraint.isActive = false
             }
@@ -216,7 +225,7 @@ class DaySelectorViewController: StyleViewController {
             var belowIndex: Int
             
             if let cellWidth = calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width {
-                belowIndex = Int(floor(scrollView.contentOffset.x/cellWidth + 2.5))
+                belowIndex = Int(floor(scrollView.contentOffset.x/cellWidth + 0.35))
             } else {
                 belowIndex = 0
             }
@@ -389,7 +398,7 @@ extension DaySelectorViewController: UICollectionViewDataSource {
         if (calendarCollectionView?.delegate as? DaySelectorViewController)!.compactView {
             if let cellWidth = calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width {
                 let belowIndex = Calendar.current.dateComponents([.day], from: calendarDays[0].day.date, to: today).day!
-                scrollView.contentOffset.x = (CGFloat(belowIndex) - 2.1) * cellWidth
+                scrollView.contentOffset.x = max( (CGFloat(belowIndex) + 4.3) * cellWidth,  scrollView.contentOffset.x)
             }
         }
     }
@@ -435,7 +444,7 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout:UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let marginsAndInsets = inset * 2 + collectionView.safeAreaInsets.left + collectionView.safeAreaInsets.right + minimumInteritemSpacing * CGFloat(cellsPerRow - 1)
-        let width = Int(collectionView.frame.width - marginsAndInsets) / cellsPerRow
+        let width = Int(collectionView.frame.width - marginsAndInsets - 10) / cellsPerRow
         let height = width
         
         return CGSize(width: width, height: height)
