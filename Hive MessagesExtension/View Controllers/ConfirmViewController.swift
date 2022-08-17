@@ -24,6 +24,7 @@ class ConfirmViewController: StyleViewController {
     
     var isNewArray: [Bool] = []
     
+    var locationTitleEditingIndex: Int? = nil
     var addressEditingIndex: Int? = nil
     
     var needLayoutSubviews1 = true
@@ -81,6 +82,7 @@ class ConfirmViewController: StyleViewController {
         view.addGestureRecognizer(tap)
         
         scrollView.delegate = self
+        
         
     }
     
@@ -166,6 +168,20 @@ class ConfirmViewController: StyleViewController {
             if presentationStyle == .compact {
                 requestPresentationStyle(.expanded)
             }
+        }
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            
+            print("cell y", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY)
+            print("keyboard top y", keyboardSize.minY)
+            print("Scroll Offset", scrollView.contentOffset.y)
+            print("Bottom of cell", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).titleTextField.text, (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY)
+            print("Top of table", self.locationsTableView.frame.minY)
+            print("dif from top", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y)
+            print("dif from keyboard", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY - keyboardSize.minY + 120)
+            print("Scroll view top", scrollView.frame.minY)
+            print("Scroll top to keyboard top", keyboardSize.minY - scrollView.frame.minY)
+            scrollView.contentOffset.y = max((self.locationsTableView.cellForRow(at: IndexPath(row: locationTitleEditingIndex!, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY + scrollView.frame.minY - keyboardSize.minY + 120, 0)
         }
     }
     
@@ -377,22 +393,24 @@ class ConfirmViewController: StyleViewController {
         self.needLayoutSubviews2 = true
         event.locations.append(Location(title: "", place: nil, address: nil))
         isNewArray = [Bool](repeating: false, count: event.locations.count-1) + [true]
-        self.formatLocations()
-        self.updatePostButtonStatus()
         locationsTableView.reloadData()
 
         DispatchQueue.main.async {
             
+            self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
             self.locationsTableView.setNeedsLayout()
             self.locationsTableView.layoutIfNeeded()
-            self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
-            
+            print("Num locations", self.event.locations.count)
+            print("Visible cells", self.locationsTableView.visibleCells.count)
             let lastCellIndexPath = IndexPath(row: self.event.locations.count - 1, section: 0)
-            self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
+            print("Index", self.event.locations.count - 1)
+            //self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
+            print("field", cell.titleTextField.text)
             cell.titleTextField.becomeFirstResponder()
         }
-        
+        formatLocations()
+        updatePostButtonStatus()
         updateTableLabels()
     }
     
@@ -448,6 +466,7 @@ class ConfirmViewController: StyleViewController {
             with: nil,
             afterDelay: 0.1
         )
+        locationTitleEditingIndex = sender.tag
     }
     
     @objc func locationTitleTextFieldDidChange(sender: StyleTextField) {
@@ -468,6 +487,7 @@ class ConfirmViewController: StyleViewController {
         event.title = sender.text ?? ""
         sender.isNew = false
         sender.colorStatus()
+        locationTitleEditingIndex = nil
         updatePostButtonStatus()
     }
     
@@ -498,6 +518,7 @@ class ConfirmViewController: StyleViewController {
         
         updateTableLabels()
     }
+
 }
 
 extension ConfirmViewController: UITableViewDataSource {

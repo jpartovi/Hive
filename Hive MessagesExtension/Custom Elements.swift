@@ -48,7 +48,6 @@ class StyleTextField: UITextField {
     }
 
     @objc func doneButtonAction(sender: StyleTextField){
-        print("donebuttonaction")
         superview!.endEditing(true)
     }
     
@@ -246,10 +245,32 @@ class StyleViewController: MSMessagesAppViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        enableTouchAwayKeyboardDismiss()
+        //enableTouchAwayKeyboardDismiss()
         setBackgroundColor()
-    }
     
+    }
+    /*
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        
+        self.requestPresentationStyle(.expanded)
+        
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    */
     func setBackgroundColor() {
         self.view.backgroundColor = Colors.backgroundColor
     }

@@ -21,6 +21,8 @@ class LocationsViewController: StyleViewController {
     
     var expandToNext: Bool = false
     
+    var keyboardMinY: CGFloat = 0
+    
     var isNewArray: [Bool] = []
     
     //var textFieldExpand: StyleTextField? = nil
@@ -98,32 +100,32 @@ class LocationsViewController: StyleViewController {
 
     @IBOutlet weak var nextBottom: NSLayoutConstraint!
     
-    @IBOutlet weak var tableBottom: NSLayoutConstraint!
-    
     @IBOutlet weak var tableBottomKeyboard: NSLayoutConstraint!
     
+    
     @objc func keyboardWillShow(notification: NSNotification) {
-        /*
-        let MVC = (self.parent?.parent as? MessagesViewController)!
-        if MVC.presentationStyle == .compact {
-            MVC.requestPresentationStyle(.expanded)
-        }
-         */
+    
         self.requestPresentationStyle(.expanded)
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
+            keyboardMinY = keyboardSize.minY
+            
+            updateTableViewHeight()
+            
             //tableBottom.isActive = false
             
-            tableBottomKeyboard.constant = keyboardSize.height + 16
+            //tableBottomKeyboard.constant = keyboardSize.height + 16
             
-            tableBottomKeyboard.isActive = true
+            //tableBottomKeyboard.isActive = true
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
         
-        tableBottomKeyboard.isActive = false
+        keyboardMinY = 0
+        updateTableViewHeight()
+        //tableBottomKeyboard.isActive = false
         
         //tableBottom.isActive = true
         
@@ -152,7 +154,6 @@ class LocationsViewController: StyleViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
         updateTableViewHeight()
         
         for cell in locationsTableView.visibleCells {
@@ -161,18 +162,22 @@ class LocationsViewController: StyleViewController {
     }
     
     func updateTableViewHeight() {
-        self.locationsTableView.layoutIfNeeded()
-        locationsTableView.reloadData()
+        //self.locationsTableView.layoutIfNeeded()
+        //locationsTableView.reloadData()
         
-        let x = instructionsLabel.frame.minY - locationsTableView.frame.minY - addLocationButton.frame.height - 8
         //self.view.frame.height - (promptLabel.frame.height + 16 + instructionsLabel.frame.height + continueButton.frame.height + 128)
+        
         if presentationStyle == .expanded {
-            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), x)
+            let maxHeight: CGFloat
+            if keyboardMinY == 0 {
+                maxHeight = instructionsLabel.frame.minY - locationsTableView.frame.minY - addLocationButton.frame.height - 8
+            } else {
+                maxHeight = keyboardMinY - locationsTableView.frame.minY - 200
+            }
+            self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), maxHeight)
         } else {
             self.locationsTableViewHeightConstraint.constant = min(max(self.locationsTableView.contentSize.height, 20), self.view.frame.maxY - locationsTableView.frame.minY - addLocationButton.frame.height - 72)
         }
-        
-        
     }
     
     func updateLocations() {
@@ -182,17 +187,18 @@ class LocationsViewController: StyleViewController {
     }
         
     @IBAction func addLocationButtonPressed(_ sender: Any) {
-        
         locations.append(Location(title: "", place: nil, address: nil))
         isNewArray = [Bool](repeating: false, count: locations.count-1) + [true]
         locationsTableView.reloadData()
-        
+        updateTableViewHeight()
         DispatchQueue.main.async {
+            
+            self.updateContinueButtonStatus()
             let lastCellIndexPath = IndexPath(row: self.locations.count - 1, section: 0)
             self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
             cell.titleTextField.becomeFirstResponder()
-            self.updateContinueButtonStatus()
+                        
         }
     }
     
@@ -278,22 +284,7 @@ class LocationsViewController: StyleViewController {
             locationsTableView.reloadData()
         }
     }
-    
-    /*@objc func titleTextFieldDidBeginEditing(sender: StyleTextField) {
-        let MVC = (self.parent?.parent as? MessagesViewController)!
-        if MVC.presentationStyle == .compact {
-            textFieldExpand = sender
-            MVC.requestPresentationStyle(.expanded)
-        }
-        //sender.addTarget(self, action: #selector(valueChanged), for: .editingChanged)
-    }*/
-    
-    /*@objc func valueChanged(_ sender: StyleTextField){
-        sender.tag
-        
-    }*/
 
-    
     @objc func titleTextFieldDidChange(sender: StyleTextField) {
         if locations.indices.contains(sender.tag) {
             locations[sender.tag].title = sender.text ?? ""
@@ -327,7 +318,6 @@ extension LocationsViewController: UITableViewDataSource {
         
         cell.titleTextField.text = location.title
         cell.titleTextField.tag = indexPath.row
-        //cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidBeginEditing(sender:)), for: .editingDidBegin)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidChange(sender:)), for: .editingChanged)
         cell.titleTextField.addTarget(self, action: #selector(titleTextFieldDidFinishEditing(sender:)), for: .editingDidEnd)
         cell.titleTextField.delegate = self
@@ -390,9 +380,8 @@ extension LocationsViewController: GMSAutocompleteViewControllerDelegate {
         
         locations[addressEditingIndex!] = Location(title: locations[addressEditingIndex!].title, place: place)
         locationsTableView.reloadData()
-        updateTableViewHeight()
         navigationController?.dismiss(animated: true)
-        
+        updateTableViewHeight()
     }
     
     func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
