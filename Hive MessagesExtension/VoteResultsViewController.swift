@@ -60,6 +60,8 @@ class VoteResultsViewController: StyleViewController {
         voteTableView.showsVerticalScrollIndicator = false
         voteTableView.reloadData()
         voteTableView.setBackgroundColor()
+        
+        voteTableView.rowHeight = UITableView.automaticDimension
                 
         submitButton.size(height: 150, textSize: 25)
         submitButton.grey(title: "Create\nInvite")
@@ -71,6 +73,15 @@ class VoteResultsViewController: StyleViewController {
         
         updateTableViewHeight()
         //addHexFooter()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        super.viewDidLayoutSubviews()
+        
+        self.voteTableView.reloadRows(at: self.voteTableView.indexPathsForVisibleRows!, with: .none)
+        self.voteTableView.layoutSubviews()
+        self.updateTableViewHeight()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -86,9 +97,6 @@ class VoteResultsViewController: StyleViewController {
     }
     
     func updateTableViewHeight() {
-        
-        
-        self.voteTableView.layoutIfNeeded()
         
         self.voteTableViewHeightConstraint.constant = self.voteTableView.contentSize.height
         var height: CGFloat = 0
@@ -442,7 +450,7 @@ extension VoteResultsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        return tableView.rowHeight
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -571,8 +579,7 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
     }()
      
     let timesCollectionView: UICollectionView = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        let layout = TimesCollectionViewLayout()
         //layout.itemSize = CGSize(width: 105, height: 30)
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -618,6 +625,18 @@ class VoteResultsDayAndTimesCell: UITableViewCell {
         
         timesCollectionView.layer.cornerRadius = 5
     }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        
+        self.contentView.frame = self.bounds
+        self.contentView.layoutIfNeeded()
+        self.contentView.layoutSubviews()
+        var tCVcontentSize = self.timesCollectionView.contentSize
+        tCVcontentSize.height += 20
+        tCVcontentSize.height = max(tCVcontentSize.height, 50)
+        return tCVcontentSize
+    }
+    
 }
 
 extension VoteResultsDayAndTimesCell: UICollectionViewDataSource {
@@ -660,7 +679,7 @@ extension VoteResultsDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let timeString = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
-        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + 35, height: 30)
     }
 }
 

@@ -46,6 +46,8 @@ class VoteViewController: StyleViewController {
     
     var votesChanged = false
     
+    var needLayoutSubviews1 = true
+    
     
     var daysAndTimesMagicIndexes: [Int] = []
     var daysAndTimesGroupIndex: Int!
@@ -56,13 +58,17 @@ class VoteViewController: StyleViewController {
         loadedEvent = Event(url: mURL)
         decodeEvent(loadedEvent)
         decodeRSVPs(url: mURL)
-
+        
+        scrollView.delegate = self
+        
         voteTableView.dataSource = self
         voteTableView.delegate = self
         voteTableView.separatorStyle = .none
         voteTableView.showsVerticalScrollIndicator = false
         voteTableView.reloadData()
         voteTableView.setBackgroundColor()
+        
+        voteTableView.rowHeight = UITableView.automaticDimension
                 
         submitButton.size(height: 150, textSize: 25)
         submitButton.grey(title: submitButtonText)
@@ -74,6 +80,30 @@ class VoteViewController: StyleViewController {
         updateTableViewHeight()
         //addHexFooter()
     }
+    
+    override func viewDidLayoutSubviews() {
+        
+        if !needLayoutSubviews1 {
+            return
+        }
+        super.viewDidLayoutSubviews()
+        DispatchQueue.main.async {
+            self.voteTableView.reloadRows(at: self.voteTableView.indexPathsForVisibleRows!, with: .none)
+            
+            DispatchQueue.main.async {
+                self.voteTableView.layoutSubviews()
+                self.updateTableViewHeight()
+                self.needLayoutSubviews1 = false
+            }
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView!) {
+        
+        updateTableViewHeight()
+        
+    }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -88,9 +118,6 @@ class VoteViewController: StyleViewController {
     }
     
     func updateTableViewHeight() {
-        
-        
-        self.voteTableView.layoutIfNeeded()
         
         self.voteTableViewHeightConstraint.constant = self.voteTableView.contentSize.height
         var height: CGFloat = 0
@@ -477,7 +504,7 @@ extension VoteViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
+        return tableView.rowHeight
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -581,8 +608,7 @@ class VotingDayAndTimesCell: UITableViewCell {
     }()
     
     let timesCollectionView: UICollectionView = {
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        let layout = TimesCollectionViewLayout()
         //layout.itemSize = CGSize(width: 105, height: 30)
         let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 10, height: 10), collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -627,6 +653,18 @@ class VotingDayAndTimesCell: UITableViewCell {
         
         timesCollectionView.layer.cornerRadius = 5
     }
+    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        
+        self.contentView.frame = self.bounds
+        self.contentView.layoutIfNeeded()
+        self.contentView.layoutSubviews()
+        var tCVcontentSize = self.timesCollectionView.contentSize
+        tCVcontentSize.height += 20
+        tCVcontentSize.height = max(tCVcontentSize.height, 50)
+        return tCVcontentSize
+    }
+    
 }
 
 extension VotingDayAndTimesCell: UICollectionViewDataSource {
@@ -705,7 +743,7 @@ extension VotingDayAndTimesCell: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let timeString = curView.loadedEvent.daysAndTimes[curView.loadedEvent.days[curIndex]]![indexPath.row].format(duration: nil)
-        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + timesCollectionView.frame.height + 5, height: timesCollectionView.frame.height)
+        return CGSize(width: timeString.size(withAttributes: [NSAttributedString.Key.font : Format.font(size: 18)]).width + 35, height: 30)
     }
 }
 
