@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DiG-JC-074">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -775,7 +776,7 @@
                                             <collectionView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Rwn-M5-KIh">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="168"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="168" id="RbM-tP-CfV"/>
+                                                    <constraint firstAttribute="width" secondItem="Rwn-M5-KIh" secondAttribute="height" multiplier="12:7" id="vDE-Ul-jxa"/>
                                                 </constraints>
                                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="V4l-dv-pi5">
                                                     <size key="itemSize" width="40" height="40"/>
@@ -897,8 +898,8 @@
                         <outletCollection property="expandedConstraints" destination="Vl3-33-Ie1" collectionClass="NSMutableArray" id="f2A-YX-Pic"/>
                         <outletCollection property="compactConstraints" destination="GVD-Ud-9Ji" collectionClass="NSMutableArray" id="Z3n-8B-ceZ"/>
                         <outletCollection property="expandedConstraints" destination="ADn-Gf-btw" collectionClass="NSMutableArray" id="ntB-jB-noY"/>
-                        <outletCollection property="expandedConstraints" destination="RbM-tP-CfV" collectionClass="NSMutableArray" id="glf-sf-LC8"/>
                         <outletCollection property="compactConstraints" destination="OC2-2r-AM0" collectionClass="NSMutableArray" id="vJH-kq-245"/>
+                        <outletCollection property="expandedConstraints" destination="vDE-Ul-jxa" collectionClass="NSMutableArray" id="dpX-M2-5Qc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rFe-Ae-sRf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

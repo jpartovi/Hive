@@ -96,6 +96,8 @@ class DaySelectorViewController: StyleViewController {
         updateContentView()
         
         formatDayOfWeekLabels()
+        
+        view.bringSubviewToFront(nextButton)
     }
     
     func formatDayOfWeekLabels() {
@@ -398,7 +400,7 @@ extension DaySelectorViewController: UICollectionViewDataSource {
         if (calendarCollectionView?.delegate as? DaySelectorViewController)!.compactView {
             if let cellWidth = calendarCollectionView?.cellForItem(at: IndexPath(row: 0, section: 0))?.frame.width {
                 let belowIndex = Calendar.current.dateComponents([.day], from: calendarDays[0].day.date, to: today).day!
-                //scrollView.contentOffset.x = max( (CGFloat(belowIndex) + 4.3) * cellWidth,  scrollView.contentOffset.x)
+                scrollView.contentOffset.x = max( (CGFloat(belowIndex) + 4.3) * cellWidth,  scrollView.contentOffset.x)
             }
         }
     }
@@ -422,7 +424,8 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
             }
             day.isSelected = !day.isSelected
             calendarDays[indexPath.row] = day
-            calendarCollectionView.reloadItems(at: [indexPath])
+            calendarCollectionView!.reloadData()
+            //calendarCollectionView.reloadItems(at: [indexPath])
         }
         updateNextButtonStatus()
     }
