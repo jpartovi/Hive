@@ -172,7 +172,7 @@ class ConfirmViewController: StyleViewController {
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            print("cell y", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY)
+            /*print("cell y", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY)
             print("keyboard top y", keyboardSize.minY)
             print("Scroll Offset", scrollView.contentOffset.y)
             print("Bottom of cell", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).titleTextField.text, (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY)
@@ -180,8 +180,12 @@ class ConfirmViewController: StyleViewController {
             print("dif from top", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y)
             print("dif from keyboard", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY - keyboardSize.minY + 120)
             print("Scroll view top", scrollView.frame.minY)
-            print("Scroll top to keyboard top", keyboardSize.minY - scrollView.frame.minY)
-            scrollView.contentOffset.y = max((self.locationsTableView.cellForRow(at: IndexPath(row: locationTitleEditingIndex!, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY + scrollView.frame.minY - keyboardSize.minY + 120, 0)
+            print("Scroll top to keyboard top", keyboardSize.minY - scrollView.frame.minY)*/
+            
+            if locationTitleEditingIndex != nil {
+                scrollView.contentOffset.y = max((self.locationsTableView.cellForRow(at: IndexPath(row: locationTitleEditingIndex!, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY + scrollView.frame.minY - keyboardSize.minY + 120, 0)
+            }
+            
         }
     }
     
