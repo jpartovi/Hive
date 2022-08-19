@@ -376,7 +376,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDN-kl-iQF" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="144" y="398" width="32" height="30"/>
+                                <rect key="frame" x="144" y="391" width="32" height="37"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="gDN-kl-iQF" secondAttribute="height" multiplier="242:279" id="Zj6-aR-VKX"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Next"/>
                                 <connections>
@@ -384,7 +387,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-4s-y8L">
-                                <rect key="frame" x="40" y="255" width="240.5" height="93"/>
+                                <rect key="frame" x="40" y="248" width="240.5" height="93"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Duration:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c5K-9U-aRf" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="90.5" height="93"/>
@@ -410,7 +413,7 @@
                                 </subviews>
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Kqe-cM-BgW">
-                                <rect key="frame" x="16" y="79" width="288" height="168"/>
+                                <rect key="frame" x="16" y="79" width="288" height="161"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="UFQ-6M-vty">
                                     <size key="itemSize" width="128" height="128"/>
@@ -438,7 +441,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hJz-tV-2Nb">
-                                <rect key="frame" x="92.5" y="286" width="135.5" height="31"/>
+                                <rect key="frame" x="92.5" y="279" width="135.5" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Include duration?"/>
                                 <connections>
@@ -446,7 +449,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UZ4-aP-MwM" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="16" y="357.5" width="288" height="20.5"/>
+                                <rect key="frame" x="16" y="350.5" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -474,6 +477,7 @@
                             <constraint firstItem="gDN-kl-iQF" firstAttribute="top" secondItem="IOY-4s-y8L" secondAttribute="bottom" constant="8" id="m8j-ix-P0P"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="Kqe-cM-BgW" secondAttribute="trailing" constant="16" id="nr7-Dj-gob"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="UZ4-aP-MwM" secondAttribute="trailing" constant="16" id="q30-kJ-YWd"/>
+                            <constraint firstItem="IUU-AQ-BpU" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gDN-kl-iQF" secondAttribute="bottom" constant="16" id="rRr-v5-VVI"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerX" secondItem="hJz-tV-2Nb" secondAttribute="centerX" identifier="Both" id="sLw-rs-DMM"/>
                             <constraint firstItem="IOY-4s-y8L" firstAttribute="centerY" secondItem="hJz-tV-2Nb" secondAttribute="centerY" identifier="Both" id="uJn-AP-P5n"/>
                             <constraint firstItem="IUU-AQ-BpU" firstAttribute="trailing" secondItem="IOY-4s-y8L" secondAttribute="trailing" constant="32" id="vGP-kV-gHJ"/>
