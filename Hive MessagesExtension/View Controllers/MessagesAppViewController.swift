@@ -132,6 +132,12 @@ class MessagesAppViewController: MSMessagesAppViewController, InviteViewControll
         
     }
     
+    override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
+        super.didCancelSending(message, conversation: conversation)
+        
+        MessagesAppViewController.conversation = conversation
+    }
+    
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         for child in children {
             if presentationStyle == .transcript {

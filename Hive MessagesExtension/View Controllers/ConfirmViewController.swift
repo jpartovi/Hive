@@ -347,7 +347,7 @@ class ConfirmViewController: StyleViewController {
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
         viewDidLayoutSubviews()
-        /*
+        
         isNewArray = [Bool](repeating: false, count: event.locations.count)
         locationsTableView.reloadData()
         
@@ -376,7 +376,7 @@ class ConfirmViewController: StyleViewController {
         // Shrink app window
         self.requestPresentationStyle(.compact)
          
-         */
+         
     }
     
     func updatePostButtonStatus() {
