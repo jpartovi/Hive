@@ -275,6 +275,7 @@ class LocationsViewController: StyleViewController {
     @objc func addOrRemoveAddress(sender: UIButton) {
         addressEditingIndex = sender.tag
         if locations[addressEditingIndex!].address == nil {
+            view.endEditing(true)
             let autocompleteViewController = GMSAutocompleteViewController()
             autocompleteViewController.delegate = self
             navigationController?.present(autocompleteViewController, animated: true)

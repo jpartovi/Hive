@@ -49,7 +49,6 @@ class ConfirmViewController: StyleViewController {
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     @IBOutlet var expandConstraints: [NSLayoutConstraint]!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -76,6 +75,7 @@ class ConfirmViewController: StyleViewController {
         postButton.size(height: 150, textSize: 25)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.keyboardExpandViewApprover))
         tap.cancelsTouchesInView = false
@@ -114,11 +114,6 @@ class ConfirmViewController: StyleViewController {
         daysAndTimesLabel.style(text: daysAndTimesLabelText, textColor: Colors.darkTextColor, fontSize: 18)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        print("viewWillAppear")
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -137,6 +132,8 @@ class ConfirmViewController: StyleViewController {
     func changedConstraints(compact: Bool) {
         
         self.needLayoutSubviews2 = true
+        print("Number 1", needLayoutSubviews1)
+        print("Number 2", needLayoutSubviews2)
         
         if compact {
             scrollViewTrailingConstraint.constant = 160
@@ -155,11 +152,17 @@ class ConfirmViewController: StyleViewController {
                 constraint.isActive = true
             }
         }
+        daysAndTimesTableView.reloadData()
         formatLocations()
+        viewDidLayoutSubviews()
     }
     
     @objc func keyboardExpandViewApprover() {
         textBoxFlag = true
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        locationTitleEditingIndex = nil
     }
     
     @objc func keyboardWillShow(notification: NSNotification) {
@@ -172,28 +175,20 @@ class ConfirmViewController: StyleViewController {
         
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             
-            /*print("cell y", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY)
-            print("keyboard top y", keyboardSize.minY)
-            print("Scroll Offset", scrollView.contentOffset.y)
-            print("Bottom of cell", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).titleTextField.text, (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY)
-            print("Top of table", self.locationsTableView.frame.minY)
-            print("dif from top", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y)
-            print("dif from keyboard", (self.locationsTableView.cellForRow(at: IndexPath(row: self.event.locations.count - 1, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY - scrollView.contentOffset.y + scrollView.frame.minY - keyboardSize.minY + 120)
-            print("Scroll view top", scrollView.frame.minY)
-            print("Scroll top to keyboard top", keyboardSize.minY - scrollView.frame.minY)*/
-            
             if locationTitleEditingIndex != nil {
                 scrollView.contentOffset.y = max((self.locationsTableView.cellForRow(at: IndexPath(row: locationTitleEditingIndex!, section: 0)) as! LocationCell).frame.maxY + self.locationsTableView.frame.minY + scrollView.frame.minY - keyboardSize.minY + 120, 0)
             }
-            
         }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView!) {
-        if scrollView.contentOffset.x > 0 {
+        if scrollView.contentOffset.x != 0 {
             scrollView.contentOffset.x = 0
         }
         self.needLayoutSubviews2 = true
+        //daysAndTimesTableView.reloadData()
+        daysAndTimesTableView.layoutIfNeeded()
+        self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
         scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
     }
     
@@ -242,16 +237,24 @@ class ConfirmViewController: StyleViewController {
     }
     
     override func viewDidLayoutSubviews() {
+        print("Attempted", self.presentationStyle == .compact)
         
         if !(self.needLayoutSubviews1 && self.needLayoutSubviews2) {
+            print("Fail")
             return
         }
+        print("Success")
+        print("LAYOUT")
         
         super.viewDidLayoutSubviews()
         
+        daysAndTimesTableView.reloadData()
+        locationsTableView.reloadData()
         self.locationsTableView.setNeedsLayout()
         self.locationsTableView.layoutIfNeeded()
-        locationsTableView.reloadData()
+        self.daysAndTimesTableView.setNeedsLayout()
+        self.daysAndTimesTableView.layoutIfNeeded()
+        
                 
         DispatchQueue.main.async {
             self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
@@ -264,7 +267,6 @@ class ConfirmViewController: StyleViewController {
                 self.needLayoutSubviews1 = true
                 
                 self.setUpEventTitleTextField()
-                
                 self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
                 self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
                 for cell in self.daysAndTimesTableView.visibleCells {
@@ -274,13 +276,19 @@ class ConfirmViewController: StyleViewController {
                 self.daysAndTimesTableView.reloadRows(at: self.daysAndTimesTableView.indexPathsForVisibleRows!, with: .none)
                 
                 DispatchQueue.main.async {
-                    self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * (8)))
                     self.daysAndTimesTableView.layoutSubviews()
+                    self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+                    self.scrollView.contentSize = CGSize(width: self.scrollView.frame.width, height: self.eventTitleTextField.frame.height + self.locationsLabel.frame.height + self.locationsTableView.frame.height + self.daysAndTimesLabel.frame.height + self.daysAndTimesTableView.frame.height + (4 * 8))
                 }
             }
         }
+        print("Yolo")
+        daysAndTimesTableView.reloadData()
+        //self.daysAndTimesTableView.layoutSubviews()
+        self.daysAndTimesTableViewHeightConstraint.constant = self.daysAndTimesTableView.contentSize.height
+        scrollView.contentSize.height = eventTitleTextField.frame.height + locationsLabel.frame.height + locationsTableView.frame.height + daysAndTimesLabel.frame.height + daysAndTimesTableView.frame.height + (4 * (8))
+        print("Yolo")
     }
-    
     
     func setUpEventTitleTextField() {
         eventTitleTextField.style(placeholderText: "Title (eg. Party in the U.S.A)", color: Colors.tertiaryColor, textColor: Colors.tertiaryColor, fontSize: 30)
@@ -338,6 +346,8 @@ class ConfirmViewController: StyleViewController {
     // When the post button is pressed
     @IBAction func postButtonPressed(_ sender: UIButton!) {
         
+        viewDidLayoutSubviews()
+        /*
         isNewArray = [Bool](repeating: false, count: event.locations.count)
         locationsTableView.reloadData()
         
@@ -365,6 +375,8 @@ class ConfirmViewController: StyleViewController {
 
         // Shrink app window
         self.requestPresentationStyle(.compact)
+         
+         */
     }
     
     func updatePostButtonStatus() {
@@ -404,13 +416,9 @@ class ConfirmViewController: StyleViewController {
             self.locationsTableViewHeightConstraint.constant = max(self.locationsTableView.contentSize.height, 40)
             self.locationsTableView.setNeedsLayout()
             self.locationsTableView.layoutIfNeeded()
-            print("Num locations", self.event.locations.count)
-            print("Visible cells", self.locationsTableView.visibleCells.count)
             let lastCellIndexPath = IndexPath(row: self.event.locations.count - 1, section: 0)
-            print("Index", self.event.locations.count - 1)
             //self.locationsTableView.scrollToRow(at: lastCellIndexPath, at: .bottom, animated: false)
             let cell = self.locationsTableView.cellForRow(at: lastCellIndexPath) as! LocationCell
-            print("field", cell.titleTextField.text)
             cell.titleTextField.becomeFirstResponder()
         }
         formatLocations()
@@ -445,6 +453,7 @@ class ConfirmViewController: StyleViewController {
         self.needLayoutSubviews2 = true
         addressEditingIndex = sender.tag
         if event.locations[addressEditingIndex!].address == nil {
+            view.endEditing(true)
             let autocompleteViewController = GMSAutocompleteViewController()
             autocompleteViewController.delegate = self
             navigationController?.present(autocompleteViewController, animated: true)
@@ -496,6 +505,7 @@ class ConfirmViewController: StyleViewController {
     }
     
     @objc func deleteDay(sender: UIButton) {
+        
         let cell = sender.superview?.superview as! EditingDayAndTimesCell
         let indexPath = daysAndTimesTableView.indexPath(for: cell)!
         let day = event.days.remove(at: indexPath.row)
@@ -690,12 +700,14 @@ extension ConfirmViewController: UINavigationControllerDelegate {
         
         if type(of: viewController) == TimeSelectorViewController.self {
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
             self.requestPresentationStyle(.expanded)
             event = updateEventObject(inEvent: event)
             (viewController as! TimeSelectorViewController).event = event
             (viewController as! TimeSelectorViewController).updateSelections()
         } else if type(of: viewController) == DaySelectorViewController.self {
             NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
             self.requestPresentationStyle(.expanded)
             event = updateEventObject(inEvent: event)
             (viewController as! DaySelectorViewController).event = event
