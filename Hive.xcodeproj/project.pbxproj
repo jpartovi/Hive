@@ -149,13 +149,14 @@
 			isa = PBXGroup;
 			children = (
 				15BA66CE284E8C6F00C185CA /* MessagesAppViewController.swift */,
+				15D5DE68289455610054A564 /* MessageViewController.swift */,
 				156DAE652876348D00613360 /*  Event Creation VCs */,
 				156DAE712876382C00613360 /* ConfirmViewController.swift */,
 				15B5D26928823624004267E2 /* VoteViewController.swift */,
+				1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */,
 				1545E01C2889DBB2004DD491 /* VoteResultsViewController.swift */,
 				15B44F45285CF98E0055B51C /* InviteViewController.swift */,
 				8793627C286CFEE400C05180 /* PollViewController.swift */,
-				15D5DE68289455610054A564 /* MessageViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -204,7 +205,6 @@
 				151BC1E2288882E800B330DF /* Global Variables.swift */,
 				151BC1E42888842000B330DF /* Custom Elements.swift */,
 				156DAE7D287CD02800613360 /* Extensions.swift */,
-				1545E020288F5499004DD491 /* VoteResultsNavigationController.swift */,
 				1545E0112888B016004DD491 /* Event Structs */,
 				15B44F4F2860E3DA0055B51C /* View Controllers */,
 				15BA66D0284E8C6F00C185CA /* MainInterface.storyboard */,

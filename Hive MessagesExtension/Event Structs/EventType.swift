@@ -37,10 +37,10 @@ enum EventType: CaseIterable {
     }
     
     func getDefaultDuration() -> Duration {
-        var duration = Duration(minutes: 90)
+        var duration = Duration(minutes: 60)
         switch self {
         case .brunch:
-            break
+            duration = Duration(minutes: 90)
         case .lunch:
             break
         case .dinner:
@@ -50,7 +50,7 @@ enum EventType: CaseIterable {
         case .allDay:
             fatalError("EventType 'All-Day' has no default duration.")
         case .other:
-            Duration(minutes: 60)
+            break
         }
         return duration
     }
@@ -83,7 +83,7 @@ enum EventType: CaseIterable {
             lastTime = Time(hour: 11, minute: 30, period: .am)
         case .lunch:
             firstTime = Time(hour: 11, minute: 0, period: .am)
-            lastTime = Time(hour: 1, minute: 30, period: .pm)
+            lastTime = Time(hour: 2, minute: 30, period: .pm)
         case .dinner:
             firstTime = Time(hour: 4, minute: 0, period: .pm)
             lastTime = Time(hour: 7, minute: 30, period: .pm)
