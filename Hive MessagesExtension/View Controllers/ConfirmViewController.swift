@@ -60,7 +60,7 @@ class ConfirmViewController: StyleViewController {
         
         addLocationButton.layer.cornerRadius = addLocationButton.frame.height / 2
         addLocationButton.backgroundColor = Colors.primaryColor
-        addLocationButton.setTitle("+ Add", for: .normal)
+        addLocationButton.setTitle(" + Add ", for: .normal)
         addLocationButton.setTitleColor(Colors.lightTextColor, for: .normal)
         
         addHexFooter()

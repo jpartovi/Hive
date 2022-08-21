@@ -606,6 +606,7 @@
                                         <rect key="frame" x="138" y="41" width="63" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="23" id="4VD-Ek-RRH"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="vCQ-1V-sk6"/>
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="+ Add"/>
