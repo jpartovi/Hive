@@ -231,7 +231,7 @@ struct Event {
         var subcaption: String = ""
         var trailingCaption: String = ""
         var trailingSubcaption: String = ""
-        let summaryText: String = "Message sent with Hive"
+        let summaryText: String = "Message sent with Bzzy"
         
         switch type {
         case .invite:
