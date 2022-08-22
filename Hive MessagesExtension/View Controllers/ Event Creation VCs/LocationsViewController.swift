@@ -77,7 +77,7 @@ class LocationsViewController: StyleViewController {
         addHexFooter()
         changedConstraints(compact: presentationStyle == .compact)
         
-        promptLabel.style(text: "Where are you hosting?")
+        promptLabel.style(text: "Where will it be?")
         promptLabel.adjustHeight()
         instructionsLabel.style(text: "Add multiple locations to create a poll", textColor: Colors.darkTextColor, fontSize: 18)
         instructionsLabel.adjustHeight()

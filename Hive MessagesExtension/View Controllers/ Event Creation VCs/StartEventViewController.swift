@@ -46,7 +46,7 @@ class StartEventViewController: StyleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        promptLabel.style(text: "What are you hosting?")
+        promptLabel.style(text: "What are you planning?")
         promptLabel.adjustHeight()
         
         setUpHexCollection()
