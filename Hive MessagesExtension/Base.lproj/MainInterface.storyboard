@@ -937,8 +937,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6rA-lg-Dqj">
-                                <rect key="frame" x="8" y="85" width="304" height="438"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="6rA-lg-Dqj">
+                                <rect key="frame" x="8" y="89" width="304" height="455"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="304" id="AEI-6N-xrV"/>
@@ -970,7 +970,7 @@
                         <viewLayoutGuide key="safeArea" id="oTB-gH-7qM"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="oTB-gH-7qM" firstAttribute="bottom" secondItem="6rA-lg-Dqj" secondAttribute="bottom" constant="5" id="0Dr-Ht-lAF"/>
+                            <constraint firstItem="oTB-gH-7qM" firstAttribute="bottom" secondItem="6rA-lg-Dqj" secondAttribute="bottom" constant="-16" id="0Dr-Ht-lAF"/>
                             <constraint firstItem="HQR-cL-LWJ" firstAttribute="leading" secondItem="oTB-gH-7qM" secondAttribute="leading" constant="8" id="FP5-xT-RCU"/>
                             <constraint firstItem="6rA-lg-Dqj" firstAttribute="top" secondItem="HQR-cL-LWJ" secondAttribute="bottom" constant="40" id="FVk-Zx-U9G"/>
                             <constraint firstItem="oTB-gH-7qM" firstAttribute="top" secondItem="HQR-cL-LWJ" secondAttribute="top" constant="32" id="Mry-oT-olr"/>
