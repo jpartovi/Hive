@@ -25,6 +25,8 @@ class LocationsViewController: StyleViewController {
     
     var isNewArray: [Bool] = []
     
+    var weeksToLoad = 3
+    
     //var textFieldExpand: StyleTextField? = nil
     
     @IBOutlet weak var promptLabel: StyleLabel!
@@ -249,6 +251,7 @@ class LocationsViewController: StyleViewController {
         event?.locations = locations
         let dateSelectorVC = (storyboard?.instantiateViewController(withIdentifier: DaySelectorViewController.storyboardID) as? DaySelectorViewController)!
         dateSelectorVC.event = event
+        dateSelectorVC.weeksToLoad = weeksToLoad
         self.navigationController?.pushViewController(dateSelectorVC, animated: true)
     }
     

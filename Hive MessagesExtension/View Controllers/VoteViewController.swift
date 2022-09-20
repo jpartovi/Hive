@@ -46,13 +46,14 @@ class VoteViewController: StyleViewController {
     
     var votesChanged = false
     
-    var needLayoutSubviews1 = true
+    //var needLayoutSubviews1 = false
     
     
     var daysAndTimesMagicIndexes: [Int] = []
     var daysAndTimesGroupIndex: Int!
     
     override func viewDidLoad() {
+        print("FLAG viewDidLoad START")
         super.viewDidLoad()
         
         loadedEvent = Event(url: mURL)
@@ -65,51 +66,101 @@ class VoteViewController: StyleViewController {
         voteTableView.delegate = self
         voteTableView.separatorStyle = .none
         voteTableView.showsVerticalScrollIndicator = false
-        voteTableView.reloadData()
+        
         voteTableView.setBackgroundColor()
         
+        print("FLAG viewDidLoad END")
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        super.viewWillAppear(animated)
         voteTableView.rowHeight = UITableView.automaticDimension
-                
+        //voteTableView.reloadData()
+        //voteTableView.layoutSubviews()
+        //voteTableView.reloadRows(at: self.voteTableView.indexPathsForVisibleRows!, with: .none)
         submitButton.size(height: 150, textSize: 25)
         submitButton.grey(title: submitButtonText)
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        voteTableView.reloadData()
+        //voteTableView.cellForRow(at: IndexPath(row: 0, section: 0))?.layoutSubviews()
         
-        updateTableViewHeight()
-        //addHexFooter()
     }
     
-    override func viewDidLayoutSubviews() {
-        
-        if !needLayoutSubviews1 {
+    /*override func viewWillLayoutSubviews() {
+        print("FLAG viewWillLayoutSubviews START")
+        /*if !needLayoutSubviews1 {
             return
-        }
+        }*/
+        super.viewWillLayoutSubviews()
+        
+        //updateTableViewHeight()
+        //addHexFooter()
+        print("FLAG viewWillLayoutSubviews END")
+    }*/
+    
+    /*override func viewDidLayoutSubviews() {
+        
+        print("FLAG viewDidLayoutSubviews START")
+        /*if !needLayoutSubviews1 {
+            return
+        }*/
         super.viewDidLayoutSubviews()
-        DispatchQueue.main.async {
-            self.voteTableView.reloadRows(at: self.voteTableView.indexPathsForVisibleRows!, with: .none)
+        /*DispatchQueue.main.async {
             
-            DispatchQueue.main.async {
+            //self.voteTableView.layoutSubviews()
+            //self.voteTableView.reloadRows(at: self.voteTableView.indexPathsForVisibleRows!, with: .none)
+            
+            /*DispatchQueue.main.async {
                 self.voteTableView.layoutSubviews()
                 self.updateTableViewHeight()
-                self.needLayoutSubviews1 = false
-            }
-        }
-    }
+                //self.needLayoutSubviews1 = false
+            }*/
+            
+            print("FLAG viewDidLayoutSubviews END2")
+        }*/
+        
+        print("FLAG viewDidLayoutSubviews END1")
+    }*/
     
     func scrollViewDidScroll(_ scrollView: UIScrollView!) {
         
+        //voteTableView.reloadData()
+        //voteTableView.setNeedsLayout()
+        //voteTableView.layoutIfNeeded()
+        //self.voteTableViewHeightConstraint.constant = self.voteTableView.contentSize.height
         updateTableViewHeight()
-        
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
+        print("FLAG viewDidAppear START")
+        
+        
+        //voteTableView.reloadData()
+        
+        //needLayoutSubviews1 = true
         super.viewDidAppear(animated)
+        
+        
+        //
         
         // sometimes glitchy and doesn't fully show
         scrollAnimation()
+        
+        self.voteTableView.layoutSubviews()
+        self.updateTableViewHeight()
+        
+        DispatchQueue.main.async {
+            
+            self.voteTableView.reloadData()
+            
+        }
+        
+        print("FLAG viewDidAppear END")
     }
     
     func scrollAnimation() {

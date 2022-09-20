@@ -765,8 +765,8 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="16" y="49" width="288" height="24"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Which day(s) might work?" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajv-TN-q44" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="16" y="49" width="288" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -823,23 +823,67 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="lbD-dg-TcL"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="HX4-Fz-xVF"/>
                             </scrollView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Gm-hQJ" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
-                                <rect key="frame" x="135.5" y="81" width="49" height="20.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Month" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cqz-Gm-hQJ" customClass="StyleLabel" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="135.5" y="57" width="49" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4rX-Ke-BsI" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="135.5" y="99" width="49" height="8.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="4rX-Ke-BsI" secondAttribute="height" multiplier="35:6" id="fmm-qo-0c3"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Up" image="up"/>
+                                <connections>
+                                    <action selector="upButtonPress:" destination="L2v-bx-V3n" eventType="touchUpInside" id="PEj-R5-cQr"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hk3-eu-KwW" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="247" y="99" width="49" height="10.5"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Top" image="top"/>
+                                <connections>
+                                    <action selector="topButtonPress:" destination="L2v-bx-V3n" eventType="touchUpInside" id="MNS-XP-7eE"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zTj-Fb-EIG" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="247" y="255" width="49" height="10.5"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Bottom" image="bottom"/>
+                                <connections>
+                                    <action selector="bottomButtonPress:" destination="L2v-bx-V3n" eventType="touchUpInside" id="gJ9-GA-W0e"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XGn-gX-QWd" customClass="HexButton" customModule="Hive_MessagesExtension" customModuleProvider="target">
+                                <rect key="frame" x="135.5" y="256" width="49" height="8.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="XGn-gX-QWd" secondAttribute="height" multiplier="35:6" id="XuI-vk-K9V"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Down" image="down"/>
+                                <connections>
+                                    <action selector="downButtonPress:" destination="L2v-bx-V3n" eventType="touchUpInside" id="Bcz-os-Je2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="EsS-q1-vKW"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="zTj-Fb-EIG" firstAttribute="height" secondItem="XGn-gX-QWd" secondAttribute="height" multiplier="66/53" id="0Ss-yt-xax"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="centerX" secondItem="ajv-TN-q44" secondAttribute="centerX" id="74D-sk-9Se"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="San-2N-cqu" secondAttribute="trailing" constant="16" id="9zh-n0-fR6"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="bottom" secondItem="Bdz-n3-PIX" secondAttribute="bottom" constant="100" id="ADn-Gf-btw"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="centerY" secondItem="EsS-q1-vKW" secondAttribute="centerY" constant="16" identifier="Compact" id="BhH-nX-rob"/>
+                            <constraint firstItem="zTj-Fb-EIG" firstAttribute="centerY" secondItem="XGn-gX-QWd" secondAttribute="centerY" id="CLi-ZI-JOl"/>
                             <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" identifier="Compact" id="CuK-9P-Fvj"/>
+                            <constraint firstItem="4rX-Ke-BsI" firstAttribute="centerX" secondItem="EsS-q1-vKW" secondAttribute="centerX" id="DHO-Zg-WeQ"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="MNm-8v-H7s" secondAttribute="trailing" constant="28" id="G1j-2s-Xa2"/>
+                            <constraint firstItem="MNm-8v-H7s" firstAttribute="top" secondItem="4rX-Ke-BsI" secondAttribute="bottom" constant="10" id="G2N-tA-URj"/>
                             <constraint firstItem="4rO-ad-lsh" firstAttribute="top" secondItem="cqz-Gm-hQJ" secondAttribute="bottom" constant="10" identifier="Compact" id="GVD-Ud-9Ji"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="zTj-Fb-EIG" secondAttribute="trailing" constant="24" id="H0S-6f-UhB"/>
+                            <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="hk3-eu-KwW" secondAttribute="trailing" constant="24" id="LZc-CR-vPG"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="leading" secondItem="4rO-ad-lsh" secondAttribute="trailing" constant="16" identifier="Compact" id="Lay-pq-kI0"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="bottom" secondItem="4rO-ad-lsh" secondAttribute="bottom" constant="16" identifier="Compact" id="M7C-i1-7ex"/>
                             <constraint firstItem="MNm-8v-H7s" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="28" id="O64-pe-t2R"/>
@@ -847,16 +891,24 @@
                             <constraint firstItem="4rO-ad-lsh" firstAttribute="centerX" secondItem="cqz-Gm-hQJ" secondAttribute="centerX" id="OQY-RL-rf0"/>
                             <constraint firstItem="4rO-ad-lsh" firstAttribute="top" secondItem="MNm-8v-H7s" secondAttribute="bottom" constant="10" id="OtJ-fJ-oyr"/>
                             <constraint firstItem="4rO-ad-lsh" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="P01-0i-wHY"/>
-                            <constraint firstItem="MNm-8v-H7s" firstAttribute="top" secondItem="cqz-Gm-hQJ" secondAttribute="bottom" constant="16" id="Vl3-33-Ie1"/>
+                            <constraint firstItem="4rX-Ke-BsI" firstAttribute="top" secondItem="cqz-Gm-hQJ" secondAttribute="bottom" constant="20" id="PNU-Gf-Ued"/>
+                            <constraint firstItem="XGn-gX-QWd" firstAttribute="width" secondItem="4rX-Ke-BsI" secondAttribute="width" id="R8t-zK-15f"/>
                             <constraint firstItem="San-2N-cqu" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="W54-Av-sV4"/>
                             <constraint firstItem="cqz-Gm-hQJ" firstAttribute="top" secondItem="ajv-TN-q44" secondAttribute="bottom" constant="8" symbolic="YES" id="WRJ-nZ-JG1"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="centerX" secondItem="EsS-q1-vKW" secondAttribute="centerX" id="abA-Zq-hQ2"/>
+                            <constraint firstItem="XGn-gX-QWd" firstAttribute="top" secondItem="Rwn-M5-KIh" secondAttribute="bottom" constant="-60" id="ans-7a-JSC"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="ajv-TN-q44" secondAttribute="trailing" constant="16" id="bws-f3-UhR"/>
                             <constraint firstItem="Bdz-n3-PIX" firstAttribute="top" secondItem="San-2N-cqu" secondAttribute="bottom" constant="20" id="dAh-05-kkB"/>
+                            <constraint firstItem="zTj-Fb-EIG" firstAttribute="width" secondItem="XGn-gX-QWd" secondAttribute="width" id="fHp-mB-OPI"/>
+                            <constraint firstItem="XGn-gX-QWd" firstAttribute="centerX" secondItem="EsS-q1-vKW" secondAttribute="centerX" id="fqi-iq-rq9"/>
+                            <constraint firstItem="4rX-Ke-BsI" firstAttribute="top" secondItem="hk3-eu-KwW" secondAttribute="top" id="gYZ-LP-3Bv"/>
                             <constraint firstItem="ajv-TN-q44" firstAttribute="top" secondItem="EsS-q1-vKW" secondAttribute="top" constant="5" id="hoc-KV-ndB"/>
+                            <constraint firstItem="4rX-Ke-BsI" firstAttribute="width" secondItem="E34-Bo-GSk" secondAttribute="width" multiplier="3" id="hrA-MK-Eht"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="Bdz-n3-PIX" secondAttribute="trailing" constant="16" identifier="Compact" id="kwQ-nB-Y1y"/>
                             <constraint firstItem="ajv-TN-q44" firstAttribute="leading" secondItem="EsS-q1-vKW" secondAttribute="leading" constant="16" id="oc5-NG-A2U"/>
+                            <constraint firstItem="hk3-eu-KwW" firstAttribute="width" secondItem="4rX-Ke-BsI" secondAttribute="width" id="qUZ-W7-38O"/>
                             <constraint firstItem="EsS-q1-vKW" firstAttribute="trailing" secondItem="4rO-ad-lsh" secondAttribute="trailing" constant="16" id="wrz-K1-WVM"/>
+                            <constraint firstItem="hk3-eu-KwW" firstAttribute="height" secondItem="4rX-Ke-BsI" secondAttribute="height" multiplier="66/53" id="zCu-qd-ujk"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -872,9 +924,11 @@
                     </view>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
+                        <outlet property="bottomButton" destination="zTj-Fb-EIG" id="w7n-px-yDU"/>
                         <outlet property="calendarCollectionView" destination="Rwn-M5-KIh" id="haL-4H-qLZ"/>
                         <outlet property="calendarOuterView" destination="TR7-0c-BBa" id="Mmj-qD-muD"/>
                         <outlet property="calendarWidthConstraint" destination="LtW-5v-kTb" id="weV-i3-7Z0"/>
+                        <outlet property="downButton" destination="XGn-gX-QWd" id="2Kl-Se-17K"/>
                         <outlet property="friLabel" destination="PtB-XE-ghv" id="qWu-lZ-MQa"/>
                         <outlet property="instructionsLabel" destination="San-2N-cqu" id="Gqd-Jp-N8g"/>
                         <outlet property="monLabel" destination="yXq-O8-JY9" id="czK-a5-f0G"/>
@@ -886,7 +940,9 @@
                         <outlet property="scrollView" destination="4rO-ad-lsh" id="GiE-sn-bqB"/>
                         <outlet property="sunLabel" destination="RlJ-Du-8bv" id="BdN-L6-E8a"/>
                         <outlet property="thuLabel" destination="drx-BB-0WL" id="C8E-av-vas"/>
+                        <outlet property="topButton" destination="hk3-eu-KwW" id="sn0-o8-f3u"/>
                         <outlet property="tueLabel" destination="9yL-gz-IpC" id="Nan-Kr-21a"/>
+                        <outlet property="upButton" destination="4rX-Ke-BsI" id="Oja-Pg-qZP"/>
                         <outlet property="wedLabel" destination="E34-Bo-GSk" id="dli-ZG-lMY"/>
                         <outlet property="weekDayLabels" destination="MNm-8v-H7s" id="uJ1-IF-pT5"/>
                         <outletCollection property="compactConstraints" destination="Lay-pq-kI0" collectionClass="NSMutableArray" id="CrB-Cs-5CR"/>
@@ -900,7 +956,6 @@
                         <outletCollection property="expandedConstraints" destination="O64-pe-t2R" collectionClass="NSMutableArray" id="qPB-qf-Mml"/>
                         <outletCollection property="expandedConstraints" destination="OtJ-fJ-oyr" collectionClass="NSMutableArray" id="krS-bJ-o6X"/>
                         <outletCollection property="expandedConstraints" destination="abA-Zq-hQ2" collectionClass="NSMutableArray" id="SOU-IV-HBv"/>
-                        <outletCollection property="expandedConstraints" destination="Vl3-33-Ie1" collectionClass="NSMutableArray" id="f2A-YX-Pic"/>
                         <outletCollection property="compactConstraints" destination="GVD-Ud-9Ji" collectionClass="NSMutableArray" id="Z3n-8B-ceZ"/>
                         <outletCollection property="expandedConstraints" destination="ADn-Gf-btw" collectionClass="NSMutableArray" id="ntB-jB-noY"/>
                         <outletCollection property="compactConstraints" destination="OC2-2r-AM0" collectionClass="NSMutableArray" id="vJH-kq-245"/>
@@ -1201,6 +1256,10 @@
     </scenes>
     <color key="tintColor" red="0.87450980389999999" green="0.62352941179999999" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
+        <image name="bottom" width="184" height="66"/>
+        <image name="down" width="184" height="53"/>
+        <image name="top" width="184" height="66"/>
+        <image name="up" width="184" height="53"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

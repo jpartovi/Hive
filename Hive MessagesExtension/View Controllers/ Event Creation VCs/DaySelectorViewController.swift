@@ -34,17 +34,28 @@ class DaySelectorViewController: StyleViewController {
     @IBOutlet weak var satLabel: StyleLabel!
     @IBOutlet weak var instructionsLabel: StyleLabel!
     
+    @IBOutlet weak var upButton: HexButton!
+    @IBOutlet weak var downButton: HexButton!
+    @IBOutlet weak var topButton: HexButton!
+    @IBOutlet weak var bottomButton: HexButton!
     
     @IBOutlet var expandedConstraints: [NSLayoutConstraint]!
     @IBOutlet var compactConstraints: [NSLayoutConstraint]!
     
     var anyDaySelected: Bool = false
     
+    var weeksToLoad = 3
+    var weekOffset = 0
     var cellsPerRow = 7
     var rows = 3
     let inset: CGFloat = 0//10
     let minimumLineSpacing: CGFloat = 0 //10
     let minimumInteritemSpacing: CGFloat = 0 //10
+    
+    
+    //Changes how many weeks forward or backward the up and down arrows move
+    let weeksAtATime = 3
+    
     
     var today = Date()
     
@@ -65,6 +76,139 @@ class DaySelectorViewController: StyleViewController {
     var calendarDays = [CalendarDay]()
     
     var expandToNext: Bool = false
+    
+    @IBAction func upButtonPress(_ sender: Any) {
+        
+        //Check offset
+        
+        if weekOffset > 0 {
+            //Move week backward
+            weekOffset = weekOffset-weeksAtATime
+            
+            //Update what is being shown on screen
+            calendarCollectionView.reloadData()
+            loadMonthLabel()
+            updateScrollButtons()
+        }
+
+    }
+    
+    @IBAction func downButtonPress(_ sender: Any) {
+        
+        //Move week forward
+        weekOffset = weekOffset+weeksAtATime
+        
+        
+        if weekOffset > calendarDays.count/cellsPerRow - rows {
+            //Add new calendar days to array
+            
+            guard let metadata = try? monthMetadata(for: today) else {
+              preconditionFailure("An error occurred when generating the metadata for \(today)")
+            }
+            
+            let offsetInInitialRow = metadata.firstDayWeekday
+            
+            for day in ((cellsPerRow * (rows+weekOffset-weeksAtATime)+1)...(cellsPerRow * (rows+weekOffset))) {
+                
+                let dayOffset = day - offsetInInitialRow
+                
+                let newMonth =  calendar.dateComponents([.month], from: calendar.date(byAdding: .day, value: dayOffset, to: today)!).month!
+                let oldMonth =
+                calendar.dateComponents([.month], from: today).month!
+                
+                let monthOffset = newMonth-oldMonth
+
+                calendarDays.append(generateDay(
+                    offsetBy: dayOffset,
+                    for: today,
+                    inFuture: true,
+                    inNextMonth: ((monthOffset%2) == 1)))
+            }
+            
+        }
+        
+        //Update what is being shown on screen
+        calendarCollectionView.reloadData()
+        loadMonthLabel()
+        updateScrollButtons()
+    }
+    
+    @IBAction func topButtonPress(_ sender: Any) {
+        
+        //Find earliest day
+        var firstDayIndex: Int?
+        for (ind, calendarDay) in calendarDays.enumerated() {
+            if calendarDay.isSelected {
+                firstDayIndex = ind
+                break
+            }
+        }
+        
+        weekOffset = (firstDayIndex!/(7*weeksAtATime))*weeksAtATime //exploiting integer division
+        print(weekOffset)
+        
+        //Update what is being shown on screen
+        calendarCollectionView.reloadData()
+        loadMonthLabel()
+        updateScrollButtons()
+    }
+    
+    @IBAction func bottomButtonPress(_ sender: Any) {
+        
+        //Find latest day
+        var lastDayIndex: Int?
+        for (ind, calendarDay) in calendarDays.reversed().enumerated() {
+            if calendarDay.isSelected {
+                lastDayIndex = calendarDays.count-ind-1
+                break
+            }
+        }
+        
+        weekOffset = (lastDayIndex!/(7*weeksAtATime))*weeksAtATime + weeksAtATime - 3 //exploiting integer division
+        print(weekOffset)
+        if weekOffset < 0 {
+            weekOffset = 0
+        }
+        
+        //Update what is being shown on screen
+        calendarCollectionView.reloadData()
+        loadMonthLabel()
+        updateScrollButtons()
+    }
+    
+    func updateScrollButtons() {
+        //Find earliest day
+        var firstDayIndex: Int?
+        for (ind, calendarDay) in calendarDays.enumerated() {
+            if calendarDay.isSelected {
+                firstDayIndex = ind
+                break
+            }
+        }
+        //Check if earliest day is off-screen
+        if let fDI = firstDayIndex, weekOffset > fDI/7 {
+            topButton.isHidden = false
+        } else {
+            topButton.isHidden = true
+        }
+        
+        //Find latest day
+        var lastDayIndex: Int?
+        for (ind, calendarDay) in calendarDays.reversed().enumerated() {
+            if calendarDay.isSelected {
+                lastDayIndex = calendarDays.count-ind-1
+                break
+            }
+        }
+        
+        //Check if latest day is off-screen
+        if let lDI = lastDayIndex, weekOffset < lDI/7 - 2 {
+            bottomButton.isHidden = false
+        } else {
+            bottomButton.isHidden = true
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -247,8 +391,14 @@ class DaySelectorViewController: StyleViewController {
             //let month = components.month!
             text = DateFormatter().monthSymbols[month - 1]
         } else {
-            let month1 = calendar.component(.month, from: (calendarDays.first?.day.date)!)
-            let month2 = calendar.component(.month, from: (calendarDays.last?.day.date)!)
+            
+            //Array(calendarDays[weekOffset*cellsPerRow...(weekOffset+rows)*cellsPerRow-1])
+            
+            
+            print(calendarDays.count)
+            
+            let month1 = calendar.component(.month, from: (calendarDays[weekOffset*7].day.date))
+            let month2 = calendar.component(.month, from: (calendarDays[(weekOffset+3)*7-1].day.date))
             
             if month1 == month2 {
                 text = DateFormatter().monthSymbols[month1 - 1]
@@ -295,7 +445,7 @@ class DaySelectorViewController: StyleViewController {
           preconditionFailure("An error occurred when generating the metadata for \(today)")
         }
 
-        let numberOfDaysInMonth = metadata.numberOfDays
+        //let numberOfDaysInMonth = metadata.numberOfDays
         let offsetInInitialRow = metadata.firstDayWeekday
         //let firstDayOfMonth = metadata.firstDay
 
@@ -303,19 +453,34 @@ class DaySelectorViewController: StyleViewController {
         
         //let firstDay = Int(dateFormatter.string(from: today))! - offsetInInitialRow + 1
         
-        for day in (1...(cellsPerRow * rows)) {
+        //for day in (1...(cellsPerRow * (rows+weekOffset))) {
+        for day in (1...(cellsPerRow*weeksToLoad)) {
             
             let inFuture = day >= offsetInInitialRow
             
             let dayOffset = day - offsetInInitialRow
             
-            let inNextMonth = day > numberOfDaysInMonth - Int(dateFormatter.string(from: today))! + offsetInInitialRow
+            /*let inNextMonth = day > numberOfDaysInMonth - Int(dateFormatter.string(from: today))! + offsetInInitialRow
 
             days.append(generateDay(
                 offsetBy: dayOffset,
                 for: today,
                 inFuture: inFuture,
-                inNextMonth: inNextMonth))
+                inNextMonth: inNextMonth))*/
+            
+            let newMonth =  calendar.dateComponents([.month], from: calendar.date(byAdding: .day, value: dayOffset, to: today)!).month!
+            let oldMonth =
+            calendar.dateComponents([.month], from: today).month!
+            
+            let monthOffset = newMonth-oldMonth
+            
+            days.append(generateDay(
+                offsetBy: dayOffset,
+                for: today,
+                inFuture: inFuture,
+                inNextMonth: ((monthOffset%2) == 1)))
+            
+            
         }
         
         days[offsetInInitialRow - 1].isToday = true
@@ -378,12 +543,13 @@ class DaySelectorViewController: StyleViewController {
 // MARK: - UICollectionViewDataSource
 extension DaySelectorViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        calendarDays.count
+        //calendarDays.count
+        cellsPerRow*rows
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     
-        let day = calendarDays[indexPath.row]
+        let day = calendarDays[indexPath.row+weekOffset*7]
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CalendarDayCell.reuseIdentifier, for: indexPath) as! CalendarDayCell
 
@@ -412,7 +578,7 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
     // When a cell is selected
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        var day = calendarDays[indexPath.row]
+        var day = calendarDays[indexPath.row+weekOffset*7]
         
         if day.inFuture {
             if !event.daysAndTimes.isEmpty {
@@ -423,7 +589,7 @@ extension DaySelectorViewController: UICollectionViewDelegateFlowLayout {
                 }
             }
             day.isSelected = !day.isSelected
-            calendarDays[indexPath.row] = day
+            calendarDays[indexPath.row+weekOffset*7] = day
             calendarCollectionView!.reloadData()
             //calendarCollectionView.reloadItems(at: [indexPath])
         }
@@ -466,6 +632,18 @@ extension DaySelectorViewController: UINavigationControllerDelegate {
             (viewController as! LocationsViewController).updateLocations()
             (viewController as! LocationsViewController).expandToNext = false
             (viewController as! LocationsViewController).isNewArray = [Bool](repeating: false, count: event.locations.count)
+            
+            //Find latest day
+            var lastDayIndex: Int?
+            for (ind, calendarDay) in calendarDays.reversed().enumerated() {
+                if calendarDay.isSelected {
+                    lastDayIndex = calendarDays.count-ind-1
+                    break
+                }
+            }
+            if lastDayIndex != nil {
+                (viewController as! LocationsViewController).weeksToLoad = lastDayIndex!/7 + 1
+            }
             
         }
     }
